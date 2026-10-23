@@ -7,6 +7,11 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
     />
     <meta name="theme-color" content="#0b0d14" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="AI 大战奶蛙" />
+    <link rel="apple-touch-icon" href="./icons/pwa_192.png" />
+    <link rel="icon" type="image/png" href="./icons/pwa_192.png" />
     <title>AI 大战奶蛙</title>
     <style>
       html,
@@ -28,10 +33,47 @@
       #game canvas {
         image-rendering: pixelated;
       }
+      #pwa-update {
+        position: fixed;
+        z-index: 10;
+        top: max(12px, env(safe-area-inset-top));
+        right: max(12px, env(safe-area-inset-right));
+        max-width: calc(100vw - 48px - env(safe-area-inset-left) - env(safe-area-inset-right));
+        padding: 12px;
+        border: 1px solid #59628a;
+        border-radius: 8px;
+        background: #1b2030;
+        color: #e8ecff;
+        font:
+          14px system-ui,
+          sans-serif;
+      }
+      #pwa-update:not([hidden]) {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      #pwa-update button {
+        min-height: 44px;
+        padding: 8px 12px;
+        border: 1px solid #7ee8ff;
+        border-radius: 4px;
+        background: #0b0d14;
+        color: #7ee8ff;
+        font: inherit;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
     </style>
   </head>
   <body>
     <div id="game"></div>
+    <aside id="pwa-update" role="status" aria-live="polite" hidden>
+      <span id="pwa-update-message">有新版本</span>
+      <button id="pwa-refresh" type="button">点击刷新</button>
+      <button id="pwa-dismiss" type="button">稍后</button>
+    </aside>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

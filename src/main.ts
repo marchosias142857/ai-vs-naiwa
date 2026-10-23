@@ -7,6 +7,7 @@ import { GameScene } from './game/scenes/GameScene';
 import { MenuScene } from './game/scenes/MenuScene';
 import { PreloadScene } from './game/scenes/PreloadScene';
 import { setTestHooks } from './game/testHooks';
+import './pwa/registerSW';
 
 const config: Types.Core.GameConfig = {
   type: AUTO,
