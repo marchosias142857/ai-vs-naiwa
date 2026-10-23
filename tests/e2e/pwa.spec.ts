@@ -115,6 +115,9 @@ test('连续发布只提示更新，稍后及另一标签页均不强制刷新',
   await expect(page.locator('#pwa-update')).toBeVisible();
   await expect(other.locator('#pwa-update')).toBeVisible();
   await page.screenshot({ path: info.outputPath('pwa-update.png') });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator('#rotate-overlay')).toBeVisible();
+  await page.screenshot({ path: info.outputPath('pwa-update-portrait.png') });
   await page.getByRole('button', { name: '稍后' }).click();
   await expect(page.locator('#pwa-update')).toBeHidden();
   expect(await page.evaluate(async () => (await navigator.serviceWorker.ready).waiting?.state)).toBe(

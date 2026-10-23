@@ -16,13 +16,13 @@
 
 ## 当前：M0 地基
 
-| 任务                                                                                        | 负责   | 状态      |
-| ------------------------------------------------------------------------------------------- | ------ | --------- |
-| 脚手架、目录结构、TS/ESLint/Prettier/Vitest/Playwright 配置                                 | Claude | 已提交 PR |
-| Random、EventBus、调试参数 + 单测；Boot/Preload/Menu/Game 场景空壳                          | Claude | 已提交 PR |
-| AGENTS.md、CLAUDE.md、docs                                                                  | Claude | 已提交 PR |
-| CI（lint、类型、单测、构建、冒烟）、部署工作流、Issue/PR 模板                               | Claude | 已提交 PR |
-| 提交 `package-lock.json`；跑 `npm run format` 并把格式检查改为 CI 阻塞项                    | GPT    | 待开始    |
-| PWA：接入 vite-plugin-pwa、manifest、图标（192/512/maskable）、离线预缓存、「有新版本」提示 | GPT    | 待开始    |
-| 竖屏「请旋转设备」遮罩 + 自动暂停；`visibilitychange` 暂停；iOS 首次触摸解锁音频的钩子      | GPT    | 待开始    |
-| 部署目标：仓库已公开，使用 GitHub Pages（合并 main 自动部署）                               | 负责人 | 已决定    |
+| 任务                                                                                        | 负责   | 状态            |
+| ------------------------------------------------------------------------------------------- | ------ | --------------- |
+| 脚手架、目录结构、TS/ESLint/Prettier/Vitest/Playwright 配置                                 | Claude | 已提交 PR       |
+| Random、EventBus、调试参数 + 单测；Boot/Preload/Menu/Game 场景空壳                          | Claude | 已提交 PR       |
+| AGENTS.md、CLAUDE.md、docs                                                                  | Claude | 已提交 PR       |
+| CI（lint、类型、单测、构建、冒烟）、部署工作流、Issue/PR 模板                               | Claude | 已提交 PR       |
+| 提交 `package-lock.json`；跑 `npm run format` 并把格式检查改为 CI 阻塞项                    | GPT    | 待开始          |
+| PWA：接入 vite-plugin-pwa、manifest、图标（192/512/maskable）、离线预缓存、「有新版本」提示 | GPT    | 已完成（PR #7） |
+| 竖屏「请旋转设备」遮罩 + 自动暂停；`visibilitychange` 暂停；iOS 首次触摸解锁音频的钩子      | GPT    | 待开始          |
+| 部署目标：仓库已公开，使用 GitHub Pages（合并 main 自动部署）                               | 负责人 | 已决定          |
