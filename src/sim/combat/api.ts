@@ -3,6 +3,7 @@ import type { EnemyId } from '../../data/enemies';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
 import type { EntityId, InputFrame, Seed, Team } from '../core/types';
+import { createCombatWorldImpl } from './CombatWorld';
 
 /**
  * M1 战斗 sim 的对外接口（ADR 0003）。game 层（#14 实体与对象池、#15 场景接线）只通过这里与战斗规则交互。
@@ -137,8 +138,7 @@ export interface CombatWorld {
   removeActor(id: EntityId): void;
 }
 
-/** 新建一局战斗。M1-4（#13）的实现 PR 完成之前，调用会抛出错误。 */
+/** 新建一局战斗。实现在 `CombatWorld.ts`，这里只是稳定的入口。 */
 export function createCombatWorld(options: CombatWorldOptions): CombatWorld {
-  void options;
-  throw new Error('createCombatWorld 尚未实现：见 Issue #13（M1-4 sim 战斗核心）');
+  return createCombatWorldImpl(options);
 }
