@@ -17,14 +17,13 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     const previous = controller;
     controller = navigator.serviceWorker.controller;
     // Workbox 在首次加载页面保留 isUpdate=false；原生事件覆盖该页后续的更新。
-    if (previous && controller !== previous) {
+    if (controller && controller !== previous) {
       if (requestedReload) window.location.reload();
-      else showUpdate();
+      else if (previous) showUpdate();
     }
   });
   const updateSW = registerSW({
     immediate: true,
-    onNeedRefresh: showUpdate,
     // 重载统一由上面的原生事件处理，避免另一标签页确认后强制刷新当前局。
     onNeedReload: () => undefined,
     onRegisteredSW(_url, registration) {
@@ -34,12 +33,12 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
       const watchInstalling = () => {
         const installing = registration.installing;
         installing?.addEventListener('statechange', () => {
-          if (installing.state === 'installed' && registration.waiting) showUpdate();
+          if (installing.state === 'installed' && registration.active && registration.waiting) showUpdate();
         });
       };
       registration.addEventListener('updatefound', watchInstalling);
       watchInstalling();
-      if (registration.waiting) showUpdate();
+      if (registration.active && registration.waiting) showUpdate();
       const checkUpdate = () => {
         if (navigator.onLine && document.visibilityState === 'visible') {
           void registration.update().catch(() => {
