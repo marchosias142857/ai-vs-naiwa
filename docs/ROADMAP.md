@@ -25,4 +25,4 @@
 | 提交 `package-lock.json`；跑 `npm run format` 并把格式检查改为 CI 阻塞项 | GPT | 待开始 |
 | PWA：接入 vite-plugin-pwa、manifest、图标（192/512/maskable）、离线预缓存、「有新版本」提示 | GPT | 待开始 |
 | 竖屏「请旋转设备」遮罩 + 自动暂停；`visibilitychange` 暂停；iOS 首次触摸解锁音频的钩子 | GPT | 待开始 |
-| 部署目标确认（私有仓库的 GitHub Pages 需付费套餐，否则改用 Cloudflare Pages 等） | 负责人 | 待决定 |
+| 部署目标：仓库已公开，使用 GitHub Pages（合并 main 自动部署） | 负责人 | 已决定 |

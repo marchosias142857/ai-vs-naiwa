@@ -1,12 +1,11 @@
 name: Deploy to GitHub Pages
 
-# 私有仓库使用 GitHub Pages 需要付费套餐（Pro / Team 等）。
-# 部署目标确认前只允许手动触发；确认后把下面的 push 触发取消注释，
-# 并在仓库 Settings → Pages 里把 Source 设为「GitHub Actions」。
+# 仓库已公开，Settings → Pages 的 Source 为「GitHub Actions」（Issue #5）。
+# 合并到 main 后自动部署到 https://marchosias142857.github.io/ai-vs-naiwa/
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
 
 permissions:
   contents: read
