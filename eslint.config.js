@@ -22,6 +22,7 @@ export default defineConfig(
   },
   {
     // zod 只在测试与校验脚本中运行；游戏代码只能 import type，避免 zod 进入生产包（ADR 0002）。
+    // 对 data/schema 的值导入（含相对路径写法）由 tests/unit/architecture.test.ts 解析真实路径后拦截。
     files: ['src/**/*.ts'],
     ignores: ['src/data/schema/**'],
     rules: {
@@ -33,6 +34,13 @@ export default defineConfig(
               name: 'zod',
               allowTypeImports: true,
               message: '运行时代码不能使用 zod；数据类型请 import type 自 src/data/schema（见 ADR 0002）。',
+            },
+          ],
+          patterns: [
+            {
+              group: ['zod/*'],
+              allowTypeImports: true,
+              message: '运行时代码不能使用 zod 的子路径（见 ADR 0002）。',
             },
           ],
         },

@@ -6,7 +6,7 @@
 
 - 每类一个文件：`characters.ts`、`weapons.ts`、`enemies.ts`、`balance.ts`（已有），以及之后的 `bosses.ts`、`buffs.ts`、`loot.ts`、`biomes.ts`。
 - 写成 `export const WEAPONS = { ... } as const satisfies Record<string, WeaponDef>;`，ID 就是对象的 key。
-- 类型用 `import type { WeaponDef } from './schema'` 取得。**运行时代码不能 import zod**（ESLint 拦截），zod 只在测试与校验脚本中运行。
+- 类型用 `import type { WeaponDef } from './schema'` 取得。**运行时代码不能对 zod 或 schema 做值导入**（ESLint 与 `tests/unit/architecture.test.ts` 拦截），zod 只在测试与校验脚本中运行。
 - schema 用 `strictObject`：多写、拼错的字段会被测试拦下。
 - ID 用 `snake_case`，全局唯一，一旦上线不改名（存档会引用）。
 - 名称、描述写 i18n key（如 `weapon.pistol_basic`），不直接写中文。
