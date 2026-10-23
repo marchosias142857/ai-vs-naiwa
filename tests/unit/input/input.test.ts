@@ -1,3 +1,4 @@
+import { INPUT_UI as UI } from '../../../src/game/fx/params';
 import { describe, expect, it } from 'vitest';
 import { InputState, stick } from '../../../src/game/input/InputState';
 import { TouchState } from '../../../src/game/input/TouchState';
@@ -21,9 +22,9 @@ describe('输入快照与多指', () => {
   });
   it('径向死区与模拟量，瞄准总为单位向量', () => {
     const v = { x: 0, y: 0 };
-    stick(v, 0.05, 0.05, 0.12);
+    stick(v, UI.deadzone / 3, UI.deadzone / 3, UI.deadzone);
     expect(v).toEqual({ x: 0, y: 0 });
-    stick(v, 0.56, 0, 0.12);
+    stick(v, UI.deadzone + (1 - UI.deadzone) / 2, 0, UI.deadzone);
     expect(v.x).toBeCloseTo(0.5);
     const s = new InputState();
     s.sample();
@@ -48,14 +49,17 @@ describe('输入快照与多指', () => {
   it('三指独立；拖出后释放、取消、旋转都归零', () => {
     const t = new TouchState();
     t.resize(800, 450);
-    expect(t.down(1, 100, 350)).toBe(true);
-    expect(t.down(2, 712, 362)).toBe(true);
+    expect(t.down(1, UI.joystick.homeInset, t.height - UI.joystick.homeInset)).toBe(true);
+    expect(t.down(2, t.width - UI.fire.inset, t.height - UI.fire.inset)).toBe(true);
     t.drag(2, 200, 200);
     expect(t.move.x).toBe(0);
     t.drag(1, 900, 350);
-    expect(t.x).toBeLessThanOrEqual(800 * 0.45 - 52);
+    expect(t.x).toBeLessThanOrEqual(t.width * UI.moveArea.widthFraction - UI.joystick.radius);
     expect(t.move.x).toBe(1);
-    expect(t.down(3, 772, 28)).toBe(true);
+    t.resize(t.width, t.height);
+    expect(t.moveId).toBe(1);
+    expect(t.move.x).toBe(1);
+    expect(t.down(3, t.width - UI.pause.inset, UI.pause.inset)).toBe(true);
     expect(t.pausePressed).toBe(true);
     t.up(2);
     expect(t.fireId).toBe(-1);

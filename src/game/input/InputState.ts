@@ -1,3 +1,4 @@
+import { INPUT_UI as UI } from '../fx/params';
 import { createInputFrame, resetInputFrame } from '../../sim/core/types';
 import type { Vec2 } from '../../sim/core/types';
 
@@ -15,7 +16,6 @@ export class InputState {
   readonly aim = { x: 0, y: 0 };
   readonly keys = new Set<string>();
   mouseFire = false;
-  mouseAim = false;
   private edges = new Set<string>();
   private padStart = false;
   private padBlocked = true;
@@ -32,7 +32,7 @@ export class InputState {
   reset(): void {
     this.keys.clear();
     this.edges.clear();
-    this.mouseFire = this.mouseAim = this.padStart = false;
+    this.mouseFire = this.padStart = false;
     this.padBlocked = true;
     resetInputFrame(this.frame);
   }
@@ -40,12 +40,12 @@ export class InputState {
   /** 每个 UI 帧调用一次；返回值的对象身份不变。 */
   sample(lx = 0, ly = 0, rx = 0, ry = 0, trigger = false, start = false) {
     const f = resetInputFrame(this.frame);
-    const active = Math.hypot(lx, ly) > 0.12 || Math.hypot(rx, ry) > 0.12 || trigger || start;
+    const active = Math.hypot(lx, ly) > UI.deadzone || Math.hypot(rx, ry) > UI.deadzone || trigger || start;
     if (!active) this.padBlocked = false;
     if (active && !this.padBlocked) f.source = 'gamepad';
     if (f.source === 'gamepad' && !this.padBlocked) {
-      stick(f.move, lx, ly, 0.12);
-      stick(this.aim, rx, ry, 0.12);
+      stick(f.move, lx, ly, UI.deadzone);
+      stick(this.aim, rx, ry, UI.deadzone);
       if (this.aim.x || this.aim.y) {
         stick(this.aim, this.aim.x, this.aim.y);
         const n = Math.hypot(this.aim.x, this.aim.y);
@@ -64,7 +64,6 @@ export class InputState {
           Number(this.keys.has('KeyW') || this.keys.has('ArrowUp')),
       );
       f.fire = this.mouseFire;
-      if (this.mouseAim) f.aim = this.aim;
     }
     f.skillPressed = this.edges.has('Space');
     f.swapPressed = this.edges.has('KeyQ');

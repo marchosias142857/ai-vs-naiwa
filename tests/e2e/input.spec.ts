@@ -1,3 +1,4 @@
+import { INPUT_UI as UI } from '../../src/game/fx/params';
 import { expect, test } from '@playwright/test';
 
 test('键鼠、暂停恢复、后台清空；更新提示在暂停键下方', async ({ page }, info) => {
@@ -35,20 +36,22 @@ test('触屏多指移动和射击互不串扰，取消释放；CSS 大小与缩�
   await page.waitForFunction(() => window.__AVN__?.input);
   const b = (await page.locator('canvas').boundingBox())!;
   const cdp = await context.newCDPSession(page);
-  const move = { x: b.x + 100, y: b.y + b.height - 100, id: 1 };
-  const fire = { x: b.x + b.width - 88, y: b.y + b.height - 88, id: 2 };
+  const move = { x: b.x + UI.joystick.homeInset, y: b.y + b.height - UI.joystick.homeInset, id: 1 };
+  const fire = { x: b.x + b.width - UI.fire.inset, y: b.y + b.height - UI.fire.inset, id: 2 };
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [move, fire] });
   await cdp.send('Input.dispatchTouchEvent', {
     type: 'touchMove',
-    touchPoints: [{ ...move, x: move.x + 40 }, fire],
+    touchPoints: [{ ...move, x: move.x + UI.joystick.radius * 0.8 }, fire],
   });
   await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.fire)).toBe(true);
   await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.move.x)).toBeGreaterThan(0.5);
   expect(await page.evaluate(() => window.__AVN__!.input!.aim)).toBeNull();
+  await page.evaluate(() => window.dispatchEvent(new Event('resize')));
+  await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.move.x)).toBeGreaterThan(0.5);
   await page.screenshot({ path: info.outputPath('input-touch.png') });
   await cdp.send('Input.dispatchTouchEvent', {
     type: 'touchEnd',
-    touchPoints: [{ ...move, x: move.x + 40 }],
+    touchPoints: [{ ...move, x: move.x + UI.joystick.radius * 0.8 }],
   });
   await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.move.x)).toBe(0);
   expect(await page.evaluate(() => window.__AVN__!.input!.fire)).toBe(true);

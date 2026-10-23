@@ -1,3 +1,4 @@
+import { INPUT_UI as UI } from '../fx/params';
 import { Scene } from 'phaser';
 import type { GameObjects } from 'phaser';
 import { DEPTH, GAME_HEIGHT, GAME_WIDTH, SCENES } from '../../config';
@@ -56,47 +57,70 @@ export class InputScene extends Scene {
       s = c.rect.width / GAME_WIDTH;
     c.sample(this.playerX, this.playerY);
     if (!s) return;
-    const targetScale = c.touch.fireId >= 0 ? 0.94 : 1;
+    const targetScale = c.touch.fireId >= 0 ? UI.fire.pressedScale : 1;
     this.fireScale +=
       Math.sign(targetScale - this.fireScale) *
-      Math.min(Math.abs(targetScale - this.fireScale), (0.06 * delta) / 60);
+      Math.min(
+        Math.abs(targetScale - this.fireScale),
+        ((1 - UI.fire.pressedScale) * delta) / UI.fire.transitionMs,
+      );
     const g = this.graphics;
     g.clear();
     const paused = c.battle.scene.isPaused();
     this.resumeLabel.setVisible(paused);
     if (s !== this.layoutScale) {
       this.layoutScale = s;
-      this.resumeLabel.setFontSize(16 / s);
-      this.pauseLabel.setPosition(GAME_WIDTH - 28 / s, 28 / s).setFontSize(18 / s);
+      this.resumeLabel.setFontSize(UI.resume.fontSize / s);
+      this.pauseLabel
+        .setPosition(GAME_WIDTH - UI.pause.inset / s, UI.pause.inset / s)
+        .setFontSize(UI.pause.fontSize / s);
     }
     if (paused) {
       g.fillStyle(0x0b0d14, 0.6).fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-      this.circle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 40 / s, false, 1);
+      this.circle(GAME_WIDTH / 2, GAME_HEIGHT / 2, UI.resume.radius / s, false, 1);
     }
-    this.circle(GAME_WIDTH - 28 / s, 28 / s, 18 / s, paused, 1);
+    this.circle(GAME_WIDTH - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
     if (c.touchVisible && !paused) {
       const t = c.touch;
-      this.circle(t.x / s, t.y / s, 52 / s, false, t.moveId >= 0 ? 0.8 : 0.35);
-      this.circle((t.x + t.dx) / s, (t.y + t.dy) / s, 22 / s, t.moveId >= 0, t.moveId >= 0 ? 0.8 : 0.35);
-      this.circle(GAME_WIDTH - 88 / s, GAME_HEIGHT - 88 / s, (40 / s) * this.fireScale, t.fireId >= 0, 1);
+      this.circle(
+        t.x / s,
+        t.y / s,
+        UI.joystick.radius / s,
+        false,
+        t.moveId >= 0 ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
+      );
+      this.circle(
+        (t.x + t.dx) / s,
+        (t.y + t.dy) / s,
+        UI.joystick.knobRadius / s,
+        t.moveId >= 0,
+        t.moveId >= 0 ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
+      );
+      this.circle(
+        GAME_WIDTH - UI.fire.inset / s,
+        GAME_HEIGHT - UI.fire.inset / s,
+        (UI.fire.radius / s) * this.fireScale,
+        t.fireId >= 0,
+        1,
+      );
     }
     const mouse = c.frame.source === 'keyboard' && c.frame.aim !== null && !paused;
     this.game.canvas.style.cursor = mouse ? 'none' : '';
     if (mouse) {
-      const x = c.mouse.x / s,
-        y = c.mouse.y / s;
-      g.lineStyle(3, 0x000000)
-        .lineBetween(x - 3, y, x + 3, y)
-        .lineBetween(x, y - 3, x, y + 3);
-      g.lineStyle(1, 0xffffff)
-        .lineBetween(x - 3, y, x + 3, y)
-        .lineBetween(x, y - 3, x, y + 3);
+      const x = Math.round(c.mouse.x / s),
+        y = Math.round(c.mouse.y / s);
+      g.lineStyle(UI.crosshair.outline, 0x000000)
+        .lineBetween(x - UI.crosshair.radius, y, x + UI.crosshair.radius, y)
+        .lineBetween(x, y - UI.crosshair.radius, x, y + UI.crosshair.radius);
+      g.lineStyle(UI.crosshair.stroke, 0xffffff)
+        .lineBetween(x - UI.crosshair.radius, y, x + UI.crosshair.radius, y)
+        .lineBetween(x, y - UI.crosshair.radius, x, y + UI.crosshair.radius);
     }
   }
   private circle(x: number, y: number, r: number, pressed: boolean, alpha: number): void {
     this.graphics.fillStyle(pressed ? 0x7ee8ff : 0, (pressed ? 0.35 : 0.3) * alpha).fillCircle(x, y, r);
     this.graphics
-      .lineStyle(2 / (this.controls.rect.width / GAME_WIDTH), 0xffffff, alpha)
+      .lineStyle(UI.outline / (this.controls.rect.width / GAME_WIDTH), 0xffffff, alpha)
       .strokeCircle(x, y, r);
   }
 }

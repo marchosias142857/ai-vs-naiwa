@@ -1,5 +1,6 @@
+import { INPUT_UI as UI } from '../fx/params';
 import { Math as PhaserMath } from 'phaser';
-import type { Scene } from 'phaser';
+import type { Input, Scene } from 'phaser';
 import { resetInputFrame } from '../../sim/core/types';
 import { InputState } from './InputState';
 import { TouchState } from './TouchState';
@@ -30,6 +31,7 @@ export class InputController {
   private readonly coarse = matchMedia('(pointer: coarse)');
   private mouseInside = false;
   private sampledFrame = -1;
+  private configuredPad?: Input.Gamepad.Gamepad;
   get frame() {
     return this.state.frame;
   }
@@ -91,7 +93,7 @@ export class InputController {
     window.addEventListener('blur', this.reset, options);
     document.addEventListener('visibilitychange', this.reset, options);
     window.addEventListener('resize', this.resize, options);
-    window.addEventListener('orientationchange', this.resize, options);
+    window.addEventListener('orientationchange', this.orientation, options);
     window.visualViewport?.addEventListener('resize', this.resize, options);
     ui.scale.on('resize', this.resize);
     this.resize();
@@ -101,10 +103,16 @@ export class InputController {
     this.touch.reset();
     this.mouseInside = false;
   };
+  private readonly orientation = () => {
+    this.reset();
+    this.resize();
+  };
   readonly resize = () => {
     this.rect = this.canvas.getBoundingClientRect();
-    this.reset();
-    this.touch.resize(this.rect.width, this.rect.height);
+    if (this.touch.width !== this.rect.width || this.touch.height !== this.rect.height) {
+      this.reset();
+      this.touch.resize(this.rect.width, this.rect.height);
+    }
     document.documentElement.style.setProperty('--game-canvas-top', `${this.rect.top}px`);
   };
   private pointer(e: PointerEvent, down: boolean): void {
@@ -122,7 +130,7 @@ export class InputController {
       if (down) {
         if (
           this.battle.scene.isPaused() &&
-          Math.hypot(x - this.rect.width / 2, y - this.rect.height / 2) <= 40
+          Math.hypot(x - this.rect.width / 2, y - this.rect.height / 2) <= UI.resume.radius
         ) {
           this.togglePause();
           return;
@@ -134,8 +142,9 @@ export class InputController {
     if (
       down &&
       e.pointerType === 'mouse' &&
-      (Math.hypot(x - (this.rect.width - 28), y - 28) <= 22 ||
-        (this.battle.scene.isPaused() && Math.hypot(x - this.rect.width / 2, y - this.rect.height / 2) <= 40))
+      (Math.hypot(x - (this.rect.width - UI.pause.inset), y - UI.pause.inset) <= UI.pause.hitRadius ||
+        (this.battle.scene.isPaused() &&
+          Math.hypot(x - this.rect.width / 2, y - this.rect.height / 2) <= UI.resume.radius))
     )
       this.togglePause();
   }
@@ -144,7 +153,10 @@ export class InputController {
     if (this.sampledFrame === this.ui.game.loop.frame) return this.frame;
     this.sampledFrame = this.ui.game.loop.frame;
     const pad = this.ui.input.gamepad?.pad1;
-    pad?.setAxisThreshold(0);
+    if (pad && pad !== this.configuredPad) {
+      pad.setAxisThreshold(0);
+      this.configuredPad = pad;
+    }
     const f = this.state.sample(
       pad?.connected ? pad.leftStick.x : 0,
       pad?.connected ? pad.leftStick.y : 0,
