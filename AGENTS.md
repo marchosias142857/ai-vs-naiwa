@@ -15,11 +15,11 @@
 
 ## 2. 角色
 
-| 角色 | 职责 |
-| --- | --- |
+| 角色               | 职责                                                |
+| ------------------ | --------------------------------------------------- |
 | 项目负责人（人类） | 美术方向、玩法设计、数值拍板、手机试玩验收、合并 PR |
-| Claude | 开发者，默认负责 `sim/`、共享契约、CI 与脚本 |
-| ChatGPT | 开发者，默认负责场景、UI、输入、PWA、服务层 |
+| Claude             | 开发者，默认负责 `sim/`、共享契约、CI 与脚本        |
+| ChatGPT            | 开发者，默认负责场景、UI、输入、PWA、服务层         |
 
 ## 3. 技术栈（版本锁定，升级需 ADR）
 
@@ -64,16 +64,16 @@ docs/              GDD、ARCHITECTURE、ROADMAP、DATA_SCHEMA、ART_GUIDE、adr/
 
 ## 6. 模块归属（默认，负责人可调整）
 
-| 模块 | 主负责 | 评审 |
-| --- | --- | --- |
-| `src/sim/**`（战斗、弹道、AI、地牢、属性/Buff、掉落、本局状态） | Claude | ChatGPT |
-| 共享契约：`sim/core/types.ts`、`sim/core/events.ts`、`data/schema/**`、`config.ts` | Claude 起草 | ChatGPT + 负责人批准 |
-| `game/scenes`、`game/ui`、`game/input`、`game/fx` | ChatGPT | Claude |
-| `services/**`、PWA、`i18n/**`、`index.html` | ChatGPT | Claude |
-| `game/entities`、`components`、`pools`、`world` | 按 Issue 分配 | 另一方 |
-| `data/**` 内容（数值） | 按 Issue | 负责人 |
-| `.github/**`、`scripts/**`、工具配置 | Claude | ChatGPT |
-| `docs/**` | 改哪个模块就更新哪份文档 | 负责人 |
+| 模块                                                                               | 主负责                   | 评审                 |
+| ---------------------------------------------------------------------------------- | ------------------------ | -------------------- |
+| `src/sim/**`（战斗、弹道、AI、地牢、属性/Buff、掉落、本局状态）                    | Claude                   | ChatGPT              |
+| 共享契约：`sim/core/types.ts`、`sim/core/events.ts`、`data/schema/**`、`config.ts` | Claude 起草              | ChatGPT + 负责人批准 |
+| `game/scenes`、`game/ui`、`game/input`、`game/fx`                                  | ChatGPT                  | Claude               |
+| `services/**`、PWA、`i18n/**`、`index.html`                                        | ChatGPT                  | Claude               |
+| `game/entities`、`components`、`pools`、`world`                                    | 按 Issue 分配            | 另一方               |
+| `data/**` 内容（数值）                                                             | 按 Issue                 | 负责人               |
+| `.github/**`、`scripts/**`、工具配置                                               | Claude                   | ChatGPT              |
+| `docs/**`                                                                          | 改哪个模块就更新哪份文档 | 负责人               |
 
 ## 7. 每次开工的固定步骤
 
@@ -105,13 +105,13 @@ docs/              GDD、ARCHITECTURE、ROADMAP、DATA_SCHEMA、ART_GUIDE、adr/
 
 ## 10. 常用命令
 
-| 命令 | 作用 |
-| --- | --- |
-| `npm run dev` | 本地开发（`--host`，同一局域网手机可访问） |
-| `npm run check` | lint + 类型检查 + 单测 + 构建，PR 前必跑 |
-| `npm run test:e2e` | Playwright 冒烟（会先构建） |
-| `npm run format` | Prettier 格式化 |
-| `npm run build` / `preview` | 生产构建 / 本地预览 |
+| 命令                        | 作用                                       |
+| --------------------------- | ------------------------------------------ |
+| `npm run dev`               | 本地开发（`--host`，同一局域网手机可访问） |
+| `npm run check`             | lint + 类型检查 + 单测 + 构建，PR 前必跑   |
+| `npm run test:e2e`          | Playwright 冒烟（会先构建）                |
+| `npm run format`            | Prettier 格式化                            |
+| `npm run build` / `preview` | 生产构建 / 本地预览                        |
 
 ## 11. 调试参数
 

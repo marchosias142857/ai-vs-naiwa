@@ -56,9 +56,11 @@ export class GameScene extends Scene {
   override update(): void {
     if (this.debugText) {
       this.debugText.setText(
-        [`FPS ${this.game.loop.actualFps.toFixed(0)}`, `seed ${this.seed}`, `objs ${this.children.length}`].join(
-          '\n',
-        ),
+        [
+          `FPS ${this.game.loop.actualFps.toFixed(0)}`,
+          `seed ${this.seed}`,
+          `objs ${this.children.length}`,
+        ].join('\n'),
       );
     }
   }
