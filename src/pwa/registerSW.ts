@@ -12,15 +12,24 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   const showUpdate = () => {
     if (prompt) prompt.hidden = false;
   };
+  const onActivatedUpdate = () => {
+    if (updateActivated) return;
+    updateActivated = true;
+    if (requestedReload) window.location.reload();
+    else showUpdate();
+  };
+  let controller = navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    const previous = controller;
+    controller = navigator.serviceWorker.controller;
+    // Workbox 在首次加载页面保留 isUpdate=false；原生事件覆盖该页后续的更新。
+    if (previous && controller !== previous) onActivatedUpdate();
+  });
   const updateSW = registerSW({
     immediate: true,
     onNeedRefresh: showUpdate,
-    onNeedReload() {
-      // 另一个标签页确认更新时，也不能刷新正在进行的一局。
-      updateActivated = true;
-      if (requestedReload) window.location.reload();
-      else showUpdate();
-    },
+    // 另一个标签页确认更新时，也不能刷新正在进行的一局。
+    onNeedReload: onActivatedUpdate,
     onRegisteredSW(_url, registration) {
       const checkUpdate = () => {
         if (navigator.onLine && document.visibilityState === 'visible') {
