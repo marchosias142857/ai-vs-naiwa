@@ -21,6 +21,25 @@ export default defineConfig(
     },
   },
   {
+    // zod 只在测试与校验脚本中运行；游戏代码只能 import type，避免 zod 进入生产包（ADR 0002）。
+    files: ['src/**/*.ts'],
+    ignores: ['src/data/schema/**'],
+    rules: {
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'zod',
+              allowTypeImports: true,
+              message: '运行时代码不能使用 zod；数据类型请 import type 自 src/data/schema（见 ADR 0002）。',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     // 分层规则：sim/ 与 data/ 是纯逻辑，禁止依赖 Phaser 与表现层。
     files: ['src/sim/**/*.ts', 'src/data/**/*.ts'],
     rules: {
