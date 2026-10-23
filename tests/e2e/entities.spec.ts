@@ -5,6 +5,10 @@ import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import type {} from '../fixtures/combat';
+import type {} from '../fixtures/knockback';
+import { BALANCE } from '../../src/data/balance';
+import { WEAPONS } from '../../src/data/weapons';
+import { ENEMIES } from '../../src/data/enemies';
 
 let directory: string, url: string, server: ReturnType<typeof createServer>;
 test.beforeAll(async () => {
@@ -14,7 +18,12 @@ test.beforeAll(async () => {
     root: resolve('tests/fixtures'),
     base: './',
     logLevel: 'silent',
-    build: { outDir: directory, rollupOptions: { input: resolve('tests/fixtures/combat.html') } },
+    build: {
+      outDir: directory,
+      rollupOptions: {
+        input: [resolve('tests/fixtures/combat.html'), resolve('tests/fixtures/knockback.html')],
+      },
+    },
   });
   server = createServer((req, res) => {
     const path = new URL(req.url ?? '/', 'http://localhost').pathname;
@@ -126,5 +135,50 @@ for (const steps of [0, 1, 2]) {
       expect(samples[0]![edge]).toBe(true);
     }
     expect(samples.every((s) => s.moveX === 0.5 && s.aimX === 1)).toBe(true);
+  });
+}
+
+for (const fps of [60, 120]) {
+  test(`真实 sim + Arcade：1/${fps} 秒锁步击退距离与同时间对照组相符`, async ({ page }, info) => {
+    await page.goto(`${url}/knockback.html`);
+    await page.waitForFunction(() => window.knockback);
+    const shot = await page.evaluate((fps) => window.knockback(fps, true), fps);
+    expect(shot.fired).toBe(1);
+    expect(shot.hits).toBe(1);
+    expect(shot.overlaps).toBe(1);
+    expect(shot.trace).toEqual(['overlap', 'hit']);
+    expect(shot.hp).toBeLessThan(ENEMIES.naiwa_chaser.hp);
+    expect(shot.phase).toBe('active');
+    expect(shot.bullets).toBe(0);
+    expect(shot.steps - shot.hitStep).toBe(Math.ceil(BALANCE.knockbackTime * fps) + 1);
+
+    // 全新页面、相同种子与出生位置；不开火，但推进到完全相同的物理步数。
+    await page.goto(`${url}/knockback.html`);
+    await page.waitForFunction(() => window.knockback);
+    const control = await page.evaluate(({ fps, steps }) => window.knockback(fps, false, steps), {
+      fps,
+      steps: shot.steps,
+    });
+    expect(control.steps).toBe(shot.steps);
+    expect(control.time).toBe(shot.time);
+    expect(control.time).toBeCloseTo(control.steps / fps, 10);
+    expect(control.fired).toBe(0);
+    expect(control.hits).toBe(0);
+    expect(control.overlaps).toBe(0);
+    expect(control.hp).toBe(ENEMIES.naiwa_chaser.hp);
+    expect(control.phase).toBe('active');
+    for (const result of [shot, control]) {
+      expect(result.x).toBeCloseTo(result.simX, 8);
+      expect(result.y).toBeCloseTo(result.simY, 8);
+      // 测量时击退已结束，两个怪物都只剩正常追击速度。
+      expect(Math.hypot(result.vx, result.vy)).toBeCloseTo(ENEMIES.naiwa_chaser.moveSpeed, 8);
+    }
+    const distance = Math.hypot(shot.x - control.x, shot.y - control.y);
+    const error = Math.abs(distance - WEAPONS.pistol_basic.knockback);
+    await info.attach('knockback-measurement', {
+      body: JSON.stringify({ fps, shot, control, distance, error }, null, 2),
+      contentType: 'application/json',
+    });
+    expect(error).toBeLessThan(0.5);
   });
 }
