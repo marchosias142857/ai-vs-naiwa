@@ -83,7 +83,7 @@ export type FirePattern = (ctx: FireContext) => BulletSpawn[];
 
 ## 6. 输入抽象（M1）
 
-每帧产出 `InputFrame`：`{ move: Vec2, aim: Vec2 | null, fire, skill, swap, interact, pause }`。玩家实体只读它。
+每帧产出一份 `InputFrame`（定义在 `src/sim/core/types.ts`，约定见 ADR 0002）：`move`、`aim`（`null` 表示自动瞄准）、`fire`（按住），以及本帧刚按下的 `skillPressed` / `swapPressed` / `interactPressed` / `pausePressed`。玩家实体只读它；生成方每帧复用同一个对象。
 
 - 桌面：WASD 移动，鼠标瞄准，左键射击，Space 技能，Q 切枪，E 交互，Esc 暂停。
 - 手机：左下动态摇杆移动；右下射击键按住即对自动瞄准目标开火，技能、切枪键围绕射击键。
