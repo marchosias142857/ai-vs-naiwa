@@ -1,7 +1,8 @@
 # M0 生命周期
 
 - `services/LifecycleService.ts` 只使用浏览器 API；`game/bindLifecycle.ts` 连接 Phaser。
-- 竖屏使用简洁 DOM 遮罩（z-index 5），更新提示仍在 z-index 10。DOM 在引擎停帧时仍可布局、接收触摸和刷新；四边避让 safe-area。
+- 仅在 `(pointer: coarse) and (hover: none)` 匹配且竖屏时使用 DOM 遮罩（z-index 5），更新提示仍在 z-index 10。DOM 在引擎停帧时仍可布局、接收触摸和刷新；四边避让 safe-area。
+  桌面竖长窗口继续运行，保持 Scale.FIT 居中和上下留边。监听媒体查询的 change 以适配二合一设备切换输入模式，销毁时移除监听。
 - 浏览器 resize / orientationchange / visibilitychange 维护自动暂停原因；`setManualPaused()` 持有独立手动原因。
 - 使用 Phaser 4.1 类型和源码确认过的 `game.loop.sleep()` 停止 RAF，停止物理、场景更新、动画及 TimerEvent。
   不只依赖浏览器后台节流。READY 早于 loop.start，因此竖屏冷启动在首个 postrender 时停止循环。
@@ -24,7 +25,7 @@
 
 运行 `npm run check`、`npm run test:e2e`（先停止旧 preview，避免复用旧构建）。
 单测覆盖原因重叠、手动暂停保留、首次手势同步且只调用一次、清理监听、循环所有权及恢复顺序；
-E2E 覆盖竖屏冷启动、转回横屏、帧号/场景时钟冻结、键盘阻断、模拟后台状态及竖屏更新按钮可点击。
+E2E 覆盖桌面竖窗口继续运行、触屏竖屏冷启动、输入模式切换、转回横屏、帧号/场景时钟冻结、键盘阻断、模拟后台状态及竖屏更新按钮可点击。
 后台用例模拟 document 状态并触发真实监听，不等同于 iOS 切应用真机测试。
 
 手动用 `npm run preview` 打开 `/?scene=Game&seed=42`，旋转手机及切后台/回前台。

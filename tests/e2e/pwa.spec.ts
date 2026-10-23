@@ -86,7 +86,7 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
   await reopened.screenshot({ path: info.outputPath('pwa-offline.png') });
 });
 
-test('连续发布只提示更新，稍后及另一标签页均不强制刷新', async ({ page, context }, info) => {
+test('连续发布只提示更新，稍后及另一标签页均不强制刷新', async ({ page, context, isMobile }, info) => {
   test.setTimeout(60_000);
   await page.goto(`${url}?scene=Game&seed=42`);
   await page.waitForFunction(() => window.__AVN__?.scene === 'Game' && navigator.serviceWorker.controller);
@@ -116,7 +116,7 @@ test('连续发布只提示更新，稍后及另一标签页均不强制刷新',
   await expect(other.locator('#pwa-update')).toBeVisible();
   await page.screenshot({ path: info.outputPath('pwa-update.png') });
   await page.setViewportSize({ width: 390, height: 844 });
-  await expect(page.locator('#rotate-overlay')).toBeVisible();
+  await expect(page.locator('#rotate-overlay')).toBeVisible({ visible: isMobile });
   await page.screenshot({ path: info.outputPath('pwa-update-portrait.png') });
   await page.getByRole('button', { name: '稍后' }).click();
   await expect(page.locator('#pwa-update')).toBeHidden();

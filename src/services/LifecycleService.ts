@@ -9,6 +9,7 @@ export interface LifecycleCallbacks {
 export class LifecycleService {
   private readonly listeners = new AbortController();
   private readonly gestures = new AbortController();
+  private readonly touchScreen = window.matchMedia('(pointer: coarse) and (hover: none)');
   private manualPaused = false;
   private hidden = false;
   private paused = false;
@@ -20,6 +21,8 @@ export class LifecycleService {
     const options = { signal: this.listeners.signal };
     window.addEventListener('resize', this.sync, options);
     window.addEventListener('orientationchange', this.sync, options);
+    // 二合一设备可以在同一窗口中切换输入模式，不能只在启动时判断一次。
+    this.touchScreen.addEventListener('change', this.sync, options);
     document.addEventListener('visibilitychange', this.sync, options);
     const gestureOptions = { signal: this.gestures.signal, capture: true, passive: true };
     // touchend/click 在 iOS 上属于有效手势；捕获阶段也覆盖 DOM 遮罩上的首次触摸。
@@ -54,7 +57,7 @@ export class LifecycleService {
   };
 
   private readonly sync = (): void => {
-    const portrait = window.innerHeight > window.innerWidth;
+    const portrait = this.touchScreen.matches && window.innerHeight > window.innerWidth;
     this.overlay.hidden = !portrait;
     const hidden = document.visibilityState === 'hidden';
     const enteredHidden = hidden && !this.hidden;
