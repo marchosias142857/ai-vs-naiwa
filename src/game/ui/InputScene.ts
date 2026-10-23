@@ -76,7 +76,7 @@ export class InputScene extends Scene {
         .setFontSize(UI.pause.fontSize / s);
     }
     if (paused) {
-      g.fillStyle(0x0b0d14, 0.6).fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+      g.fillStyle(UI.look.pauseColor, UI.look.pauseAlpha).fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
       this.circle(GAME_WIDTH / 2, GAME_HEIGHT / 2, UI.resume.radius / s, false, 1);
     }
     this.circle(GAME_WIDTH - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
@@ -107,8 +107,8 @@ export class InputScene extends Scene {
     const mouse = c.frame.source === 'keyboard' && c.frame.aim !== null && !paused;
     this.game.canvas.style.cursor = mouse ? 'none' : '';
     if (mouse) {
-      const x = Math.round(c.mouse.x / s),
-        y = Math.round(c.mouse.y / s);
+      const x = Math.floor(c.mouse.x / s) + 0.5,
+        y = Math.floor(c.mouse.y / s) + 0.5;
       g.lineStyle(UI.crosshair.outline, 0x000000)
         .lineBetween(x - UI.crosshair.radius, y, x + UI.crosshair.radius, y)
         .lineBetween(x, y - UI.crosshair.radius, x, y + UI.crosshair.radius);
@@ -118,7 +118,12 @@ export class InputScene extends Scene {
     }
   }
   private circle(x: number, y: number, r: number, pressed: boolean, alpha: number): void {
-    this.graphics.fillStyle(pressed ? 0x7ee8ff : 0, (pressed ? 0.35 : 0.3) * alpha).fillCircle(x, y, r);
+    this.graphics
+      .fillStyle(
+        pressed ? UI.look.pressedColor : 0,
+        (pressed ? UI.look.pressedFillAlpha : UI.look.idleFillAlpha) * alpha,
+      )
+      .fillCircle(x, y, r);
     this.graphics
       .lineStyle(UI.outline / (this.controls.rect.width / GAME_WIDTH), 0xffffff, alpha)
       .strokeCircle(x, y, r);
