@@ -28,10 +28,21 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     // 重载统一由上面的原生事件处理，避免另一标签页确认后强制刷新当前局。
     onNeedReload: () => undefined,
     onRegisteredSW(_url, registration) {
+      if (!registration) return;
       swRegistration = registration;
+      // Workbox 会停止监听同页后续的外部更新；原生事件确保长时间游玩仍能提示。
+      const watchInstalling = () => {
+        const installing = registration.installing;
+        installing?.addEventListener('statechange', () => {
+          if (installing.state === 'installed' && registration.waiting) showUpdate();
+        });
+      };
+      registration.addEventListener('updatefound', watchInstalling);
+      watchInstalling();
+      if (registration.waiting) showUpdate();
       const checkUpdate = () => {
         if (navigator.onLine && document.visibilityState === 'visible') {
-          void registration?.update().catch(() => {
+          void registration.update().catch(() => {
             // 离线或服务器暂时不可用时继续使用已缓存版本。
           });
         }

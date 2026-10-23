@@ -86,7 +86,7 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
   await reopened.screenshot({ path: info.outputPath('pwa-offline.png') });
 });
 
-test('真实第二次构建只提示更新，稍后及另一标签页均不强制刷新', async ({ page, context }, info) => {
+test('连续发布只提示更新，稍后及另一标签页均不强制刷新', async ({ page, context }, info) => {
   test.setTimeout(60_000);
   await page.goto(`${url}?scene=Game&seed=42`);
   await page.waitForFunction(() => window.__AVN__?.scene === 'Game' && navigator.serviceWorker.controller);
