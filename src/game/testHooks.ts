@@ -10,6 +10,23 @@ export interface TestHooks {
   phaserVersion: string;
   readonly lifecycle?: LifecycleProbe;
   readonly input?: InputFrame & { manualPaused: boolean };
+  readonly combat?: CombatProbe;
+}
+
+/** 战斗流程（#15）的只读快照。 */
+export interface CombatProbe {
+  /** 本页面开过的局数；重来后加 1。 */
+  runs: number;
+  phase: 'playing' | 'dead' | 'restartable';
+  playerHp: number;
+  playerMaxHp: number;
+  /** 已开始的波数。 */
+  wave: number;
+  /** 存活（含预警中）的怪物数。 */
+  alive: number;
+  kills: number;
+  /** sim 时间，秒。 */
+  time: number;
 }
 
 interface LifecycleProbe {
@@ -21,6 +38,12 @@ interface LifecycleProbe {
 let readInput: (() => InputFrame & { manualPaused: boolean }) | undefined;
 export function setInputProbe(read: typeof readInput): void {
   readInput = read;
+  setTestHooks({});
+}
+
+let readCombat: (() => CombatProbe) | undefined;
+export function setCombatProbe(read: typeof readCombat): void {
+  readCombat = read;
   setTestHooks({});
 }
 
@@ -49,6 +72,9 @@ export function setTestHooks(patch: Partial<TestHooks>): void {
     ...patch,
     get input() {
       return readInput?.();
+    },
+    get combat() {
+      return readCombat?.();
     },
     get lifecycle() {
       return readLifecycle?.();

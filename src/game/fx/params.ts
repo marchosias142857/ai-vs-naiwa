@@ -18,3 +18,16 @@ export const INPUT_UI = {
   outline: 2,
   crosshair: { radius: 3, outline: 3, stroke: 1 },
 } as const;
+
+/** 玩家死亡与重来提示（docs/visual/m1-feel.md 第 6 节「玩家死亡」）。时长为毫秒，字号为游戏像素。 */
+export const DEATH_UI = {
+  /** 死亡后画面在 dimMs 内压暗到 dimAlpha。 */
+  dimColor: COLORS.background,
+  dimAlpha: 0.6,
+  dimMs: 600,
+  titleSize: 20,
+  hintSize: 10,
+  /** 标题与提示相对画面中心的纵向偏移。 */
+  titleOffsetY: -12,
+  hintOffsetY: 14,
+} as const;

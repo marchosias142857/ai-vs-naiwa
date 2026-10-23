@@ -11,8 +11,8 @@ import { createCombatWorldImpl } from './CombatWorld';
  * 分工：sim 决定「速度、开火、伤害、阶段」；Phaser Arcade 负责「按速度移动、挡墙、检测重叠」。
  * 位置以物理结果为准：game 每帧把物理体的位置写回 sim，sim 再据此计算下一帧。
  *
- * 每帧顺序（在战斗场景的 update 中，Arcade 物理已在此之前完成本帧的移动与重叠检测）：
- * 1. 输入层产出本帧的 InputFrame。
+ * 每个物理步的顺序（ADR 0004：在 Arcade 的 `WORLD_STEP` 中调用，此时本步的移动与重叠检测已完成）：
+ * 1. 输入层每个渲染帧产出一份 InputFrame，由 game 锁存后交给本步（边沿只交给一个物理步）。
  * 2. 对每个活着的实体调用 `syncPosition`，写回物理体位置。
  * 3. 调用 `step(dt, input)`：推进计时、出场预警、AI、玩家移动与开火。
  * 4. 按 `ActorView.vx / vy` 设置物理体速度；按 `StepResult.bulletSpawns` 从子弹池取出子弹。
@@ -120,7 +120,7 @@ export interface CombatWorld {
    * `input` 只在本次调用中读取，不会被保存。
    *
    * 击退等按时间积分的量假设：本次的 `dt` 等于上一次 `step` 之后，物理按上次给出的速度实际积分的时间。
-   * 满足这一点时击退距离与数据完全一致；Arcade 固定步长与渲染帧率不同步时，会有不超过一个物理步长的误差。
+   * 每个物理步调用一次、`dt` 取物理步长时（ADR 0004）满足这一点，击退距离与数据完全一致。
    */
   step(dt: number, input: Readonly<InputFrame>): StepResult;
 
