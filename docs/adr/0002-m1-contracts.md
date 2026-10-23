@@ -1,8 +1,8 @@
 # 0002. M1 共享契约：InputFrame、战斗事件、数据格式
 
-- 状态：提议
+- 状态：已接受
 - 提出者：Claude
-- 批准：负责人（待批准）
+- 批准：负责人（合并即批准）
 - 关联：Issue #10；修订：按 GPT 评审补充暴击字段、实体阶段与 zod 边界检查
 
 ## 背景
@@ -45,7 +45,7 @@ M1 的输入层（#12）、sim 战斗核心（#13）、实体与对象池（#14�
 **暴击与命中**：
 
 - 暴击由 sim 判定，`entity:damaged.critical` 与 `bullet:hit.critical` 给出结果，表现层不要从伤害数值推断。
-- 同一次子弹命中，事件按固定顺序发出：`entity:damaged` →（致命时）`entity:died` → `bullet:hit`。
+- 同一次子弹命中，事件按固定顺序发出：`entity:damaged` →（致命时）`entity:died` → `bullet:hit`。穿透的子弹对每个命中的目标都按这个顺序各发一次，子弹继续飞行（补充说明，#24）。
 - **命中火花只由 `bullet:hit` 产生**：`critical` 为 true 时用暴击火花代替普通火花，不叠加两份。暴击的震屏由 `entity:damaged.critical` 触发。
 - 无敌帧内被子弹打中：子弹照常消失并发出 `bullet:hit`（`critical` 为 false），但不发出 `entity:damaged`。
 - 接触伤害（怪物碰到玩家）只发 `entity:damaged`，没有 `bullet:hit`。
