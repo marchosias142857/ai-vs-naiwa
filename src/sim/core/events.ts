@@ -49,7 +49,8 @@ export interface GameEvents {
   /** 一次开火（多弹丸武器也只发一次）。`angle` 是枪口朝向。 */
   'weapon:fired': { ownerId: EntityId; weaponId: string; x: number; y: number; angle: number };
   /**
-   * 子弹命中并消失，命中火花只由这个事件产生。`targetId` 为 `null` 表示打在墙上。
+   * 子弹命中一个目标或撞墙，命中火花只由这个事件产生。`targetId` 为 `null` 表示打在墙上。
+   * 穿透的子弹会对每个命中的目标各发一次（子弹继续飞行）；子弹是否结束以 `hitActor` 的返回值为准。
    * `critical` 与同一次命中的 `entity:damaged.critical` 相同；打墙或命中无敌目标时为 false。
    */
   'bullet:hit': {

@@ -118,6 +118,9 @@ export interface CombatWorld {
   /**
    * 推进一帧。`dt` 单位为秒，内部截断到 0.05 秒以内，避免卡顿后一帧走得太远。
    * `input` 只在本次调用中读取，不会被保存。
+   *
+   * 击退等按时间积分的量假设：本次的 `dt` 等于上一次 `step` 之后，物理按上次给出的速度实际积分的时间。
+   * 满足这一点时击退距离与数据完全一致；Arcade 固定步长与渲染帧率不同步时，会有不超过一个物理步长的误差。
    */
   step(dt: number, input: Readonly<InputFrame>): StepResult;
 

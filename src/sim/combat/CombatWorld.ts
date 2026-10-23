@@ -20,10 +20,15 @@ import type {
 } from './api';
 import { AutoAim } from './autoAim';
 import { stepVelocity, type MoveTuning } from './movement';
+import { PayloadStack } from './payloads';
 
 /** `step` 单帧最大时长，秒（ADR 0003）。 */
 const MAX_DT = 0.05;
 const DEFAULT_MAX_BULLETS = 500;
+/** 每颗子弹预留的命中记录数；穿透数更大的武器会在第一次用到时扩容。 */
+const HIT_RECORD_CAPACITY = 4;
+/** 剩余击退距离小于这个值（像素）就视为走完。 */
+const KNOCK_EPSILON = 1e-6;
 
 /** 实体的内部状态；对外以 `ActorView` 只读暴露。 */
 interface Actor extends ActorView {
@@ -48,12 +53,28 @@ interface Actor extends ActorView {
   invulnTime: number;
   /** 自主移动的速度（不含击退）。 */
   base: Vec2;
-  /** 击退：剩余时间与当前速度。 */
-  knockTime: number;
-  knockVx: number;
-  knockVy: number;
   moveSpeed: number;
   contactDamage: number;
+  knock: Knockback;
+}
+
+/**
+ * 击退按「剩余距离」记账，而不是按速度衰减：
+ * 每次 step 先扣掉上一段时间里实际走过的距离（上次给出的速度 × 本次 dt），再给出下一段的速度。
+ * 这样首帧不会提前衰减，帧率高低都能按数据走完全程（前提见 `step` 的说明）。
+ */
+interface Knockback {
+  dirX: number;
+  dirY: number;
+  /** 本次击退的总距离与剩余距离，像素。 */
+  total: number;
+  left: number;
+  /** 剩余时间，秒。 */
+  timeLeft: number;
+  /** 上一次 step 给出的击退速度，像素/秒。 */
+  speed: number;
+  /** 刚被命中、还没有任何一段物理时间用过击退速度。 */
+  fresh: boolean;
 }
 
 interface Bullet {
@@ -65,8 +86,9 @@ interface Bullet {
   critChance: number;
   knockback: number;
   pierceLeft: number;
-  /** 上一次命中的实体，避免穿透子弹在重叠的几帧里重复命中同一目标。 */
-  lastTargetId: EntityId;
+  /** 已经命中过的实体（每个目标最多命中一次），长度为 `hitCount`。 */
+  hitIds: EntityId[];
+  hitCount: number;
 }
 
 type MutableSpawn = { -readonly [K in keyof BulletSpawn]: BulletSpawn[K] };
@@ -81,6 +103,93 @@ interface PlayerState {
 
 const alwaysVisible: LineOfSight = () => true;
 
+function newBullet(): Bullet {
+  return {
+    id: 0,
+    team: 'player',
+    ownerId: 0,
+    angle: 0,
+    damage: 0,
+    critChance: 0,
+    knockback: 0,
+    pierceLeft: 0,
+    hitIds: new Array<EntityId>(HIT_RECORD_CAPACITY).fill(0),
+    hitCount: 0,
+  };
+}
+
+function newSpawn(): MutableSpawn {
+  return {
+    id: 0,
+    team: 'player',
+    ownerId: 0,
+    x: 0,
+    y: 0,
+    angle: 0,
+    speed: 0,
+    radius: 0,
+    lifetime: 0,
+    sprite: '',
+  };
+}
+
+/** 每种事件一个 payload 复用栈。 */
+function createPayloads() {
+  return {
+    spawned: new PayloadStack<GameEvents['entity:spawned']>(() => ({
+      id: 0,
+      team: 'player',
+      kind: '',
+      x: 0,
+      y: 0,
+      telegraph: 0,
+    })),
+    activated: new PayloadStack<GameEvents['entity:activated']>(() => ({
+      id: 0,
+      team: 'player',
+      kind: '',
+      x: 0,
+      y: 0,
+    })),
+    damaged: new PayloadStack<GameEvents['entity:damaged']>(() => ({
+      id: 0,
+      team: 'player',
+      amount: 0,
+      critical: false,
+      hp: 0,
+      maxHp: 0,
+      x: 0,
+      y: 0,
+      dirX: 0,
+      dirY: 0,
+      sourceId: null,
+    })),
+    died: new PayloadStack<GameEvents['entity:died']>(() => ({
+      id: 0,
+      team: 'player',
+      kind: '',
+      x: 0,
+      y: 0,
+      killerId: null,
+    })),
+    fired: new PayloadStack<GameEvents['weapon:fired']>(() => ({
+      ownerId: 0,
+      weaponId: '',
+      x: 0,
+      y: 0,
+      angle: 0,
+    })),
+    hit: new PayloadStack<GameEvents['bullet:hit']>(() => ({
+      team: 'player',
+      x: 0,
+      y: 0,
+      angle: 0,
+      targetId: null,
+      critical: false,
+    })),
+  };
+}
+
 class CombatWorldImpl implements CombatWorld {
   time = 0;
   readonly actors: Actor[] = [];
@@ -94,11 +203,14 @@ class CombatWorldImpl implements CombatWorld {
   private readonly spawns: MutableSpawn[] = [];
   private readonly result: { bulletSpawns: readonly BulletSpawn[]; playerDead: boolean };
   private readonly bus: EventBus<GameEvents>;
+  private readonly payloads = createPayloads();
   private readonly maxBullets: number;
   private readonly spreadRng: Random;
   private readonly critRng: Random;
   private readonly autoAim: AutoAim;
   private player: PlayerState | null = null;
+  /** 玩家是否已在本局死亡。锁存：之后即使 `removeActor` 回收了玩家，也保持为 true。 */
+  private playerDied = false;
   private readonly lastMoveDir: Vec2 = { x: 1, y: 0 };
   private readonly fireCtx: FireContext;
   /** 当前开火者与武器，供 `sink` 读取；用字段而不是每次新建对象或闭包。 */
@@ -115,6 +227,11 @@ class CombatWorldImpl implements CombatWorld {
     this.autoAim = new AutoAim(BALANCE.autoAimRetargetInterval, options.lineOfSight ?? alwaysVisible);
     this.result = { bulletSpawns: this.spawns, playerDead: false };
     this.fireCtx = { x: 0, y: 0, aim: 0, weapon: WEAPONS.pistol_basic, rng: this.spreadRng };
+    // 预热：子弹记录与输出对象一次建好，开火时只复用。
+    for (let i = 0; i < this.maxBullets; i++) {
+      this.bulletPool.push(newBullet());
+      this.spawnPool.push(newSpawn());
+    }
   }
 
   getActor(id: EntityId): ActorView | undefined {
@@ -136,7 +253,7 @@ class CombatWorldImpl implements CombatWorld {
       tuning: { maxSpeed: def.moveSpeed, accelTime: def.accelTime, decelTime: def.decelTime },
     };
     this.playerId = actor.id;
-    this.bus.emit('entity:spawned', { id: actor.id, team: 'player', kind, x, y, telegraph: 0 });
+    this.emitSpawned(actor, 0);
     this.activate(actor);
     return actor.id;
   }
@@ -144,11 +261,11 @@ class CombatWorldImpl implements CombatWorld {
   spawnEnemy(kind: EnemyId, x: number, y: number): EntityId {
     const def = ENEMIES[kind];
     const actor = this.createActor('enemy', kind, x, y, def.radius, def.hp, def.moveSpeed);
+    const telegraph = BALANCE.spawnTelegraph;
     actor.contactDamage = def.contactDamage;
     actor.phase = 'telegraph';
-    actor.activateAt = this.time + BALANCE.spawnTelegraph;
-    const telegraph = BALANCE.spawnTelegraph;
-    this.bus.emit('entity:spawned', { id: actor.id, team: 'enemy', kind, x, y, telegraph });
+    actor.activateAt = this.time + telegraph;
+    this.emitSpawned(actor, telegraph);
     if (telegraph <= 0) this.activate(actor);
     return actor.id;
   }
@@ -170,7 +287,7 @@ class CombatWorldImpl implements CombatWorld {
       this.updateEnemies();
       for (const actor of this.actors) this.applyVelocity(actor);
     }
-    this.result.playerDead = this.isPlayerDead();
+    this.result.playerDead = this.playerDied;
     return this.result;
   }
 
@@ -179,11 +296,13 @@ class CombatWorldImpl implements CombatWorld {
     if (!bullet) return true;
     const target = this.byId.get(targetId);
     if (!target || target.phase !== 'active' || target.team === bullet.team) return false;
-    if (target.id === bullet.lastTargetId) return false;
-    bullet.lastTargetId = target.id;
+    // 每颗子弹对每个目标最多命中一次：重叠的几帧里、或 A → B → A 的回调顺序都不会重复伤害。
+    if (this.alreadyHit(bullet, target.id)) return false;
+    this.recordHit(bullet, target.id);
 
     if (target.invulnerable) {
-      this.endBullet(bullet, x, y, target.id, false);
+      this.emitHit(bullet, x, y, target.id, false);
+      this.finishBullet(bullet);
       return true;
     }
     const critical = this.critRng.chance(bullet.critChance);
@@ -193,25 +312,27 @@ class CombatWorldImpl implements CombatWorld {
     this.damage(target, amount, critical, dirX, dirY, bullet.ownerId);
     const alive = target.phase === 'active';
     if (alive && bullet.knockback > 0) this.knockBack(target, dirX, dirY, bullet.knockback);
+    // 穿透时也发 bullet:hit（顺序仍是 damaged →（died）→ hit），子弹是否结束看返回值。
+    this.emitHit(bullet, x, y, target.id, critical);
 
     if (bullet.pierceLeft > 0) {
       bullet.pierceLeft--;
       return false;
     }
-    this.endBullet(bullet, x, y, target.id, critical);
+    this.finishBullet(bullet);
     return true;
   }
 
   hitWall(bulletId: EntityId, x: number, y: number): void {
     const bullet = this.bullets.get(bulletId);
-    if (bullet) this.endBullet(bullet, x, y, null, false);
+    if (!bullet) return;
+    this.emitHit(bullet, x, y, null, false);
+    this.finishBullet(bullet);
   }
 
   releaseBullet(bulletId: EntityId): void {
     const bullet = this.bullets.get(bulletId);
-    if (!bullet) return;
-    this.bullets.delete(bulletId);
-    this.bulletPool.push(bullet);
+    if (bullet) this.finishBullet(bullet);
   }
 
   contact(enemyId: EntityId, playerId: EntityId): void {
@@ -271,11 +392,9 @@ class CombatWorldImpl implements CombatWorld {
       invulnUntil: 0,
       invulnTime: 0,
       base: { x: 0, y: 0 },
-      knockTime: 0,
-      knockVx: 0,
-      knockVy: 0,
       moveSpeed,
       contactDamage: 0,
+      knock: { dirX: 0, dirY: 0, total: 0, left: 0, timeLeft: 0, speed: 0, fresh: false },
     };
     this.actors.push(actor);
     this.byId.set(actor.id, actor);
@@ -284,21 +403,53 @@ class CombatWorldImpl implements CombatWorld {
 
   private activate(actor: Actor): void {
     actor.phase = 'active';
-    const { id, team, kind, x, y } = actor;
-    this.bus.emit('entity:activated', { id, team, kind, x, y });
+    const p = this.payloads.activated.acquire();
+    try {
+      p.id = actor.id;
+      p.team = actor.team;
+      p.kind = actor.kind;
+      p.x = actor.x;
+      p.y = actor.y;
+      this.bus.emit('entity:activated', p);
+    } finally {
+      this.payloads.activated.release();
+    }
   }
 
   private tickActor(actor: Actor, dt: number): void {
     if (actor.phase === 'telegraph' && this.time >= actor.activateAt) this.activate(actor);
     actor.invulnerable = actor.phase === 'active' && this.time < actor.invulnUntil;
-    if (actor.knockTime > 0) {
-      // 线性减速：速度与剩余时间成正比，走完的总距离等于武器的击退距离。
-      const remaining = Math.max(0, actor.knockTime - dt);
-      const k = remaining / actor.knockTime;
-      actor.knockVx *= k;
-      actor.knockVy *= k;
-      actor.knockTime = remaining;
+    this.tickKnockback(actor.knock, dt);
+  }
+
+  /** 扣掉上一段时间里实际走过的击退距离，并给出下一段的击退速度。 */
+  private tickKnockback(k: Knockback, dt: number): void {
+    if (k.left <= 0) return;
+    if (k.fresh) {
+      // 命中发生在上一段物理时间之后，那段时间还没有用到击退速度，不扣距离也不扣时间。
+      k.fresh = false;
+    } else {
+      k.left -= k.speed * dt;
+      k.timeLeft -= dt;
     }
+    if (k.left <= KNOCK_EPSILON) {
+      k.left = 0;
+      k.speed = 0;
+      return;
+    }
+    const T = BALANCE.knockbackTime;
+    if (k.timeLeft <= dt) {
+      // 最后一段：假设下一段物理时间与本次 dt 相同，在其中走完剩余距离。
+      k.speed = k.left / dt;
+      return;
+    }
+    // 线性减速曲线 v(τ) = v0 × (1 − τ / T) 在下一段 [τ, τ + dt] 的平均速度，
+    // 再按「实际剩余距离 ÷ 曲线上的剩余距离」校正，抵消之前各段的误差。
+    const v0 = (2 * k.total) / T;
+    const tau = T - k.timeLeft;
+    const ideal = (v0 * k.timeLeft * k.timeLeft) / (2 * T);
+    const average = v0 * (1 - (tau + dt / 2) / T);
+    k.speed = Math.max(0, average * (k.left / ideal));
   }
 
   private updatePlayer(input: Readonly<InputFrame>, dt: number): void {
@@ -349,23 +500,28 @@ class CombatWorldImpl implements CombatWorld {
     const before = this.spawns.length;
     p.pattern(this.fireCtx, this.sink);
     this.firingOwner = null;
-    if (this.spawns.length > before) {
-      this.bus.emit('weapon:fired', {
-        ownerId: owner.id,
-        weaponId: p.weaponId,
-        x: muzzleX,
-        y: muzzleY,
-        angle: owner.facing,
-      });
+    if (this.spawns.length === before) return;
+    const e = this.payloads.fired.acquire();
+    try {
+      e.ownerId = owner.id;
+      e.weaponId = p.weaponId;
+      e.x = muzzleX;
+      e.y = muzzleY;
+      e.angle = owner.facing;
+      this.bus.emit('weapon:fired', e);
+    } finally {
+      this.payloads.fired.release();
     }
   }
 
   private addBullet(x: number, y: number, angle: number): boolean {
     const owner = this.firingOwner;
     const weapon = this.firingWeapon;
-    if (!owner || this.bullets.size >= this.maxBullets) return false;
+    if (!owner) return false;
+    const bullet = this.bulletPool.pop();
+    const spawn = this.spawnPool[this.spawns.length];
+    if (!bullet || !spawn) return false;
     const id = this.nextId++;
-    const bullet = this.bulletPool.pop() ?? ({} as Bullet);
     bullet.id = id;
     bullet.team = owner.team;
     bullet.ownerId = owner.id;
@@ -374,11 +530,9 @@ class CombatWorldImpl implements CombatWorld {
     bullet.critChance = weapon.critChance;
     bullet.knockback = weapon.knockback;
     bullet.pierceLeft = weapon.pierce;
-    bullet.lastTargetId = 0;
+    bullet.hitCount = 0;
     this.bullets.set(id, bullet);
 
-    const spawn = this.spawnPool[this.spawns.length] ?? ({} as MutableSpawn);
-    this.spawnPool[this.spawns.length] = spawn;
     spawn.id = id;
     spawn.team = owner.team;
     spawn.ownerId = owner.id;
@@ -391,6 +545,21 @@ class CombatWorldImpl implements CombatWorld {
     spawn.sprite = weapon.bulletSprite;
     this.spawns.push(spawn);
     return true;
+  }
+
+  private alreadyHit(bullet: Bullet, id: EntityId): boolean {
+    for (let i = 0; i < bullet.hitCount; i++) if (bullet.hitIds[i] === id) return true;
+    return false;
+  }
+
+  private recordHit(bullet: Bullet, id: EntityId): void {
+    // 容量按武器的穿透数有界（pierce + 1）；超出预留时扩容一次，之后复用。
+    bullet.hitIds[bullet.hitCount++] = id;
+  }
+
+  private finishBullet(bullet: Bullet): void {
+    this.bullets.delete(bullet.id);
+    this.bulletPool.push(bullet);
   }
 
   private updateEnemies(): void {
@@ -409,8 +578,9 @@ class CombatWorldImpl implements CombatWorld {
       actor.vy = 0;
       return;
     }
-    actor.vx = actor.base.x + actor.knockVx;
-    actor.vy = actor.base.y + actor.knockVy;
+    const k = actor.knock;
+    actor.vx = actor.base.x + k.dirX * k.speed;
+    actor.vy = actor.base.y + k.dirY * k.speed;
   }
 
   private damage(
@@ -426,57 +596,87 @@ class CombatWorldImpl implements CombatWorld {
       target.invulnUntil = this.time + target.invulnTime;
       target.invulnerable = true;
     }
-    this.bus.emit('entity:damaged', {
-      id: target.id,
-      team: target.team,
-      amount,
-      critical,
-      hp: target.hp,
-      maxHp: target.maxHp,
-      x: target.x,
-      y: target.y,
-      dirX,
-      dirY,
-      sourceId,
-    });
+    const e = this.payloads.damaged.acquire();
+    try {
+      e.id = target.id;
+      e.team = target.team;
+      e.amount = amount;
+      e.critical = critical;
+      e.hp = target.hp;
+      e.maxHp = target.maxHp;
+      e.x = target.x;
+      e.y = target.y;
+      e.dirX = dirX;
+      e.dirY = dirY;
+      e.sourceId = sourceId;
+      this.bus.emit('entity:damaged', e);
+    } finally {
+      this.payloads.damaged.release();
+    }
     if (target.hp > 0) return;
+
     target.phase = 'dead';
     target.invulnerable = false;
-    target.knockTime = 0;
-    target.knockVx = 0;
-    target.knockVy = 0;
+    target.knock.left = 0;
+    target.knock.speed = 0;
     target.base.x = 0;
     target.base.y = 0;
     this.applyVelocity(target);
-    const { id, team, kind, x, y } = target;
-    this.bus.emit('entity:died', { id, team, kind, x, y, killerId: sourceId });
+    if (target.id === this.playerId) this.playerDied = true;
+    const d = this.payloads.died.acquire();
+    try {
+      d.id = target.id;
+      d.team = target.team;
+      d.kind = target.kind;
+      d.x = target.x;
+      d.y = target.y;
+      d.killerId = sourceId;
+      this.bus.emit('entity:died', d);
+    } finally {
+      this.payloads.died.release();
+    }
   }
 
   private knockBack(target: Actor, dirX: number, dirY: number, distance: number): void {
-    const t = BALANCE.knockbackTime;
-    if (t <= 0) return;
-    // 线性减速走完 distance：初速度 = 2 × 距离 ÷ 时间。
-    const v = (2 * distance) / t;
-    target.knockVx = dirX * v;
-    target.knockVy = dirY * v;
-    target.knockTime = t;
+    if (BALANCE.knockbackTime <= 0) return;
+    const k = target.knock;
+    k.dirX = dirX;
+    k.dirY = dirY;
+    k.total = distance;
+    k.left = distance;
+    k.timeLeft = BALANCE.knockbackTime;
+    k.speed = 0;
+    k.fresh = true;
   }
 
-  private endBullet(
-    bullet: Bullet,
-    x: number,
-    y: number,
-    targetId: EntityId | null,
-    critical: boolean,
-  ): void {
-    this.bullets.delete(bullet.id);
-    this.bulletPool.push(bullet);
-    this.bus.emit('bullet:hit', { team: bullet.team, x, y, angle: bullet.angle, targetId, critical });
+  private emitSpawned(actor: Actor, telegraph: number): void {
+    const p = this.payloads.spawned.acquire();
+    try {
+      p.id = actor.id;
+      p.team = actor.team;
+      p.kind = actor.kind;
+      p.x = actor.x;
+      p.y = actor.y;
+      p.telegraph = telegraph;
+      this.bus.emit('entity:spawned', p);
+    } finally {
+      this.payloads.spawned.release();
+    }
   }
 
-  private isPlayerDead(): boolean {
-    if (this.playerId === null) return false;
-    return this.byId.get(this.playerId)?.phase === 'dead';
+  private emitHit(bullet: Bullet, x: number, y: number, targetId: EntityId | null, critical: boolean): void {
+    const p = this.payloads.hit.acquire();
+    try {
+      p.team = bullet.team;
+      p.x = x;
+      p.y = y;
+      p.angle = bullet.angle;
+      p.targetId = targetId;
+      p.critical = critical;
+      this.bus.emit('bullet:hit', p);
+    } finally {
+      this.payloads.hit.release();
+    }
   }
 }
 
