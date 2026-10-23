@@ -7,6 +7,7 @@ import type { GameEvents } from '../../sim/core/events';
 import { Random, freshSeed } from '../../sim/core/Random';
 import { TEX } from '../assets/keys';
 import { setTestHooks } from '../testHooks';
+import { InputScene } from '../ui/InputScene';
 import { textStyle } from '../ui/text';
 
 const ROOM_COLS = 19;
@@ -34,7 +35,7 @@ export class GameScene extends Scene {
     this.placeholders();
 
     this.add
-      .text(6, 6, 'M0 灰盒房间 · Esc 返回菜单', textStyle(9, COLORS.textDim))
+      .text(6, 6, 'M1 输入验收 · Esc 暂停', textStyle(9, COLORS.textDim))
       .setScrollFactor(0)
       .setDepth(100);
 
@@ -46,7 +47,8 @@ export class GameScene extends Scene {
         .setDepth(100);
     }
 
-    this.input.keyboard?.on('keydown-ESC', () => this.scene.start(SCENES.menu));
+    this.scene.launch(InputScene.KEY);
+    this.events.once('shutdown', () => this.scene.stop(InputScene.KEY));
     this.events.once('shutdown', () => this.bus.clear());
 
     this.bus.emit('run:started', { seed: this.seed });

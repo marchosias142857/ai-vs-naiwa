@@ -9,6 +9,7 @@ import { MenuScene } from './game/scenes/MenuScene';
 import { PreloadScene } from './game/scenes/PreloadScene';
 import { setTestHooks } from './game/testHooks';
 import './pwa/registerSW';
+import { InputScene } from './game/ui/InputScene';
 
 const config: Types.Core.GameConfig = {
   type: AUTO,
@@ -26,8 +27,8 @@ const config: Types.Core.GameConfig = {
     default: 'arcade',
     arcade: { debug: debugParams().debug },
   },
-  input: { activePointers: 3 },
-  scene: [BootScene, PreloadScene, MenuScene, GameScene],
+  input: { activePointers: 3, gamepad: true },
+  scene: [BootScene, PreloadScene, MenuScene, GameScene, InputScene],
 };
 
 setTestHooks({ ready: false, phaserVersion: VERSION });

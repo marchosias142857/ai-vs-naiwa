@@ -54,7 +54,7 @@
       #pwa-update {
         position: fixed;
         z-index: 10;
-        top: max(12px, env(safe-area-inset-top));
+        top: calc(var(--game-canvas-top, env(safe-area-inset-top)) + 56px);
         right: max(12px, env(safe-area-inset-right));
         max-width: calc(100vw - 48px - env(safe-area-inset-left) - env(safe-area-inset-right));
         padding: 12px;
