@@ -9,4 +9,5 @@ export const BALANCE = {
   waveSizes: [3, 5, 7],
   waveInterval: 1.5,
   spawnMinDistance: 80,
+  knockbackTime: 0.08,
 } as const satisfies BalanceDef;
