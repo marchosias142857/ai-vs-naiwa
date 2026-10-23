@@ -20,6 +20,10 @@ export const BalanceDefSchema = z.strictObject({
   waveInterval: Seconds,
   /** 刷怪点离玩家的最小距离，像素，避免刷在玩家脸上。 */
   spawnMinDistance: PositiveNumber,
+  /** 击退持续时间，秒：击退距离（武器的 `knockback`）在这段时间内线性减速走完。 */
+  knockbackTime: Seconds,
+  /** 暴击伤害倍率；暴击概率由武器的 `critChance` 决定。 */
+  critMultiplier: z.number().min(1),
 });
 
 export type BalanceDef = z.infer<typeof BalanceDefSchema>;

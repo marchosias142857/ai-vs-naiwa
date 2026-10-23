@@ -11,7 +11,7 @@ export type Team = 'player' | 'enemy';
 /** 本局唯一标识随机来源的种子（32 位无符号整数）。 */
 export type Seed = number;
 
-/** 实体编号：本局内唯一的正整数，由 game 层在生成实体时分配。0 保留为「无」。 */
+/** 实体编号：本局内唯一的正整数，由 sim 在生成实体或子弹时分配（ADR 0003）。0 保留为「无」。 */
 export type EntityId = number;
 
 /** 产生输入的设备；UI 据此显示按键提示，触屏默认开启自动瞄准。 */
