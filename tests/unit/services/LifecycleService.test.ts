@@ -6,14 +6,24 @@ import { LifecycleService } from '../../../src/services/LifecycleService';
 
 const audio = vi.hoisted(() => vi.fn());
 vi.mock('../../../src/services/unlockAudio', () => ({ unlockAudio: audio }));
-let win: EventTarget & { innerWidth: number; innerHeight: number };
+let touchScreen: EventTarget & { matches: boolean };
+let win: EventTarget & {
+  innerWidth: number;
+  innerHeight: number;
+  matchMedia: (query: string) => typeof touchScreen;
+};
 let doc: EventTarget & { visibilityState: string; querySelector: () => HTMLElement };
 let overlay: HTMLElement;
 let lifecycle: LifecycleService;
 
 beforeEach(() => {
   overlay = { hidden: true } as HTMLElement;
-  win = Object.assign(new EventTarget(), { innerWidth: 900, innerHeight: 400 });
+  touchScreen = Object.assign(new EventTarget(), { matches: true });
+  win = Object.assign(new EventTarget(), {
+    innerWidth: 900,
+    innerHeight: 400,
+    matchMedia: vi.fn(() => touchScreen),
+  });
   doc = Object.assign(new EventTarget(), { visibilityState: 'visible', querySelector: () => overlay });
   vi.stubGlobal('window', win);
   vi.stubGlobal('document', doc);
@@ -31,6 +41,50 @@ const visibility = (hidden: boolean) => {
   doc.visibilityState = hidden ? 'hidden' : 'visible';
   doc.dispatchEvent(new Event('visibilitychange'));
 };
+const touchMode = (matches: boolean) => {
+  touchScreen.matches = matches;
+  touchScreen.dispatchEvent(new Event('change'));
+};
+
+it('桌面竖窗口正常运行，后台和手动暂停仍生效', () => {
+  touchScreen.matches = false;
+  rotate(true);
+  const pause = vi.fn();
+  lifecycle = new LifecycleService(overlay, { onPauseChange: pause, unlockAudio: audio });
+  expect(win.matchMedia).toHaveBeenCalledWith('(pointer: coarse) and (hover: none)');
+  expect(overlay.hidden).toBe(true);
+  expect(lifecycle.isPaused).toBe(false);
+  visibility(true);
+  expect(lifecycle.isPaused).toBe(true);
+  lifecycle.setManualPaused(true);
+  visibility(false);
+  expect(lifecycle.isPaused).toBe(true);
+  lifecycle.setManualPaused(false);
+  expect(pause.mock.calls).toEqual([[true], [false]]);
+});
+
+it('输入模式变化立即更新遮罩，不能清除手动或后台暂停原因', () => {
+  touchScreen.matches = false;
+  rotate(true);
+  lifecycle = new LifecycleService(overlay, { onPauseChange: vi.fn(), unlockAudio: audio });
+  touchMode(true);
+  expect(overlay.hidden).toBe(false);
+  expect(lifecycle.isPaused).toBe(true);
+  touchMode(false);
+  expect(overlay.hidden).toBe(true);
+  expect(lifecycle.isPaused).toBe(false);
+  lifecycle.setManualPaused(true);
+  touchMode(true);
+  touchMode(false);
+  expect(lifecycle.isPaused).toBe(true);
+  lifecycle.setManualPaused(false);
+  visibility(true);
+  touchMode(true);
+  touchMode(false);
+  expect(lifecycle.isPaused).toBe(true);
+  visibility(false);
+  expect(lifecycle.isPaused).toBe(false);
+});
 
 it('自动原因重叠时保持暂停，恢复前台和横屏不清除手动原因', () => {
   const pause = vi.fn();
@@ -65,11 +119,13 @@ it.each(['touchend', 'click', 'keydown'])(
   },
 );
 
-it('销毁后不再处理方向、可见性或音频手势', () => {
+it('销毁后不再处理方向、输入模式、可见性或音频手势', () => {
   const pause = vi.fn();
   lifecycle = new LifecycleService(overlay, { onPauseChange: pause, unlockAudio: audio });
   lifecycle.destroy();
   rotate(true);
+  touchMode(false);
+  touchMode(true);
   visibility(true);
   const event = new Event('click');
   Object.defineProperty(event, 'isTrusted', { value: true });
