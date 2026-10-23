@@ -28,10 +28,8 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      # 暂不阻塞：首次 `npm run format` 提交后，删掉 continue-on-error。
       - name: Format check
         run: npm run format:check
-        continue-on-error: true
 
       - name: Type check
         run: npm run typecheck

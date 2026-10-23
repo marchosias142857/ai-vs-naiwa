@@ -28,7 +28,10 @@ export default defineConfig(
         'error',
         {
           patterns: [
-            { group: ['phaser', 'phaser/*'], message: 'sim/ 与 data/ 禁止 import Phaser（见 AGENTS.md「分层规则」）。' },
+            {
+              group: ['phaser', 'phaser/*'],
+              message: 'sim/ 与 data/ 禁止 import Phaser（见 AGENTS.md「分层规则」）。',
+            },
             {
               group: ['**/game/**', '**/services/**', '**/debug/**'],
               message: 'sim/ 与 data/ 不能依赖 game/、services/、debug/。',

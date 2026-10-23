@@ -28,14 +28,14 @@
 
 ### 性能预算（硬指标）
 
-| 指标 | 目标 |
-| --- | --- |
-| 帧率 | 中端安卓机稳定 60 fps，最低 45 |
-| 同屏子弹 | 400（全部对象池） |
-| 同屏敌人 | 30 |
-| 包体 | ≤ 8 MB（不含音乐），首屏 3 秒内 |
-| 内存 | ≤ 300 MB |
-| Draw call | 战斗中 ≤ 30（依赖图集） |
+| 指标      | 目标                            |
+| --------- | ------------------------------- |
+| 帧率      | 中端安卓机稳定 60 fps，最低 45  |
+| 同屏子弹  | 400（全部对象池）               |
+| 同屏敌人  | 30                              |
+| 包体      | ≤ 8 MB（不含音乐），首屏 3 秒内 |
+| 内存      | ≤ 300 MB                        |
+| Draw call | 战斗中 ≤ 30（依赖图集）         |
 
 ## 3. 数据驱动
 
@@ -44,12 +44,21 @@
 ```ts
 // src/sim/weapons/patterns/types.ts（M3）
 export interface FireContext {
-  origin: Vec2; aimAngle: number; weapon: WeaponDef;
-  stats: ResolvedStats; rng: Random; owner: Team;
+  origin: Vec2;
+  aimAngle: number;
+  weapon: WeaponDef;
+  stats: ResolvedStats;
+  rng: Random;
+  owner: Team;
 }
 export interface BulletSpawn {
-  x: number; y: number; angle: number; speed: number;
-  damage: number; sprite: string; behavior?: string;
+  x: number;
+  y: number;
+  angle: number;
+  speed: number;
+  damage: number;
+  sprite: string;
+  behavior?: string;
 }
 export type FirePattern = (ctx: FireContext) => BulletSpawn[];
 // registerPattern('spread', spreadPattern)
@@ -61,12 +70,12 @@ export type FirePattern = (ctx: FireContext) => BulletSpawn[];
 
 `sim/core/EventBus.ts`，事件类型集中在 `sim/core/events.ts`（共享契约）。场景关闭时 `bus.clear()`。
 
-| 事件 | 发送方 | 典型订阅方 |
-| --- | --- | --- |
-| `room:entered` / `room:cleared` | RoomController | 刷怪、门、小地图、存档 |
-| `entity:damaged` / `entity:died` | CombatBridge | 伤害数字、音效、掉落、统计 |
-| `player:weaponChanged` | WeaponHolder | HUD |
-| `run:started` / `run:ended` | RunState | 场景切换、结算 |
+| 事件                             | 发送方         | 典型订阅方                 |
+| -------------------------------- | -------------- | -------------------------- |
+| `room:entered` / `room:cleared`  | RoomController | 刷怪、门、小地图、存档     |
+| `entity:damaged` / `entity:died` | CombatBridge   | 伤害数字、音效、掉落、统计 |
+| `player:weaponChanged`           | WeaponHolder   | HUD                        |
+| `run:started` / `run:ended`      | RunState       | 场景切换、结算             |
 
 ## 5. 对象池
 
@@ -86,22 +95,22 @@ export type FirePattern = (ctx: FireContext) => BulletSpawn[];
 
 ## 8. 存档（M4 / M6）
 
-| 存档 | 内容 | 时机 |
-| --- | --- | --- |
-| `profile` | 宝石、解锁、天赋、图鉴、统计 | 结算 |
-| `settings` | 音量、语言、自动瞄准、摇杆位置、画质 | 修改时 |
-| `runSnapshot` | 楼层、角色、武器、Buff、金币、种子 | 进入新关、切后台；只能从关卡开头续玩 |
+| 存档          | 内容                                 | 时机                                 |
+| ------------- | ------------------------------------ | ------------------------------------ |
+| `profile`     | 宝石、解锁、天赋、图鉴、统计         | 结算                                 |
+| `settings`    | 音量、语言、自动瞄准、摇杆位置、画质 | 修改时                               |
+| `runSnapshot` | 楼层、角色、武器、Buff、金币、种子   | 进入新关、切后台；只能从关卡开头续玩 |
 
 每个存档带 `version`，读取时依次执行迁移函数。IndexedDB 为主，localStorage 兜底；提供导出/导入存档码（防 iOS 清理）。
 
 ## 9. 测试
 
-| 层 | 工具 | 必测 |
-| --- | --- | --- |
-| `sim/` | Vitest | 伤害公式、Buff 叠加、弹道输出、地牢连通性与种子复现、掉落分布、存档迁移 |
-| 数据 | `scripts/validate-data.ts`（M3） | ID 唯一、引用存在、数值范围 |
-| 冒烟 | Playwright（桌面 + 横屏手机） | 启动、菜单、进入战斗、控制台零报错 |
-| 手感 | 负责人真机试玩 | 每个里程碑结束 |
+| 层     | 工具                             | 必测                                                                    |
+| ------ | -------------------------------- | ----------------------------------------------------------------------- |
+| `sim/` | Vitest                           | 伤害公式、Buff 叠加、弹道输出、地牢连通性与种子复现、掉落分布、存档迁移 |
+| 数据   | `scripts/validate-data.ts`（M3） | ID 唯一、引用存在、数值范围                                             |
+| 冒烟   | Playwright（桌面 + 横屏手机）    | 启动、菜单、进入战斗、控制台零报错                                      |
+| 手感   | 负责人真机试玩                   | 每个里程碑结束                                                          |
 
 ## 10. 调试工具
 

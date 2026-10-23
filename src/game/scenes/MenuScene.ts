@@ -17,11 +17,16 @@ export class MenuScene extends Scene {
     const cx = GAME_WIDTH / 2;
 
     this.add.image(cx - 36, 92, TEX.player).setScale(2);
-    this.add.image(cx + 36, 96, TEX.enemy).setScale(2).setFlipX(true);
+    this.add
+      .image(cx + 36, 96, TEX.enemy)
+      .setScale(2)
+      .setFlipX(true);
     this.add.text(cx, 132, 'AI 大战奶蛙', textStyle(28, COLORS.text)).setOrigin(0.5);
     this.add.text(cx, 160, 'AI VS NAIWA', textStyle(10, COLORS.textDim, { letterSpacing: 3 })).setOrigin(0.5);
 
-    const hint = this.add.text(cx, 210, '点击屏幕 / 按任意键开始', textStyle(12, COLORS.accent)).setOrigin(0.5);
+    const hint = this.add
+      .text(cx, 210, '点击屏幕 / 按任意键开始', textStyle(12, COLORS.accent))
+      .setOrigin(0.5);
     this.tweens.add({ targets: hint, alpha: 0.35, duration: 700, yoyo: true, repeat: -1 });
 
     this.add
