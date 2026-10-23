@@ -59,3 +59,65 @@ describe('EventBus', () => {
     expect(bus.listenerCount('ping') + bus.listenerCount('other')).toBe(0);
   });
 });
+
+describe('EventBus 派发中修改监听器（Issue #27）', () => {
+  it('派发中订阅的监听器本次不调用，下次调用', () => {
+    const bus = new EventBus<TestEvents>();
+    const late = vi.fn();
+    let added = false;
+    bus.on('ping', () => {
+      if (!added) bus.on('ping', late);
+      added = true;
+    });
+    bus.emit('ping', { n: 1 });
+    expect(late).not.toHaveBeenCalled();
+    bus.emit('ping', { n: 2 });
+    expect(late).toHaveBeenCalledTimes(1);
+    expect(late).toHaveBeenCalledWith({ n: 2 });
+  });
+
+  it('派发中取消还没轮到的监听器：本次仍调用，下次不再调用', () => {
+    const bus = new EventBus<TestEvents>();
+    const second = vi.fn();
+    bus.on('ping', () => bus.off('ping', second));
+    bus.on('ping', second);
+    bus.emit('ping', { n: 1 });
+    expect(second).toHaveBeenCalledTimes(1);
+    bus.emit('ping', { n: 2 });
+    expect(second).toHaveBeenCalledTimes(1);
+    expect(bus.listenerCount('ping')).toBe(1);
+  });
+
+  it('嵌套派发：回调里再发同一个事件，按顺序完整执行', () => {
+    const bus = new EventBus<TestEvents>();
+    const seen: string[] = [];
+    bus.on('ping', ({ n }) => {
+      seen.push(`a${n}`);
+      if (n === 1) bus.emit('ping', { n: 2 });
+    });
+    bus.on('ping', ({ n }) => seen.push(`b${n}`));
+    bus.emit('ping', { n: 1 });
+    expect(seen).toEqual(['a1', 'a2', 'b2', 'b1']);
+  });
+
+  it('同一个函数重复订阅只调用一次，取消一次即移除', () => {
+    const bus = new EventBus<TestEvents>();
+    const fn = vi.fn();
+    bus.on('ping', fn);
+    bus.on('ping', fn);
+    expect(bus.listenerCount('ping')).toBe(1);
+    bus.emit('ping', { n: 1 });
+    expect(fn).toHaveBeenCalledTimes(1);
+    bus.off('ping', fn);
+    expect(bus.listenerCount('ping')).toBe(0);
+  });
+
+  it('监听器集合不变时，多次派发遍历的是同一个数组（不复制）', () => {
+    const bus = new EventBus<TestEvents>();
+    bus.on('ping', vi.fn());
+    const lists = (bus as unknown as { listeners: Map<string, unknown> }).listeners;
+    const before = lists.get('ping');
+    for (let i = 0; i < 100; i++) bus.emit('ping', { n: i });
+    expect(lists.get('ping')).toBe(before);
+  });
+});
