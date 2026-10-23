@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="system-ui, -apple-system, &quot;PingFang SC&quot;, &quot;Noto Sans SC&quot;, sans-serif">
+<rect width="900" height="520" fill="#0b0d14"/>
+<text x="28" y="30" font-size="15" fill="#e8ecff" text-anchor="start" font-weight="600">M1 触屏布局（参考：iPhone 横屏 844×390 CSS px，含安全区）</text>
+<text x="28" y="48" font-size="11.5" fill="#8a93b8" text-anchor="start" font-weight="400">尺寸单位均为 CSS px；游戏画面 656×369，1 游戏像素 ≈ 1.37 CSS px</text>
+<rect x="28" y="56" width="844" height="390" rx="40" fill="#05060a" stroke="#59628a" stroke-width="2"/>
+<rect x="122" y="56" width="656" height="369" fill="#1b2030"/>
+<rect x="75" y="56" width="750" height="369" fill="none" stroke="#ff4d8d" stroke-width="1.25" stroke-dasharray="6 5"/>
+<text x="81" y="441" font-size="11" fill="#ff4d8d" text-anchor="start" font-weight="400">安全区（虚线）：左右各 47、底部 21</text>
+<rect x="122" y="104" width="295" height="321" fill="#7ee8ff" fill-opacity="0.07" stroke="#7ee8ff" stroke-opacity="0.5" stroke-width="1" stroke-dasharray="3 4"/>
+<text x="132" y="122" font-size="11.5" fill="#7ee8ff" text-anchor="start" font-weight="400">移动区：画面左 45%（顶部 48 留给 HUD）</text>
+<text x="132" y="138" font-size="11.5" fill="#8a93b8" text-anchor="start" font-weight="400">在区内任意处按下 → 摇杆出现在手指下</text>
+<circle cx="222" cy="325" r="52" fill="#000" fill-opacity="0.25" stroke="#e8ecff" stroke-width="2"/>
+<circle cx="222" cy="325" r="22" fill="#e8ecff" fill-opacity="0.55" stroke="#e8ecff" stroke-width="1.5"/>
+<text x="286" y="321" font-size="11.5" fill="#e8ecff" text-anchor="start" font-weight="400">摇杆 底盘 r52 · 摇杆头 r22</text>
+<text x="286" y="337" font-size="11" fill="#8a93b8" text-anchor="start" font-weight="400">静止时显示在默认位置</text>
+<text x="286" y="352" font-size="11" fill="#8a93b8" text-anchor="start" font-weight="400">不透明度 35%</text>
+<circle cx="690" cy="337" r="40" fill="#000" fill-opacity="0.3" stroke="#e8ecff" stroke-width="2.5"/>
+<text x="690" y="342" font-size="14" fill="#e8ecff" text-anchor="middle" font-weight="600">射击</text>
+<text x="690" y="441" font-size="11" fill="#e8ecff" text-anchor="middle" font-weight="400">r40，按住连发，自动瞄准</text>
+<circle cx="672" cy="255" r="24" fill="#000" fill-opacity="0.3" stroke="#8a93b8" stroke-width="2" stroke-dasharray="4 4"/>
+<text x="672" y="259" font-size="11" fill="#8a93b8" text-anchor="middle" font-weight="400">切枪</text>
+<text x="704" y="241" font-size="11" fill="#8a93b8" text-anchor="start" font-weight="400">r24（M3 启用）</text>
+<circle cx="604" cy="323" r="30" fill="#000" fill-opacity="0.3" stroke="#8a93b8" stroke-width="2" stroke-dasharray="4 4"/>
+<text x="604" y="327" font-size="12" fill="#8a93b8" text-anchor="middle" font-weight="400">技能</text>
+<text x="564" y="283" font-size="11" fill="#8a93b8" text-anchor="middle" font-weight="400">r30（M6 启用）</text>
+<circle cx="750" cy="84" r="18" fill="#000" fill-opacity="0.3" stroke="#e8ecff" stroke-width="2"/>
+<rect x="744" y="77" width="4" height="14" fill="#e8ecff"/><rect x="752" y="77" width="4" height="14" fill="#e8ecff"/>
+<text x="724" y="88" font-size="11" fill="#e8ecff" text-anchor="end" font-weight="400">暂停 r18（触控范围 ≥ 44）</text>
+<rect x="134" y="68" width="88" height="8" fill="#3a1220" stroke="#05060a" stroke-width="1.5"/>
+<rect x="134" y="68" width="66" height="8" fill="#ff3355"/>
+<text x="228" y="76" font-size="11" fill="#e8ecff" text-anchor="start" font-weight="400">4/6</text>
+<text x="134" y="94" font-size="11" fill="#e8ecff" text-anchor="start" font-weight="400">生命条 88×8（= 64×6 游戏像素）</text>
+<line x1="778" y1="337" x2="730" y2="337" stroke="#8a93b8" stroke-width="1"/>
+<text x="754" y="332" font-size="10.5" fill="#8a93b8" text-anchor="middle" font-weight="400">48</text>
+<line x1="222" y1="425" x2="222" y2="377" stroke="#8a93b8" stroke-width="1"/>
+<text x="228" y="403" font-size="10.5" fill="#8a93b8" text-anchor="start" font-weight="400">48</text>
+<text x="28" y="506" font-size="11.5" fill="#8a93b8" text-anchor="start" font-weight="400">按键圆心：射击距画面右、下边 88；摇杆默认圆心距左、下边 100。所有按键之间留 ≥ 16 间隙，避免误触。</text>
+</svg>
