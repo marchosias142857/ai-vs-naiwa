@@ -96,3 +96,17 @@ test('实时物理坐标、墙边界、碰撞只报告sim、阶段与死亡回�
   });
   expect((await page.evaluate(() => window.combat.snapshot())).actors).toBe(1);
 });
+
+test('场景关闭安全清理，已存活子弹退回sim', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.evaluate(() => {
+    window.combat.bullet({}, 10);
+    window.combat.stop();
+  });
+  await expect.poll(() => page.evaluate(() => window.combat.snapshot().bullets)).toBe(0);
+  expect(errors).toEqual([]);
+  expect(
+    (await page.evaluate(() => window.combat.snapshot())).logs.filter((x) => x.startsWith('release:')),
+  ).toHaveLength(10);
+});

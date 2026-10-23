@@ -78,6 +78,7 @@ class FakeWorld implements CombatWorld {
   }
 }
 interface Harness {
+  stop(): void;
   tick(count: number): void;
   actor(id: number, patch: Partial<MutableActor>): void;
   bullet(patch?: Partial<BulletSpawn>, count?: number): void;
@@ -106,6 +107,7 @@ class HarnessScene extends Scene {
       input = createInputFrame();
     this.physics.disableUpdate();
     window.combat = {
+      stop: () => this.scene.stop(),
       tick: (count) => {
         for (let i = 0; i < count; i++) {
           this.physics.world.update(sim.time * 1000, 1000 / 60);

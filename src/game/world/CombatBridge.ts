@@ -20,6 +20,7 @@ export const GRAYBOX_BOUNDS = {
 export class CombatBridge {
   readonly actors: CombatActors;
   readonly bullets: BulletPool;
+  private destroyed = false;
   private readonly colliders: Physics.Arcade.Collider[];
   constructor(
     private readonly scene: Scene,
@@ -86,10 +87,16 @@ export class CombatBridge {
     };
   }
   readonly destroy = (): void => {
+    if (this.destroyed) return;
+    this.destroyed = true;
     this.scene.events.off('shutdown', this.destroy);
-    this.scene.physics.world.off('worldbounds', this.hitWall);
-    this.scene.physics.world.off('worldstep', this.tick);
-    for (const collider of this.colliders) collider.destroy();
+    // Arcade 的 shutdown 监听先执行，此时 plugin.world 可能已清空。
+    const world = this.scene.physics.world;
+    if (world) {
+      world.off('worldbounds', this.hitWall);
+      world.off('worldstep', this.tick);
+      for (const collider of this.colliders) if (collider.world) collider.destroy();
+    }
     this.bullets.destroy();
     this.actors.destroy();
   };
