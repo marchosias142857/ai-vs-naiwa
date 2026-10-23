@@ -8,6 +8,7 @@ import type { GameEvents } from '../../sim/core/events';
 import type { Random } from '../../sim/core/Random';
 import type { EntityId } from '../../sim/core/types';
 import { WaveDirector } from '../../sim/run/WaveDirector';
+import type { InputController } from '../input/InputController';
 import type { InputScene } from '../ui/InputScene';
 import { CombatBridge } from '../world/CombatBridge';
 import { GRAYBOX_BOUNDS } from '../world/graybox';
@@ -52,7 +53,11 @@ export class CombatRun {
     const bounds = GRAYBOX_BOUNDS;
     this.sim = createCombatWorld({ seed, bus, maxBullets: POOL_SIZES.bullets });
     // 先生成玩家再建 bridge：bridge 构造时会为现有实体分配槽位。
-    this.playerId = this.sim.spawnPlayer('ai_proto', bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+    this.playerId = this.sim.spawnPlayer(
+      'ai_proto',
+      bounds.x + bounds.width / 2,
+      bounds.y + bounds.height / 2,
+    );
     this.bridge = new CombatBridge(scene, this.sim);
     this.waves = new WaveDirector({ world: this.sim, rng: rng.fork('waves'), bounds, kind: 'naiwa_chaser' });
 
@@ -84,7 +89,8 @@ export class CombatRun {
 
   private readonly feedInput = (): void => {
     const ui = this.options.inputScene;
-    const controls = ui.sys.isActive() ? (ui.controls as typeof ui.controls | undefined) : undefined;
+    if (!ui.sys.isActive()) return;
+    const controls = ui.controls as InputController | undefined;
     if (!controls) return;
     const player = this.player;
     if (player) {
