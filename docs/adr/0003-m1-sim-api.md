@@ -58,7 +58,10 @@
 ### 6. 其他
 
 - `step` 的 `dt` 内部截断到 0.05 秒，避免卡顿后一帧走得太远（例如穿墙）。
-- 新增全局参数 `BALANCE.knockbackTime`（0.08 秒）：武器的击退距离在这段时间内线性减速走完。修改了 `src/data/schema/balance.ts`，属于共享契约变更，由本 ADR 一并批准。
+- 新增全局参数 `BALANCE.knockbackTime`（0.08 秒）：武器的击退距离在这段时间内线性减速走完。
+- 新增全局参数 `BALANCE.critMultiplier`（2）：暴击伤害倍率，与元气骑士一致；暴击概率仍由武器的 `critChance` 决定。
+- 以上两项修改了 `src/data/schema/balance.ts`，属于共享契约变更，由本 ADR 一并批准。
+- `CombatWorldOptions.maxBullets`：同时存在的子弹上限，由 game 层传入 `POOL_SIZES.bullets`（sim 不能读取 `config.ts`），保证 sim 与子弹池的上限一致。达到上限时，放不下的子弹不再生成。
 
 ## 影响
 

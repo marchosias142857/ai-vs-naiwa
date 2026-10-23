@@ -86,6 +86,12 @@ export interface CombatWorldOptions {
   bus: EventBus<GameEvents>;
   /** 视线判断，用于自动瞄准；不传时视为全部可见。 */
   lineOfSight?: LineOfSight;
+  /**
+   * 同时存在的子弹上限，应与 game 层子弹池大小一致（`POOL_SIZES.bullets`）。
+   * 达到上限时，本次开火中放不下的子弹不再生成。
+   * 不传时为 500。sim 不能读取 `src/config.ts`，所以由调用方传入。
+   */
+  maxBullets?: number;
 }
 
 /**

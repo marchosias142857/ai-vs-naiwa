@@ -10,4 +10,5 @@ export const BALANCE = {
   waveInterval: 1.5,
   spawnMinDistance: 80,
   knockbackTime: 0.08,
+  critMultiplier: 2,
 } as const satisfies BalanceDef;

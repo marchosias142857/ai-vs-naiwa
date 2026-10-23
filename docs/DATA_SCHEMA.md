@@ -16,12 +16,12 @@
 
 ## 现有数据
 
-| 文件            | 内容                                                                             | schema                |
-| --------------- | -------------------------------------------------------------------------------- | --------------------- |
-| `characters.ts` | 原型 AI 娘 `ai_proto`                                                            | `schema/character.ts` |
-| `weapons.ts`    | 手枪 `pistol_basic`                                                              | `schema/weapon.ts`    |
-| `enemies.ts`    | 追击怪 `naiwa_chaser`                                                            | `schema/enemy.ts`     |
-| `balance.ts`    | 刷怪预警、死亡后重来的延迟、怪物间距、自动瞄准切换间隔、波次、刷怪距离、击退时长 | `schema/balance.ts`   |
+| 文件            | 内容                                                                                       | schema                |
+| --------------- | ------------------------------------------------------------------------------------------ | --------------------- |
+| `characters.ts` | 原型 AI 娘 `ai_proto`                                                                      | `schema/character.ts` |
+| `weapons.ts`    | 手枪 `pistol_basic`                                                                        | `schema/weapon.ts`    |
+| `enemies.ts`    | 追击怪 `naiwa_chaser`                                                                      | `schema/enemy.ts`     |
+| `balance.ts`    | 刷怪预警、死亡后重来的延迟、怪物间距、自动瞄准切换间隔、波次、刷怪距离、击退时长、暴击倍率 | `schema/balance.ts`   |
 
 ## 什么时候需要 ADR
 
