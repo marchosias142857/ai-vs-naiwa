@@ -9,8 +9,7 @@ import { TEX } from '../assets/keys';
 import { setTestHooks } from '../testHooks';
 import { textStyle } from '../ui/text';
 
-const ROOM_COLS = 19;
-const ROOM_ROWS = 13;
+import { ROOM_COLS, ROOM_ROWS } from '../world/graybox';
 
 /**
  * 战斗场景（M0 版本）：一间灰盒房间 + 静止的占位角色。

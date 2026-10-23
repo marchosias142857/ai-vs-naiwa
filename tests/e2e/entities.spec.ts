@@ -82,6 +82,7 @@ test('实时物理坐标、墙边界、碰撞只报告sim、阶段与死亡回�
   expect((await page.evaluate(() => window.combat.snapshot())).logs.some((s) => s.startsWith('hit:'))).toBe(
     false,
   );
+  expect((await page.evaluate(() => window.combat.snapshot())).positions[1]!.visible).toBe(false);
   await page.evaluate(() => {
     window.combat.actor(2, { phase: 'active' });
     window.combat.tick(1);
@@ -89,6 +90,7 @@ test('实时物理坐标、墙边界、碰撞只报告sim、阶段与死亡回�
   expect((await page.evaluate(() => window.combat.snapshot())).logs.some((s) => s.startsWith('hit:'))).toBe(
     true,
   );
+  expect((await page.evaluate(() => window.combat.snapshot())).positions[1]!.visible).toBe(true);
   await page.screenshot({ path: info.outputPath('entities-pool.png') });
   await page.evaluate(() => {
     window.combat.actor(2, { phase: 'dead' });
@@ -110,3 +112,19 @@ test('场景关闭安全清理，已存活子弹退回sim', async ({ page }) => 
     (await page.evaluate(() => window.combat.snapshot())).logs.filter((x) => x.startsWith('release:')),
   ).toHaveLength(10);
 });
+
+for (const steps of [0, 1, 2]) {
+  test(`一帧 ${steps} 个物理步：边沿恰好消费一次，复制输入向量`, async ({ page }) => {
+    await page.evaluate((n) => window.combat.frame((1000 / 60) * n, true), steps);
+    let samples = (await page.evaluate(() => window.combat.snapshot())).steps;
+    expect(samples).toHaveLength(steps);
+    await page.evaluate(() => window.combat.frame(1000 / 60, false));
+    samples = (await page.evaluate(() => window.combat.snapshot())).steps;
+    expect(samples).toHaveLength(steps + 1);
+    for (const edge of ['skill', 'swap', 'interact', 'pause'] as const) {
+      expect(samples.filter((s) => s[edge])).toHaveLength(1);
+      expect(samples[0]![edge]).toBe(true);
+    }
+    expect(samples.every((s) => s.moveX === 0.5 && s.aimX === 1)).toBe(true);
+  });
+}

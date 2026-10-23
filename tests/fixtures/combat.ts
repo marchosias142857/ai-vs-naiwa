@@ -2,6 +2,7 @@ import { AUTO, Game, Scene } from 'phaser';
 import type { ActorView, BulletSpawn, CombatWorld, StepResult } from '../../src/sim/combat/api';
 import type { CharacterId } from '../../src/data/characters';
 import type { EnemyId } from '../../src/data/enemies';
+import type { InputFrame } from '../../src/sim/core/types';
 import { createInputFrame } from '../../src/sim/core/types';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import { CombatBridge } from '../../src/game/world/CombatBridge';
@@ -16,6 +17,14 @@ class FakeWorld implements CombatWorld {
   pending: BulletSpawn[] = [];
   logs: string[] = [];
   nextId = 1;
+  steps: {
+    skill: boolean;
+    swap: boolean;
+    interact: boolean;
+    pause: boolean;
+    moveX: number;
+    aimX: number | null;
+  }[] = [];
   getActor(id: number) {
     return this.actors.find((a) => a.id === id);
   }
@@ -53,7 +62,15 @@ class FakeWorld implements CombatWorld {
       a.y = y;
     }
   }
-  step(dt: number): StepResult {
+  step(dt: number, input: Readonly<InputFrame>): StepResult {
+    this.steps.push({
+      skill: input.skillPressed,
+      swap: input.swapPressed,
+      interact: input.interactPressed,
+      pause: input.pausePressed,
+      moveX: input.move.x,
+      aimX: input.aim?.x ?? null,
+    });
     this.time += dt;
     const bullets = this.pending;
     this.pending = [];
@@ -80,6 +97,7 @@ class FakeWorld implements CombatWorld {
 interface Harness {
   stop(): void;
   tick(count: number): void;
+  frame(dt: number, pressed: boolean): void;
   actor(id: number, patch: Partial<MutableActor>): void;
   bullet(patch?: Partial<BulletSpawn>, count?: number): void;
   finishDeath(id: number): void;
@@ -87,7 +105,8 @@ interface Harness {
     bullets: number;
     bulletCapacity: number;
     actors: number;
-    positions: { id: number; x: number; y: number; enabled: boolean }[];
+    positions: { id: number; x: number; y: number; enabled: boolean; visible: boolean }[];
+    steps: FakeWorld['steps'];
     logs: string[];
     children: number;
   };
@@ -108,10 +127,20 @@ class HarnessScene extends Scene {
     this.physics.disableUpdate();
     window.combat = {
       stop: () => this.scene.stop(),
+      frame: (dt, pressed) => {
+        input.skillPressed = input.swapPressed = input.interactPressed = input.pausePressed = pressed;
+        input.move.x = 0.5;
+        input.aim = { x: 1, y: 0 };
+        bridge.setInput(input);
+        // InputController 在下一帧会复用这些对象；bridge 必须自己复制。
+        input.move.x = 0;
+        input.aim.x = 0;
+        this.physics.world.update(sim.time * 1000, dt);
+        this.physics.world.postUpdate();
+      },
       tick: (count) => {
         for (let i = 0; i < count; i++) {
           this.physics.world.update(sim.time * 1000, 1000 / 60);
-          bridge.update(1 / 60, input);
           this.physics.world.postUpdate();
         }
       },
@@ -135,15 +164,18 @@ class HarnessScene extends Scene {
             sprite: TEX.bulletPlayer,
             ...patch,
           });
-        bridge.update(0, input);
+        this.physics.world.update(sim.time * 1000, 1000 / 60);
+        this.physics.world.postUpdate();
       },
       finishDeath: (id) => bridge.actors.finishDeath(id),
       snapshot: () => ({
         ...bridge.inspect(),
+        steps: [...sim.steps],
         positions: sim.actors.map((a) => ({
           id: a.id,
           x: a.x,
           y: a.y,
+          visible: !!bridge.actors.slots.find((s) => s.id === a.id)?.image.visible,
           enabled: !!bridge.actors.slots.find((s) => s.id === a.id)?.image.body?.enable,
         })),
         logs: [...sim.logs],

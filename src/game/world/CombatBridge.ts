@@ -1,5 +1,6 @@
 import type { GameObjects, Physics, Scene, Tilemaps } from 'phaser';
-import { GAME_HEIGHT, GAME_WIDTH, TILE_SIZE } from '../../config';
+import { createInputFrame } from '../../sim/core/types';
+import { GRAYBOX_BOUNDS } from './graybox';
 import type { CombatWorld } from '../../sim/combat/api';
 import type { InputFrame } from '../../sim/core/types';
 import { CombatActors } from '../entities/CombatActors';
@@ -8,19 +9,14 @@ import { BulletPool } from '../pools/BulletPool';
 type ColliderObject =
   GameObjects.GameObject | Physics.Arcade.Body | Physics.Arcade.StaticBody | Tilemaps.Tile;
 
-/** M1 无内墙房间的内边界；世界边界钳制防止大速度越过外墙。 */
-export const GRAYBOX_BOUNDS = {
-  x: (GAME_WIDTH - 19 * TILE_SIZE) / 2 + TILE_SIZE,
-  y: (GAME_HEIGHT - 13 * TILE_SIZE) / 2 + TILE_SIZE,
-  width: 17 * TILE_SIZE,
-  height: 11 * TILE_SIZE,
-};
-
 /** Arcade 与 CombatWorld 的唯一适配点；不计算伤害或移动决策。 */
 export class CombatBridge {
   readonly actors: CombatActors;
   readonly bullets: BulletPool;
   private destroyed = false;
+  private readonly input = createInputFrame();
+  private readonly aim = { x: 0, y: 0 };
+  playerDead = false;
   private readonly colliders: Physics.Arcade.Collider[];
   constructor(
     private readonly scene: Scene,
@@ -39,13 +35,22 @@ export class CombatBridge {
     this.actors.apply();
     scene.events.once('shutdown', this.destroy);
   }
-  /** 场景 update 调用；sim 结果当帧消费，不保存复用数组与对象。 */
-  update(dt: number, input: Readonly<InputFrame>): boolean {
-    this.actors.syncPositions();
-    const result = this.sim.step(dt, input);
-    this.actors.apply();
-    for (const bullet of result.bulletSpawns) this.bullets.spawn(bullet);
-    return result.playerDead;
+  /** PRE_UPDATE 每渲染帧调用一次；复制快照，边沿留到第一个物理步。 */
+  setInput(frame: Readonly<InputFrame>): void {
+    const input = this.input;
+    input.move.x = frame.move.x;
+    input.move.y = frame.move.y;
+    if (frame.aim) {
+      this.aim.x = frame.aim.x;
+      this.aim.y = frame.aim.y;
+      input.aim = this.aim;
+    } else input.aim = null;
+    input.fire = frame.fire;
+    input.source = frame.source;
+    input.skillPressed ||= frame.skillPressed;
+    input.swapPressed ||= frame.swapPressed;
+    input.interactPressed ||= frame.interactPressed;
+    input.pausePressed ||= frame.pausePressed;
   }
   private readonly hitActor = (a: ColliderObject, b: ColliderObject): void => {
     const bullet = this.bullets.byImage.get(a as Physics.Arcade.Image);
@@ -77,7 +82,20 @@ export class CombatBridge {
     this.sim.hitWall(slot.id, body.center.x, body.center.y);
     this.bullets.recycle(slot);
   };
-  private readonly tick = (dt: number): void => this.bullets.tick(dt);
+  /** WORLD_STEP 在移动及重叠检测后触发，dt 为秒。 */
+  private readonly tick = (dt: number): void => {
+    this.bullets.tick(dt);
+    this.actors.syncPositions();
+    const result = this.sim.step(dt, this.input);
+    this.input.skillPressed =
+      this.input.swapPressed =
+      this.input.interactPressed =
+      this.input.pausePressed =
+        false;
+    this.actors.apply();
+    for (const bullet of result.bulletSpawns) this.bullets.spawn(bullet);
+    this.playerDead = result.playerDead;
+  };
   /** 按需生成测试快照；不要在帧循环中调用。 */
   inspect() {
     return {

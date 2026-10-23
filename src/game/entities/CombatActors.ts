@@ -5,6 +5,9 @@ import { ENEMIES } from '../../data/enemies';
 import type { ActorView, CombatWorld } from '../../sim/combat/api';
 import { TEX } from '../assets/keys';
 
+/** M1 最多 30 只怪和 1 名玩家。 */
+const ACTOR_CAPACITY = 30 + 1;
+
 interface ActorSlot {
   image: Physics.Arcade.Image;
   id: number;
@@ -14,6 +17,7 @@ interface ActorSlot {
 export class CombatActors {
   readonly group: Physics.Arcade.Group;
   readonly slots: ActorSlot[] = [];
+  private readonly byId = new Map<number, ActorSlot>();
   readonly byImage = new Map<Physics.Arcade.Image, ActorSlot>();
   constructor(
     scene: Scene,
@@ -21,7 +25,7 @@ export class CombatActors {
   ) {
     this.group = scene.physics.add.group();
     // M1 方案上限 30 只怪 + 1 玩家，初始化预热，生成时只复用。
-    for (let i = 0; i < 31; i++) {
+    for (let i = 0; i < ACTOR_CAPACITY; i++) {
       const image = scene.physics.add.image(0, 0, TEX.player);
       this.group.add(image);
       image.disableBody(true, true);
@@ -40,14 +44,10 @@ export class CombatActors {
   }
   apply(): void {
     for (const actor of this.sim.actors) {
-      let slot: ActorSlot | undefined;
-      for (const candidate of this.slots)
-        if (candidate.id === actor.id) {
-          slot = candidate;
-          break;
-        }
+      let slot = this.byId.get(actor.id);
       if (!slot) slot = this.acquire(actor);
       const body = slot.image.body as Physics.Arcade.Body;
+      slot.image.setVisible(actor.phase !== 'telegraph');
       body.enable = actor.phase === 'active';
       body.setVelocity(body.enable ? actor.vx : 0, body.enable ? actor.vy : 0);
       slot.image.setDepth(DEPTH.actors + actor.y * DEPTH_Y_SORT);
@@ -63,6 +63,7 @@ export class CombatActors {
       }
     if (!slot) throw new Error('M1 actor pool exhausted (30 enemies + player)');
     slot.id = actor.id;
+    this.byId.set(actor.id, slot);
     const data =
       actor.team === 'player'
         ? CHARACTERS[actor.kind as keyof typeof CHARACTERS]
@@ -79,16 +80,18 @@ export class CombatActors {
   /** 由死亡表现完成回调调用；尚未 dead 时拒绝回收。 */
   finishDeath(id: number): void {
     if (this.sim.getActor(id)?.phase !== 'dead') return;
-    const slot = this.slots.find((s) => s.id === id);
+    const slot = this.byId.get(id);
     if (slot) {
       slot.image.disableBody(true, true);
       slot.id = 0;
+      this.byId.delete(id);
     }
     this.sim.removeActor(id);
   }
   destroy(): void {
     this.group.destroy(true, true);
     this.byImage.clear();
+    this.byId.clear();
     this.slots.length = 0;
   }
 }
