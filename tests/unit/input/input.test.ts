@@ -1,0 +1,73 @@
+import { INPUT_UI as UI } from '../../../src/game/fx/params';
+import { describe, expect, it } from 'vitest';
+import { InputState, stick } from '../../../src/game/input/InputState';
+import { TouchState } from '../../../src/game/input/TouchState';
+
+describe('输入快照与多指', () => {
+  it('键盘斜向归一化、边沿一次、复用同一个快照', () => {
+    const s = new InputState();
+    s.key('KeyW', true);
+    s.key('KeyD', true);
+    s.key('Space', true);
+    const f = s.sample();
+    expect(Math.hypot(f.move.x, f.move.y)).toBeCloseTo(1);
+    expect(f.skillPressed).toBe(true);
+    expect(s.sample()).toBe(f);
+    expect(f.skillPressed).toBe(false);
+    s.key('Space', true, true);
+    expect(s.sample().skillPressed).toBe(false);
+    s.key('Space', false);
+    s.key('Space', true);
+    expect(s.sample().skillPressed).toBe(true);
+  });
+  it('径向死区与模拟量，瞄准总为单位向量', () => {
+    const v = { x: 0, y: 0 };
+    stick(v, UI.deadzone / 3, UI.deadzone / 3, UI.deadzone);
+    expect(v).toEqual({ x: 0, y: 0 });
+    stick(v, UI.deadzone + (1 - UI.deadzone) / 2, 0, UI.deadzone);
+    expect(v.x).toBeCloseTo(0.5);
+    const s = new InputState();
+    s.sample();
+    const f = s.sample(1, 1, 0.5, 0.5, true);
+    expect(Math.hypot(f.move.x, f.move.y)).toBeCloseTo(1);
+    expect(Math.hypot(f.aim!.x, f.aim!.y)).toBeCloseTo(1);
+    expect(s.sample(0, 0, 0, 0).aim).toBeNull();
+  });
+  it('生命周期恢复后手柄须回中、键盘须重新按下', () => {
+    const s = new InputState();
+    s.sample();
+    s.sample(1, 0, 0, 0, true);
+    s.reset();
+    expect(s.sample(1, 0, 0, 0, true).fire).toBe(false);
+    expect(s.frame.move.x).toBe(0);
+    s.sample();
+    expect(s.sample(1, 0, 0, 0, true).fire).toBe(true);
+    s.reset();
+    s.key('KeyW', true, true);
+    expect(s.sample().move.y).toBe(0);
+  });
+  it('三指独立；拖出后释放、取消、旋转都归零', () => {
+    const t = new TouchState();
+    t.resize(800, 450);
+    expect(t.down(1, UI.joystick.homeInset, t.height - UI.joystick.homeInset)).toBe(true);
+    expect(t.down(2, t.width - UI.fire.inset, t.height - UI.fire.inset)).toBe(true);
+    t.drag(2, 200, 200);
+    expect(t.move.x).toBe(0);
+    t.drag(1, 900, 350);
+    expect(t.x).toBeLessThanOrEqual(t.width * UI.moveArea.widthFraction - UI.joystick.radius);
+    expect(t.move.x).toBe(1);
+    t.resize(t.width, t.height);
+    expect(t.moveId).toBe(1);
+    expect(t.move.x).toBe(1);
+    expect(t.down(3, t.width - UI.pause.inset, UI.pause.inset)).toBe(true);
+    expect(t.pausePressed).toBe(true);
+    t.up(2);
+    expect(t.fireId).toBe(-1);
+    expect(t.moveId).toBe(1);
+    t.up(1);
+    expect(t.move).toEqual({ x: 0, y: 0 });
+    t.resize(450, 800);
+    expect(t.pauseId).toBe(-1);
+    expect(t.down(5, 20, 20)).toBe(false);
+  });
+});
