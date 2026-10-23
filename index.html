@@ -33,6 +33,24 @@
       #game canvas {
         image-rendering: pixelated;
       }
+      #rotate-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 5;
+        box-sizing: border-box;
+        padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right))
+          max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+        background: #0b0d14;
+        color: #e8ecff;
+        text-align: center;
+        font:
+          20px system-ui,
+          sans-serif;
+      }
+      #rotate-overlay:not([hidden]) {
+        display: grid;
+        place-content: center;
+      }
       #pwa-update {
         position: fixed;
         z-index: 10;
@@ -69,6 +87,7 @@
   </head>
   <body>
     <div id="game"></div>
+    <div id="rotate-overlay" role="status" aria-live="polite" hidden>请横屏游玩</div>
     <aside id="pwa-update" role="status" aria-live="polite" hidden>
       <span id="pwa-update-message">有新版本</span>
       <button id="pwa-refresh" type="button">点击刷新</button>

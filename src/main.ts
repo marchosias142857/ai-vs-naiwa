@@ -2,6 +2,7 @@ import { AUTO, Game, Scale, VERSION } from 'phaser';
 import type { Types } from 'phaser';
 import { COLORS, GAME_HEIGHT, GAME_WIDTH } from './config';
 import { debugParams } from './debug/params';
+import { bindLifecycle } from './game/bindLifecycle';
 import { BootScene } from './game/scenes/BootScene';
 import { GameScene } from './game/scenes/GameScene';
 import { MenuScene } from './game/scenes/MenuScene';
@@ -31,3 +32,4 @@ const config: Types.Core.GameConfig = {
 
 setTestHooks({ ready: false, phaserVersion: VERSION });
 export const game = new Game(config);
+export const lifecycle = bindLifecycle(game);
