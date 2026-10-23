@@ -93,21 +93,24 @@ test('真实第二次构建只提示更新，稍后及另一标签页均不强�
   const other = await context.newPage();
   await other.goto(`${url}?scene=Game&seed=7`);
   await other.waitForFunction(() => window.__AVN__?.scene === 'Game' && navigator.serviceWorker.controller);
-  const next = join(directory, 'v2');
   // 用同一 VitePWA 配置真实重建，仅给 HTML 加版本标记，不伪造或手写 SW。
-  await build({
-    configFile: resolve('vite.config.ts'),
-    build: { outDir: next, emptyOutDir: true },
-    logLevel: 'silent',
-    plugins: [
-      {
-        name: 'test-version',
-        transformIndexHtml: (html) =>
-          html.replace('</head>', '<meta name="pwa-test-version" content="2"></head>'),
-      },
-    ],
-  });
-  servedDirectory = next;
+  const publish = async (version: number) => {
+    const next = join(directory, `v${version}`);
+    await build({
+      configFile: resolve('vite.config.ts'),
+      build: { outDir: next, emptyOutDir: true },
+      logLevel: 'silent',
+      plugins: [
+        {
+          name: 'test-version',
+          transformIndexHtml: (html) =>
+            html.replace('</head>', `<meta name="pwa-test-version" content="${version}"></head>`),
+        },
+      ],
+    });
+    servedDirectory = next;
+  };
+  await publish(2);
   await page.evaluate(async () => (await navigator.serviceWorker.ready).update());
   await expect(page.locator('#pwa-update')).toBeVisible();
   await expect(other.locator('#pwa-update')).toBeVisible();
@@ -123,6 +126,12 @@ test('真实第二次构建只提示更新，稍后及另一标签页均不强�
   await expect(page.locator('#pwa-update')).toBeVisible();
   await expect(page.locator('meta[name="pwa-test-version"]')).toHaveCount(0);
   expect(await page.evaluate(() => window.__AVN__?.seed)).toBe(42);
+  // 同一局可跨过多次发布；点击刷新必须激活最新 waiting 版本，不能只重载上一个版本。
+  await page.getByRole('button', { name: '稍后' }).click();
+  await publish(3);
+  await page.evaluate(async () => (await navigator.serviceWorker.ready).update());
+  await expect(page.locator('#pwa-update')).toBeVisible();
   await page.getByRole('button', { name: '点击刷新' }).click();
-  await expect(page.locator('meta[name="pwa-test-version"]')).toHaveAttribute('content', '2');
+  await expect(page.locator('meta[name="pwa-test-version"]')).toHaveAttribute('content', '3');
+  await expect(other.locator('meta[name="pwa-test-version"]')).toHaveAttribute('content', '2');
 });

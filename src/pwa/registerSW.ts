@@ -8,29 +8,27 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   const dismiss = document.querySelector<HTMLButtonElement>('#pwa-dismiss');
   const message = document.querySelector<HTMLElement>('#pwa-update-message');
   let requestedReload = false;
-  let updateActivated = false;
+  let swRegistration: ServiceWorkerRegistration | undefined;
   const showUpdate = () => {
     if (prompt) prompt.hidden = false;
-  };
-  const onActivatedUpdate = () => {
-    if (updateActivated) return;
-    updateActivated = true;
-    if (requestedReload) window.location.reload();
-    else showUpdate();
   };
   let controller = navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     const previous = controller;
     controller = navigator.serviceWorker.controller;
     // Workbox 在首次加载页面保留 isUpdate=false；原生事件覆盖该页后续的更新。
-    if (previous && controller !== previous) onActivatedUpdate();
+    if (previous && controller !== previous) {
+      if (requestedReload) window.location.reload();
+      else showUpdate();
+    }
   });
   const updateSW = registerSW({
     immediate: true,
     onNeedRefresh: showUpdate,
-    // 另一个标签页确认更新时，也不能刷新正在进行的一局。
-    onNeedReload: onActivatedUpdate,
+    // 重载统一由上面的原生事件处理，避免另一标签页确认后强制刷新当前局。
+    onNeedReload: () => undefined,
     onRegisteredSW(_url, registration) {
+      swRegistration = registration;
       const checkUpdate = () => {
         if (navigator.onLine && document.visibilityState === 'visible') {
           void registration?.update().catch(() => {
@@ -53,7 +51,7 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   refresh?.addEventListener('click', () => {
     requestedReload = true;
     refresh.disabled = true;
-    if (updateActivated) window.location.reload();
+    if (!swRegistration?.waiting) window.location.reload();
     else {
       void updateSW().catch(() => {
         requestedReload = false;
