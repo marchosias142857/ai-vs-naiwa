@@ -1,11 +1,14 @@
+import { LOOT_RULES } from '../../src/data/loot';
 import { expect, test } from '@playwright/test';
 import { build } from 'vite';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import type {} from '../fixtures/combat';
 import type {} from '../fixtures/knockback';
+import type {} from '../fixtures/room';
+import type {} from '../fixtures/demo';
 import { BALANCE } from '../../src/data/balance';
 import { WEAPONS } from '../../src/data/weapons';
 import { ENEMIES } from '../../src/data/enemies';
@@ -21,7 +24,12 @@ test.beforeAll(async () => {
     build: {
       outDir: directory,
       rollupOptions: {
-        input: [resolve('tests/fixtures/combat.html'), resolve('tests/fixtures/knockback.html')],
+        input: [
+          resolve('tests/fixtures/combat.html'),
+          resolve('tests/fixtures/knockback.html'),
+          resolve('tests/fixtures/room.html'),
+          resolve('tests/fixtures/demo.html'),
+        ],
       },
     },
   });
@@ -29,7 +37,10 @@ test.beforeAll(async () => {
     const path = new URL(req.url ?? '/', 'http://localhost').pathname;
     void readFile(join(directory, path === '/' ? 'combat.html' : path))
       .then((data) => {
-        res.setHeader('Content-Type', path.endsWith('.js') ? 'text/javascript' : 'text/html');
+        res.setHeader(
+          'Content-Type',
+          path.endsWith('.js') ? 'text/javascript' : path.endsWith('.css') ? 'text/css' : 'text/html',
+        );
         res.end(data);
       })
       .catch(() => res.writeHead(404).end());
@@ -182,3 +193,107 @@ for (const fps of [60, 120]) {
     expect(error).toBeLessThan(0.5);
   });
 }
+
+test('真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中心一致', async ({ page }, info) => {
+  await page.goto(`${url}/room.html`);
+  await page.waitForFunction(() => window.roomTest);
+  const r = await page.evaluate(() => window.roomTest());
+  expect(r.hits).toBeGreaterThan(0);
+  expect(r.x).toBeLessThanOrEqual(158.01);
+  expect(r.blocked).toBe(true);
+  expect(r.clear).toBe(true);
+  expect(r.sameChildren).toBe(true);
+  expect(r.bullets).toBe(0);
+  expect(r.bodyX).toBeCloseTo(r.simX, 6);
+  expect(r.bodyY).toBeCloseTo(r.simY, 6);
+  expect(r.simX).toBe(128);
+  expect(r.simY).toBe(135);
+  await page.locator('canvas').screenshot({ path: `test-results/room-${info.project.name}.png` });
+});
+
+test('真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用', async ({ page }) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.demoScenario);
+  const result = await page.evaluate(() => window.demoScenario());
+  expect(result.phase).toBe('won');
+  expect(result.settled).toBe(true);
+  expect(result.floor).toBe(4);
+  expect(result.rooms).toBe(16);
+  expect(result.kills).toBeGreaterThan(0);
+  expect(result.childrenStable).toBe(true);
+});
+
+test('真实命中反馈使用预热池，预警隐藏与死亡延迟回收', async ({ page }) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.feedbackScenario);
+  const result = await page.evaluate(() => window.feedbackScenario());
+  expect(result.hits).toBeGreaterThan(0);
+  expect(result.effects).toBeGreaterThan(0);
+  expect(result.effects).toBeLessThanOrEqual(100);
+  expect(result.telegraphHidden).toBe(true);
+  expect(result.delayedDeath).toBe(true);
+  expect(result.recycled).toBe(true);
+  expect(result.stable).toBe(true);
+});
+
+test('出口升级界面可买补给，再选择升级进入下一层', async ({ page }, info) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.demoScenario);
+  const result = await page.evaluate(() => window.demoScenario(true));
+  expect(result.phase).toBe('offer');
+  const before = await page.evaluate(() => window.offerState());
+  await expect(page.locator('#buy-supplies')).toBeEnabled();
+  await page.locator('#demo-hud').screenshot({ path: info.outputPath('demo-upgrade.png'), scale: 'css' });
+  await page.locator('#buy-supplies').click();
+  const after = await page.evaluate(() => window.offerState());
+  expect(after.coins).toBe(before.coins - LOOT_RULES.shopPrice);
+  expect(after.energy).toBeGreaterThan(before.energy);
+  await page.locator('[data-choice="0"]').click();
+  expect(await page.evaluate(() => window.offerState().floor)).toBe(2);
+  expect(await page.evaluate(() => window.offerState().offers)).toBe(0);
+});
+
+test('真实 Arcade 中追击怪绕过内墙接近玩家', async ({ page }) => {
+  await page.goto(`${url}/room.html`);
+  await page.waitForFunction(() => window.navigationTest);
+  const result = await page.evaluate(() => window.navigationTest());
+  expect(result.detour).toBe(true);
+  expect(result.insideWall).toBe(false);
+  expect(result.distance).toBeLessThan(20);
+});
+
+test('100 秒锁步压力：持续 30 怪、弹丸与反馈池不增长', async ({ page }, info) => {
+  test.setTimeout(60_000);
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.stressScenario);
+  const result = await page.evaluate(() => window.stressScenario());
+  await writeFile(info.outputPath('stress.json'), JSON.stringify(result, null, 2));
+  await info.attach('stress-counters', {
+    body: JSON.stringify(result, null, 2),
+    contentType: 'application/json',
+  });
+  expect(result.simulatedSeconds).toBeCloseTo(100, 5);
+  expect(result.spawned).toBeGreaterThan(30);
+  expect(result.records).toBeLessThanOrEqual(31);
+  expect(result.peakBullets).toBeGreaterThan(0);
+  expect(result.peakBullets).toBeLessThanOrEqual(500);
+  expect(result.peakFx).toBeGreaterThan(0);
+  expect(result.peakFx).toBeLessThanOrEqual(100);
+  expect(result.stable).toBe(true);
+});
+
+test('楼层入口继续与不中断推进得到相同升级候选', async ({ page }) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.demoScenario);
+  await page.evaluate(() => window.demoScenario(true));
+  await page.locator('[data-choice="0"]').click();
+  const saved = await page.evaluate(() => window.floorCheckpoint());
+  expect(saved.floor).toBe(2);
+  await page.evaluate(() => window.demoScenario(true));
+  const uninterrupted = await page.evaluate(() => window.floorOffers());
+  await page.evaluate((saved) => sessionStorage.setItem('fixture.checkpoint', JSON.stringify(saved)), saved);
+  await page.reload();
+  await page.waitForFunction(() => window.demoScenario);
+  await page.evaluate(() => window.demoScenario(true));
+  expect(await page.evaluate(() => window.floorOffers())).toEqual(uninterrupted);
+});

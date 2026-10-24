@@ -1,0 +1,114 @@
+#demo-hud {
+  position: fixed;
+  z-index: 2;
+  pointer-events: none;
+  color: #e8ecff;
+  font:
+    12px/1.5 system-ui,
+    sans-serif;
+}
+#demo-hud [hidden],
+.demo-dialog [hidden] {
+  display: none !important;
+}
+.demo-status {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  white-space: pre-line;
+  padding: 3px 6px;
+  background: #0b0d14cc;
+  max-width: calc(100% - 72px);
+}
+.demo-map {
+  position: absolute;
+  left: 8px;
+  top: 65px;
+  width: 80px;
+  height: 80px;
+  image-rendering: pixelated;
+  background: #0b0d14cc;
+}
+.demo-hint {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 56px;
+  text-align: center;
+  text-shadow: 1px 1px #000;
+}
+.demo-dialog {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(360px, calc(100% - 32px));
+  max-height: calc(100% - 16px);
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 16px;
+  border: 1px solid #8a93b8;
+  background: #0b0d14f5;
+  pointer-events: auto;
+  text-align: center;
+}
+.demo-dialog h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+.demo-dialog p {
+  margin: 8px 0;
+}
+.demo-dialog button {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 6px 0;
+  border: 1px solid #7ee8ff;
+  background: #1b2030;
+  color: #e8ecff;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.demo-dialog button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+@media (max-height: 420px) {
+  .demo-dialog {
+    padding: 8px;
+  }
+  .demo-dialog h2 {
+    font-size: 16px;
+  }
+}
+#demo-menu-panel {
+  position: fixed;
+  z-index: 3;
+  color: #e8ecff;
+  font:
+    12px/1.5 system-ui,
+    sans-serif;
+  max-height: calc(100dvh - 16px);
+}
+#demo-menu-panel button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.menu-controls {
+  white-space: pre-line;
+  text-align: left;
+  font-size: 11px;
+}
+#demo-pause {
+  position: fixed;
+  color: #e8ecff;
+  z-index: 4;
+  font:
+    12px/1.5 system-ui,
+    sans-serif;
+}
+#demo-pause[hidden] {
+  display: none;
+}

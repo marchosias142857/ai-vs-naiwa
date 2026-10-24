@@ -1,3 +1,4 @@
+import { PlayerResources } from '../../src/sim/stats/PlayerResources';
 import { AUTO, Game, Scene } from 'phaser';
 import type { ActorView, BulletSpawn, CombatWorld, StepResult } from '../../src/sim/combat/api';
 import type { CharacterId } from '../../src/data/characters';
@@ -11,6 +12,27 @@ import { TEX } from '../../src/game/assets/keys';
 type MutableActor = { -readonly [K in keyof ActorView]: ActorView[K] };
 /** 只在独立测试构建中使用，不替代 Claude 的 sim 实现。 */
 class FakeWorld implements CombatWorld {
+  weaponId = 'pistol_basic' as const;
+  secondaryWeapon = 'rifle_auto' as const;
+  resources = new PlayerResources();
+  takeWeapon() {
+    return true;
+  }
+  grantPickup() {
+    return true;
+  }
+  buySupplies() {
+    return false;
+  }
+  restorePlayer() {
+    return true;
+  }
+  upgrade() {
+    return true;
+  }
+  equipWeapon() {
+    return true;
+  }
   time = 0;
   playerId: number | null = null;
   actors: MutableActor[] = [];

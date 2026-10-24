@@ -1,9 +1,13 @@
+import { LOOT_RULES } from '../../data/loot';
+import { UPGRADES, type UpgradeId } from '../../data/player';
+import { PlayerResources } from '../stats/PlayerResources';
+import { ATTACKS, type AttackId } from '../../data/attacks';
 import { BALANCE } from '../../data/balance';
 import { CHARACTERS, type CharacterId } from '../../data/characters';
 import { ENEMIES, type EnemyId } from '../../data/enemies';
-import type { WeaponDef } from '../../data/schema';
-import { WEAPONS } from '../../data/weapons';
-import { chaseVelocity } from '../ai/chase';
+import type { EnemyDef, WeaponDef } from '../../data/schema';
+import { WEAPONS, type WeaponId } from '../../data/weapons';
+import { createBrain, moveEnemy, type EnemyBrain } from '../ai/brain';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
 import { Random } from '../core/Random';
@@ -56,6 +60,8 @@ interface Actor extends ActorView {
   moveSpeed: number;
   contactDamage: number;
   knock: Knockback;
+  brain: EnemyBrain;
+  warning: boolean;
 }
 
 /**
@@ -95,10 +101,12 @@ type MutableSpawn = { -readonly [K in keyof BulletSpawn]: BulletSpawn[K] };
 
 interface PlayerState {
   weapon: Readonly<WeaponDef>;
-  weaponId: string;
+  weaponId: WeaponId;
   pattern: FirePattern;
   cooldown: number;
   tuning: MoveTuning;
+  burstLeft: number;
+  burstWait: number;
 }
 
 const alwaysVisible: LineOfSight = () => true;
@@ -130,6 +138,33 @@ function newSpawn(): MutableSpawn {
     radius: 0,
     lifetime: 0,
     sprite: '',
+  };
+}
+
+function newActor(): Actor {
+  return {
+    id: 0,
+    team: 'enemy',
+    kind: '',
+    phase: 'dead',
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
+    radius: 0,
+    hp: 0,
+    maxHp: 0,
+    invulnerable: false,
+    facing: 0,
+    activateAt: 0,
+    invulnUntil: 0,
+    invulnTime: 0,
+    base: { x: 0, y: 0 },
+    moveSpeed: 0,
+    contactDamage: 0,
+    brain: createBrain(),
+    warning: false,
+    knock: { dirX: 0, dirY: 0, total: 0, left: 0, timeLeft: 0, speed: 0, fresh: false },
   };
 }
 
@@ -196,6 +231,9 @@ class CombatWorldImpl implements CombatWorld {
   playerId: EntityId | null = null;
 
   private nextId = 1;
+  private readonly actorPool: Actor[] = [];
+  private readonly retired: Actor[] = [];
+  private callDepth = 0;
   private readonly byId = new Map<EntityId, Actor>();
   private readonly bullets = new Map<EntityId, Bullet>();
   private readonly bulletPool: Bullet[] = [];
@@ -209,6 +247,17 @@ class CombatWorldImpl implements CombatWorld {
   private readonly spreadRng: Random;
   private readonly critRng: Random;
   private readonly autoAim: AutoAim;
+  private readonly lineOfSight: LineOfSight;
+  private readonly navigation: CombatWorldOptions['navigation'];
+  private readonly route = { x: 0, y: 0 };
+  readonly resources: PlayerResources;
+  secondaryWeapon: WeaponId | null = null;
+  private readonly dashDirection = { x: 1, y: 0 };
+  private readonly enemyGun = {
+    weapon: ATTACKS.spit_single as Readonly<WeaponDef>,
+    weaponId: 'spit_single',
+    pattern: getPattern('single'),
+  };
   private player: PlayerState | null = null;
   /** 玩家是否已在本局死亡。锁存：之后即使 `removeActor` 回收了玩家，也保持为 true。 */
   private playerDied = false;
@@ -221,11 +270,17 @@ class CombatWorldImpl implements CombatWorld {
 
   constructor(options: CombatWorldOptions) {
     const root = new Random(options.seed);
+    const maxActors = options.maxActors ?? 31;
+    if (!Number.isInteger(maxActors) || maxActors < 1) throw new RangeError('invalid maxActors');
+    for (let i = 0; i < maxActors; i++) this.actorPool.push(newActor());
+    this.resources = new PlayerResources(options.playerRules);
     this.spreadRng = root.fork('spread');
     this.critRng = root.fork('crit');
     this.bus = options.bus;
     this.maxBullets = options.maxBullets ?? DEFAULT_MAX_BULLETS;
     this.godMode = options.godMode ?? false;
+    this.lineOfSight = options.lineOfSight ?? alwaysVisible;
+    this.navigation = options.navigation;
     this.autoAim = new AutoAim(BALANCE.autoAimRetargetInterval, options.lineOfSight ?? alwaysVisible);
     this.result = { bulletSpawns: this.spawns, playerDead: false };
     this.fireCtx = { x: 0, y: 0, aim: 0, weapon: WEAPONS.pistol_basic, rng: this.spreadRng };
@@ -236,40 +291,135 @@ class CombatWorldImpl implements CombatWorld {
     }
   }
 
+  get weaponId(): WeaponId {
+    return this.player?.weaponId ?? 'pistol_basic';
+  }
+
+  equipWeapon(id: WeaponId): boolean {
+    const p = this.player;
+    if (!p || this.playerDied || !Object.hasOwn(WEAPONS, id)) return false;
+    p.weapon = WEAPONS[id];
+    p.weaponId = id;
+    p.pattern = getPattern(p.weapon.pattern);
+    p.burstLeft = 0;
+    return true;
+  }
+
+  takeWeapon(id: WeaponId): boolean {
+    if (id === 'pistol_basic' || !this.equipWeapon(id)) return false;
+    this.secondaryWeapon = id;
+    return true;
+  }
+  grantPickup(kind: 'health' | 'energy' | 'coin', amount: number): boolean {
+    const actor = this.playerId === null ? undefined : this.byId.get(this.playerId);
+    if (!actor || actor.phase !== 'active' || !Number.isFinite(amount) || amount <= 0) return false;
+    if (kind === 'health') {
+      if (actor.hp >= actor.maxHp) return false;
+      actor.hp = Math.min(actor.maxHp, actor.hp + amount);
+    } else if (kind === 'energy') {
+      if (this.resources.energy >= this.resources.maxEnergy) return false;
+      this.resources.energy = Math.min(this.resources.maxEnergy, this.resources.energy + amount);
+    } else this.resources.coins += amount;
+    return true;
+  }
+  buySupplies(): boolean {
+    const p = this.playerId === null ? undefined : this.byId.get(this.playerId),
+      r = this.resources;
+    if (
+      !p ||
+      p.phase !== 'active' ||
+      r.coins < LOOT_RULES.shopPrice ||
+      (p.hp >= p.maxHp && r.energy >= r.maxEnergy)
+    )
+      return false;
+    r.coins -= LOOT_RULES.shopPrice;
+    this.grantPickup('health', LOOT_RULES.shopHealth);
+    this.grantPickup('energy', LOOT_RULES.shopEnergy);
+    return true;
+  }
+  restorePlayer(progress: { hp: number; armor: number; energy: number; coins: number }): boolean {
+    const p = this.playerId === null ? undefined : this.byId.get(this.playerId);
+    if (!p || this.time !== 0 || p.phase !== 'active' || progress.hp <= 0) return false;
+    for (const value of [progress.hp, progress.armor, progress.energy, progress.coins])
+      if (!Number.isFinite(value) || value < 0 || value > Number.MAX_SAFE_INTEGER) return false;
+    p.hp = Math.min(p.maxHp, progress.hp);
+    this.resources.armor = Math.min(this.resources.maxArmor, progress.armor);
+    this.resources.energy = Math.min(this.resources.maxEnergy, progress.energy);
+    this.resources.coins = progress.coins;
+    return true;
+  }
+
+  upgrade(id: UpgradeId): boolean {
+    const actor = this.playerId === null ? undefined : this.byId.get(this.playerId),
+      p = this.player;
+    if (!actor || !p || actor.phase !== 'active' || !Object.hasOwn(UPGRADES, id)) return false;
+    const { stat, amount } = UPGRADES[id],
+      r = this.resources;
+    if (stat === 'damage') r.damageScale += amount;
+    else if (stat === 'armor') {
+      r.maxArmor += amount;
+      r.armor = r.maxArmor;
+    } else if (stat === 'health') {
+      actor.maxHp += amount;
+      actor.hp = actor.maxHp;
+    } else if (stat === 'energy') {
+      r.maxEnergy += amount;
+      r.energy = r.maxEnergy;
+    } else if (stat === 'speed') p.tuning.maxSpeed += amount;
+    else if (stat === 'haste') r.fireRateScale += amount;
+    else if (stat === 'regen') r.regenScale += amount;
+    else r.skillScale += amount;
+    return true;
+  }
+
   getActor(id: EntityId): ActorView | undefined {
     return this.byId.get(id);
   }
 
   spawnPlayer(kind: CharacterId, x: number, y: number): EntityId {
-    if (this.playerId !== null) throw new Error('本局已经有玩家');
-    const def = CHARACTERS[kind];
-    const weaponId = def.startWeapon;
-    const weapon = WEAPONS[weaponId];
-    const actor = this.createActor('player', kind, x, y, def.radius, def.hp, def.moveSpeed);
-    actor.invulnTime = def.invulnTime;
-    this.player = {
-      weapon,
-      weaponId,
-      pattern: getPattern(weapon.pattern),
-      cooldown: 0,
-      tuning: { maxSpeed: def.moveSpeed, accelTime: def.accelTime, decelTime: def.decelTime },
-    };
-    this.playerId = actor.id;
-    this.emitSpawned(actor, 0);
-    this.activate(actor);
-    return actor.id;
+    this.callDepth++;
+    try {
+      if (this.playerId !== null) throw new Error('本局已经有玩家');
+      const def = CHARACTERS[kind];
+      const weaponId = def.startWeapon;
+      const weapon = WEAPONS[weaponId];
+      const actor = this.createActor('player', kind, x, y, def.radius, def.hp, def.moveSpeed);
+      actor.invulnTime = def.invulnTime;
+      this.player = {
+        weapon,
+        weaponId,
+        pattern: getPattern(weapon.pattern),
+        cooldown: 0,
+        burstLeft: 0,
+        burstWait: 0,
+        tuning: { maxSpeed: def.moveSpeed, accelTime: def.accelTime, decelTime: def.decelTime },
+      };
+      this.playerId = actor.id;
+      this.emitSpawned(actor, 0);
+      this.activate(actor);
+      return actor.id;
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
+    }
   }
 
   spawnEnemy(kind: EnemyId, x: number, y: number): EntityId {
-    const def = ENEMIES[kind];
-    const actor = this.createActor('enemy', kind, x, y, def.radius, def.hp, def.moveSpeed);
-    const telegraph = BALANCE.spawnTelegraph;
-    actor.contactDamage = def.contactDamage;
-    actor.phase = 'telegraph';
-    actor.activateAt = this.time + telegraph;
-    this.emitSpawned(actor, telegraph);
-    if (telegraph <= 0) this.activate(actor);
-    return actor.id;
+    this.callDepth++;
+    try {
+      const def = ENEMIES[kind];
+      const actor = this.createActor('enemy', kind, x, y, def.radius, def.hp, def.moveSpeed);
+      const telegraph = BALANCE.spawnTelegraph;
+      actor.contactDamage = def.contactDamage;
+      actor.phase = 'telegraph';
+      actor.activateAt = this.time + telegraph;
+      this.emitSpawned(actor, telegraph);
+      if (telegraph <= 0) this.activate(actor);
+      return actor.id;
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
+    }
   }
 
   syncPosition(id: EntityId, x: number, y: number): void {
@@ -280,49 +430,61 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   step(dtRaw: number, input: Readonly<InputFrame>): StepResult {
-    this.spawns.length = 0;
-    const dt = Math.min(Math.max(dtRaw, 0), MAX_DT);
-    if (dt > 0) {
-      this.time += dt;
-      for (const actor of this.actors) this.tickActor(actor, dt);
-      this.updatePlayer(input, dt);
-      this.updateEnemies();
-      for (const actor of this.actors) this.applyVelocity(actor);
+    this.callDepth++;
+    try {
+      this.spawns.length = 0;
+      const dt = Math.min(Math.max(dtRaw, 0), MAX_DT);
+      if (dt > 0) {
+        this.time += dt;
+        for (const actor of this.actors) this.tickActor(actor, dt);
+        this.updatePlayer(input, dt);
+        this.updateEnemies(dt);
+        for (const actor of this.actors) this.applyVelocity(actor);
+      }
+      this.result.playerDead = this.playerDied;
+      return this.result;
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
     }
-    this.result.playerDead = this.playerDied;
-    return this.result;
   }
 
   hitActor(bulletId: EntityId, targetId: EntityId, x: number, y: number): boolean {
-    const bullet = this.bullets.get(bulletId);
-    if (!bullet) return true;
-    const target = this.byId.get(targetId);
-    if (!target || target.phase !== 'active' || target.team === bullet.team) return false;
-    // 每颗子弹对每个目标最多命中一次：重叠的几帧里、或 A → B → A 的回调顺序都不会重复伤害。
-    if (this.alreadyHit(bullet, target.id)) return false;
-    this.recordHit(bullet, target.id);
+    this.callDepth++;
+    try {
+      const bullet = this.bullets.get(bulletId);
+      if (!bullet) return true;
+      const target = this.byId.get(targetId);
+      if (!target || target.phase !== 'active' || target.team === bullet.team) return false;
+      // 每颗子弹对每个目标最多命中一次：重叠的几帧里、或 A → B → A 的回调顺序都不会重复伤害。
+      if (this.alreadyHit(bullet, target.id)) return false;
+      this.recordHit(bullet, target.id);
 
-    if (this.ignoresDamage(target)) {
-      this.emitHit(bullet, x, y, target.id, false);
+      if (this.ignoresDamage(target)) {
+        this.emitHit(bullet, x, y, target.id, false);
+        this.finishBullet(bullet);
+        return true;
+      }
+      const critical = this.critRng.chance(bullet.critChance);
+      const amount = critical ? bullet.damage * BALANCE.critMultiplier : bullet.damage;
+      const dirX = Math.cos(bullet.angle);
+      const dirY = Math.sin(bullet.angle);
+      this.damage(target, amount, critical, dirX, dirY, bullet.ownerId);
+      const alive = target.phase === 'active';
+      if (alive && bullet.knockback > 0) this.knockBack(target, dirX, dirY, bullet.knockback);
+      // 穿透时也发 bullet:hit（顺序仍是 damaged →（died）→ hit），子弹是否结束看返回值。
+      this.emitHit(bullet, x, y, target.id, critical);
+
+      if (bullet.pierceLeft > 0) {
+        bullet.pierceLeft--;
+        return false;
+      }
       this.finishBullet(bullet);
       return true;
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
     }
-    const critical = this.critRng.chance(bullet.critChance);
-    const amount = critical ? bullet.damage * BALANCE.critMultiplier : bullet.damage;
-    const dirX = Math.cos(bullet.angle);
-    const dirY = Math.sin(bullet.angle);
-    this.damage(target, amount, critical, dirX, dirY, bullet.ownerId);
-    const alive = target.phase === 'active';
-    if (alive && bullet.knockback > 0) this.knockBack(target, dirX, dirY, bullet.knockback);
-    // 穿透时也发 bullet:hit（顺序仍是 damaged →（died）→ hit），子弹是否结束看返回值。
-    this.emitHit(bullet, x, y, target.id, critical);
-
-    if (bullet.pierceLeft > 0) {
-      bullet.pierceLeft--;
-      return false;
-    }
-    this.finishBullet(bullet);
-    return true;
   }
 
   hitWall(bulletId: EntityId, x: number, y: number): void {
@@ -338,31 +500,43 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   contact(enemyId: EntityId, playerId: EntityId): void {
-    const enemy = this.byId.get(enemyId);
-    const player = this.byId.get(playerId);
-    if (!enemy || !player || enemy.team === player.team) return;
-    if (enemy.phase !== 'active' || player.phase !== 'active') return;
-    if (this.ignoresDamage(player) || enemy.contactDamage <= 0) return;
-    let dirX = player.x - enemy.x;
-    let dirY = player.y - enemy.y;
-    const d = Math.hypot(dirX, dirY);
-    if (d > 0) {
-      dirX /= d;
-      dirY /= d;
-    } else {
-      dirX = 0;
-      dirY = 1;
+    this.callDepth++;
+    try {
+      const enemy = this.byId.get(enemyId);
+      const player = this.byId.get(playerId);
+      if (!enemy || !player || enemy.team === player.team) return;
+      if (enemy.phase !== 'active' || player.phase !== 'active') return;
+      if (this.ignoresDamage(player) || enemy.contactDamage <= 0) return;
+      let dirX = player.x - enemy.x;
+      let dirY = player.y - enemy.y;
+      const d = Math.hypot(dirX, dirY);
+      if (d > 0) {
+        dirX /= d;
+        dirY /= d;
+      } else {
+        dirX = 0;
+        dirY = 1;
+      }
+      this.damage(player, enemy.contactDamage, false, dirX, dirY, enemy.id);
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
     }
-    this.damage(player, enemy.contactDamage, false, dirX, dirY, enemy.id);
   }
 
   debugKillEnemies(): void {
-    // 倒序遍历：监听器在 entity:died 里同步调用 removeActor 移除当前实体时，不会跳过其他实体。
-    for (let i = this.actors.length - 1; i >= 0; i--) {
-      const actor = this.actors[i];
-      if (!actor || actor.team !== 'enemy' || actor.phase === 'dead') continue;
-      // 预警中的怪物没有碰撞，也一并清掉；按正常流程扣光生命，事件顺序与真实死亡相同。
-      this.damage(actor, actor.hp, false, 0, 0, null);
+    this.callDepth++;
+    try {
+      // 倒序遍历：监听器在 entity:died 里同步调用 removeActor 移除当前实体时，不会跳过其他实体。
+      for (let i = this.actors.length - 1; i >= 0; i--) {
+        const actor = this.actors[i];
+        if (!actor || actor.team !== 'enemy' || actor.phase === 'dead') continue;
+        // 预警中的怪物没有碰撞，也一并清掉；按正常流程扣光生命，事件顺序与真实死亡相同。
+        this.damage(actor, actor.hp, false, 0, 0, null);
+      }
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
     }
   }
 
@@ -373,6 +547,8 @@ class CombatWorldImpl implements CombatWorld {
     const index = this.actors.indexOf(actor);
     const last = this.actors.pop();
     if (last && last !== actor) this.actors[index] = last;
+    if (this.callDepth) this.retired.push(actor);
+    else this.actorPool.push(actor);
   }
 
   // ---- 内部 ----
@@ -386,28 +562,31 @@ class CombatWorldImpl implements CombatWorld {
     hp: number,
     moveSpeed: number,
   ): Actor {
-    const actor: Actor = {
-      id: this.nextId++,
-      team,
-      kind,
-      phase: 'active',
-      x,
-      y,
-      vx: 0,
-      vy: 0,
-      radius,
-      hp,
-      maxHp: hp,
-      invulnerable: false,
-      facing: 0,
-      activateAt: this.time,
-      invulnUntil: 0,
-      invulnTime: 0,
-      base: { x: 0, y: 0 },
-      moveSpeed,
-      contactDamage: 0,
-      knock: { dirX: 0, dirY: 0, total: 0, left: 0, timeLeft: 0, speed: 0, fresh: false },
-    };
+    const actor = this.actorPool.pop();
+    if (!actor) throw new Error('combat actor pool exhausted');
+    actor.id = this.nextId++;
+    actor.team = team;
+    actor.kind = kind;
+    actor.phase = 'active';
+    actor.x = x;
+    actor.y = y;
+    actor.vx = actor.vy = 0;
+    actor.radius = radius;
+    actor.hp = actor.maxHp = hp;
+    actor.invulnerable = false;
+    actor.facing = 0;
+    actor.activateAt = this.time;
+    actor.invulnUntil = actor.invulnTime = 0;
+    actor.base.x = actor.base.y = 0;
+    actor.moveSpeed = moveSpeed;
+    actor.contactDamage = 0;
+    actor.brain.cooldown = BALANCE.spawnTelegraph;
+    actor.brain.stage = 'ready';
+    actor.brain.time = actor.brain.dirX = actor.brain.dirY = 0;
+    actor.warning = false;
+    const k = actor.knock;
+    k.dirX = k.dirY = k.total = k.left = k.timeLeft = k.speed = 0;
+    k.fresh = false;
     this.actors.push(actor);
     this.byId.set(actor.id, actor);
     return actor;
@@ -469,7 +648,21 @@ class CombatWorldImpl implements CombatWorld {
     const actor = this.playerId === null ? undefined : this.byId.get(this.playerId);
     if (!p || !actor || actor.phase !== 'active') return;
 
-    stepVelocity(actor.base, input.move, p.tuning, dt);
+    const r = this.resources;
+    r.step(dt);
+    if (input.swapPressed && this.secondaryWeapon)
+      this.equipWeapon(p.weaponId === 'pistol_basic' ? this.secondaryWeapon : 'pistol_basic');
+    if (input.skillPressed && r.skill()) {
+      const moving = Math.hypot(input.move.x, input.move.y);
+      this.dashDirection.x = moving ? input.move.x / moving : Math.cos(actor.facing);
+      this.dashDirection.y = moving ? input.move.y / moving : Math.sin(actor.facing);
+      actor.invulnUntil = Math.max(actor.invulnUntil, this.time + r.dashRemaining);
+      actor.invulnerable = true;
+    }
+    if (r.dashRemaining > 0 && r.rules) {
+      actor.base.x = this.dashDirection.x * r.rules.dashSpeed;
+      actor.base.y = this.dashDirection.y * r.rules.dashSpeed;
+    } else stepVelocity(actor.base, input.move, p.tuning, dt);
     if (input.move.x !== 0 || input.move.y !== 0) {
       const len = Math.hypot(input.move.x, input.move.y);
       this.lastMoveDir.x = input.move.x / len;
@@ -488,17 +681,33 @@ class CombatWorldImpl implements CombatWorld {
 
     // 冷却：按住时连发并保留余量，保证射速准确；松开后冷却只减到 0，不会攒出连发。
     p.cooldown -= dt;
+    if (p.burstLeft > 0) {
+      p.burstWait -= dt;
+      while (p.burstLeft > 0 && p.burstWait <= 0) {
+        this.fire(actor, p);
+        p.burstLeft--;
+        p.burstWait += p.weapon.burstInterval ?? 1 / p.weapon.fireRate;
+      }
+    }
     if (!input.fire) {
       if (p.cooldown < 0) p.cooldown = 0;
       return;
     }
     while (p.cooldown <= 0) {
       this.fire(actor, p);
-      p.cooldown += 1 / p.weapon.fireRate;
+      if (p.weapon.pattern === 'burst') {
+        p.burstLeft = p.weapon.pellets - 1;
+        p.burstWait = p.weapon.burstInterval ?? 1 / p.weapon.fireRate;
+      }
+      p.cooldown += 1 / (p.weapon.fireRate * r.fireRateScale);
     }
   }
 
-  private fire(owner: Actor, p: PlayerState): void {
+  private fire(
+    owner: Actor,
+    p: { weapon: Readonly<WeaponDef>; weaponId: string; pattern: FirePattern },
+  ): void {
+    if (owner.team === 'player' && !this.resources.canFire(p.weapon.energyCost)) return;
     // 枪口：身体中心（脚底向上一个半径）沿朝向前移一个半径再加 2 像素。
     const reach = owner.radius + 2;
     const muzzleX = owner.x + Math.cos(owner.facing) * reach;
@@ -507,12 +716,14 @@ class CombatWorldImpl implements CombatWorld {
     this.fireCtx.y = muzzleY;
     this.fireCtx.aim = owner.facing;
     this.fireCtx.weapon = p.weapon;
+    this.fireCtx.pelletCount = p.weapon.pattern === 'burst' ? 1 : p.weapon.pellets;
     this.firingOwner = owner;
     this.firingWeapon = p.weapon;
     const before = this.spawns.length;
     p.pattern(this.fireCtx, this.sink);
     this.firingOwner = null;
     if (this.spawns.length === before) return;
+    if (owner.team === 'player') this.resources.spend(p.weapon.energyCost);
     const e = this.payloads.fired.acquire();
     try {
       e.ownerId = owner.id;
@@ -530,15 +741,16 @@ class CombatWorldImpl implements CombatWorld {
     const owner = this.firingOwner;
     const weapon = this.firingWeapon;
     if (!owner) return false;
-    const bullet = this.bulletPool.pop();
     const spawn = this.spawnPool[this.spawns.length];
-    if (!bullet || !spawn) return false;
+    if (!spawn) return false;
+    const bullet = this.bulletPool.pop();
+    if (!bullet) return false;
     const id = this.nextId++;
     bullet.id = id;
     bullet.team = owner.team;
     bullet.ownerId = owner.id;
     bullet.angle = angle;
-    bullet.damage = weapon.damage;
+    bullet.damage = weapon.damage * (owner.team === 'player' ? this.resources.damageScale : 1);
     bullet.critChance = weapon.critChance;
     bullet.knockback = weapon.knockback;
     bullet.pierceLeft = weapon.pierce;
@@ -574,13 +786,51 @@ class CombatWorldImpl implements CombatWorld {
     this.bulletPool.push(bullet);
   }
 
-  private updateEnemies(): void {
+  private updateEnemies(dt: number): void {
     const player = this.playerId === null ? undefined : this.byId.get(this.playerId);
     const target = player && player.phase === 'active' ? player : null;
     for (const actor of this.actors) {
       if (actor.team !== 'enemy' || actor.phase !== 'active') continue;
-      chaseVelocity(actor.base, actor, target, this.actors, actor.moveSpeed, BALANCE.enemySeparation);
+      const def: Readonly<EnemyDef> = ENEMIES[actor.kind as EnemyId];
+      let attack = def.attack,
+        speedScale = 1;
+      if (def.phases)
+        for (const phase of def.phases)
+          if (actor.hp / actor.maxHp <= phase.belowHp) {
+            attack = phase.attack;
+            speedScale = phase.speedScale;
+          }
+      moveEnemy(actor.base, actor, target, this.actors, def, actor.brain, dt, speedScale);
+      // 只调整向目标接近的自主移动；炮台、后退和锁定冲锋保持原行为，击退稍后叠加。
+      if (
+        target &&
+        def.behavior !== 'charge_dash' &&
+        actor.base.x * (target.x - actor.x) + actor.base.y * (target.y - actor.y) > 0 &&
+        this.navigation?.(actor.x, actor.y, target.x, target.y, actor.radius, this.route)
+      ) {
+        const dx = this.route.x - actor.x,
+          dy = this.route.y - actor.y,
+          distance = Math.hypot(dx, dy);
+        const speed = Math.hypot(actor.base.x, actor.base.y);
+        actor.base.x = distance ? (dx / distance) * speed : 0;
+        actor.base.y = distance ? (dy / distance) * speed : 0;
+      }
+      actor.warning = actor.brain.stage === 'windup';
       if (actor.base.x !== 0 || actor.base.y !== 0) actor.facing = Math.atan2(actor.base.y, actor.base.x);
+      if (!target || !attack || actor.brain.cooldown > 0) continue;
+      const weapon = ATTACKS[attack as AttackId];
+      if (
+        !weapon ||
+        Math.hypot(target.x - actor.x, target.y - actor.y) > weapon.range ||
+        !this.lineOfSight(actor.x, actor.y, target.x, target.y)
+      )
+        continue;
+      actor.facing = Math.atan2(target.y - actor.y, target.x - actor.x);
+      this.enemyGun.weapon = weapon;
+      this.enemyGun.weaponId = attack;
+      this.enemyGun.pattern = getPattern(weapon.pattern);
+      this.fire(actor, this.enemyGun);
+      actor.brain.cooldown = 1 / weapon.fireRate;
     }
   }
 
@@ -603,7 +853,8 @@ class CombatWorldImpl implements CombatWorld {
     dirY: number,
     sourceId: EntityId | null,
   ): void {
-    target.hp = Math.max(0, target.hp - amount);
+    const healthDamage = target.id === this.playerId ? this.resources.absorb(amount) : amount;
+    target.hp = Math.max(0, target.hp - healthDamage);
     if (target.invulnTime > 0) {
       target.invulnUntil = this.time + target.invulnTime;
       target.invulnerable = true;

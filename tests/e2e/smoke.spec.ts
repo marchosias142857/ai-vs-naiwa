@@ -15,7 +15,7 @@ test('启动 → 菜单 → 灰盒房间，无报错', async ({ page }) => {
   await page.waitForFunction(() => window.__AVN__?.ready && window.__AVN__.scene === 'Menu');
   await expect(page.locator('#game canvas')).toBeVisible();
 
-  await page.locator('#game canvas').click();
+  await page.locator('#start-run').click();
   await page.waitForFunction(() => window.__AVN__?.scene === 'Game');
 
   const hooks = await page.evaluate(() => window.__AVN__);

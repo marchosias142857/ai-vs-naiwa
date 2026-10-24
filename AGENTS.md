@@ -76,6 +76,17 @@ docs/              GDD、ARCHITECTURE、ROADMAP、DATA_SCHEMA、ART_GUIDE、adr/
 | `.github/**`、`scripts/**`、工具配置                                               | Claude                   | ChatGPT              |
 | `docs/**`                                                                          | 改哪个模块就更新哪份文档 | 负责人               |
 
+### demo 阶段临时分工（负责人授权）
+
+- **本临时分工在集成 PR #33 合入 main 时结束**，届时 `src/sim/**` 与共享契约主责交回 Claude；GPT 恢复默认 game / services / 性能兼容性职责。存档 v2 等 Claude 的独立 ADR 后再接线。
+- **demo 阶段 sim 由 GPT 实现，Claude 事后评审**；包括地牢、AI、武器、掉落、本局状态，以及 game / UI / 服务层。
+- 从包含 #30 的 main 建立 `gpt/demo`；功能分支以 `gpt/demo` 为 base，分别开小 PR，目标 ≤ 400 行（不含数据、测试、生成文件）。
+- 负责人授权 GPT 将验证通过的小 PR squash 合入 `gpt/demo`。Claude 在 demo 完成后按 PR 顺序集中评审；集成分支到 main 的 PR 仍由负责人最终合并。
+- 共享契约仍必须附 ADR，最终随集成 PR 由负责人批准；新数值为可调整的 demo 初值，集中存放在带 schema 的 data 中。
+- 仅使用灰盒与功能性 HUD；新增视觉元素在 PR 中注明「待画面方案」。正式画面继续按 6.1 由 Claude 设计、负责人确认。
+- 第 5、8、9 节的分层、随机、数据、对象池与测试规则保持；时间推进维持 ADR 0004 的 WORLD_STEP 锁步。
+- 交付 `docs/demo-overview.md`，包含架构、文件对应、设计决定、PR 顺序与已知问题。
+
 ### 6.1 画面表现：设计与实现分开
 
 代码模块仍按上表和 Issue 分配；**画面表现的设计**单独由 Claude 主导，负责人最终确认。

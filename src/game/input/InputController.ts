@@ -50,7 +50,12 @@ export class InputController {
       'keydown',
       (e) => {
         if (!CODES.has(e.code) || !ui.game.input.enabled) return;
-        if (e.target instanceof HTMLElement && e.target.closest('button,input,textarea')) return;
+        if (
+          e.code !== 'Escape' &&
+          e.target instanceof HTMLElement &&
+          e.target.closest('button,input,textarea')
+        )
+          return;
         e.preventDefault();
         this.state.key(e.code, true, e.repeat);
       },
@@ -163,7 +168,10 @@ export class InputController {
       pad?.connected ? pad.rightStick.x : 0,
       pad?.connected ? pad.rightStick.y : 0,
       !!pad?.connected && pad.R2 > 0.5,
-      !!pad?.connected && !!pad.buttons[9]?.pressed,
+      !!pad?.connected && !!pad.buttons[UI.gamepad.pause]?.pressed,
+      !!pad?.connected && !!pad.buttons[UI.gamepad.skill]?.pressed,
+      !!pad?.connected && !!pad.buttons[UI.gamepad.swap]?.pressed,
+      !!pad?.connected && !!pad.buttons[UI.gamepad.confirm]?.pressed,
     );
     if (f.source === 'keyboard' && this.mouseInside) {
       const scale = this.rect.width / this.ui.scale.width;

@@ -1,12 +1,9 @@
 import type { Physics, Scene } from 'phaser';
-import { DEPTH, DEPTH_Y_SORT } from '../../config';
+import { DEPTH, DEPTH_Y_SORT, POOL_SIZES } from '../../config';
 import { CHARACTERS } from '../../data/characters';
 import { ENEMIES } from '../../data/enemies';
 import type { ActorView, CombatWorld } from '../../sim/combat/api';
 import { TEX } from '../assets/keys';
-
-/** M1 最多 30 只怪和 1 名玩家。 */
-const ACTOR_CAPACITY = 30 + 1;
 
 interface ActorSlot {
   image: Physics.Arcade.Image;
@@ -25,7 +22,7 @@ export class CombatActors {
   ) {
     this.group = scene.physics.add.group();
     // M1 方案上限 30 只怪 + 1 玩家，初始化预热，生成时只复用。
-    for (let i = 0; i < ACTOR_CAPACITY; i++) {
+    for (let i = 0; i < POOL_SIZES.actors; i++) {
       const image = scene.physics.add.image(0, 0, TEX.player);
       this.group.add(image);
       image.disableBody(true, true);

@@ -11,6 +11,8 @@ export interface FireContext {
   weapon: Readonly<WeaponDef>;
   /** 散布用的随机流（与暴击、AI 的随机流分开）。 */
   rng: Random;
+  /** 连发调度器可将单次输出限制为一颗，避免创建临时武器对象。 */
+  pelletCount?: number;
 }
 
 /** 弹道往这里写入要生成的子弹，避免每次开火都新建数组。 */
@@ -27,13 +29,36 @@ const DEG = Math.PI / 180;
 /** `single`：每颗弹丸从枪口出发，在 ±spread/2 度内随机偏转。 */
 const single: FirePattern = (ctx, sink) => {
   const half = (ctx.weapon.spread * DEG) / 2;
-  for (let i = 0; i < ctx.weapon.pellets; i++) {
+  for (let i = 0; i < (ctx.pelletCount ?? ctx.weapon.pellets); i++) {
     const angle = half > 0 ? ctx.aim + ctx.rng.range(-half, half) : ctx.aim;
     if (!sink.add(ctx.x, ctx.y, angle)) return;
   }
 };
 
-const registry = new Map<FirePatternId, FirePattern>([['single', single]]);
+const spread: FirePattern = (ctx, sink) => {
+  const n = ctx.weapon.pellets;
+  for (let i = 0; i < n; i++) {
+    const offset = n === 1 ? 0 : (i / (n - 1) - 0.5) * ctx.weapon.spread * DEG;
+    if (!sink.add(ctx.x, ctx.y, ctx.aim + offset)) return;
+  }
+};
+const radial: FirePattern = (ctx, sink) => {
+  for (let i = 0; i < ctx.weapon.pellets; i++)
+    if (!sink.add(ctx.x, ctx.y, ctx.aim + (Math.PI * 2 * i) / ctx.weapon.pellets)) return;
+};
+const twin: FirePattern = (ctx, sink) => {
+  for (let i = 0; i < ctx.weapon.pellets; i++) {
+    const offset = (i - (ctx.weapon.pellets - 1) / 2) * ctx.weapon.bulletRadius * 2;
+    if (!sink.add(ctx.x - Math.sin(ctx.aim) * offset, ctx.y + Math.cos(ctx.aim) * offset, ctx.aim)) return;
+  }
+};
+const registry = new Map<FirePatternId, FirePattern>([
+  ['single', single],
+  ['spread', spread],
+  ['radial', radial],
+  ['twin', twin],
+  ['burst', single],
+]);
 
 /** 注册弹道（M3 起加入其余模式）。重复注册会报错，防止两处代码互相覆盖。 */
 export function registerPattern(id: FirePatternId, pattern: FirePattern): void {

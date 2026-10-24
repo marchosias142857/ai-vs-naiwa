@@ -1,3 +1,6 @@
+import { t } from '../../i18n/t';
+import { PausePanel } from './PausePanel';
+import { ActionButtons } from './ActionButtons';
 import { INPUT_UI as UI } from '../fx/params';
 import { Scene } from 'phaser';
 import type { GameObjects } from 'phaser';
@@ -10,6 +13,8 @@ import { textStyle } from './text';
 export class InputScene extends Scene {
   static readonly KEY = 'InputUI';
   controls!: InputController;
+  private actions?: ActionButtons;
+  private pausePanel?: PausePanel;
   private graphics!: GameObjects.Graphics;
   private resumeLabel!: GameObjects.Text;
   private fireScale = 1;
@@ -20,7 +25,7 @@ export class InputScene extends Scene {
   constructor() {
     super(InputScene.KEY);
   }
-  create(): void {
+  create(data?: { demo?: boolean }): void {
     // scene.restart 会复用场景实例；布局缓存必须清掉，否则同尺寸重来时跳过布局，暂停符号停在 (0, 0)。
     this.layoutScale = 0;
     this.fireScale = 1;
@@ -30,11 +35,13 @@ export class InputScene extends Scene {
     battle.input.enabled = false;
     this.graphics = this.add.graphics().setDepth(DEPTH.touchControls);
     this.resumeLabel = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, '继续', textStyle(10))
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, t('input.resume'), textStyle(10))
       .setOrigin(0.5)
       .setDepth(DEPTH.touchControls);
     this.pauseLabel = this.add.text(0, 0, 'Ⅱ', textStyle(12)).setOrigin(0.5).setDepth(DEPTH.touchControls);
-    this.controls = new InputController(this, battle, () => {
+    const togglePause = () => {
+      // 楼层选择与结算持有物理暂停；此时不能再叠加手动 scene.pause。
+      if (battle.physics.world.isPaused) return;
       this.controls.reset();
       if (battle.scene.isPaused()) {
         const now = Date.now();
@@ -42,7 +49,10 @@ export class InputScene extends Scene {
         battle.tweens.prevTime = now;
         battle.scene.resume();
       } else battle.scene.pause();
-    });
+    };
+    this.controls = new InputController(this, battle, togglePause);
+    this.pausePanel = data?.demo ? new PausePanel(this, battle, togglePause) : undefined;
+    this.actions = data?.demo ? new ActionButtons(this, this.controls) : undefined;
     setInputProbe(() => ({
       ...this.controls.frame,
       move: { ...this.controls.frame.move },
@@ -51,6 +61,10 @@ export class InputScene extends Scene {
     }));
     this.events.once('shutdown', () => {
       battle.input.enabled = battleInputEnabled;
+      this.pausePanel?.destroy();
+      this.pausePanel = undefined;
+      this.actions?.destroy();
+      this.actions = undefined;
       this.controls.destroy();
       setInputProbe(undefined);
     });
@@ -69,8 +83,12 @@ export class InputScene extends Scene {
       );
     const g = this.graphics;
     g.clear();
-    const paused = c.battle.scene.isPaused();
-    this.resumeLabel.setVisible(paused);
+    const paused = c.battle.scene.isPaused(),
+      locked = c.battle.physics.world.isPaused;
+    this.pauseLabel.setVisible(!locked);
+    this.pausePanel?.update(paused);
+    this.resumeLabel.setVisible(paused && !this.pausePanel);
+    this.actions?.setVisible(c.touchVisible && !paused && !locked);
     if (s !== this.layoutScale) {
       this.layoutScale = s;
       this.resumeLabel.setFontSize(UI.resume.fontSize / s);
@@ -82,8 +100,9 @@ export class InputScene extends Scene {
       g.fillStyle(UI.look.pauseColor, UI.look.pauseAlpha).fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
       this.circle(GAME_WIDTH / 2, GAME_HEIGHT / 2, UI.resume.radius / s, false, 1);
     }
-    this.circle(GAME_WIDTH - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
-    if (c.touchVisible && !paused) {
+    if (!locked)
+      this.circle(GAME_WIDTH - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
+    if (c.touchVisible && !paused && !locked) {
       const t = c.touch;
       this.circle(
         t.x / s,
@@ -107,7 +126,7 @@ export class InputScene extends Scene {
         1,
       );
     }
-    const mouse = c.frame.source === 'keyboard' && c.frame.aim !== null && !paused;
+    const mouse = c.frame.source === 'keyboard' && c.frame.aim !== null && !paused && !locked;
     this.game.canvas.style.cursor = mouse ? 'none' : '';
     if (mouse) {
       const x = Math.floor(c.mouse.x / s) + 0.5,

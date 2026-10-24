@@ -1,8 +1,12 @@
+import type { PlayerRules } from '../../data/schema/player';
+import type { UpgradeId } from '../../data/player';
+import type { PlayerResources } from '../stats/PlayerResources';
 import type { CharacterId } from '../../data/characters';
+import type { WeaponId } from '../../data/weapons';
 import type { EnemyId } from '../../data/enemies';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
-import type { EntityId, InputFrame, Seed, Team } from '../core/types';
+import type { EntityId, InputFrame, Seed, Team, Vec2 } from '../core/types';
 import { createCombatWorldImpl } from './CombatWorld';
 
 /**
@@ -46,6 +50,8 @@ export interface ActorView {
   readonly invulnerable: boolean;
   /** 朝向，弧度。玩家为当前瞄准方向，怪物为移动方向；用于翻转贴图、放置枪口。 */
   readonly facing: number;
+  /** 敌方冲锋蓄力，灰盒可显示危险提示。 */
+  readonly warning?: boolean;
 }
 
 /** 需要生成的一颗子弹。对象由 sim 复用，只在下一次 `step` 之前有效；game 读取后立即从池中取子弹。 */
@@ -87,17 +93,23 @@ export interface CombatWorldOptions {
   bus: EventBus<GameEvents>;
   /** 视线判断，用于自动瞄准；不传时视为全部可见。 */
   lineOfSight?: LineOfSight;
+  /** 地图适配层可写入绕墙路点；返回 false 则沿原行为移动。out 为 sim 复用向量。 */
+  navigation?: (x: number, y: number, targetX: number, targetY: number, radius: number, out: Vec2) => boolean;
   /**
    * 同时存在的子弹上限，应与 game 层子弹池大小一致（`POOL_SIZES.bullets`）。
    * 达到上限时，本次开火中放不下的子弹不再生成。
    * 不传时为 500。sim 不能读取 `src/config.ts`，所以由调用方传入。
    */
   maxBullets?: number;
+  /** 预热实体记录上限，默认 31。同步事件期间移除的记录在外层调用结束后复用，避免串号。 */
+  maxActors?: number;
   /**
    * 调试用无敌（`?god=1`，Issue #17，ADR 0005）：玩家不受任何伤害，也不会进入受伤无敌帧。
    * 打到玩家的子弹按「命中无敌目标」处理：子弹消失，发出 `critical: false` 的 `bullet:hit`。
    */
   godMode?: boolean;
+  /** 传入时启用护甲、能量、冲刺；不传保留 M1 行为。 */
+  playerRules?: Readonly<PlayerRules>;
 }
 
 /**
@@ -111,6 +123,35 @@ export interface CombatWorld {
   readonly actors: readonly ActorView[];
   /** 玩家实体的编号；尚未生成玩家时为 null。 */
   readonly playerId: EntityId | null;
+  readonly weaponId: WeaponId;
+  readonly secondaryWeapon: WeaponId | null;
+  readonly resources: Readonly<
+    Pick<
+      PlayerResources,
+      | 'armor'
+      | 'maxArmor'
+      | 'energy'
+      | 'maxEnergy'
+      | 'coins'
+      | 'skillRemaining'
+      | 'dashRemaining'
+      | 'damageScale'
+      | 'fireRateScale'
+      | 'regenScale'
+      | 'skillScale'
+    >
+  >;
+  /** 替换第二武器并装备；第一槽始终保留免费手枪。 */
+  /** 装备第二槽；地面拾取须由 LootSystem 原槽置换，保留旧武器。 */
+  takeWeapon(id: WeaponId): boolean;
+  /** 使用 data 中的补给价格购买生命/能量；满额、余额不足、死亡时不扣钱。 */
+  buySupplies(): boolean;
+  grantPickup(kind: 'health' | 'energy' | 'coin', amount: number): boolean;
+  upgrade(id: UpgradeId): boolean;
+  /** 仅允许 time=0 的新世界恢复入口资源，先由调用方重放升级；有限值会夹到上限。 */
+  restorePlayer(progress: { hp: number; armor: number; energy: number; coins: number }): boolean;
+  /** 装备武器；保留开火冷却并取消旧武器待发连射，死亡时拒绝。 */
+  equipWeapon(id: WeaponId): boolean;
   getActor(id: EntityId): ActorView | undefined;
 
   /** 生成玩家：没有出场预警，同一帧内依次发出 `entity:spawned` 与 `entity:activated`。 */
