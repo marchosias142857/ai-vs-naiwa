@@ -22,7 +22,6 @@ import type {
   LineOfSight,
   StepResult,
 } from './api';
-import { AutoAim } from './autoAim';
 import { stepVelocity, type MoveTuning } from './movement';
 import { PayloadStack } from './payloads';
 
@@ -255,7 +254,6 @@ class CombatWorldImpl implements CombatWorld {
   private readonly godMode: boolean;
   private readonly spreadRng: Random;
   private readonly critRng: Random;
-  private readonly autoAim: AutoAim;
   private readonly lineOfSight: LineOfSight;
   private readonly navigation: CombatWorldOptions['navigation'];
   private readonly route = { x: 0, y: 0 };
@@ -290,7 +288,6 @@ class CombatWorldImpl implements CombatWorld {
     this.godMode = options.godMode ?? false;
     this.lineOfSight = options.lineOfSight ?? alwaysVisible;
     this.navigation = options.navigation;
-    this.autoAim = new AutoAim(BALANCE.autoAimRetargetInterval, options.lineOfSight ?? alwaysVisible);
     this.result = { bulletSpawns: this.spawns, playerDead: false };
     this.fireCtx = { x: 0, y: 0, aim: 0, weapon: WEAPONS.pistol_basic, rng: this.spreadRng };
     // 预热：子弹记录与输出对象一次建好，开火时只复用。
@@ -672,19 +669,13 @@ class CombatWorldImpl implements CombatWorld {
       actor.base.x = this.dashDirection.x * r.rules.dashSpeed;
       actor.base.y = this.dashDirection.y * r.rules.dashSpeed;
     } else stepVelocity(actor.base, input.move, p.tuning, dt);
-    if (input.move.x !== 0 || input.move.y !== 0) {
+    // 朝向（ADR 0020）：正在瞄准 > 正在移动 > 保持上一次的朝向。玩家没有自动瞄准，aim 为 null 时朝面向开火。
+    if (input.aim && (input.aim.x !== 0 || input.aim.y !== 0)) {
+      actor.facing = Math.atan2(input.aim.y, input.aim.x);
+    } else if (input.move.x !== 0 || input.move.y !== 0) {
       const len = Math.hypot(input.move.x, input.move.y);
       this.lastMoveDir.x = input.move.x / len;
       this.lastMoveDir.y = input.move.y / len;
-    }
-
-    // 朝向：手动瞄准 > 自动瞄准的目标 > 最后的移动方向。
-    const target = this.autoAim.update('player', actor.x, actor.y, p.weapon.range, this.actors, this.time);
-    if (input.aim && (input.aim.x !== 0 || input.aim.y !== 0)) {
-      actor.facing = Math.atan2(input.aim.y, input.aim.x);
-    } else if (target) {
-      actor.facing = aimAngle(actor, target);
-    } else {
       actor.facing = Math.atan2(this.lastMoveDir.y, this.lastMoveDir.x);
     }
 

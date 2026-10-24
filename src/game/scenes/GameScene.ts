@@ -76,6 +76,9 @@ export class GameScene extends M1Scene {
       bullets: demo.bridge.bullets.activeCount,
       children: this.children.length,
       time: demo.sim.time,
+      enemies: demo.sim.actors
+        .filter((a) => a.team === 'enemy' && a.phase === 'active')
+        .map((a) => ({ x: a.x, y: a.y })),
     }));
     this.events.once('shutdown', () => {
       this.scene.stop(InputScene.KEY);

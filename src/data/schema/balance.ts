@@ -12,7 +12,7 @@ export const BalanceDefSchema = z.strictObject({
   deathRestartDelay: Seconds,
   /** 怪物之间保持的最小间距，像素（追击时互相推开）。 */
   enemySeparation: z.number().min(0),
-  /** 自动瞄准切换目标的最短间隔，秒，避免两个距离相近的目标之间来回抖动。 */
+  /** 自动瞄准切换目标的最短间隔，秒，避免两个距离相近的目标之间来回抖动。目前只留给以后的特殊武器（ADR 0020）。 */
   autoAimRetargetInterval: Seconds,
   /** 每波怪物的数量。M1 的灰盒房间循环使用这一组。 */
   waveSizes: z.array(z.int().min(1)).min(1).readonly(),

@@ -2,6 +2,7 @@ import { AUTO, Game, Scene } from 'phaser';
 import type { Physics } from 'phaser';
 import { POOL_SIZES } from '../../src/config';
 import { BALANCE } from '../../src/data/balance';
+import { CHARACTERS } from '../../src/data/characters';
 import { WEAPONS } from '../../src/data/weapons';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import { CombatBridge } from '../../src/game/world/CombatBridge';
@@ -25,7 +26,11 @@ class KnockbackScene extends Scene {
       sim.spawnPlayer('ai_proto', 160, 130);
       const enemyId = sim.spawnEnemy('naiwa_chaser', 280, 130);
       const bridge = new CombatBridge(this, sim);
-      const input = createInputFrame('touch'); // aim=null：使用真实自动瞄准。
+      const input = createInputFrame('touch');
+      // 玩家没有自动瞄准（ADR 0020）：从身体中心对准敌人的碰撞圆心。
+      const r = CHARACTERS.ai_proto.radius,
+        aimLength = Math.hypot(280 - 160, 130 - (130 - r));
+      input.aim = { x: (280 - 160) / aimLength, y: r / aimLength };
       const enemyImage = bridge.actors.slots.find((s) => s.id === enemyId)!.image;
       const enemyBody = enemyImage.body as Physics.Arcade.Body;
       let steps = 0,

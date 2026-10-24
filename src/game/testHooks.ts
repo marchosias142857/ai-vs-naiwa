@@ -38,6 +38,8 @@ export interface DemoProbe {
   bullets: number;
   children: number;
   time: number;
+  /** 活动阶段敌人的脚底位置；只给测试瞄准用（玩家没有自动瞄准，ADR 0020）。 */
+  enemies: { x: number; y: number }[];
 }
 let readDemo: (() => DemoProbe) | undefined;
 export function setDemoProbe(read: typeof readDemo): void {

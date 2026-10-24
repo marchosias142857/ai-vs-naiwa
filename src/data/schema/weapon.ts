@@ -44,7 +44,7 @@ export const WeaponDefSchema = z.strictObject({
   pellets: z.int().min(1),
   /** 弹速，像素/秒。 */
   bulletSpeed: PositiveNumber,
-  /** 射程，像素；子弹飞过这么远后消失，自动瞄准也只找这个范围内的目标。 */
+  /** 射程，像素；子弹飞过这么远后消失。敌人只在射程内开火。 */
   range: PositiveNumber,
   /** 子弹碰撞半径，像素。 */
   bulletRadius: PositiveNumber,

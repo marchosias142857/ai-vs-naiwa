@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { BALANCE } from '../../../src/data/balance';
-import { CHARACTERS } from '../../../src/data/characters';
 import { ENEMIES, type EnemyId } from '../../../src/data/enemies';
 import { NAVIGATION } from '../../../src/data/navigation';
 import type { EnemyDef } from '../../../src/data/schema';
@@ -50,14 +49,19 @@ describe('开火角度：弹道穿过目标碰撞圆心', () => {
       }
     });
 
-  it('玩家自动瞄准从身体中心指向目标碰撞圆心', () => {
+  it('玩家没有自动瞄准：不瞄准时朝面向开火，不会转向敌人', () => {
     const world = createCombatWorld({ seed: 1, bus: new EventBus<GameEvents>() });
     const pid = world.spawnPlayer('ai_proto', PLAYER.x, PLAYER.y);
     world.spawnEnemy('naiwa_scout', PLAYER.x + 70, PLAYER.y + 20);
     const input = createInputFrame();
-    for (let t = 0; t < BALANCE.spawnTelegraph + 0.1; t += DT) world.step(DT, input);
-    const r = CHARACTERS.ai_proto.radius;
-    expect(world.getActor(pid)!.facing).toBeCloseTo(Math.atan2(20 + r, 70), 9);
+    input.fire = true;
+    const angles: number[] = [];
+    for (let t = 0; t < BALANCE.spawnTelegraph + 0.5; t += DT)
+      for (const b of world.step(DT, input).bulletSpawns) if (b.team === 'player') angles.push(b.angle);
+    expect(world.getActor(pid)!.facing).toBe(0);
+    expect(angles.length).toBeGreaterThan(2);
+    // 手枪散布 ±2°：子弹始终朝面向（右）飞，不朝右下方的敌人。
+    for (const angle of angles) expect(Math.abs(angle)).toBeLessThanOrEqual(Math.PI / 90);
   });
 });
 
