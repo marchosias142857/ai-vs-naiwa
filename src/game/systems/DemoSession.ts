@@ -57,6 +57,7 @@ export class DemoSession {
       seed,
       bus,
       maxBullets: POOL_SIZES.bullets,
+      maxActors: POOL_SIZES.actors,
       godMode: god,
       playerRules: PLAYER_RULES,
       navigation: (x, y, tx, ty, radius, out) => this.arena?.steer(x, y, tx, ty, radius, out) ?? false,

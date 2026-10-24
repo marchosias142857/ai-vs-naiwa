@@ -9,6 +9,7 @@ export const TILE_SIZE = 16;
 /** 对象池预热数量（docs/ARCHITECTURE.md「对象池」）。 */
 export const POOL_SIZES = {
   bullets: 500,
+  actors: 31,
   fx: 100,
   damageText: 60,
 } as const;

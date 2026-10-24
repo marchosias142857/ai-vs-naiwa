@@ -12,7 +12,6 @@ class RoomScene extends Scene {
   create(): void {
     createPlaceholderTextures(this);
     this.physics.disableUpdate();
-    let arena: RoomArena;
     const bus = new EventBus<GameEvents>(),
       sim = createCombatWorld({
         seed: 1,
@@ -24,7 +23,7 @@ class RoomScene extends Scene {
       bridge = new CombatBridge(this, sim);
     const room = new DungeonRun(1, bus);
     room.enter(1);
-    arena = new RoomArena(this, bridge);
+    const arena = new RoomArena(this, bridge);
     arena.show(room, 1);
     let hits = 0;
     bus.on('bullet:hit', (e) => {
