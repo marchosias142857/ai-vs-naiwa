@@ -8,7 +8,7 @@ import { readProfile } from '../../services/profile';
 import { readSavedRun } from '../save/runStorage';
 import './demo.css';
 
-/** 灰盒功能菜单；正式版式待画面方案。 */
+/** 标题菜单；键盘/手柄导航与存档确认继续共用同一组控件。 */
 export class MenuPanel {
   private readonly root = document.createElement('section');
   private readonly navigation: MenuNavigation;
@@ -22,6 +22,9 @@ export class MenuPanel {
       saved.kind === 'full' ? { snapshot: saved.snapshot } : checkpoint ? { checkpoint } : {};
     this.root.id = 'demo-menu-panel';
     this.root.className = 'demo-dialog';
+    const brand = document.createElement('span');
+    brand.className = 'menu-brand';
+    brand.textContent = 'DA FEI YU · TIDAL RUINS';
     const title = document.createElement('h2');
     title.textContent = t('app.title');
     const subtitle = document.createElement('p');
@@ -36,11 +39,17 @@ export class MenuPanel {
       : t('menu.noSave');
     resume.disabled = !checkpoint;
     const help = document.createElement('p');
+    help.className = 'menu-help';
     help.textContent = t('menu.help');
     const controls = document.createElement('p');
     controls.className = 'menu-controls';
     controls.textContent = t('menu.controls');
+    const instructions = document.createElement('details'),
+      summary = document.createElement('summary');
+    summary.textContent = t('menu.instructions');
+    instructions.append(summary, controls);
     const stats = document.createElement('p');
+    stats.className = 'menu-stats';
     stats.textContent = t('menu.stats', { runs: profile.runs, wins: profile.wins, kills: profile.kills });
     const note = document.createElement('small');
     note.textContent = t('menu.note');
@@ -90,6 +99,7 @@ export class MenuPanel {
       { signal: this.abort.signal },
     );
     this.root.append(
+      brand,
       title,
       subtitle,
       start,
@@ -99,11 +109,14 @@ export class MenuPanel {
       cancel,
       confirm,
       help,
-      controls,
+      instructions,
       stats,
       note,
     );
-    addSettings(this.root, this.abort.signal, () => scene.scene.restart());
+    const settingsRow = document.createElement('div');
+    settingsRow.className = 'menu-settings';
+    addSettings(settingsRow, this.abort.signal, () => scene.scene.restart());
+    this.root.append(settingsRow);
     document.documentElement.lang = settings.language;
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);

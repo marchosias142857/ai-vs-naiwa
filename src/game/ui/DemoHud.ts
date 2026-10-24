@@ -1,3 +1,4 @@
+import { Vitals } from './Vitals';
 import { guardGameUi } from './guardGameUi';
 import { LOOT_RULES } from '../../data/loot';
 import { WEAPONS } from '../../data/weapons';
@@ -10,10 +11,12 @@ import type { DemoSession } from '../systems/DemoSession';
 import { weaponLabel } from './labels';
 import './demo.css';
 
-/** 灰盒 HUD：固定 DOM 对象；只有计数文字按 4 Hz 刷新，小地图只在房间状态变化时画。 */
+/** 战斗 HUD：固定 DOM 对象；只有计数文字按 4 Hz 刷新，小地图只在房间状态变化时画。 */
 export class DemoHud {
   saveAvailable = true;
   private readonly root = document.createElement('div');
+  private readonly vitals = new Vitals();
+  private readonly statusText = document.createElement('div');
   private readonly status = document.createElement('div');
   private readonly hint = document.createElement('div');
   private readonly map = document.createElement('canvas');
@@ -35,6 +38,7 @@ export class DemoHud {
   ) {
     this.root.id = 'demo-hud';
     this.status.className = 'demo-status';
+    this.status.append(this.vitals.root, this.statusText);
     this.hint.className = 'demo-hint';
     this.map.className = 'demo-map';
     this.map.width = this.map.height = 80;
@@ -152,16 +156,9 @@ export class DemoHud {
     });
     this.shop.disabled =
       r.coins < LOOT_RULES.shopPrice || ((p?.hp ?? 0) >= (p?.maxHp ?? 0) && r.energy >= r.maxEnergy);
-    this.status.textContent =
-      t('hud.resources', {
-        hp: p?.hp ?? 0,
-        maxHp: p?.maxHp ?? 0,
-        armor: r.armor,
-        maxArmor: r.maxArmor,
-        energy: Math.floor(r.energy),
-        maxEnergy: r.maxEnergy,
-        coins: r.coins,
-      }) +
+    this.vitals.update(p?.hp ?? 0, p?.maxHp ?? 0, r.armor, r.maxArmor, r.energy, r.maxEnergy);
+    this.statusText.textContent =
+      t('hud.coins', { coins: r.coins }) +
       '\n' +
       t('hud.progress', {
         floor: d.floor,
@@ -170,17 +167,20 @@ export class DemoHud {
         weapon: weaponLabel(s.sim.weaponId),
         skill: r.skillRemaining > 0 ? `${Math.ceil(r.skillRemaining)}s` : t('hud.ready'),
       });
-    this.status.textContent +=
+    this.statusText.textContent +=
       '\n' +
       t('hud.slots', {
         primary: weaponLabel('pistol_basic'),
         secondary: s.sim.secondaryWeapon ? weaponLabel(s.sim.secondaryWeapon) : t('hud.empty'),
       });
+    const controls = s.inputScene.controls;
+    const device =
+      controls?.frame.source === 'gamepad' ? 'gamepad' : controls?.touchVisible ? 'touch' : 'keyboard';
     this.hint.textContent = d.finished
       ? ''
       : t(
           d.room.kind === 'start'
-            ? 'hint.start'
+            ? `hint.start.${device}`
             : d.room.kind === 'exit'
               ? 'hint.exit'
               : d.room.kind === 'chest'
@@ -208,7 +208,7 @@ export class DemoHud {
       }
     for (const actor of s.sim.actors)
       if (actor.kind === 'naiwa_boss' && actor.phase !== 'dead') {
-        this.status.textContent += '\n' + t('hud.boss', { hp: Math.ceil(actor.hp), maxHp: actor.maxHp });
+        this.statusText.textContent += '\n' + t('hud.boss', { hp: Math.ceil(actor.hp), maxHp: actor.maxHp });
         break;
       }
     if (!this.saveAvailable) this.hint.textContent = t('save.unavailable');

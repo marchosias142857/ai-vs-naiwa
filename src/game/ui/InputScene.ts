@@ -21,8 +21,9 @@ export class InputScene extends Scene {
   private resumeLabel!: GameObjects.Text;
   private layoutScale = 0;
   private pauseLabel!: GameObjects.Text;
+  private countdownHint!: GameObjects.Text;
   private countdown!: GameObjects.Text;
-  /** 鼠标瞄准原点：由战斗场景在物理后发布的玩家身体中心（脚底 y - radius）。 */
+  /** 鼠标瞄准原点：由战斗场景在物理后发布的玩家身体中心。 */
   playerX = GAME_WIDTH / 2;
   playerY = GAME_HEIGHT / 2 + 40;
   constructor() {
@@ -43,6 +44,16 @@ export class InputScene extends Scene {
     this.pauseLabel = this.add.text(0, 0, 'Ⅱ', textStyle(12)).setOrigin(0.5).setDepth(DEPTH.touchControls);
     this.countdown = this.add
       .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, '', textStyle(RESUME_UI.fontSize))
+      .setOrigin(0.5)
+      .setDepth(DEPTH.touchControls)
+      .setVisible(false);
+    this.countdownHint = this.add
+      .text(
+        GAME_WIDTH / 2,
+        GAME_HEIGHT / 2 + RESUME_UI.captionOffset,
+        t('input.ready'),
+        textStyle(RESUME_UI.captionSize),
+      )
       .setOrigin(0.5)
       .setDepth(DEPTH.touchControls)
       .setVisible(false);
@@ -96,6 +107,20 @@ export class InputScene extends Scene {
     this.countdown
       .setText(String(Math.ceil(pause?.remaining ?? 0)))
       .setVisible(!!pause?.has('restore') && !paused && !pause.has('lifecycle'));
+    this.countdownHint.setVisible(this.countdown.visible);
+    if (this.countdown.visible) {
+      g.fillStyle(RESUME_UI.fill, 0.94).fillCircle(GAME_WIDTH / 2, GAME_HEIGHT / 2, RESUME_UI.radius);
+      g.lineStyle(2, RESUME_UI.ring, 0.9)
+        .beginPath()
+        .arc(
+          GAME_WIDTH / 2,
+          GAME_HEIGHT / 2,
+          RESUME_UI.radius,
+          -Math.PI / 2,
+          -Math.PI / 2 + Math.PI * 2 * ((pause?.remaining ?? 0) % 1),
+        )
+        .strokePath();
+    }
     this.pauseLabel.setVisible(canPause);
     this.pausePanel?.update(paused);
     this.resumeLabel.setVisible(paused && !this.pausePanel);

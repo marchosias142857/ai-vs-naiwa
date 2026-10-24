@@ -77,5 +77,12 @@ export const COMBAT_FX = {
     naiwa_boss: 0xff7799,
   },
 } as const;
-/** ADR 0019 的临时灰盒数字，正式视觉待 Claude 方案。 */
-export const RESUME_UI = { fontSize: 24 } as const;
+/** ADR 0019 的恢复倒计时圆环与数字。 */
+export const RESUME_UI = {
+  fontSize: 24,
+  radius: 28,
+  captionSize: 9,
+  captionOffset: 40,
+  fill: 0x081b29,
+  ring: 0x91f3e7,
+} as const;
