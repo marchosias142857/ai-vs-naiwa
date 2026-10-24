@@ -12,18 +12,41 @@ class RoomScene extends Scene {
   create(): void {
     createPlaceholderTextures(this);
     this.physics.disableUpdate();
+    let arena: RoomArena;
     const bus = new EventBus<GameEvents>(),
-      sim = createCombatWorld({ seed: 1, bus });
+      sim = createCombatWorld({
+        seed: 1,
+        bus,
+        godMode: true,
+        navigation: (x, y, tx, ty, radius, out) => arena.steer(x, y, tx, ty, radius, out),
+      });
     const p = sim.spawnPlayer('ai_proto', 140, 99),
       bridge = new CombatBridge(this, sim);
     const room = new DungeonRun(1, bus);
     room.enter(1);
-    const arena = new RoomArena(this, bridge);
+    arena = new RoomArena(this, bridge);
     arena.show(room, 1);
     let hits = 0;
     bus.on('bullet:hit', (e) => {
       if (e.targetId === null) hits++;
     });
+    window.navigationTest = () => {
+      const id = sim.spawnEnemy('naiwa_chaser', 210, 99),
+        input = createInputFrame();
+      let detour = false,
+        insideWall = false;
+      for (let i = 0; i < 360; i++) {
+        bridge.setInput(input);
+        this.physics.world.update((i * 1000) / 60, 1000 / 60);
+        this.physics.world.postUpdate();
+        const actor = sim.getActor(id)!;
+        detour ||= Math.abs(actor.y - 99) > 18;
+        insideWall ||= actor.x > 164 && actor.x < 188 && actor.y > 87 && actor.y < 111;
+      }
+      const actor = sim.getActor(id)!,
+        player = sim.getActor(p)!;
+      return { detour, insideWall, distance: Math.hypot(actor.x - player.x, actor.y - player.y) };
+    };
     window.roomTest = () => {
       const input = createInputFrame();
       input.move.x = 1;
@@ -59,6 +82,7 @@ class RoomScene extends Scene {
 }
 declare global {
   interface Window {
+    navigationTest: () => { detour: boolean; insideWall: boolean; distance: number };
     roomTest: () => {
       hits: number;
       x: number;

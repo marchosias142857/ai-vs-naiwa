@@ -59,6 +59,7 @@ export class DemoSession {
       maxBullets: POOL_SIZES.bullets,
       godMode: god,
       playerRules: PLAYER_RULES,
+      navigation: (x, y, tx, ty, radius, out) => this.arena?.steer(x, y, tx, ty, radius, out) ?? false,
       lineOfSight: (x1, y1, x2, y2) => this.arena?.lineOfSight(x1, y1, x2, y2) ?? true,
     });
     this.sim.spawnPlayer('ai_proto', B.x + B.width / 2, B.y + B.height / 2);

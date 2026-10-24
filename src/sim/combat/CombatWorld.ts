@@ -218,6 +218,8 @@ class CombatWorldImpl implements CombatWorld {
   private readonly critRng: Random;
   private readonly autoAim: AutoAim;
   private readonly lineOfSight: LineOfSight;
+  private readonly navigation: CombatWorldOptions['navigation'];
+  private readonly route = { x: 0, y: 0 };
   readonly resources: PlayerResources;
   secondaryWeapon: WeaponId = 'rifle_auto';
   private readonly dashDirection = { x: 1, y: 0 };
@@ -245,6 +247,7 @@ class CombatWorldImpl implements CombatWorld {
     this.maxBullets = options.maxBullets ?? DEFAULT_MAX_BULLETS;
     this.godMode = options.godMode ?? false;
     this.lineOfSight = options.lineOfSight ?? alwaysVisible;
+    this.navigation = options.navigation;
     this.autoAim = new AutoAim(BALANCE.autoAimRetargetInterval, options.lineOfSight ?? alwaysVisible);
     this.result = { bulletSpawns: this.spawns, playerDead: false };
     this.fireCtx = { x: 0, y: 0, aim: 0, weapon: WEAPONS.pistol_basic, rng: this.spreadRng };
@@ -722,6 +725,20 @@ class CombatWorldImpl implements CombatWorld {
             speedScale = phase.speedScale;
           }
       moveEnemy(actor.base, actor, target, this.actors, def, actor.brain, dt, speedScale);
+      // 只调整向目标接近的自主移动；炮台、后退和锁定冲锋保持原行为，击退稍后叠加。
+      if (
+        target &&
+        def.behavior !== 'charge_dash' &&
+        actor.base.x * (target.x - actor.x) + actor.base.y * (target.y - actor.y) > 0 &&
+        this.navigation?.(actor.x, actor.y, target.x, target.y, actor.radius, this.route)
+      ) {
+        const dx = this.route.x - actor.x,
+          dy = this.route.y - actor.y,
+          distance = Math.hypot(dx, dy);
+        const speed = Math.hypot(actor.base.x, actor.base.y);
+        actor.base.x = distance ? (dx / distance) * speed : 0;
+        actor.base.y = distance ? (dy / distance) * speed : 0;
+      }
       actor.warning = actor.brain.stage === 'windup';
       if (actor.base.x !== 0 || actor.base.y !== 0) actor.facing = Math.atan2(actor.base.y, actor.base.x);
       if (!target || !attack || actor.brain.cooldown > 0) continue;
