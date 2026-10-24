@@ -26,6 +26,7 @@ test('demo：默认地牢入口、行动按钮、真实走门、清房与暂停'
   expect(await page.evaluate(() => window.__AVN__!.demo!.time)).toBe(time);
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !window.__AVN__!.input!.manualPaused);
+  await page.screenshot({ path: info.outputPath('demo-feedback.png'), scale: 'css' });
   for (let wave = 0; wave < 2; wave++) {
     await page.waitForFunction(() => window.__AVN__!.demo!.alive > 0);
     await page.keyboard.press('F2');
