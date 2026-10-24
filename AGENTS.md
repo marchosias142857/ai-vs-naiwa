@@ -106,6 +106,7 @@ docs/              GDD、ARCHITECTURE、ROADMAP、DATA_SCHEMA、ART_GUIDE、adr/
 
 ## 8. 硬规则
 
+- 图片与其他二进制素材必须通过文件通道上传：优先已认证的 Git CLI；不可用时用 GitHub 网页文件选择器按本地路径上传到功能分支。禁止把图片 Base64 / data URL 填进 Create Blob、Create Tree、对话或审批工具参数；禁止拆分大段编码重试。上传后核对远端文件的 Git blob SHA / 字节数与本地一致。详见 `docs/ASSET_UPLOADS.md`。
 - 禁止直接推送 `main`；禁止改写对方的分支；PR 一律 squash 合并。
 - 单个 PR 尽量 ≤ 400 行改动（不含数据与生成文件），大功能拆分。
 - **共享契约变更**必须附 `docs/adr/NNNN-标题.md`，负责人批准后合并。

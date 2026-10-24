@@ -18,6 +18,8 @@
 
 PR #82 已将完整 demo 集成到 main 并部署：一局流程、存档 v2、触屏轮盘首发等待、12 武器含近战、大肥鱼动画、独立武器、场景美术、菜单/HUD 和音效。PR #83（`gpt/hd-presentation`）继续提升渲染清晰度、像素动作与手机射击，见 [本轮验证](testing/hd-presentation.md)；此前交付范围见 [demo 记录](testing/demo-production-acceptance.md)。上表是长期路线与默认分工；当前 demo 以 AGENTS.md 的阶段授权为准，由 GPT 独立实现和自审。
 
+本轮按负责人要求提前接入最小主城：空大厅、一扇地牢门、主城/续玩双入口、新首页插画与武器品质。它不包含 M6 的宝石、角色选择、天赋或图鉴；验收见 [主城入口](testing/town-entry.md)。
+
 这不等于 M0–M5 所有长期验收项均完成：真机试玩、长时间性能、Tiled 资源管线和背景音乐等仍按范围记录。所有 PR 由负责人合并，只有负责人宣布 demo 完成后才进入 GPT 与 Claude 合作细化阶段。
 
 ## M0 地基记录（历史）

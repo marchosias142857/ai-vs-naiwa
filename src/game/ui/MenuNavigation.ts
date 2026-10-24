@@ -3,7 +3,7 @@ import { INPUT_UI } from '../fx/params';
 
 /** 菜单手柄边沿在渲染帧处理；进入菜单需松开确认键，避免 RT 连射穿透。 */
 export class MenuNavigation {
-  private readonly buttons: HTMLButtonElement[];
+  private readonly buttons: HTMLElement[];
   private active = false;
   private armed = false;
   private held = false;
@@ -13,7 +13,7 @@ export class MenuNavigation {
     private readonly root: HTMLElement,
     private readonly scene: Scene,
   ) {
-    this.buttons = Array.from(root.querySelectorAll('button'));
+    this.buttons = Array.from(root.querySelectorAll<HTMLElement>('button, summary'));
   }
   update(active: boolean): void {
     if (!active) {
@@ -52,7 +52,7 @@ export class MenuNavigation {
     for (let i = 0; i < this.buttons.length; i++) {
       this.index = (this.index + direction + this.buttons.length) % this.buttons.length;
       const b = this.buttons[this.index]!;
-      if (!b.hidden && !b.disabled) {
+      if (!b.hidden && !(b instanceof HTMLButtonElement && b.disabled) && b.getClientRects().length > 0) {
         b.focus({ preventScroll: false });
         return;
       }

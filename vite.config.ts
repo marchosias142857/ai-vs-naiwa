@@ -14,7 +14,7 @@ export default defineConfig({
       scope: './',
       manifest: {
         id: './',
-        name: 'AI 大战奶蛙',
+        name: 'AI娘大战奶蛙',
         short_name: 'AI VS NAIWA',
         lang: 'zh-CN',
         start_url: './',
@@ -30,7 +30,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,svg,json,woff2}'],
+        globPatterns: ['**/*.{js,css,html,png,webp,svg,json,woff2}'],
         // 源码映射和音乐不进入离线包；超出单文件预算时让构建失败，避免漏缓存。
         globIgnores: ['**/*.map', '**/music/**', 'icons/placeholder.svg'],
         navigateFallback: 'index.html',

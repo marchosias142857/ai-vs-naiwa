@@ -22,12 +22,12 @@ export function preloadDemoArt(scene: Scene): void {
   scene.load.image(ART.weapons, `${base}weapons.png`);
   scene.load.image(ART.enemies, `${base}enemies.png`);
   scene.load.image(ART.environment, `${base}environment.png`);
-  scene.load.image(ART.title, `${base}title.png`);
+  scene.load.image(ART.title, `${base}title-confrontation-v1.webp`);
   scene.load.image(ART.doors, `${base}doors.png`);
 }
 export function installDemoArt(scene: Scene): void {
   // 仅游戏图集保留像素边缘；画布与文字仍按完整渲染分辨率绘制。
-  for (const key of [ART.weapons, ART.enemies, ART.environment, ART.doors])
+  for (const key of [ART.weapons, ART.enemies, ART.environment, ART.doors, ART.title])
     if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Textures.FilterMode.NEAREST);
   const add = (atlas: string, name: string, rect: readonly [number, number, number, number]) => {
     if (scene.textures.exists(atlas) && !scene.textures.get(atlas).has(name))

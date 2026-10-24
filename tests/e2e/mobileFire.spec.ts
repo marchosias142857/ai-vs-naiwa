@@ -1,3 +1,4 @@
+import { startAdventure } from './helpers/town';
 import { expect, test } from '@playwright/test';
 import { INPUT_UI as UI } from '../../src/game/fx/params';
 
@@ -5,7 +6,7 @@ for (const id of [-1, -42, -2147483648]) {
   test(`有符号触点 ${id}：右轮盘拖拽和中心长按都实际出弹`, async ({ page, isMobile }, info) => {
     test.skip(!isMobile);
     await page.goto('/?seed=42&god=1');
-    await page.locator('#start-run').tap();
+    await startAdventure(page);
     await page.waitForFunction(() => !!window.__AVN__?.demo && !!window.__AVN__?.input);
     const box = (await page.locator('#game canvas').boundingBox())!;
     const left = { id: 5, x: box.x + 100, y: box.y + box.height - 100 };
@@ -67,7 +68,7 @@ test('正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹', 
 }, info) => {
   test.skip(!isMobile || browserName !== 'chromium', '使用原生多点触屏事件');
   await page.goto('/?seed=42&god=1');
-  await page.locator('#start-run').tap();
+  await startAdventure(page);
   await page.waitForFunction(() => !!window.__AVN__?.demo && !!window.__AVN__?.input);
   const box = (await page.locator('#game canvas').boundingBox())!;
   const cdp = await context.newCDPSession(page);
@@ -107,7 +108,7 @@ test('正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹', 
 test('手机基础手枪按住可出弹；能量不足有提示并能切回手枪', async ({ page, isMobile }, info) => {
   test.skip(!isMobile);
   await page.goto('/?seed=42&weapon=rifle_auto&god=1');
-  await page.locator('#start-run').tap();
+  await startAdventure(page);
   await page.waitForFunction(() => !!window.__AVN__?.demo && !!window.__AVN__?.input);
   await page.keyboard.press('Escape');
   await expect(page.locator('#demo-pause')).toBeVisible();

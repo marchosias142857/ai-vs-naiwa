@@ -51,3 +51,16 @@
 ## 契约记录
 
 基础约定见 ADR 0002；demo 扩展见 ADR 0006–0017；集中评审后的空槽/掉落/缓存字段见 ADR 0018。新增字段或枚举需要 ADR，单纯新增数据条目不需要。
+
+## 武器品质展示（主城入口迭代）
+
+武器已有必填字段 `rarity`：`white | green | blue | purple | orange | red`。对应白、绿、蓝、紫、橙、红品质。品质作为武器内置元数据，在装备栏和拾取提示展示，不影响伤害、能耗和掉落概率；当前十二件武器覆盖白到橙，红色留作扩展。
+
+| 品质 | 当前武器 ID                                |
+| ---- | ------------------------------------------ |
+| 白   | pistol_basic                               |
+| 绿   | rifle_auto、shotgun_fan、cutlass           |
+| 蓝   | twin_smg、burst_rifle、wide_staff          |
+| 紫   | sniper_pierce、needle_rifle、anchor_hammer |
+| 橙   | ring_staff、heavy_cannon                   |
+| 红   | 暂无                                       |

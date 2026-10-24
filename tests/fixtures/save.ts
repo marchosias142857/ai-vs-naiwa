@@ -14,7 +14,7 @@ import { SAVE_REQUEST, LIFECYCLE_PAUSE } from '../../src/game/world/combatPause'
 class Bootstrap extends Scene {
   create(): void {
     createPlaceholderTextures(this);
-    this.scene.start('Menu');
+    this.scene.start(new URLSearchParams(location.search).get('scene') === 'Game' ? 'Game' : 'Menu');
   }
 }
 class SaveMenu extends Scene {

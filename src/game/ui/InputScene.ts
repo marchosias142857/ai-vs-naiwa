@@ -17,6 +17,7 @@ import { ResumeCaption } from './ResumeCaption';
 export class InputScene extends Scene {
   static readonly KEY = 'InputUI';
   controls!: InputController;
+  private hub = false;
   private actions?: ActionButtons;
   private pausePanel?: PausePanel;
   private graphics!: GameObjects.Graphics;
@@ -31,11 +32,12 @@ export class InputScene extends Scene {
   constructor() {
     super(InputScene.KEY);
   }
-  create(data?: { demo?: boolean }): void {
+  create(data?: { demo?: boolean; hub?: boolean }): void {
     configureCamera(this);
     // scene.restart 会复用场景实例；布局缓存必须清掉，否则同尺寸重来时跳过布局，暂停符号停在 (0, 0)。
     this.layoutScale = 0;
-    const battle = this.scene.get(SCENES.game);
+    this.hub = !!data?.hub;
+    const battle = this.scene.get(this.hub ? SCENES.hub : SCENES.game);
     const battleInputEnabled = battle.input.enabled;
     // UI 统一拥有指针，控件触摸不能穿透到战斗场景。
     battle.input.enabled = false;
@@ -68,7 +70,7 @@ export class InputScene extends Scene {
       } else battle.scene.pause();
     };
     this.controls = new InputController(this, battle, togglePause);
-    this.pausePanel = data?.demo ? new PausePanel(this, battle, togglePause) : undefined;
+    this.pausePanel = data?.demo || this.hub ? new PausePanel(this, battle, togglePause) : undefined;
     this.actions = data?.demo ? new ActionButtons(this, this.controls) : undefined;
     setInputProbe(() => ({
       ...this.controls.frame,
@@ -149,18 +151,20 @@ export class InputScene extends Scene {
         t.moveId !== null,
         t.moveId !== null ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
       );
-      const x = GAME_WIDTH - UI.aimWheel.inset / s,
-        y = GAME_HEIGHT - UI.aimWheel.inset / s,
-        held = t.fireId !== null,
-        alpha = held ? 1 : UI.joystick.idleAlpha;
-      this.circle(x, y, UI.aimWheel.radius / s, held, alpha);
-      this.circle(x + t.fireDx / s, y + t.fireDy / s, UI.aimWheel.knobRadius / s, held, alpha);
-      const r = UI.aimWheel.iconRadius / s;
-      g.lineStyle(UI.outline / s, UI.look.pressedColor, alpha)
-        .lineBetween(x - r, y, x + r, y)
-        .lineBetween(x, y - r, x, y + r);
+      if (!this.hub) {
+        const x = GAME_WIDTH - UI.aimWheel.inset / s,
+          y = GAME_HEIGHT - UI.aimWheel.inset / s,
+          held = t.fireId !== null,
+          alpha = held ? 1 : UI.joystick.idleAlpha;
+        this.circle(x, y, UI.aimWheel.radius / s, held, alpha);
+        this.circle(x + t.fireDx / s, y + t.fireDy / s, UI.aimWheel.knobRadius / s, held, alpha);
+        const r = UI.aimWheel.iconRadius / s;
+        g.lineStyle(UI.outline / s, UI.look.pressedColor, alpha)
+          .lineBetween(x - r, y, x + r, y)
+          .lineBetween(x, y - r, x, y + r);
+      }
     }
-    const mouse = c.frame.source === 'keyboard' && c.frame.aim !== null && !paused && !locked;
+    const mouse = !this.hub && c.frame.source === 'keyboard' && c.frame.aim !== null && !paused && !locked;
     this.game.canvas.style.cursor = mouse ? 'none' : '';
     if (mouse) {
       const x = Math.floor(c.mouse.x / s) + 0.5,

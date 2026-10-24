@@ -1,3 +1,4 @@
+import { startAdventure } from './helpers/town';
 import { expect, test } from '@playwright/test';
 import type { RunSnapshot } from '../../src/game/save/RunSnapshot';
 
@@ -8,7 +9,7 @@ test('生产入口：战斗暂停保存后刷新，正式校验器继续原局�
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/?seed=42&god=1');
-  await page.locator('#start-run').click();
+  await startAdventure(page);
   await page.waitForFunction(() => !!window.__AVN__?.demo);
   const link = await page.evaluate(() => window.__AVN__!.demo!.links[0]!);
   const key = link.dx > 0 ? 'd' : link.dx < 0 ? 'a' : link.dy > 0 ? 's' : 'w';

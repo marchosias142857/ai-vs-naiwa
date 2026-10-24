@@ -1,3 +1,4 @@
+import { startAdventure } from './helpers/town';
 import { INPUT_UI } from '../../src/game/fx/params';
 import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
@@ -65,7 +66,7 @@ for (const mode of ['1', 'combat']) {
     await page.keyboard.press('Escape');
     await page.locator('#pause-menu').click();
     await expect(panel).toHaveCount(0);
-    await page.locator('#start-run').click();
+    await startAdventure(page);
     await expect(panel).toHaveCount(1);
     expect(errors).toEqual([]);
   });

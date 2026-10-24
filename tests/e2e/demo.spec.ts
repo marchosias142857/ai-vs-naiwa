@@ -1,3 +1,4 @@
+import { startAdventure, enterDungeon } from './helpers/town';
 import { INPUT_UI } from '../../src/game/fx/params';
 import { installPad, padButton, type PadWindow } from './helpers/gamepad';
 import { expect, test } from '@playwright/test';
@@ -126,8 +127,9 @@ test('demo：手柄菜单松开再确认，暂停继续后能切回键盘', asyn
   await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
   await expect(page.locator('#start-run')).toBeFocused();
   await padButton(page, 0, true);
-  await page.waitForFunction(() => window.__AVN__?.scene === 'Game');
+  await page.waitForFunction(() => window.__AVN__?.scene === 'Hub');
   await padButton(page, 0, false);
+  await enterDungeon(page);
   await padButton(page, 9, true);
   await page.waitForFunction(() => window.__AVN__!.input!.manualPaused);
   await padButton(page, 9, false);
@@ -143,14 +145,17 @@ test('demo：手柄菜单松开再确认，暂停继续后能切回键盘', asyn
 
 test('demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用', async ({ page }, info) => {
   await page.goto('/?seed=42');
+  await page.locator('#demo-menu-panel summary').click();
   await page.locator('#settings-flashes').click();
   await page.locator('#settings-sound').click();
   await page.locator('#settings-language').click();
-  await expect(page.locator('#start-run')).toHaveText('New adventure');
+  await expect(page.locator('#start-run')).toHaveText('Return to town');
   await page.reload();
+  await page.locator('#demo-menu-panel summary').click();
   await expect(page.locator('#settings-flashes')).toHaveText('Hit flashes: Off');
   await expect(page.locator('#settings-sound')).toHaveText('Sound: Off');
-  await page.locator('#start-run').click();
+  await page.locator('#demo-menu-panel summary').click();
+  await startAdventure(page);
   await expect(page.locator('.demo-status')).toContainText('HP 6/6');
   await page.keyboard.press('Escape');
   await expect(page.locator('#pause-menu')).toHaveText('Menu (save adventure)');
@@ -250,32 +255,6 @@ test('demo：存储被禁用仍可开局，明确显示未保存状态', async (
   await page.keyboard.down('d');
   await page.waitForFunction((x) => window.__AVN__!.demo!.x > x + 5, x);
   await page.keyboard.up('d');
-});
-
-test('demo：新局须确认，取消和重复 Enter 不覆盖检查点', async ({ page }, info) => {
-  await page.goto('/?scene=Game&seed=42');
-  await page.waitForFunction(() => !!localStorage.getItem('avn.run.v2'));
-  await page.goto('/?seed=42');
-  // 离开战斗页的 pagehide 会先写最新局面；比较菜单操作前后的这份存档。
-  const saved = await page.evaluate(() => localStorage.getItem('avn.run.v2'));
-  await expect(page.locator('#confirm-new-run')).toBeHidden();
-  await page.locator('#start-run').click();
-  await expect(page.locator('#start-run')).toBeHidden();
-  await expect(page.locator('#continue-run')).toBeHidden();
-  await expect(page.locator('#confirm-new-run')).toBeVisible();
-  await page.screenshot({ path: info.outputPath('demo-confirm.png'), scale: 'css' });
-  expect(await page.evaluate(() => localStorage.getItem('avn.run.v2'))).toBe(saved);
-  await page.locator('#cancel-new-run').click();
-  await expect(page.locator('#start-run')).toBeVisible();
-  await page.locator('#start-run').focus();
-  await page.keyboard.down('Enter');
-  await expect(page.locator('#cancel-new-run')).toBeFocused();
-  await page.keyboard.down('Enter');
-  await page.keyboard.up('Enter');
-  expect(await page.evaluate(() => localStorage.getItem('avn.run.v2'))).toBe(saved);
-  await page.locator('#confirm-new-run').click();
-  await page.waitForFunction(() => window.__AVN__?.demo?.floor === 1);
-  await expect(page.locator('.demo-status')).toContainText('空槽');
 });
 
 test('demo：按住摇杆时，第二指按下技能立即生效，无需松手', async ({ page, context }) => {

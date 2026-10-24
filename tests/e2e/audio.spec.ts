@@ -1,3 +1,4 @@
+import { startAdventure } from './helpers/town';
 import { expect, test } from '@playwright/test';
 import { installPad, padButton } from './helpers/gamepad';
 
@@ -55,7 +56,7 @@ test('真实 AudioContext：手柄暂停仅静音，后台和退出才 suspend�
   });
   const stats = () => page.evaluate(() => window.audioStats()!);
   await page.goto('/?seed=42&god=1');
-  await page.locator('#start-run').click(); // 真实手势解锁；此后只用手柄。
+  await startAdventure(page); // 真实手势解锁；此后只用手柄。
   await page.waitForFunction(() => window.audioStats()?.state === 'running');
   await padButton(page, 7, true);
   await page.waitForFunction(() => (window.audioStats()?.ramps ?? 0) > 0);

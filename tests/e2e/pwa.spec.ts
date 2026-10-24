@@ -16,6 +16,7 @@ const mime: Record<string, string> = {
   '.css': 'text/css',
   '.webmanifest': 'application/manifest+json',
   '.png': 'image/png',
+  '.webp': 'image/webp',
   '.svg': 'image/svg+xml',
 };
 
@@ -69,7 +70,7 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
     scope: string;
     icons: { src: string }[];
   };
-  expect(parsed).toMatchObject({ name: 'AI 大战奶蛙', display: 'standalone', orientation: 'landscape' });
+  expect(parsed).toMatchObject({ name: 'AI娘大战奶蛙', display: 'standalone', orientation: 'landscape' });
   expect(new URL(parsed.start_url, manifest.url).href).toBe(url);
   expect(new URL(parsed.scope, manifest.url).href).toBe(url);
   for (const icon of parsed.icons) {
@@ -81,6 +82,13 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
   await context.setOffline(true);
   await page.reload();
   await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
+  const title = await page.evaluate(async () => {
+    const response = await fetch('assets/demo/title-confrontation-v1.webp');
+    return { ok: response.ok, size: (await response.blob()).size };
+  });
+  expect(title.ok).toBe(true);
+  expect(title.size).toBeGreaterThan(1000);
+  expect(title.size).toBeLessThan(2 * 1024 * 1024);
   await page.close();
   const reopened = await context.newPage();
   await reopened.goto(`${url}?scene=Game&seed=7`);
@@ -95,7 +103,6 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
         'weapons',
         'enemies',
         'environment',
-        'title',
         'doors',
       ].map(async (name) => {
         const response = await fetch(`assets/demo/${name}.png`);
