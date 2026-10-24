@@ -37,6 +37,8 @@ export class InputScene extends Scene {
       .setDepth(DEPTH.touchControls);
     this.pauseLabel = this.add.text(0, 0, 'Ⅱ', textStyle(12)).setOrigin(0.5).setDepth(DEPTH.touchControls);
     this.controls = new InputController(this, battle, () => {
+      // 楼层选择与结算持有物理暂停；此时不能再叠加手动 scene.pause。
+      if (battle.physics.world.isPaused) return;
       this.controls.reset();
       if (battle.scene.isPaused()) {
         const now = Date.now();

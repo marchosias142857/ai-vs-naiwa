@@ -29,7 +29,7 @@ async function aroundPlayer(page: Page) {
 
 test('调试模式：F1 切换碰撞框，F2 清房', async ({ page }) => {
   const errors = collectErrors(page);
-  await page.goto('/?scene=Game&seed=42&debug=1');
+  await page.goto('/?scene=Game&room=arena&seed=42&debug=1');
   await until(page, () => !!window.__AVN__?.combat && !!window.__AVN__.debug);
   expect(await page.evaluate(() => window.__AVN__!.debug)).toEqual({ hitboxes: false, godMode: false });
 
@@ -58,7 +58,7 @@ test('调试模式：F1 切换碰撞框，F2 清房', async ({ page }) => {
 
 test('非调试模式：F1 / F2 不生效，没有调试探针', async ({ page }) => {
   const errors = collectErrors(page);
-  await page.goto('/?scene=Game&seed=42');
+  await page.goto('/?scene=Game&room=arena&seed=42');
   await until(page, () => !!window.__AVN__?.combat);
   expect(await page.evaluate(() => window.__AVN__!.debug)).toBeUndefined();
   await until(page, () => window.__AVN__!.combat!.alive > 0);
@@ -76,7 +76,7 @@ test('非调试模式：F1 / F2 不生效，没有调试探针', async ({ page }
 test('?god=1：被怪物围住也不掉血', async ({ page }) => {
   test.setTimeout(40_000);
   const errors = collectErrors(page);
-  await page.goto('/?scene=Game&seed=42&god=1');
+  await page.goto('/?scene=Game&room=arena&seed=42&god=1');
   await until(page, () => !!window.__AVN__?.combat);
   // 同一种子不开无敌时，玩家大约在 8 秒（sim 时间）内死亡；这里多等一些。
   await until(page, () => window.__AVN__!.combat!.time >= 12, 30_000);

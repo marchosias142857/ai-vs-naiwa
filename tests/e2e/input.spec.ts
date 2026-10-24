@@ -2,7 +2,7 @@ import { INPUT_UI as UI } from '../../src/game/fx/params';
 import { expect, test } from '@playwright/test';
 
 test('键鼠、暂停恢复、后台清空；更新提示在暂停键下方', async ({ page }, info) => {
-  await page.goto('/?scene=Game&seed=42');
+  await page.goto('/?scene=Game&room=arena&seed=42');
   await page.waitForFunction(() => window.__AVN__?.input);
   await page.keyboard.down('KeyW');
   await page.keyboard.down('KeyD');
@@ -32,7 +32,7 @@ test('键鼠、暂停恢复、后台清空；更新提示在暂停键下方', as
 
 test('触屏多指移动和射击互不串扰，取消释放；CSS 大小与缩放', async ({ page, context, isMobile }, info) => {
   test.skip(!isMobile);
-  await page.goto('/?scene=Game&seed=42');
+  await page.goto('/?scene=Game&room=arena&seed=42');
   await page.waitForFunction(() => window.__AVN__?.input);
   const b = (await page.locator('canvas').boundingBox())!;
   const cdp = await context.newCDPSession(page);
@@ -88,7 +88,7 @@ test('Phaser 手柄插件：摇杆、RT、Start 与断连清零', async ({ page 
       pad.timestamp = performance.now();
     });
   });
-  await page.goto('/?scene=Game&seed=42');
+  await page.goto('/?scene=Game&room=arena&seed=42');
   await page.waitForFunction(() => window.__AVN__?.input);
   await page.waitForTimeout(100);
   await page.evaluate(() =>

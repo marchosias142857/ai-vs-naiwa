@@ -13,6 +13,36 @@ export interface TestHooks {
   readonly combat?: CombatProbe;
   /** 调试工具（#17）的状态；只在 `?debug=1` 时存在。 */
   readonly debug?: DebugProbe;
+  readonly demo?: DemoProbe;
+}
+
+export interface DemoProbe {
+  floor: number;
+  room: number;
+  kind: string;
+  phase: string;
+  settled: boolean;
+  locked: boolean;
+  wave: number;
+  alive: number;
+  kills: number;
+  x: number;
+  y: number;
+  hp: number;
+  armor: number;
+  energy: number;
+  weapon: string;
+  skill: number;
+  offers: string[];
+  links: { id: number; dx: number; dy: number }[];
+  bullets: number;
+  children: number;
+  time: number;
+}
+let readDemo: (() => DemoProbe) | undefined;
+export function setDemoProbe(read: typeof readDemo): void {
+  readDemo = read;
+  setTestHooks({});
 }
 
 interface DebugProbe {
@@ -91,6 +121,9 @@ export function setTestHooks(patch: Partial<TestHooks>): void {
     ...patch,
     get input() {
       return readInput?.();
+    },
+    get demo() {
+      return readDemo?.();
     },
     get debug() {
       return readDebug?.();
