@@ -72,7 +72,11 @@ export class CombatActors {
     image.setOrigin(0.5, 1).setScale(1).setAngle(0).setAlpha(1).clearTint();
     image.enableBody(true, actor.x, actor.y, true, true);
     image.setCircle(actor.radius, image.width / 2 - actor.radius, image.height - actor.radius);
-    (image.body as Physics.Arcade.Body).updateFromGameObject();
+    const body = image.body as Physics.Arcade.Body;
+    body.updateFromGameObject();
+    // 预警体不跑 preUpdate；激活当步却会跑 postUpdate，不能补出旧矩形到圆心的偏移。
+    body.prev.copy(body.position);
+    body.prevFrame.copy(body.position);
     image.setCollideWorldBounds(true);
     return slot;
   }

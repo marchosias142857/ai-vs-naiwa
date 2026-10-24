@@ -18,5 +18,5 @@ export interface RunSnapshot extends SessionSnapshot {
   meta: { seed: number; build: string; dataHash: string; savedAt: number };
 }
 /** Claude 的 sim 按字段校验器接入这里；未接入时拒绝完整恢复，走独立入口兜底。 */
-export type SimDecoder = (value: unknown) => SimSnapshot | null;
+export type SimDecoder = (value: unknown, seed: number) => SimSnapshot | null;
 export const pendingSimDecoder: SimDecoder = () => null;

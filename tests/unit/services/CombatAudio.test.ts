@@ -14,6 +14,7 @@ vi.mock('../../../src/services/Sound', () => ({
 }));
 
 it('场景/物理暂停叠加时均恢复才解除静音；shutdown 注销监听并挂起音频', () => {
+  vi.clearAllMocks();
   const events = new EventEmitter(),
     world = Object.assign(new EventEmitter(), { isPaused: false }),
     bus = new EventBus<GameEvents>();
@@ -40,4 +41,15 @@ it('场景/物理暂停叠加时均恢复才解除静音；shutdown 注销监听
   events.emit('resume');
   world.emit('resume');
   expect(continueSound).toHaveBeenCalledTimes(2);
+});
+
+it('恢复倒计时先于音频订阅安装时，初始状态仍静音且不调用 resume', () => {
+  vi.clearAllMocks();
+  const events = new EventEmitter(),
+    world = Object.assign(new EventEmitter(), { isPaused: true });
+  const scene = { events, physics: { world }, sys: { isPaused: () => false } } as unknown as Scene;
+  new CombatAudio(scene, new EventBus<GameEvents>());
+  expect(pauseSound).toHaveBeenCalledOnce();
+  expect(continueSound).not.toHaveBeenCalled();
+  events.emit('shutdown');
 });

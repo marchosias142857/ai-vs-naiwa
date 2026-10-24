@@ -11,6 +11,13 @@ import { DemoHud } from '../ui/DemoHud';
 import { DemoObjects } from '../world/DemoObjects';
 import { setDemoProbe, setTestHooks } from '../testHooks';
 import { M1Scene } from './M1Scene';
+import type { SessionSnapshot } from '../save/RunSnapshot';
+
+/** snapshot 来自菜单已校验的恢复结果；原始存储 JSON 不直接进入场景。 */
+export interface GameStart {
+  checkpoint?: FloorCheckpoint;
+  snapshot?: SessionSnapshot;
+}
 
 /** 默认进入完整 demo；?room=arena 保留 M1 手感与接口回归场景。 */
 export class GameScene extends M1Scene {
@@ -20,7 +27,7 @@ export class GameScene extends M1Scene {
   private objects?: DemoObjects;
   private tools?: DebugTools;
   private persistence?: RunPersistence;
-  override create(data?: { checkpoint?: FloorCheckpoint }): void {
+  override create(data?: GameStart): void {
     this.demo = undefined;
     this.stress = undefined;
     const params = debugParams();
@@ -33,7 +40,8 @@ export class GameScene extends M1Scene {
       return;
     }
     const checkpoint = parseCheckpoint(data?.checkpoint) ?? undefined;
-    const seed = checkpoint?.seed ?? params.seed ?? freshSeed();
+    const snapshot = data?.snapshot;
+    const seed = snapshot?.entry.seed ?? checkpoint?.seed ?? params.seed ?? freshSeed();
     this.scene.launch(InputScene.KEY, { demo: true });
     const ui = this.scene.get(InputScene.KEY) as InputScene;
     const demo = (this.demo = new DemoSession(
@@ -44,9 +52,10 @@ export class GameScene extends M1Scene {
       params.god,
       params.weapon,
       checkpoint,
+      snapshot,
     ));
     new CombatAudio(this, this.bus);
-    this.persistence = new RunPersistence(demo);
+    this.persistence = new RunPersistence(this, demo);
     this.persistence.update();
     this.hud = new DemoHud(this, demo);
     this.objects = new DemoObjects(this, demo);
@@ -76,6 +85,8 @@ export class GameScene extends M1Scene {
       bullets: demo.bridge.bullets.activeCount,
       children: this.children.length,
       time: demo.sim.time,
+      resumeRemaining: demo.pause.remaining,
+      physicsPaused: this.physics.world.isPaused,
       enemies: demo.sim.actors
         .filter((a) => a.team === 'enemy' && a.phase === 'active')
         .map((a) => ({ x: a.x, y: a.y })),
@@ -86,7 +97,7 @@ export class GameScene extends M1Scene {
       setDemoProbe(undefined);
       this.bus.clear();
     });
-    this.bus.emit('run:started', { seed });
+    if (!snapshot) this.bus.emit('run:started', { seed });
     setTestHooks({ ready: true, scene: 'Game', seed });
   }
   override update(time: number, delta: number): void {

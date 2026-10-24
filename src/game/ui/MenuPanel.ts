@@ -4,9 +4,8 @@ import { t } from '../../i18n/t';
 import { addSettings } from './SettingsControls';
 import { MenuNavigation } from './MenuNavigation';
 import type { Scene } from 'phaser';
-import { CHECKPOINT_KEY, readProfile } from '../../services/profile';
-import { loadValue } from '../../services/storage';
-import { parseCheckpoint } from '../../sim/run/checkpoint';
+import { readProfile } from '../../services/profile';
+import { readSavedRun } from '../save/runStorage';
 import './demo.css';
 
 /** 灰盒功能菜单；正式版式待画面方案。 */
@@ -14,9 +13,13 @@ export class MenuPanel {
   private readonly root = document.createElement('section');
   private readonly navigation: MenuNavigation;
   private readonly abort = new AbortController();
-  constructor(scene: Scene) {
-    const checkpoint = parseCheckpoint(loadValue(CHECKPOINT_KEY)),
+  constructor(scene: Scene, readSave = readSavedRun) {
+    const saved = readSave(),
       profile = readProfile();
+    const checkpoint =
+      saved.kind === 'entry' ? saved.checkpoint : saved.kind === 'full' ? saved.snapshot.entry : null;
+    const resumeData = () =>
+      saved.kind === 'full' ? { snapshot: saved.snapshot } : checkpoint ? { checkpoint } : {};
     this.root.id = 'demo-menu-panel';
     this.root.className = 'demo-dialog';
     const title = document.createElement('h2');
@@ -28,7 +31,9 @@ export class MenuPanel {
     start.textContent = t('menu.new');
     const resume = document.createElement('button');
     resume.id = 'continue-run';
-    resume.textContent = checkpoint ? t('menu.continue', { floor: checkpoint.floor }) : t('menu.noSave');
+    resume.textContent = checkpoint
+      ? t(saved.kind === 'entry' ? 'menu.continueEntry' : 'menu.continue', { floor: checkpoint.floor })
+      : t('menu.noSave');
     resume.disabled = !checkpoint;
     const help = document.createElement('p');
     help.textContent = t('menu.help');
@@ -39,6 +44,10 @@ export class MenuPanel {
     stats.textContent = t('menu.stats', { runs: profile.runs, wins: profile.wins, kills: profile.kills });
     const note = document.createElement('small');
     note.textContent = t('menu.note');
+    const saveNotice = document.createElement('p');
+    saveNotice.id = 'save-notice';
+    if (saved.kind !== 'full' && saved.notice) saveNotice.textContent = t(`save.${saved.notice}`);
+    saveNotice.hidden = !saveNotice.textContent;
     const question = document.createElement('p'),
       cancel = document.createElement('button'),
       confirm = document.createElement('button');
@@ -76,11 +85,24 @@ export class MenuPanel {
     resume.addEventListener(
       'click',
       () => {
-        if (checkpoint) scene.scene.start('Game', { checkpoint });
+        if (checkpoint) scene.scene.start('Game', resumeData());
       },
       { signal: this.abort.signal },
     );
-    this.root.append(title, subtitle, start, resume, question, cancel, confirm, help, controls, stats, note);
+    this.root.append(
+      title,
+      subtitle,
+      start,
+      resume,
+      saveNotice,
+      question,
+      cancel,
+      confirm,
+      help,
+      controls,
+      stats,
+      note,
+    );
     addSettings(this.root, this.abort.signal, () => scene.scene.restart());
     document.documentElement.lang = settings.language;
     guardGameUi(this.root, scene, this.abort.signal);
@@ -98,7 +120,7 @@ export class MenuPanel {
         if (confirming || e.target instanceof HTMLButtonElement) return;
         if (e.key === 'Enter') {
           e.preventDefault();
-          scene.scene.start('Game', checkpoint ? { checkpoint } : {});
+          scene.scene.start('Game', resumeData());
         }
       },
       { signal: this.abort.signal },

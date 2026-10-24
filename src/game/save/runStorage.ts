@@ -31,7 +31,7 @@ export function decodeRun(value: unknown, decodeSim: SimDecoder = pendingSimDeco
   if (value.version !== 2 || m.build !== SAVE_VERSION.build || m.dataHash !== SAVE_VERSION.dataHash)
     return { kind: 'entry', checkpoint: entry, notice: 'updated' };
   try {
-    const sim = decodeSim(value.sim);
+    const sim = decodeSim(value.sim, entry.seed);
     if (!sim) return invalid;
     // 即便遗留或外部文件带着入口副本，终局也不能继续。
     if (sim.run.phase === 'won' || sim.run.phase === 'lost' || sim.world.playerDied)
