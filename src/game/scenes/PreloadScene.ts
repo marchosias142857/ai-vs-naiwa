@@ -1,11 +1,11 @@
 import { Scene } from 'phaser';
 import { COLORS, GAME_HEIGHT, GAME_WIDTH, SCENES } from '../../config';
 import { debugParams } from '../../debug/params';
+import { preloadDemoArt, installDemoArt } from '../assets/demoArt';
 import { createPlaceholderTextures } from '../assets/placeholders';
 
 /**
- * 资源加载场景。M5 起在 preload() 中加载 public/assets/atlases 下的图集；
- * 现在只生成占位纹理。
+ * 加载项目自制图集，命名帧共用 PNG 纹理；基础粒子保留程序纹理。
  */
 export class PreloadScene extends Scene {
   constructor() {
@@ -21,11 +21,12 @@ export class PreloadScene extends Scene {
     this.load.on('progress', (p: number) => {
       bar.width = Math.max(1, barW * p);
     });
-    // this.load.atlas(...) —— M5 资源管线接入后在这里加载。
+    preloadDemoArt(this);
   }
 
   create(): void {
     createPlaceholderTextures(this);
+    installDemoArt(this);
     const params = debugParams();
     const target = params.stress || params.scene === SCENES.game ? SCENES.game : SCENES.menu;
     this.scene.start(target);

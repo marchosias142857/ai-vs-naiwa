@@ -1,6 +1,7 @@
 import { settings } from './settings';
 
 const TONES = {
+  swing: { hz: 180, end: 40, duration: 0.12, volume: 0.035, gap: 0.1 },
   shot: { hz: 420, end: 180, duration: 0.035, volume: 0.025, gap: 0.05 },
   hit: { hz: 180, end: 70, duration: 0.05, volume: 0.035, gap: 0.04 },
   hurt: { hz: 110, end: 45, duration: 0.18, volume: 0.055, gap: 0.1 },
@@ -10,6 +11,7 @@ const TONES = {
 type Tone = keyof typeof TONES;
 const voices: { oscillator: OscillatorNode; gain: GainNode }[] = [];
 const played: Record<Tone, number> = {
+  swing: -Infinity,
   shot: -Infinity,
   hit: -Infinity,
   hurt: -Infinity,

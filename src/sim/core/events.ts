@@ -47,6 +47,17 @@ export interface GameEvents {
   /** 实体死亡，发生在最后一次 `entity:damaged` 之后。 */
   'entity:died': { id: EntityId; team: Team; kind: string; x: number; y: number; killerId: EntityId | null };
   /** 一次开火（多弹丸武器也只发一次）。`angle` 是枪口朝向。 */
+  'weapon:swung': {
+    ownerId: EntityId;
+    weaponId: string;
+    x: number;
+    y: number;
+    angle: number;
+    duration: number;
+    range: number;
+    arcDegrees: number;
+  };
+  'melee:hit': { team: Team; x: number; y: number; angle: number; targetId: EntityId; critical: boolean };
   'weapon:fired': { ownerId: EntityId; weaponId: string; x: number; y: number; angle: number };
   /**
    * 子弹命中一个目标或撞墙，命中火花只由这个事件产生。`targetId` 为 `null` 表示打在墙上。

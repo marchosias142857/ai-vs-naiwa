@@ -12,6 +12,16 @@ import { TEX } from '../../src/game/assets/keys';
 type MutableActor = { -readonly [K in keyof ActorView]: ActorView[K] };
 /** 只在独立测试构建中使用，不替代 Claude 的 sim 实现。 */
 class FakeWorld implements CombatWorld {
+  readonly melee = {
+    active: false,
+    weaponId: 'cutlass' as const,
+    angle: 0,
+    remaining: 0,
+    duration: 0,
+    damage: 0,
+    hitIds: [],
+  };
+
   weaponId = 'pistol_basic' as const;
   secondaryWeapon = 'rifle_auto' as const;
   resources = new PlayerResources();

@@ -28,36 +28,52 @@ export const FirePatternIdSchema = z.enum([
 ]);
 
 /** 武器。玩家与敌人的攻击都用这份结构。 */
-export const WeaponDefSchema = z.strictObject({
-  name: I18nKeySchema,
-  rarity: RaritySchema,
-  type: WeaponTypeSchema,
-  /** 每颗弹丸的伤害。 */
-  damage: PositiveNumber,
-  /** 每秒开火次数。 */
-  fireRate: PositiveNumber,
-  /** 每次开火消耗的能量（M3 起生效）。 */
-  energyCost: z.number().min(0),
-  /** 散布总角度，度；每颗弹丸在 ±spread/2 内随机偏转。 */
-  spread: z.number().min(0).max(360),
-  /** 每次开火的弹丸数。 */
-  pellets: z.int().min(1),
-  /** 弹速，像素/秒。 */
-  bulletSpeed: PositiveNumber,
-  /** 射程，像素；子弹飞过这么远后消失。敌人只在射程内开火。 */
-  range: PositiveNumber,
-  /** 子弹碰撞半径，像素。 */
-  bulletRadius: PositiveNumber,
-  /** 可额外穿透的目标数；0 表示命中第一个目标就消失。 */
-  pierce: z.int().min(0),
-  /** 命中时把目标推开的距离，像素。 */
-  knockback: z.number().min(0),
-  critChance: Probability,
-  pattern: FirePatternIdSchema,
-  /** burst 的弹间隔，秒；其他弹道不用。 */
-  burstInterval: PositiveNumber.optional(),
-  bulletSprite: TextureKeySchema,
-});
+export const WeaponDefSchema = z
+  .strictObject({
+    name: I18nKeySchema,
+    attack: z.enum(['projectile', 'melee']),
+    melee: z
+      .strictObject({
+        range: PositiveNumber,
+        arcDegrees: z.number().positive().max(360),
+        duration: PositiveNumber,
+        cooldown: PositiveNumber,
+      })
+      .optional(),
+    rarity: RaritySchema,
+    type: WeaponTypeSchema,
+    /** 每颗弹丸的伤害。 */
+    damage: PositiveNumber,
+    /** 每秒开火次数。 */
+    fireRate: PositiveNumber,
+    /** 每次开火消耗的能量（M3 起生效）。 */
+    energyCost: z.number().min(0),
+    /** 散布总角度，度；每颗弹丸在 ±spread/2 内随机偏转。 */
+    spread: z.number().min(0).max(360),
+    /** 每次开火的弹丸数。 */
+    pellets: z.int().min(1),
+    /** 弹速，像素/秒。 */
+    bulletSpeed: PositiveNumber,
+    /** 射程，像素；子弹飞过这么远后消失。敌人只在射程内开火。 */
+    range: PositiveNumber,
+    /** 子弹碰撞半径，像素。 */
+    bulletRadius: PositiveNumber,
+    /** 可额外穿透的目标数；0 表示命中第一个目标就消失。 */
+    pierce: z.int().min(0),
+    /** 命中时把目标推开的距离，像素。 */
+    knockback: z.number().min(0),
+    critChance: Probability,
+    pattern: FirePatternIdSchema,
+    /** burst 的弹间隔，秒；其他弹道不用。 */
+    burstInterval: PositiveNumber.optional(),
+    bulletSprite: TextureKeySchema,
+  })
+  .superRefine((w, ctx) => {
+    if ((w.attack === 'melee') !== Boolean(w.melee) || (w.attack === 'melee') !== (w.pattern === 'melee_arc'))
+      ctx.addIssue({ code: 'custom', message: '近战攻击必须同时有 melee 参数与 melee_arc 模式' });
+    if (w.melee && w.melee.duration > w.melee.cooldown)
+      ctx.addIssue({ code: 'custom', message: '挥动时长不可超过冷却' });
+  });
 
 export type WeaponDef = z.infer<typeof WeaponDefSchema>;
 export type FirePatternId = z.infer<typeof FirePatternIdSchema>;

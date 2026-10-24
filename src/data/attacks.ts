@@ -2,6 +2,7 @@ import type { WeaponDef } from './schema';
 
 const spit = {
   name: 'attack.spit',
+  attack: 'projectile',
   rarity: 'white',
   type: 'staff',
   damage: 1,

@@ -19,6 +19,9 @@ export class TouchState {
   fireId = -1;
   pauseId = -1;
   pausePressed = false;
+  private pressedAt = 0;
+  private dragged = false;
+  private firing = false;
   resize(width: number, height: number): void {
     if (this.width === width && this.height === height) return;
     this.width = width;
@@ -33,7 +36,7 @@ export class TouchState {
     this.dx = this.dy = this.move.x = this.move.y = 0;
     this.clearAim();
   }
-  down(id: number, x: number, y: number): boolean {
+  down(id: number, x: number, y: number, now = performance.now()): boolean {
     if (
       Math.hypot(x - (this.width - UI.pause.inset), y - UI.pause.inset) <= UI.pause.hitRadius &&
       this.pauseId < 0
@@ -49,7 +52,11 @@ export class TouchState {
       // 右侧区域被占用时也不能把第二根手指分配给左摇杆。
       if (this.fireId >= 0) return false;
       this.fireId = id;
+      this.pressedAt = now;
+      this.firing = false;
       this.drag(id, x, y);
+      // 按下只是取得触点；等实际拖动，或给原地按住留出反应时间。
+      this.dragged = false;
       return true;
     }
     if (
@@ -69,6 +76,7 @@ export class TouchState {
   }
   drag(id: number, x: number, y: number): void {
     if (id === this.fireId) {
+      this.dragged = true;
       const dx = x - (this.width - UI.aimWheel.inset),
         dy = y - (this.height - UI.aimWheel.inset),
         length = Math.hypot(dx, dy),
@@ -114,7 +122,14 @@ export class TouchState {
     }
     if (id === this.pauseId) this.pauseId = -1;
   }
+  /** 与 aim 在同一次渲染帧采样；短促出圈又回中的事件不能提前发出朝向错误的第一发。 */
+  sampleFire(now = performance.now()): boolean {
+    if (this.fireId < 0) return false;
+    this.firing ||= (this.dragged && this.aiming) || now - this.pressedAt >= UI.aimWheel.firstShotDelayMs;
+    return this.firing;
+  }
   private clearAim(): void {
+    this.firing = this.dragged = false;
     this.aiming = false;
     this.fireDx = this.fireDy = this.aim.x = this.aim.y = 0;
   }

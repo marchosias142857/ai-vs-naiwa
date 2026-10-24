@@ -11,7 +11,15 @@ export const INPUT_UI = {
   },
   pause: { inset: 28, radius: 18, hitRadius: 22, fontSize: 18 },
   /** Issue #64 已确认的固定开火轮盘；不绘制瞄准提示线。 */
-  aimWheel: { inset: 88, radius: 56, hitPadding: 12, knobRadius: 22, deadzone: 12, iconRadius: 6 },
+  aimWheel: {
+    inset: 88,
+    radius: 56,
+    hitPadding: 12,
+    knobRadius: 22,
+    deadzone: 12,
+    iconRadius: 6,
+    firstShotDelayMs: 120,
+  },
   resume: { radius: 40, fontSize: 16 },
   joystick: { homeInset: 100, radius: 52, knobRadius: 22, activeAlpha: 0.8, idleAlpha: 0.35 },
   moveArea: { widthFraction: 0.45, top: 48 },
@@ -68,4 +76,16 @@ export const COMBAT_FX = {
     naiwa_charger: 0xffdd55,
     naiwa_boss: 0xff7799,
   },
+} as const;
+/** ADR 0019 的恢复倒计时圆环与数字。 */
+export const RESUME_UI = {
+  fontSize: 24,
+  radius: 28,
+  /** 提示为 DOM 文字，字号/内边距用 CSS 像素；offset 仍为游戏像素。 */
+  captionSize: 16,
+  captionPadding: 3,
+  captionBackground: '#081b29',
+  captionOffset: 40,
+  fill: 0x081b29,
+  ring: 0x91f3e7,
 } as const;
