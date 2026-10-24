@@ -17,7 +17,7 @@ export const HERO_FRAMES = {
 } as const satisfies Record<string, ArtFrame>;
 
 export const HERO_ART = {
-  scale: 0.075,
+  scale: 0.0675,
   standardGrip: { x: 4.2, y: 1.8 },
   behindUpDegrees: 60,
   idle: ['idle_0', 'idle_1'],

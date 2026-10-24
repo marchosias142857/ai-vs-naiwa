@@ -1,6 +1,6 @@
 import { settings } from '../../services/settings';
 import { Physics, type GameObjects, type Scene } from 'phaser';
-import { DEPTH, POOL_SIZES } from '../../config';
+import { DEPTH, GAME_HEIGHT, GAME_WIDTH, POOL_SIZES } from '../../config';
 import type { CombatWorld } from '../../sim/combat/api';
 import type { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
@@ -165,11 +165,11 @@ export class CombatFeedback {
     if (this.hurt && settings.flashes)
       overlay
         .lineStyle(FX.hurtWidth, FX.warningColor, this.hurt / FX.hurtSeconds)
-        .strokeRect(0, 0, this.scene.scale.width, this.scene.scale.height);
+        .strokeRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     if (this.death)
       overlay
         .fillStyle(FX.dimColor, Math.min(FX.dimAlpha, (this.death / FX.dimSeconds) * FX.dimAlpha))
-        .fillRect(0, 0, this.scene.scale.width, this.scene.scale.height);
+        .fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   }
   private readonly destroy = (): void => {
     this.bus.off('bullet:hit', this.onHit);

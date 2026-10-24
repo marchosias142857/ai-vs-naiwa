@@ -93,5 +93,6 @@
   "hint.fight.gamepad": "消灭全部敌人后开门 · B 冲刺",
   "hint.weapon.keyboard": "E 拾取：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
   "hint.weapon.touch": "点击「拾取」：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
-  "hint.weapon.gamepad": "A 拾取：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}"
+  "hint.weapon.gamepad": "A 拾取：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
+  "hint.noEnergy": "能量不足：切回基础手枪即可继续射击（不耗能）。"
 }

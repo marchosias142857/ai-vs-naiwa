@@ -1,7 +1,7 @@
 import { destroySound } from './services/Sound';
 import { AUTO, Game, Scale, VERSION } from 'phaser';
 import type { Types } from 'phaser';
-import { COLORS, GAME_HEIGHT, GAME_WIDTH } from './config';
+import { COLORS, GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE } from './config';
 import { debugParams } from './debug/params';
 import { bindLifecycle } from './game/bindLifecycle';
 import { BootScene } from './game/scenes/BootScene';
@@ -15,11 +15,11 @@ import { InputScene } from './game/ui/InputScene';
 const config: Types.Core.GameConfig = {
   type: AUTO,
   parent: 'game',
-  width: GAME_WIDTH,
-  height: GAME_HEIGHT,
+  width: GAME_WIDTH * RENDER_SCALE,
+  height: GAME_HEIGHT * RENDER_SCALE,
   backgroundColor: COLORS.background,
-  pixelArt: true,
-  roundPixels: true,
+  antialias: true,
+  roundPixels: false,
   scale: {
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH,

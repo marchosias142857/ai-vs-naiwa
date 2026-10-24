@@ -211,6 +211,8 @@ export class DemoHud {
         this.statusText.textContent += '\n' + t('hud.boss', { hp: Math.ceil(actor.hp), maxHp: actor.maxHp });
         break;
       }
+    if (!d.finished && r.energy < WEAPONS[s.sim.weaponId].energyCost)
+      this.hint.textContent = t('hint.noEnergy');
     if (!this.saveAvailable) this.hint.textContent = t('save.unavailable');
     if (this.mapRevision !== d.revision) {
       this.drawMap();

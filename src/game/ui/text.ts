@@ -1,5 +1,5 @@
 import type { Types } from 'phaser';
-import { COLORS } from '../../config';
+import { COLORS, RENDER_SCALE } from '../../config';
 
 export const FONT_FAMILY =
   'system-ui, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif';
@@ -10,5 +10,5 @@ export function textStyle(
   color: string = COLORS.text,
   extra: Types.GameObjects.Text.TextStyle = {},
 ): Types.GameObjects.Text.TextStyle {
-  return { fontFamily: FONT_FAMILY, fontSize: `${size}px`, color, ...extra };
+  return { fontFamily: FONT_FAMILY, fontSize: `${size}px`, resolution: RENDER_SCALE, color, ...extra };
 }

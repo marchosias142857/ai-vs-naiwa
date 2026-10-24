@@ -48,7 +48,11 @@ test.beforeEach(async () => {
 });
 
 test.afterEach(async () => {
-  await new Promise<void>((done) => server.close(() => done()));
+  await new Promise<void>((done) => {
+    server.close(() => done());
+    // 离线页面可能仍持有未完成连接，不能让它拖住测试服务器清理。
+    server.closeAllConnections();
+  });
   await rm(directory, { recursive: true, force: true });
 });
 
