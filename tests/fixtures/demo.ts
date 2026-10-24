@@ -1,3 +1,4 @@
+import type { ActorView } from '../../src/sim/combat/api';
 import { DemoHud } from '../../src/game/ui/DemoHud';
 import { AUTO, Game, Scene } from 'phaser';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
@@ -26,6 +27,45 @@ class DemoHarness extends Scene {
       coins: session.sim.resources.coins,
       offers: session.offers.length,
     });
+    window.stressScenario = () => {
+      const input = createInputFrame(),
+        records = new Set<ActorView>(),
+        before = this.children.length;
+      session.sim.takeWeapon('ring_staff');
+      input.fire = true;
+      const kinds = ['naiwa_boss', 'naiwa_turret', 'naiwa_chaser', 'naiwa_charger'] as const;
+      let peakBullets = 0,
+        peakFx = 0,
+        spawned = 0;
+      const started = performance.now();
+      for (let step = 0; step < 6000; step++) {
+        while (session.sim.actors.length < 31) {
+          const i = spawned++;
+          session.sim.spawnEnemy(
+            kinds[i % kinds.length]!,
+            130 + (i % 10) * 24,
+            65 + Math.floor((i % 30) / 10) * 60,
+          );
+        }
+        for (const a of session.sim.actors) records.add(a);
+        session.sim.grantPickup('energy', 1);
+        session.setInput(input);
+        this.physics.world.update((step * 1000) / 60, 1000 / 60);
+        this.physics.world.postUpdate();
+        session.update();
+        peakBullets = Math.max(peakBullets, session.bridge.bullets.activeCount);
+        peakFx = Math.max(peakFx, session.fx.activeCount);
+      }
+      return {
+        peakBullets,
+        peakFx,
+        spawned,
+        records: records.size,
+        stable: this.children.length === before,
+        simulatedSeconds: session.sim.time,
+        wallMs: performance.now() - started,
+      };
+    };
     window.feedbackScenario = () => {
       const input = createInputFrame(),
         children = this.children.length;
@@ -162,6 +202,15 @@ class DemoHarness extends Scene {
 }
 declare global {
   interface Window {
+    stressScenario: () => {
+      peakBullets: number;
+      peakFx: number;
+      spawned: number;
+      records: number;
+      stable: boolean;
+      simulatedSeconds: number;
+      wallMs: number;
+    };
     feedbackScenario: () => {
       hits: number;
       effects: number;

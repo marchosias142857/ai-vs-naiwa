@@ -141,6 +141,33 @@ function newSpawn(): MutableSpawn {
   };
 }
 
+function newActor(): Actor {
+  return {
+    id: 0,
+    team: 'enemy',
+    kind: '',
+    phase: 'dead',
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
+    radius: 0,
+    hp: 0,
+    maxHp: 0,
+    invulnerable: false,
+    facing: 0,
+    activateAt: 0,
+    invulnUntil: 0,
+    invulnTime: 0,
+    base: { x: 0, y: 0 },
+    moveSpeed: 0,
+    contactDamage: 0,
+    brain: createBrain(),
+    warning: false,
+    knock: { dirX: 0, dirY: 0, total: 0, left: 0, timeLeft: 0, speed: 0, fresh: false },
+  };
+}
+
 /** 每种事件一个 payload 复用栈。 */
 function createPayloads() {
   return {
@@ -204,6 +231,9 @@ class CombatWorldImpl implements CombatWorld {
   playerId: EntityId | null = null;
 
   private nextId = 1;
+  private readonly actorPool: Actor[] = [];
+  private readonly retired: Actor[] = [];
+  private callDepth = 0;
   private readonly byId = new Map<EntityId, Actor>();
   private readonly bullets = new Map<EntityId, Bullet>();
   private readonly bulletPool: Bullet[] = [];
@@ -240,6 +270,9 @@ class CombatWorldImpl implements CombatWorld {
 
   constructor(options: CombatWorldOptions) {
     const root = new Random(options.seed);
+    const maxActors = options.maxActors ?? 31;
+    if (!Number.isInteger(maxActors) || maxActors < 1) throw new RangeError('invalid maxActors');
+    for (let i = 0; i < maxActors; i++) this.actorPool.push(newActor());
     this.resources = new PlayerResources(options.playerRules);
     this.spreadRng = root.fork('spread');
     this.critRng = root.fork('crit');
@@ -344,37 +377,49 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   spawnPlayer(kind: CharacterId, x: number, y: number): EntityId {
-    if (this.playerId !== null) throw new Error('本局已经有玩家');
-    const def = CHARACTERS[kind];
-    const weaponId = def.startWeapon;
-    const weapon = WEAPONS[weaponId];
-    const actor = this.createActor('player', kind, x, y, def.radius, def.hp, def.moveSpeed);
-    actor.invulnTime = def.invulnTime;
-    this.player = {
-      weapon,
-      weaponId,
-      pattern: getPattern(weapon.pattern),
-      cooldown: 0,
-      burstLeft: 0,
-      burstWait: 0,
-      tuning: { maxSpeed: def.moveSpeed, accelTime: def.accelTime, decelTime: def.decelTime },
-    };
-    this.playerId = actor.id;
-    this.emitSpawned(actor, 0);
-    this.activate(actor);
-    return actor.id;
+    this.callDepth++;
+    try {
+      if (this.playerId !== null) throw new Error('本局已经有玩家');
+      const def = CHARACTERS[kind];
+      const weaponId = def.startWeapon;
+      const weapon = WEAPONS[weaponId];
+      const actor = this.createActor('player', kind, x, y, def.radius, def.hp, def.moveSpeed);
+      actor.invulnTime = def.invulnTime;
+      this.player = {
+        weapon,
+        weaponId,
+        pattern: getPattern(weapon.pattern),
+        cooldown: 0,
+        burstLeft: 0,
+        burstWait: 0,
+        tuning: { maxSpeed: def.moveSpeed, accelTime: def.accelTime, decelTime: def.decelTime },
+      };
+      this.playerId = actor.id;
+      this.emitSpawned(actor, 0);
+      this.activate(actor);
+      return actor.id;
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
+    }
   }
 
   spawnEnemy(kind: EnemyId, x: number, y: number): EntityId {
-    const def = ENEMIES[kind];
-    const actor = this.createActor('enemy', kind, x, y, def.radius, def.hp, def.moveSpeed);
-    const telegraph = BALANCE.spawnTelegraph;
-    actor.contactDamage = def.contactDamage;
-    actor.phase = 'telegraph';
-    actor.activateAt = this.time + telegraph;
-    this.emitSpawned(actor, telegraph);
-    if (telegraph <= 0) this.activate(actor);
-    return actor.id;
+    this.callDepth++;
+    try {
+      const def = ENEMIES[kind];
+      const actor = this.createActor('enemy', kind, x, y, def.radius, def.hp, def.moveSpeed);
+      const telegraph = BALANCE.spawnTelegraph;
+      actor.contactDamage = def.contactDamage;
+      actor.phase = 'telegraph';
+      actor.activateAt = this.time + telegraph;
+      this.emitSpawned(actor, telegraph);
+      if (telegraph <= 0) this.activate(actor);
+      return actor.id;
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
+    }
   }
 
   syncPosition(id: EntityId, x: number, y: number): void {
@@ -385,49 +430,61 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   step(dtRaw: number, input: Readonly<InputFrame>): StepResult {
-    this.spawns.length = 0;
-    const dt = Math.min(Math.max(dtRaw, 0), MAX_DT);
-    if (dt > 0) {
-      this.time += dt;
-      for (const actor of this.actors) this.tickActor(actor, dt);
-      this.updatePlayer(input, dt);
-      this.updateEnemies(dt);
-      for (const actor of this.actors) this.applyVelocity(actor);
+    this.callDepth++;
+    try {
+      this.spawns.length = 0;
+      const dt = Math.min(Math.max(dtRaw, 0), MAX_DT);
+      if (dt > 0) {
+        this.time += dt;
+        for (const actor of this.actors) this.tickActor(actor, dt);
+        this.updatePlayer(input, dt);
+        this.updateEnemies(dt);
+        for (const actor of this.actors) this.applyVelocity(actor);
+      }
+      this.result.playerDead = this.playerDied;
+      return this.result;
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
     }
-    this.result.playerDead = this.playerDied;
-    return this.result;
   }
 
   hitActor(bulletId: EntityId, targetId: EntityId, x: number, y: number): boolean {
-    const bullet = this.bullets.get(bulletId);
-    if (!bullet) return true;
-    const target = this.byId.get(targetId);
-    if (!target || target.phase !== 'active' || target.team === bullet.team) return false;
-    // 每颗子弹对每个目标最多命中一次：重叠的几帧里、或 A → B → A 的回调顺序都不会重复伤害。
-    if (this.alreadyHit(bullet, target.id)) return false;
-    this.recordHit(bullet, target.id);
+    this.callDepth++;
+    try {
+      const bullet = this.bullets.get(bulletId);
+      if (!bullet) return true;
+      const target = this.byId.get(targetId);
+      if (!target || target.phase !== 'active' || target.team === bullet.team) return false;
+      // 每颗子弹对每个目标最多命中一次：重叠的几帧里、或 A → B → A 的回调顺序都不会重复伤害。
+      if (this.alreadyHit(bullet, target.id)) return false;
+      this.recordHit(bullet, target.id);
 
-    if (this.ignoresDamage(target)) {
-      this.emitHit(bullet, x, y, target.id, false);
+      if (this.ignoresDamage(target)) {
+        this.emitHit(bullet, x, y, target.id, false);
+        this.finishBullet(bullet);
+        return true;
+      }
+      const critical = this.critRng.chance(bullet.critChance);
+      const amount = critical ? bullet.damage * BALANCE.critMultiplier : bullet.damage;
+      const dirX = Math.cos(bullet.angle);
+      const dirY = Math.sin(bullet.angle);
+      this.damage(target, amount, critical, dirX, dirY, bullet.ownerId);
+      const alive = target.phase === 'active';
+      if (alive && bullet.knockback > 0) this.knockBack(target, dirX, dirY, bullet.knockback);
+      // 穿透时也发 bullet:hit（顺序仍是 damaged →（died）→ hit），子弹是否结束看返回值。
+      this.emitHit(bullet, x, y, target.id, critical);
+
+      if (bullet.pierceLeft > 0) {
+        bullet.pierceLeft--;
+        return false;
+      }
       this.finishBullet(bullet);
       return true;
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
     }
-    const critical = this.critRng.chance(bullet.critChance);
-    const amount = critical ? bullet.damage * BALANCE.critMultiplier : bullet.damage;
-    const dirX = Math.cos(bullet.angle);
-    const dirY = Math.sin(bullet.angle);
-    this.damage(target, amount, critical, dirX, dirY, bullet.ownerId);
-    const alive = target.phase === 'active';
-    if (alive && bullet.knockback > 0) this.knockBack(target, dirX, dirY, bullet.knockback);
-    // 穿透时也发 bullet:hit（顺序仍是 damaged →（died）→ hit），子弹是否结束看返回值。
-    this.emitHit(bullet, x, y, target.id, critical);
-
-    if (bullet.pierceLeft > 0) {
-      bullet.pierceLeft--;
-      return false;
-    }
-    this.finishBullet(bullet);
-    return true;
   }
 
   hitWall(bulletId: EntityId, x: number, y: number): void {
@@ -443,31 +500,43 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   contact(enemyId: EntityId, playerId: EntityId): void {
-    const enemy = this.byId.get(enemyId);
-    const player = this.byId.get(playerId);
-    if (!enemy || !player || enemy.team === player.team) return;
-    if (enemy.phase !== 'active' || player.phase !== 'active') return;
-    if (this.ignoresDamage(player) || enemy.contactDamage <= 0) return;
-    let dirX = player.x - enemy.x;
-    let dirY = player.y - enemy.y;
-    const d = Math.hypot(dirX, dirY);
-    if (d > 0) {
-      dirX /= d;
-      dirY /= d;
-    } else {
-      dirX = 0;
-      dirY = 1;
+    this.callDepth++;
+    try {
+      const enemy = this.byId.get(enemyId);
+      const player = this.byId.get(playerId);
+      if (!enemy || !player || enemy.team === player.team) return;
+      if (enemy.phase !== 'active' || player.phase !== 'active') return;
+      if (this.ignoresDamage(player) || enemy.contactDamage <= 0) return;
+      let dirX = player.x - enemy.x;
+      let dirY = player.y - enemy.y;
+      const d = Math.hypot(dirX, dirY);
+      if (d > 0) {
+        dirX /= d;
+        dirY /= d;
+      } else {
+        dirX = 0;
+        dirY = 1;
+      }
+      this.damage(player, enemy.contactDamage, false, dirX, dirY, enemy.id);
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
     }
-    this.damage(player, enemy.contactDamage, false, dirX, dirY, enemy.id);
   }
 
   debugKillEnemies(): void {
-    // 倒序遍历：监听器在 entity:died 里同步调用 removeActor 移除当前实体时，不会跳过其他实体。
-    for (let i = this.actors.length - 1; i >= 0; i--) {
-      const actor = this.actors[i];
-      if (!actor || actor.team !== 'enemy' || actor.phase === 'dead') continue;
-      // 预警中的怪物没有碰撞，也一并清掉；按正常流程扣光生命，事件顺序与真实死亡相同。
-      this.damage(actor, actor.hp, false, 0, 0, null);
+    this.callDepth++;
+    try {
+      // 倒序遍历：监听器在 entity:died 里同步调用 removeActor 移除当前实体时，不会跳过其他实体。
+      for (let i = this.actors.length - 1; i >= 0; i--) {
+        const actor = this.actors[i];
+        if (!actor || actor.team !== 'enemy' || actor.phase === 'dead') continue;
+        // 预警中的怪物没有碰撞，也一并清掉；按正常流程扣光生命，事件顺序与真实死亡相同。
+        this.damage(actor, actor.hp, false, 0, 0, null);
+      }
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
     }
   }
 
@@ -478,6 +547,8 @@ class CombatWorldImpl implements CombatWorld {
     const index = this.actors.indexOf(actor);
     const last = this.actors.pop();
     if (last && last !== actor) this.actors[index] = last;
+    if (this.callDepth) this.retired.push(actor);
+    else this.actorPool.push(actor);
   }
 
   // ---- 内部 ----
@@ -491,30 +562,31 @@ class CombatWorldImpl implements CombatWorld {
     hp: number,
     moveSpeed: number,
   ): Actor {
-    const actor: Actor = {
-      id: this.nextId++,
-      team,
-      kind,
-      phase: 'active',
-      x,
-      y,
-      vx: 0,
-      vy: 0,
-      radius,
-      hp,
-      maxHp: hp,
-      invulnerable: false,
-      facing: 0,
-      activateAt: this.time,
-      invulnUntil: 0,
-      invulnTime: 0,
-      base: { x: 0, y: 0 },
-      moveSpeed,
-      contactDamage: 0,
-      brain: createBrain(),
-      warning: false,
-      knock: { dirX: 0, dirY: 0, total: 0, left: 0, timeLeft: 0, speed: 0, fresh: false },
-    };
+    const actor = this.actorPool.pop();
+    if (!actor) throw new Error('combat actor pool exhausted');
+    actor.id = this.nextId++;
+    actor.team = team;
+    actor.kind = kind;
+    actor.phase = 'active';
+    actor.x = x;
+    actor.y = y;
+    actor.vx = actor.vy = 0;
+    actor.radius = radius;
+    actor.hp = actor.maxHp = hp;
+    actor.invulnerable = false;
+    actor.facing = 0;
+    actor.activateAt = this.time;
+    actor.invulnUntil = actor.invulnTime = 0;
+    actor.base.x = actor.base.y = 0;
+    actor.moveSpeed = moveSpeed;
+    actor.contactDamage = 0;
+    actor.brain.cooldown = BALANCE.spawnTelegraph;
+    actor.brain.stage = 'ready';
+    actor.brain.time = actor.brain.dirX = actor.brain.dirY = 0;
+    actor.warning = false;
+    const k = actor.knock;
+    k.dirX = k.dirY = k.total = k.left = k.timeLeft = k.speed = 0;
+    k.fresh = false;
     this.actors.push(actor);
     this.byId.set(actor.id, actor);
     return actor;
@@ -666,9 +738,10 @@ class CombatWorldImpl implements CombatWorld {
     const owner = this.firingOwner;
     const weapon = this.firingWeapon;
     if (!owner) return false;
-    const bullet = this.bulletPool.pop();
     const spawn = this.spawnPool[this.spawns.length];
-    if (!bullet || !spawn) return false;
+    if (!spawn) return false;
+    const bullet = this.bulletPool.pop();
+    if (!bullet) return false;
     const id = this.nextId++;
     bullet.id = id;
     bullet.team = owner.team;

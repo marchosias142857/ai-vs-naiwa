@@ -261,3 +261,22 @@ test('真实 Arcade 中追击怪绕过内墙接近玩家', async ({ page }) => {
   expect(result.insideWall).toBe(false);
   expect(result.distance).toBeLessThan(20);
 });
+
+test('100 秒锁步压力：持续 30 怪、弹丸与反馈池不增长', async ({ page }, info) => {
+  test.setTimeout(60_000);
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.stressScenario);
+  const result = await page.evaluate(() => window.stressScenario());
+  await info.attach('stress-counters', {
+    body: JSON.stringify(result, null, 2),
+    contentType: 'application/json',
+  });
+  expect(result.simulatedSeconds).toBeCloseTo(100, 5);
+  expect(result.spawned).toBeGreaterThan(30);
+  expect(result.records).toBeLessThanOrEqual(31);
+  expect(result.peakBullets).toBeGreaterThan(0);
+  expect(result.peakBullets).toBeLessThanOrEqual(500);
+  expect(result.peakFx).toBeGreaterThan(0);
+  expect(result.peakFx).toBeLessThanOrEqual(100);
+  expect(result.stable).toBe(true);
+});

@@ -101,6 +101,8 @@ export interface CombatWorldOptions {
    * 不传时为 500。sim 不能读取 `src/config.ts`，所以由调用方传入。
    */
   maxBullets?: number;
+  /** 预热实体记录上限，默认 31。同步事件期间移除的记录在外层调用结束后复用，避免串号。 */
+  maxActors?: number;
   /**
    * 调试用无敌（`?god=1`，Issue #17，ADR 0005）：玩家不受任何伤害，也不会进入受伤无敌帧。
    * 打到玩家的子弹按「命中无敌目标」处理：子弹消失，发出 `critical: false` 的 `bullet:hit`。
