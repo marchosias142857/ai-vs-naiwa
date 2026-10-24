@@ -1,12 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { INPUT_UI as UI } from '../../src/game/fx/params';
 
-test('正式 demo：双指移动开火、兼容鼠标事件与第三指动作仍产生子弹', async ({
-  page,
-  context,
-  isMobile,
-  browserName,
-}, info) => {
+test('正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹', async ({ page, context, isMobile, browserName }, info) => {
   test.skip(!isMobile || browserName !== 'chromium', '使用原生多点触屏事件');
   await page.goto('/?seed=42&god=1');
   await page.locator('#start-run').tap();
