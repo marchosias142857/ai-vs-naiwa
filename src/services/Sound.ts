@@ -65,7 +65,6 @@ function resumeOnGesture(e: Event): void {
 }
 function resumeSound(): void {
   if (
-    !paused &&
     !document.hidden &&
     settings.sound &&
     context &&
@@ -74,10 +73,10 @@ function resumeSound(): void {
     void context.resume().catch(() => {});
 }
 function visibilitySound(): void {
-  if (document.hidden) silenceSound();
+  if (document.hidden) suspendSound();
   else resumeSound();
 }
-/** 暂停阻止手势提前唤醒音频；恢复后若浏览器拒绝，下一次真实手势再尝试。 */
+/** 游戏内暂停只清空包络并阻止新声音；手柄恢复不需要浏览器音频授权。 */
 export function pauseSound(): void {
   paused = true;
   silenceSound();
@@ -92,7 +91,12 @@ export function silenceSound(): void {
     voice.gain.gain.cancelScheduledValues(context.currentTime);
     voice.gain.gain.setValueAtTime(0, context.currentTime);
   }
-  if (context.state === 'running' || context.state === 'interrupted') void context.suspend().catch(() => {});
+}
+/** 只供切后台或离开战斗场景使用；恢复仍保留真实手势重试。 */
+export function suspendSound(): void {
+  silenceSound();
+  if (context && (context.state === 'running' || context.state === 'interrupted'))
+    void context.suspend().catch(() => {});
 }
 export function destroySound(): void {
   document.removeEventListener('pointerup', resumeOnGesture, true);
@@ -101,5 +105,7 @@ export function destroySound(): void {
   if (context) void context.close().catch(() => {});
   context = undefined;
   paused = false;
+  nextVoice = 0;
+  for (const kind of Object.keys(played) as Tone[]) played[kind] = -Infinity;
   voices.length = 0;
 }

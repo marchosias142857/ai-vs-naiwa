@@ -1,5 +1,5 @@
 import type { Scene } from 'phaser';
-import { playSound, silenceSound, pauseSound, continueSound } from '../../services/Sound';
+import { playSound, suspendSound, pauseSound, continueSound } from '../../services/Sound';
 import type { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
 
@@ -7,26 +7,32 @@ import type { GameEvents } from '../../sim/core/events';
 export class CombatAudio {
   constructor(scene: Scene, bus: EventBus<GameEvents>) {
     continueSound();
+    // 场景与物理暂停可能叠加：只有两者都恢复后才允许新包络。
+    const syncPause = () => {
+      if (scene.sys.isPaused() || scene.physics.world.isPaused) pauseSound();
+      else continueSound();
+    };
     bus.on('weapon:fired', this.fire);
     bus.on('bullet:hit', this.hit);
     bus.on('entity:damaged', this.hurt);
     bus.on('entity:died', this.death);
     bus.on('room:cleared', this.reward);
-    scene.events.on('pause', pauseSound);
-    scene.events.on('resume', continueSound);
-    scene.physics.world.on('pause', pauseSound);
-    scene.physics.world.on('resume', continueSound);
+    scene.events.on('pause', syncPause);
+    scene.events.on('resume', syncPause);
+    scene.physics.world.on('pause', syncPause);
+    scene.physics.world.on('resume', syncPause);
     scene.events.once('shutdown', () => {
       bus.off('weapon:fired', this.fire);
       bus.off('bullet:hit', this.hit);
       bus.off('entity:damaged', this.hurt);
       bus.off('entity:died', this.death);
       bus.off('room:cleared', this.reward);
-      scene.events.off('pause', pauseSound);
-      scene.events.off('resume', continueSound);
-      scene.physics.world?.off('pause', pauseSound);
-      scene.physics.world?.off('resume', continueSound);
-      silenceSound();
+      scene.events.off('pause', syncPause);
+      scene.events.off('resume', syncPause);
+      scene.physics.world?.off('pause', syncPause);
+      scene.physics.world?.off('resume', syncPause);
+      pauseSound();
+      suspendSound();
     });
   }
   private readonly fire = (): void => playSound('shot');
