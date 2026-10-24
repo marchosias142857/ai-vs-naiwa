@@ -164,6 +164,9 @@ export class InputController {
       pad?.connected ? pad.rightStick.y : 0,
       !!pad?.connected && pad.R2 > 0.5,
       !!pad?.connected && !!pad.buttons[9]?.pressed,
+      !!pad?.connected && !!pad.buttons[1]?.pressed,
+      !!pad?.connected && !!pad.buttons[3]?.pressed,
+      !!pad?.connected && !!pad.buttons[0]?.pressed,
     );
     if (f.source === 'keyboard' && this.mouseInside) {
       const scale = this.rect.width / this.ui.scale.width;

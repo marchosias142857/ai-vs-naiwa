@@ -18,6 +18,9 @@ export class InputState {
   mouseFire = false;
   private edges = new Set<string>();
   private padStart = false;
+  private padSkill = false;
+  private padSwap = false;
+  private padInteract = false;
   private padBlocked = true;
 
   key(code: string, down: boolean, repeat = false): void {
@@ -32,15 +35,37 @@ export class InputState {
   reset(): void {
     this.keys.clear();
     this.edges.clear();
-    this.mouseFire = this.padStart = false;
+    this.mouseFire = this.padStart = this.padSkill = this.padSwap = this.padInteract = false;
     this.padBlocked = true;
     resetInputFrame(this.frame);
   }
 
+  /** 触屏动作按钮只注入边沿，不改变当前输入设备或持续移动/射击。 */
+  action(code: 'Space' | 'KeyQ' | 'KeyE'): void {
+    this.edges.add(code);
+  }
+
   /** 每个 UI 帧调用一次；返回值的对象身份不变。 */
-  sample(lx = 0, ly = 0, rx = 0, ry = 0, trigger = false, start = false) {
+  sample(
+    lx = 0,
+    ly = 0,
+    rx = 0,
+    ry = 0,
+    trigger = false,
+    start = false,
+    skill = false,
+    swap = false,
+    interact = false,
+  ) {
     const f = resetInputFrame(this.frame);
-    const active = Math.hypot(lx, ly) > UI.deadzone || Math.hypot(rx, ry) > UI.deadzone || trigger || start;
+    const active =
+      Math.hypot(lx, ly) > UI.deadzone ||
+      Math.hypot(rx, ry) > UI.deadzone ||
+      trigger ||
+      start ||
+      skill ||
+      swap ||
+      interact;
     if (!active) this.padBlocked = false;
     if (active && !this.padBlocked) f.source = 'gamepad';
     if (f.source === 'gamepad' && !this.padBlocked) {
@@ -65,12 +90,18 @@ export class InputState {
       );
       f.fire = this.mouseFire;
     }
-    f.skillPressed = this.edges.has('Space');
-    f.swapPressed = this.edges.has('KeyQ');
-    f.interactPressed = this.edges.has('KeyE');
+    f.skillPressed =
+      this.edges.has('Space') || (f.source === 'gamepad' && !this.padBlocked && skill && !this.padSkill);
+    f.swapPressed =
+      this.edges.has('KeyQ') || (f.source === 'gamepad' && !this.padBlocked && swap && !this.padSwap);
+    f.interactPressed =
+      this.edges.has('KeyE') || (f.source === 'gamepad' && !this.padBlocked && interact && !this.padInteract);
     f.pausePressed ||= this.edges.has('Escape');
     this.edges.clear();
     this.padStart = start;
+    this.padSkill = skill;
+    this.padSwap = swap;
+    this.padInteract = interact;
     return f;
   }
 }
