@@ -11,6 +11,7 @@ import { ART } from '../assets/demoArt';
 import type { CombatActors } from './CombatActors';
 import { frameAt } from './artPose';
 import { settings } from '../../services/settings';
+import { CharacterFace } from './CharacterFace';
 
 interface ArtSlot {
   image: GameObjects.Image;
@@ -29,6 +30,7 @@ export class ActorArt {
   readonly weapon: GameObjects.Image;
   showWeapon = true;
   private readonly arc: GameObjects.Graphics;
+  private readonly face: CharacterFace;
   constructor(
     private readonly scene: Scene,
     private readonly sim: CombatWorld,
@@ -51,6 +53,7 @@ export class ActorArt {
         pose: 'idle',
         poseAt: 0,
       });
+    this.face = new CharacterFace(scene);
     this.weapon = scene.add.image(0, 0, ART.weapons, 'pistol_basic').setVisible(false);
     this.arc = scene.add.graphics().setDepth(DEPTH.fx);
     scene.events.on('postupdate', this.update);
@@ -63,6 +66,7 @@ export class ActorArt {
   private readonly update = (): void => {
     this.weapon.setVisible(false);
     this.arc.clear();
+    this.face.hide();
     for (let i = 0; i < this.slots.length; i++) {
       const slot = this.slots[i]!,
         physical = this.actors.slots[i]!,
@@ -90,6 +94,7 @@ export class ActorArt {
       const depth = DEPTH.actors + a.y * DEPTH_Y_SORT;
       const image = slot.image;
       image
+        .setCrop()
         .setPosition(a.x, a.y)
         .setFlipX(left)
         .setAngle(0)
@@ -136,13 +141,16 @@ export class ActorArt {
         .setFlipX(flipBody)
         .setOrigin(flipBody ? 1 - f.pivot.x / f.rect[2] : f.pivot.x / f.rect[2], f.pivot.y / f.rect[3])
         .setScale(scale);
-      // 只对齐角色图像左上角到渲染像素；不量化物理坐标或旋转武器。
-      const originX = (flipBody ? f.rect[2] - f.pivot.x : f.pivot.x) * scale;
-      const originY = f.pivot.y * scale;
+      // 固定脸部的采样相位；原帧裁切宽度各不相同，不能用它们的边缘对齐眼睛。
+      const face = action === 'idle' || action === 'run' ? character.face : undefined;
+      const anchor = face ?? f;
+      const originX = (flipBody ? anchor.rect[2] - anchor.pivot.x : anchor.pivot.x) * scale;
+      const originY = anchor.pivot.y * scale;
       image.setPosition(
         Math.round((a.x - originX) * RENDER_SCALE) / RENDER_SCALE + originX,
         Math.round((a.y - originY) * RENDER_SCALE) / RENDER_SCALE + originY,
       );
+      if (face) this.face.apply(image, f, character);
       if (a.phase !== 'active' || !this.showWeapon) continue;
       const id = this.sim.weaponId,
         art = WEAPON_ART[id],
@@ -190,6 +198,7 @@ export class ActorArt {
       y: hero.y,
       flipX: hero.flipX,
       depth: hero.depth,
+      face: this.face.inspect(),
       weapon: {
         x: this.weapon.x,
         y: this.weapon.y,
@@ -207,6 +216,7 @@ export class ActorArt {
       slot.shadow.destroy();
     }
     this.weapon.destroy();
+    this.face.destroy();
     this.arc.destroy();
   }
 }

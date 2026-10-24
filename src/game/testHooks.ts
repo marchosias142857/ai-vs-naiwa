@@ -28,6 +28,7 @@ export interface DemoProbe {
     y: number;
     flipX: boolean;
     depth: number;
+    face: { visible: boolean; x: number; y: number; width: number; height: number };
     weapon: { x: number; y: number; flipY: boolean; angle: number; depth: number; visible: boolean };
   } | null;
   floor: number;

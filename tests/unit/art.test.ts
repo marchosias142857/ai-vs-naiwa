@@ -85,10 +85,10 @@ describe('真实 PNG 图集与持握数据', () => {
   });
   it('PNG 图集尺寸合法，单文件在离线缓存预算内', () => {
     for (const name of files) expect(dimensions(name)[0]).toBeGreaterThan(0);
-    inImage(
-      'da-fei-yu-pixel-v2',
-      [...HERO_ART.idle, ...HERO_ART.run].map((key) => HERO_FRAMES[key].rect),
-    );
+    inImage('da-fei-yu-pixel-v2', [
+      HERO_ART.face.rect,
+      ...[...HERO_ART.idle, ...HERO_ART.run].map((key) => HERO_FRAMES[key].rect),
+    ]);
     inImage(
       'da-fei-yu-pixel-reactions-v1',
       [...HERO_ART.hurt, ...HERO_ART.death].map((key) => HERO_FRAMES[key].rect),
@@ -100,6 +100,17 @@ describe('真实 PNG 图集与持握数据', () => {
     inImage('enemies', Object.values(ENEMY_ART));
     inImage('environment', Object.values(ENVIRONMENT_ART));
     inImage('doors', Object.values(DOOR_ART));
+  });
+  it('固定面部可从所有待机与行走帧中完整裁出，受击死亡仍使用独立原图', () => {
+    for (const key of [...HERO_ART.idle, ...HERO_ART.run]) {
+      const f = HERO_FRAMES[key];
+      const x = f.pivot.x - HERO_ART.face.pivot.x;
+      const y = f.pivot.y - HERO_ART.face.pivot.y;
+      expect(x).toBeGreaterThan(0);
+      expect(y).toBeGreaterThan(0);
+      expect(x + HERO_ART.face.rect[2]).toBeLessThan(f.rect[2]);
+      expect(y + HERO_ART.face.rect[3]).toBeLessThan(f.rect[3]);
+    }
   });
   it('新开屏采用无损 WebP，纳入离线缓存且旧图已移除', () => {
     const file = 'public/assets/demo/title-confrontation-v1.webp';

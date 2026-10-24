@@ -38,6 +38,7 @@ export function installDemoArt(scene: Scene): void {
       if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Textures.FilterMode.NEAREST);
     for (const action of ['idle', 'run', 'hurt', 'death'] as const)
       for (const name of art[action]) add(characterTexture(art, action), name, art.frames[name]!.rect);
+    if (art.face) add(art.texture, art.face.frame, art.face.rect);
   }
   for (const [name, f] of Object.entries(WEAPON_ART)) add(ART.weapons, name, f.rect);
   for (const [name, rect] of Object.entries(ENEMY_ART)) add(ART.enemies, name, rect);

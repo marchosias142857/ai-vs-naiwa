@@ -36,6 +36,7 @@ export const HERO_ART = {
   source: 'da-fei-yu-pixel-v2.png',
   reactionTexture: 'demo_hero_reactions',
   reactionSource: 'da-fei-yu-pixel-reactions-v1.png',
+  face: { frame: 'stable_face', rect: [244, 133, 99, 55], pivot: { x: 48, y: 50 } },
   frames: HERO_FRAMES,
   scale: 0.068,
   reactionScale: 0.0465,
