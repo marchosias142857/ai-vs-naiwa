@@ -78,3 +78,21 @@ it('八种升级均生效，补给不能超上限', () => {
   expect(w.resources.coins).toBe(3);
   expect(w.grantPickup('coin', NaN)).toBe(false);
 });
+
+it('补给原子扣款，余额不足与满额时不吞金币', () => {
+  const world = createCombatWorld({ seed: 1, bus: new EventBus<GameEvents>(), playerRules: PLAYER_RULES });
+  const id = world.spawnPlayer('ai_proto', 0, 0);
+  world.restorePlayer({ hp: 2, armor: 5, energy: 0, coins: 7 });
+  expect(world.buySupplies()).toBe(false);
+  expect(world.resources.coins).toBe(7);
+  world.grantPickup('coin', 1);
+  expect(world.buySupplies()).toBe(true);
+  expect(world.resources.coins).toBe(0);
+  expect(world.getActor(id)!.hp).toBe(4);
+  expect(world.resources.energy).toBe(50);
+  world.grantPickup('health', 100);
+  world.grantPickup('energy', 1000);
+  world.grantPickup('coin', 8);
+  expect(world.buySupplies()).toBe(false);
+  expect(world.resources.coins).toBe(8);
+});

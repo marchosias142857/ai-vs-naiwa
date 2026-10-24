@@ -1,3 +1,4 @@
+import { LOOT_RULES } from '../../src/data/loot';
 import { expect, test } from '@playwright/test';
 import { build } from 'vite';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
@@ -36,7 +37,10 @@ test.beforeAll(async () => {
     const path = new URL(req.url ?? '/', 'http://localhost').pathname;
     void readFile(join(directory, path === '/' ? 'combat.html' : path))
       .then((data) => {
-        res.setHeader('Content-Type', path.endsWith('.js') ? 'text/javascript' : 'text/html');
+        res.setHeader(
+          'Content-Type',
+          path.endsWith('.js') ? 'text/javascript' : path.endsWith('.css') ? 'text/css' : 'text/html',
+        );
         res.end(data);
       })
       .catch(() => res.writeHead(404).end());
@@ -230,4 +234,21 @@ test('真实命中反馈使用预热池，预警隐藏与死亡延迟回收', as
   expect(result.delayedDeath).toBe(true);
   expect(result.recycled).toBe(true);
   expect(result.stable).toBe(true);
+});
+
+test('出口升级界面可买补给，再选择升级进入下一层', async ({ page }, info) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.demoScenario);
+  const result = await page.evaluate(() => window.demoScenario(true));
+  expect(result.phase).toBe('offer');
+  const before = await page.evaluate(() => window.offerState());
+  await expect(page.locator('#buy-supplies')).toBeEnabled();
+  await page.locator('#demo-hud').screenshot({ path: info.outputPath('demo-upgrade.png'), scale: 'css' });
+  await page.locator('#buy-supplies').click();
+  const after = await page.evaluate(() => window.offerState());
+  expect(after.coins).toBe(before.coins - LOOT_RULES.shopPrice);
+  expect(after.energy).toBeGreaterThan(before.energy);
+  await page.locator('[data-choice="0"]').click();
+  expect(await page.evaluate(() => window.offerState().floor)).toBe(2);
+  expect(await page.evaluate(() => window.offerState().offers)).toBe(0);
 });

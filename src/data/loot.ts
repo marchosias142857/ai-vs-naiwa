@@ -14,6 +14,9 @@ export const LOOT_RULES = {
   roomCoins: 5,
   roomEnergy: 30,
   roomHealth: 1,
+  shopPrice: 8,
+  shopHealth: 2,
+  shopEnergy: 50,
 } as const satisfies LootRules;
 export const ENCOUNTERS = {
   attempts: 24,

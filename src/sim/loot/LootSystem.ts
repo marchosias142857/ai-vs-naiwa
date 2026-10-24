@@ -12,7 +12,7 @@ export interface LootSlot {
   amount: number;
   weapon: WeaponId;
 }
-const weapons = Object.keys(WEAPONS) as WeaponId[];
+const weapons = (Object.keys(WEAPONS) as WeaponId[]).filter((id) => id !== 'pistol_basic');
 
 /** 规则槽位与 game 表现一一对应，整个房间重复利用；满额丢弃，换房清空。 */
 export class LootSystem {

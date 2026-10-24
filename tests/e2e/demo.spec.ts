@@ -146,3 +146,55 @@ test('demo：语言与反馈设置持久保存，英文游戏与暂停菜单可�
   await expect(page.locator('#pause-menu')).toHaveText('Menu (keep floor checkpoint)');
   await page.screenshot({ path: info.outputPath('demo-english.png'), scale: 'css' });
 });
+
+test('demo：真实自动瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算', async ({ page }, info) => {
+  test.setTimeout(50_000);
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await installPad(page);
+  await page.goto('/?god=1');
+  await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
+  await page.evaluate(() =>
+    localStorage.setItem(
+      'avn.floor.v1',
+      JSON.stringify({
+        version: 1,
+        seed: 42,
+        floor: 4,
+        upgrades: ['power', 'power', 'power'],
+        secondary: 'rifle_auto',
+        equipped: 'rifle_auto',
+        hp: 6,
+        armor: 5,
+        energy: 200,
+        coins: 40,
+        kills: 50,
+        roomsCleared: 12,
+        elapsed: 200,
+      }),
+    ),
+  );
+  await page.reload();
+  await page.locator('#continue-run').click();
+  await page.waitForFunction(() => window.__AVN__?.demo?.floor === 4);
+  const door = await page.evaluate(() => window.__AVN__!.demo!.links[0]!);
+  const key = door.dx > 0 ? 'd' : door.dx < 0 ? 'a' : door.dy > 0 ? 's' : 'w';
+  await page.keyboard.down(key);
+  await page.waitForFunction(() => window.__AVN__!.demo!.kind === 'boss');
+  await page.keyboard.up(key);
+  await padButton(page, 7, true);
+  await page.waitForFunction(() => window.__AVN__!.demo!.alive > 0);
+  await expect(page.locator('.demo-status')).toContainText('奶蛙首领');
+  await page.screenshot({ path: info.outputPath('demo-boss.png'), scale: 'css' });
+  await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, { timeout: 35_000 });
+  expect(await page.evaluate(() => window.__AVN__!.demo!.phase)).toBe('won');
+  expect(await page.evaluate(() => window.__AVN__!.demo!.kills)).toBe(51);
+  await expect(page.locator('#demo-hud h2')).toHaveText('通关成功');
+  await page.screenshot({ path: info.outputPath('demo-victory.png'), scale: 'css' });
+  expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBeNull();
+  await padButton(page, 7, false);
+  await page.locator('#demo-menu').click();
+  await expect(page.locator('#continue-run')).toBeDisabled();
+  await expect(page.locator('#demo-actions')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});

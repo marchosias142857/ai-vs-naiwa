@@ -160,6 +160,9 @@ export class DemoSession {
       this.scene.physics.pause();
     }
   };
+  buySupplies(): boolean {
+    return this.offers.length > 0 && this.sim.buySupplies();
+  }
   chooseUpgrade(id: UpgradeId): boolean {
     if (!this.offers.includes(id) || !this.sim.upgrade(id)) return false;
     this.offers.length = 0;

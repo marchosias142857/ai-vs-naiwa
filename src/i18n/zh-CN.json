@@ -55,5 +55,8 @@
   "upgrade.mobility": "移动强化",
   "upgrade.trigger": "射速强化",
   "upgrade.repair": "装甲修复加速",
-  "upgrade.cooling": "技能冷却缩短"
+  "upgrade.cooling": "技能冷却缩短",
+  "shop.supplies": "补给：{price} 金币 → 生命 +{health} / 能量 +{energy}",
+  "hint.weapon": "E / A / 拾取：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
+  "hud.boss": "奶蛙首领 {hp}/{maxHp}"
 }

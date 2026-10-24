@@ -1,3 +1,4 @@
+import { DemoHud } from '../../src/game/ui/DemoHud';
 import { AUTO, Game, Scene } from 'phaser';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import { DemoSession } from '../../src/game/systems/DemoSession';
@@ -8,6 +9,7 @@ import { createInputFrame } from '../../src/sim/core/types';
 import { DUNGEON } from '../../src/data/dungeon';
 
 class DemoHarness extends Scene {
+  private hud?: DemoHud;
   constructor() {
     super('Game');
   }
@@ -17,6 +19,13 @@ class DemoHarness extends Scene {
     this.scene.launch(InputScene.KEY);
     const bus = new EventBus<GameEvents>(),
       session = new DemoSession(this, bus, this.scene.get(InputScene.KEY) as InputScene, 42, true);
+    this.hud = new DemoHud(this, session);
+    window.offerState = () => ({
+      floor: session.dungeon.floor,
+      energy: session.sim.resources.energy,
+      coins: session.sim.resources.coins,
+      offers: session.offers.length,
+    });
     window.feedbackScenario = () => {
       const input = createInputFrame(),
         children = this.children.length;
@@ -54,8 +63,13 @@ class DemoHarness extends Scene {
         stable: children === this.children.length,
       };
     };
-    window.demoScenario = () => {
+    window.demoScenario = (stopAtOffer = false) => {
       const input = createInputFrame();
+      if (stopAtOffer) {
+        session.sim.takeWeapon('rifle_auto');
+        session.sim.grantPickup('coin', 50);
+        input.fire = true;
+      }
       let steps = 0,
         rooms = 0;
       const children = this.children.length;
@@ -112,6 +126,19 @@ class DemoHarness extends Scene {
         tick(1);
         input.interactPressed = false;
         if (session.offers.length !== 3) throw Error('缺少升级选择');
+        if (stopAtOffer) {
+          this.hud!.update(300);
+          return {
+            phase: 'offer',
+            settled: false,
+            floor,
+            rooms,
+            kills: session.kills,
+            childrenStable: children === this.children.length,
+            bullets: session.bridge.bullets.activeCount,
+            steps,
+          };
+        }
         if (!session.chooseUpgrade(session.offers[0]!)) throw Error('升级失败');
       }
       next(1);
@@ -129,6 +156,9 @@ class DemoHarness extends Scene {
       };
     };
   }
+  override update(_time: number, delta: number): void {
+    this.hud?.update(delta);
+  }
 }
 declare global {
   interface Window {
@@ -140,7 +170,8 @@ declare global {
       recycled: boolean;
       stable: boolean;
     };
-    demoScenario: () => {
+    offerState: () => { floor: number; energy: number; coins: number; offers: number };
+    demoScenario: (stopAtOffer?: boolean) => {
       phase: string;
       settled: boolean;
       floor: number;

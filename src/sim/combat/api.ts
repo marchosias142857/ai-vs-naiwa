@@ -139,6 +139,8 @@ export interface CombatWorld {
   >;
   /** 替换第二武器并装备；第一槽始终保留免费手枪。 */
   takeWeapon(id: WeaponId): boolean;
+  /** 使用 data 中的补给价格购买生命/能量；满额、余额不足、死亡时不扣钱。 */
+  buySupplies(): boolean;
   grantPickup(kind: 'health' | 'energy' | 'coin', amount: number): boolean;
   upgrade(id: UpgradeId): boolean;
   /** 仅允许 time=0 的新世界恢复入口资源，先由调用方重放升级；有限值会夹到上限。 */
