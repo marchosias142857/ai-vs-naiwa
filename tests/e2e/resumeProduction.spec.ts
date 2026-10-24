@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import type { RunSnapshot } from '../../src/game/save/RunSnapshot';
 
-test('生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结', async ({ page }) => {
+test('生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结', async ({ page }, info) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/?seed=42&god=1');
@@ -34,6 +34,7 @@ test('生产入口：战斗暂停保存后刷新，正式校验器继续原局�
   expect(await page.evaluate(() => window.__AVN__!.demo!.physicsPaused)).toBe(true);
   await page.waitForTimeout(600);
   expect(await page.evaluate(() => window.__AVN__!.demo!.time)).toBe(before.sim.world.time);
+  await page.screenshot({ path: info.outputPath('production-countdown.png'), scale: 'css' });
   await page.waitForFunction(() => window.__AVN__!.demo!.resumeRemaining === 0);
   await page.waitForFunction((time) => window.__AVN__!.demo!.time > time, before.sim.world.time);
   expect(errors).toEqual([]);

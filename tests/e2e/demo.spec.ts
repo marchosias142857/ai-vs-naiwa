@@ -1,5 +1,4 @@
 import { INPUT_UI } from '../../src/game/fx/params';
-import { CHARACTERS } from '../../src/data/characters';
 import { installPad, padButton, type PadWindow } from './helpers/gamepad';
 import { expect, test } from '@playwright/test';
 
@@ -194,8 +193,7 @@ test('demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过�
   await page.waitForFunction(() => window.__AVN__!.demo!.kind === 'boss');
   await page.keyboard.up(key);
   // 玩家没有自动瞄准（ADR 0020）：每帧把右摇杆推向最近的敌人，从身体中心对准碰撞圆心。
-  const radius = CHARACTERS.ai_proto.radius;
-  await page.evaluate((bodyRadius) => {
+  await page.evaluate(() => {
     const aim = () => {
       const demo = window.__AVN__?.demo,
         pad = window as PadWindow;
@@ -208,7 +206,7 @@ test('demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过�
         best = Infinity;
       for (const e of demo.enemies) {
         const x = e.x - demo.x,
-          y = e.y - (demo.y - bodyRadius),
+          y = e.y - demo.y,
           d = Math.hypot(x, y);
         // 目标恰好在枪口原点时跳过，避免把 NaN 写进模拟手柄。
         if (d > 0 && d < best) {
@@ -221,10 +219,11 @@ test('demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过�
       requestAnimationFrame(aim);
     };
     requestAnimationFrame(aim);
-  }, radius);
+  });
   await padButton(page, 7, true);
   await page.waitForFunction(() => window.__AVN__!.demo!.alive > 0);
   await expect(page.locator('.demo-status')).toContainText('奶蛙首领');
+  await page.waitForFunction(() => window.__AVN__!.demo!.enemies.length > 0);
   await page.screenshot({ path: info.outputPath('demo-boss.png'), scale: 'css' });
   await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, { timeout: 35_000 });
   expect(await page.evaluate(() => window.__AVN__!.demo!.phase)).toBe('won');

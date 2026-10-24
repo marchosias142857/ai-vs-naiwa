@@ -81,6 +81,25 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
   const reopened = await context.newPage();
   await reopened.goto(`${url}?scene=Game&seed=7`);
   await reopened.waitForFunction(() => window.__AVN__?.scene === 'Game');
+  await reopened.waitForFunction(() => !!window.__AVN__?.demo?.visual);
+  // 正式图集同样必须离线可用；仅有 Game 场景会漏掉图片加载失败的灰盒回退。
+  const art = await reopened.evaluate(async () =>
+    Promise.all(
+      ['da-fei-yu', 'weapons', 'enemies', 'environment', 'title'].map(async (name) => {
+        const response = await fetch(`assets/demo/${name}.png`);
+        return {
+          ok: response.ok,
+          type: response.headers.get('content-type'),
+          size: (await response.blob()).size,
+        };
+      }),
+    ),
+  );
+  for (const file of art) {
+    expect(file.ok).toBe(true);
+    expect(file.type).toBe('image/png');
+    expect(file.size).toBeGreaterThan(1000);
+  }
   expect(await reopened.evaluate(() => window.__AVN__?.seed)).toBe(7);
   await expect(reopened.locator('#game canvas')).toBeVisible();
   await reopened.screenshot({ path: info.outputPath('pwa-offline.png') });
