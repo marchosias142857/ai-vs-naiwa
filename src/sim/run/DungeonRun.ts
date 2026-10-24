@@ -15,6 +15,7 @@ export class DungeonRun {
   phase: DungeonPhase = 'exploring';
   readonly visited: boolean[] = [];
   readonly cleared: boolean[] = [];
+  readonly claimed: boolean[] = [];
   wave = 0;
   alive = 0;
   kills = 0;
@@ -35,6 +36,18 @@ export class DungeonRun {
     this.root = new Random(seed);
     this.map = this.generate();
     this.enterCurrent();
+    bus.on('entity:died', this.onDied);
+  }
+  private readonly onDied = (e: GameEvents['entity:died']): void => {
+    if (e.team === 'enemy' && !this.finished) this.kills++;
+  };
+  destroy(): void {
+    this.bus.off('entity:died', this.onDied);
+  }
+  claim(): boolean {
+    if (this.claimed[this.roomId]) return false;
+    this.claimed[this.roomId] = true;
+    return true;
   }
 
   get room(): DungeonRoom {
@@ -61,7 +74,7 @@ export class DungeonRun {
     this.floor++;
     this.map = this.generate();
     this.roomId = this.map.start;
-    this.visited.length = this.cleared.length = 0;
+    this.visited.length = this.cleared.length = this.claimed.length = 0;
     this.enterCurrent();
     return true;
   }
