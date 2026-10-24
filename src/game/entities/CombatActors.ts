@@ -4,6 +4,7 @@ import { CHARACTERS } from '../../data/characters';
 import { ENEMIES } from '../../data/enemies';
 import type { ActorView, CombatWorld } from '../../sim/combat/api';
 import { TEX } from '../assets/keys';
+import { loadBody, saveBody, type ActorSlotSnapshot } from '../world/bodySnapshot';
 
 interface ActorSlot {
   image: Physics.Arcade.Image;
@@ -51,13 +52,14 @@ export class CombatActors {
       slot.image.setFlipX(Math.cos(actor.facing) < 0);
     }
   }
-  private acquire(actor: ActorView): ActorSlot {
-    let slot: ActorSlot | undefined;
-    for (const candidate of this.slots)
-      if (!candidate.id) {
-        slot = candidate;
-        break;
-      }
+  private acquire(actor: ActorView, restored?: ActorSlot): ActorSlot {
+    let slot = restored;
+    if (!slot)
+      for (const candidate of this.slots)
+        if (!candidate.id) {
+          slot = candidate;
+          break;
+        }
     if (!slot) throw new Error('M1 actor pool exhausted (30 enemies + player)');
     slot.id = actor.id;
     this.byId.set(actor.id, slot);
@@ -73,6 +75,31 @@ export class CombatActors {
     (image.body as Physics.Arcade.Body).updateFromGameObject();
     image.setCollideWorldBounds(true);
     return slot;
+  }
+  /** 槽位顺序决定 Arcade 重叠回调顺序，不能按 actors 数组重新分配。 */
+  save(): (ActorSlotSnapshot | null)[] {
+    return this.slots.map((s) => (s.id ? { id: s.id, ...saveBody(s.image) } : null));
+  }
+  /** 调用方先恢复 sim 并校验槽位与实体一一对应；不发业务事件。 */
+  load(states: readonly (ActorSlotSnapshot | null)[]): void {
+    if (states.length !== this.slots.length) throw new RangeError('角色槽位容量不一致');
+    this.byId.clear();
+    for (const s of this.slots) {
+      s.image.disableBody(true, true);
+      s.id = 0;
+    }
+    for (let i = 0; i < states.length; i++) {
+      const s = states[i];
+      if (!s) continue;
+      const actor = this.sim.getActor(s.id);
+      if (!actor) throw new Error('角色槽位缺少 sim 实体');
+      this.acquire(actor, this.slots[i]!);
+    }
+    this.apply();
+    for (let i = 0; i < states.length; i++) {
+      const s = states[i];
+      if (s) loadBody(this.slots[i]!.image, s);
+    }
   }
   /** 由死亡表现完成回调调用；尚未 dead 时拒绝回收。 */
   finishDeath(id: number): void {

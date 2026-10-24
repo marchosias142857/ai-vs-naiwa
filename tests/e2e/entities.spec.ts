@@ -10,6 +10,7 @@ import type {} from '../fixtures/combat';
 import type {} from '../fixtures/knockback';
 import type {} from '../fixtures/room';
 import type {} from '../fixtures/demo';
+import type {} from '../fixtures/snapshot';
 import { BALANCE } from '../../src/data/balance';
 import { WEAPONS } from '../../src/data/weapons';
 import { ENEMIES } from '../../src/data/enemies';
@@ -30,6 +31,7 @@ test.beforeAll(async () => {
           resolve('tests/fixtures/knockback.html'),
           resolve('tests/fixtures/room.html'),
           resolve('tests/fixtures/demo.html'),
+          resolve('tests/fixtures/snapshot.html'),
         ],
       },
     },
@@ -309,3 +311,40 @@ test('瞬时反馈池：满池、部分到期、反复回收不重复占槽或�
   expect(result.capacity).toBe(POOL_SIZES.fx);
   expect(result.stable).toBe(true);
 });
+
+for (const mode of ['mixed', 'full', 'corpse', 'teleport'] as const) {
+  test(`存档物理往返：${mode}，真实 Arcade 后续命中与快照一致`, async ({ page }) => {
+    await page.goto(`${url}/snapshot.html`);
+    await page.waitForFunction(() => window.snapshotScenario);
+    const a = await page.evaluate((mode) => window.snapshotScenario(mode), mode);
+    if (mode === 'mixed') {
+      expect(
+        new Set(a.before.physics.bullets.slots.filter((s) => s).map((s) => s!.radius)).size,
+      ).toBeGreaterThan(1);
+      expect(a.events.some((s) => s.startsWith('entity:damaged'))).toBe(true);
+    }
+    if (mode === 'full') {
+      expect(a.before.physics.bullets.free).toHaveLength(0);
+      expect(a.before.sim.bullets).toHaveLength(POOL_SIZES.bullets);
+      expect(a.after.physics.bullets.free.length).toBeGreaterThan(0);
+    }
+    if (mode === 'corpse') {
+      expect(a.before.deaths.length).toBeGreaterThan(0);
+      expect(a.before.deaths.every((s) => s.elapsed > 0)).toBe(true);
+    }
+    if (mode === 'teleport') {
+      expect(a.before.physics.actors[0]!.vx).toBe(0);
+      expect(a.before.sim.actors[0]!.vx).toBeGreaterThan(0);
+    }
+    await page.goto(`${url}/snapshot.html`);
+    await page.waitForFunction(() => window.snapshotScenario);
+    const b = await page.evaluate(({ mode, saved }) => window.snapshotScenario(mode, saved), {
+      mode,
+      saved: a.before,
+    });
+    expect(b.before).toEqual(a.before);
+    expect(b.events).toEqual(a.events);
+    expect(b.after).toEqual(a.after);
+    expect(a.stable && b.stable).toBe(true);
+  });
+}

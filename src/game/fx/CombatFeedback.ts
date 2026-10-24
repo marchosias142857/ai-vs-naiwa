@@ -12,6 +12,11 @@ interface EffectSlot {
   remaining: number;
   duration: number;
 }
+/** 保存原始累计值，避免 elapsed → remaining → elapsed 的浮点损失改变回收步。 */
+export interface DeathSnapshot {
+  id: number;
+  elapsed: number;
+}
 
 /** 灰盒反馈：预警/生命条用固定 Graphics，瞬时反馈与死亡计时均复用槽位。 */
 export class CombatFeedback {
@@ -54,6 +59,26 @@ export class CombatFeedback {
     slot.remaining = slot.duration = duration;
     slot.image.setPosition(x, y).setFillStyle(color).setScale(1).setAlpha(1).setVisible(true);
     this.activeCount++;
+  }
+  saveDeaths(): DeathSnapshot[] {
+    const result: DeathSnapshot[] = [];
+    for (let i = 0; i < this.states.length; i++) {
+      const id = this.bridge.actors.slots[i]!.id,
+        state = this.states[i]!;
+      if (id && this.sim.getActor(id)?.phase === 'dead')
+        result.push({ id, elapsed: state.id === id ? state.death : 0 });
+    }
+    return result;
+  }
+  loadDeaths(saved: readonly DeathSnapshot[]): void {
+    for (let i = 0; i < this.states.length; i++) {
+      const state = this.states[i]!,
+        id = this.bridge.actors.slots[i]!.id;
+      state.id = id;
+      state.flash = 0;
+      state.death = saved.find((s) => s.id === id)?.elapsed ?? 0;
+    }
+    this.update();
   }
   private readonly onHit = (e: GameEvents['bullet:hit']): void =>
     this.emit(e.x, e.y, e.critical ? FX.criticalColor : FX.hitColor, FX.impactSeconds);
