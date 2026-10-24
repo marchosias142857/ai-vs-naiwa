@@ -50,7 +50,7 @@ describe('输入快照与多指', () => {
     const t = new TouchState();
     t.resize(800, 450);
     expect(t.down(1, UI.joystick.homeInset, t.height - UI.joystick.homeInset)).toBe(true);
-    expect(t.down(2, t.width - UI.fire.inset, t.height - UI.fire.inset)).toBe(true);
+    expect(t.down(2, t.width - UI.aimWheel.inset, t.height - UI.aimWheel.inset)).toBe(true);
     t.drag(2, 200, 200);
     expect(t.move.x).toBe(0);
     t.drag(1, 900, 350);

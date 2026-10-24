@@ -5,7 +5,7 @@
   "menu.continue": "Continue floor {floor} (from entrance)",
   "menu.noSave": "No adventure to continue",
   "menu.help": "Explore rooms, defeat enemies and find weapons and exits. Survive three floors and defeat the final boss.",
-  "menu.controls": "Keyboard: WASD move · Mouse fire · Space dash · Q swap · E interact\nTouch: Left stick move · Right button auto-fire · Action buttons below\nController: Left stick move · RT fire · B dash · Y swap · A interact · Start pause",
+  "menu.controls": "Keyboard: WASD move · Mouse fire · Space dash · Q swap · E interact\nTouch: Left stick move · Hold right wheel to fire, drag to aim · Action buttons below\nController: Left stick move · Right stick aim · RT fire · B dash · Y swap · A interact · Start pause",
   "menu.stats": "Runs {runs} · Wins {wins} · Total kills {kills}",
   "menu.note": "Greybox demo · Saves at each floor entrance · Offline ready",
   "pause.resume": "Resume",

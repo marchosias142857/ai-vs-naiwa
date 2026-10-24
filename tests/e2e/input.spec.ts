@@ -37,7 +37,7 @@ test('触屏多指移动和射击互不串扰，取消释放；CSS 大小与缩�
   const b = (await page.locator('canvas').boundingBox())!;
   const cdp = await context.newCDPSession(page);
   const move = { x: b.x + UI.joystick.homeInset, y: b.y + b.height - UI.joystick.homeInset, id: 1 };
-  const fire = { x: b.x + b.width - UI.fire.inset, y: b.y + b.height - UI.fire.inset, id: 2 };
+  const fire = { x: b.x + b.width - UI.aimWheel.inset, y: b.y + b.height - UI.aimWheel.inset, id: 2 };
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [move, fire] });
   await cdp.send('Input.dispatchTouchEvent', {
     type: 'touchMove',
