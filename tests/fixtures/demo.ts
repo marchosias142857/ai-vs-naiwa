@@ -1,5 +1,6 @@
+import type { PhysicsSnapshot } from '../../src/game/world/CombatBridge';
 import { parseCheckpoint, type FloorCheckpoint } from '../../src/sim/run/checkpoint';
-import type { ActorView } from '../../src/sim/combat/api';
+import type { CombatWorldState, ActorView } from '../../src/sim/combat/api';
 import { DemoHud } from '../../src/game/ui/DemoHud';
 import { AUTO, Game, Scene, Physics } from 'phaser';
 import { POOL_SIZES } from '../../src/config';
@@ -32,6 +33,28 @@ class DemoHarness extends Scene {
         undefined,
         checkpoint ?? undefined,
       );
+    window.resumeFreeze = () => {
+      session.sim.takeWeapon('shotgun_fan');
+      const frame = createInputFrame();
+      frame.fire = true;
+      frame.aim = { x: 1, y: 0 };
+      session.setInput(frame);
+      this.physics.world.update(0, 1000 / 60);
+      this.physics.world.postUpdate();
+      frame.skillPressed = frame.swapPressed = frame.interactPressed = true;
+      session.setInput(frame); // 0 步的渲染帧已锁存边沿。
+      session.pause.set('restore', true);
+    };
+    window.resumeTick = () => {
+      this.physics.world.update(0, 1000 / 60);
+      this.physics.world.postUpdate();
+      return {
+        world: session.sim.save(),
+        physics: session.bridge.save(),
+        remaining: session.pause.remaining,
+      };
+    };
+    window.resumeManual = (value) => session.pause.set('manual', value);
     window.floorCheckpoint = () => session.checkpoint();
     window.floorOffers = () => [...session.offers];
     this.hud = new DemoHud(this, session);
@@ -257,6 +280,13 @@ class DemoHarness extends Scene {
 }
 declare global {
   interface Window {
+    resumeFreeze: () => void;
+    resumeManual: (value: boolean) => void;
+    resumeTick: () => {
+      world: CombatWorldState;
+      physics: PhysicsSnapshot;
+      remaining: number;
+    };
     floorCheckpoint: () => FloorCheckpoint;
     floorOffers: () => string[];
     stressScenario: () => {

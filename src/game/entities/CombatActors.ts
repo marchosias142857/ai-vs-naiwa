@@ -1,3 +1,5 @@
+import { ActorArt } from './ActorArt';
+import { ART } from '../assets/demoArt';
 import type { Physics, Scene } from 'phaser';
 import { DEPTH, DEPTH_Y_SORT, POOL_SIZES } from '../../config';
 import { CHARACTERS } from '../../data/characters';
@@ -11,8 +13,9 @@ interface ActorSlot {
   id: number;
 }
 
-/** 角色脚底为物理圆心；贴图底部与脚底对齐，物理体允许伸出贴图底部。 */
+/** 角色位置统一为身体圆心；动画贴图独立于物理代理，换帧不修改物理体。 */
 export class CombatActors {
+  art?: ActorArt;
   readonly group: Physics.Arcade.Group;
   readonly slots: ActorSlot[] = [];
   private readonly byId = new Map<number, ActorSlot>();
@@ -31,6 +34,10 @@ export class CombatActors {
       this.slots.push(slot);
       this.byImage.set(image, slot);
     }
+  }
+  /** 正式 demo / 压测接入图集，M1 兼容性场景保留静态灰盒。 */
+  enableArt(scene: Scene): void {
+    if (!this.art && scene.textures.exists(ART.hero)) this.art = new ActorArt(scene, this.sim, this);
   }
   /** 在 POST_UPDATE 之前只读 body.center，不读滞后一帧的贴图坐标。 */
   syncPositions(): void {
@@ -69,10 +76,14 @@ export class CombatActors {
         : ENEMIES[actor.kind as keyof typeof ENEMIES];
     const image = slot.image;
     image.setTexture(data?.sprite ?? (actor.team === 'player' ? TEX.player : TEX.enemy));
-    image.setOrigin(0.5, 1).setScale(1).setAngle(0).setAlpha(1).clearTint();
+    image.setOrigin(0.5, 0.5).setScale(1).setAngle(0).setAlpha(1).clearTint();
     image.enableBody(true, actor.x, actor.y, true, true);
-    image.setCircle(actor.radius, image.width / 2 - actor.radius, image.height - actor.radius);
-    (image.body as Physics.Arcade.Body).updateFromGameObject();
+    image.setCircle(actor.radius, image.width / 2 - actor.radius, image.height / 2 - actor.radius);
+    const body = image.body as Physics.Arcade.Body;
+    body.updateFromGameObject();
+    // 预警体不跑 preUpdate；激活当步却会跑 postUpdate，不能补出旧矩形到圆心的偏移。
+    body.prev.copy(body.position);
+    body.prevFrame.copy(body.position);
     image.setCollideWorldBounds(true);
     return slot;
   }
@@ -113,6 +124,7 @@ export class CombatActors {
     this.sim.removeActor(id);
   }
   destroy(): void {
+    this.art?.destroy();
     this.group.destroy(true, true);
     this.byImage.clear();
     this.byId.clear();

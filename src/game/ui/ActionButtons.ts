@@ -4,7 +4,7 @@ import { COLORS } from '../../config';
 import { INPUT_UI } from '../fx/params';
 import type { InputController } from '../input/InputController';
 
-/** 临时功能性按钮；属于输入 UI 场景，固定 CSS 触控尺寸，正式布局待画面方案。 */
+/** 输入 UI 场景的动作按钮，固定 CSS 触控尺寸，避免随画布缩小到难以点击。 */
 export class ActionButtons {
   private readonly root = document.createElement('div');
   private readonly abort = new AbortController();

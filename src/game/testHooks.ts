@@ -17,6 +17,15 @@ export interface TestHooks {
 }
 
 export interface DemoProbe {
+  meleeActive: boolean;
+  visual: {
+    frame: string | number;
+    x: number;
+    y: number;
+    flipX: boolean;
+    depth: number;
+    weapon: { x: number; y: number; flipY: boolean; angle: number; depth: number; visible: boolean };
+  } | null;
   floor: number;
   room: number;
   kind: string;
@@ -38,6 +47,8 @@ export interface DemoProbe {
   bullets: number;
   children: number;
   time: number;
+  resumeRemaining: number;
+  physicsPaused: boolean;
   /** 活动阶段敌人的脚底位置；只给测试瞄准用（玩家没有自动瞄准，ADR 0020）。 */
   enemies: { x: number; y: number }[];
 }

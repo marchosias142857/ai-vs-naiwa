@@ -1,6 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
 import { INPUT_UI } from '../../src/game/fx/params';
-import { CHARACTERS } from '../../src/data/characters';
 
 /**
  * #15 战斗流程：开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来，全程控制台零报错。
@@ -126,7 +125,7 @@ test('移动中（含暂停恢复后）鼠标瞄准以玩家当前身体中心�
       const c = await combat(page);
       if (!c.aim) continue;
       // 只横向移动，因此采样和读探针之间的物理步不改变 y；不能只验证探针自报的原点。
-      expect(c.aimOriginY).toBeCloseTo(c.playerY - CHARACTERS.ai_proto.radius, 6);
+      expect(c.aimOriginY).toBeCloseTo(c.playerY, 6);
       const dx = target.x - c.aimOriginX,
         dy = target.y - c.aimOriginY,
         n = Math.hypot(dx, dy);

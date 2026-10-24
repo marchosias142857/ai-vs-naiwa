@@ -1,4 +1,6 @@
-# Demo 集成验收记录
+# 早期灰盒 demo 集成验收记录（历史）
+
+本页保留早期测试证据；当前美术、近战、存档 v2 与工作分工以 [制作验收记录](demo-production-acceptance.md) 为准。
 
 日期：2026-10-24。环境：Node 22、项目锁定依赖、Linux Chromium（SwiftShader）；Playwright 桌面与 Pixel 7 横屏配置。未声称完成 Safari/WebKit 真机或 Android 真机验收。
 
@@ -42,9 +44,9 @@
 
 ## 人工验收待办
 
-1. Claude 按 [demo 总览](../demo-overview.md) 的 PR 顺序评审 sim、接口 ADR、锁步与存档边界。
+1. GPT 按当前授权独立自审 sim、接口 ADR、锁步与存档边界；PR 由负责人合并。
 2. 负责人在 iOS Safari / Android Chrome 真机试玩至少 5 局，确认多指、音频恢复、触控尺寸、难度与性能。
-3. 由 Claude 提正式画面/音效方案，负责人确认后替换灰盒；此分支不自行确定正式视觉。
+3. demo 视觉由 GPT 直接制作，负责人宣布 demo 完成后双方合作细化。
 4. 负责人最终合并集成 PR；本轮未合入 main、未改线上部署。
 
 ## 集中评审修订验收（2026-10-24）

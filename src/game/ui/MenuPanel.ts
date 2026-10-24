@@ -4,21 +4,27 @@ import { t } from '../../i18n/t';
 import { addSettings } from './SettingsControls';
 import { MenuNavigation } from './MenuNavigation';
 import type { Scene } from 'phaser';
-import { CHECKPOINT_KEY, readProfile } from '../../services/profile';
-import { loadValue } from '../../services/storage';
-import { parseCheckpoint } from '../../sim/run/checkpoint';
+import { readProfile } from '../../services/profile';
+import { readSavedRun } from '../save/runStorage';
 import './demo.css';
 
-/** 灰盒功能菜单；正式版式待画面方案。 */
+/** 标题菜单；键盘/手柄导航与存档确认继续共用同一组控件。 */
 export class MenuPanel {
   private readonly root = document.createElement('section');
   private readonly navigation: MenuNavigation;
   private readonly abort = new AbortController();
-  constructor(scene: Scene) {
-    const checkpoint = parseCheckpoint(loadValue(CHECKPOINT_KEY)),
+  constructor(scene: Scene, readSave = readSavedRun) {
+    const saved = readSave(),
       profile = readProfile();
+    const checkpoint =
+      saved.kind === 'entry' ? saved.checkpoint : saved.kind === 'full' ? saved.snapshot.entry : null;
+    const resumeData = () =>
+      saved.kind === 'full' ? { snapshot: saved.snapshot } : checkpoint ? { checkpoint } : {};
     this.root.id = 'demo-menu-panel';
     this.root.className = 'demo-dialog';
+    const brand = document.createElement('span');
+    brand.className = 'menu-brand';
+    brand.textContent = 'DA FEI YU · TIDAL RUINS';
     const title = document.createElement('h2');
     title.textContent = t('app.title');
     const subtitle = document.createElement('p');
@@ -28,17 +34,29 @@ export class MenuPanel {
     start.textContent = t('menu.new');
     const resume = document.createElement('button');
     resume.id = 'continue-run';
-    resume.textContent = checkpoint ? t('menu.continue', { floor: checkpoint.floor }) : t('menu.noSave');
+    resume.textContent = checkpoint
+      ? t(saved.kind === 'entry' ? 'menu.continueEntry' : 'menu.continue', { floor: checkpoint.floor })
+      : t('menu.noSave');
     resume.disabled = !checkpoint;
     const help = document.createElement('p');
+    help.className = 'menu-help';
     help.textContent = t('menu.help');
     const controls = document.createElement('p');
     controls.className = 'menu-controls';
     controls.textContent = t('menu.controls');
+    const instructions = document.createElement('details'),
+      summary = document.createElement('summary');
+    summary.textContent = t('menu.instructions');
+    instructions.append(summary, controls);
     const stats = document.createElement('p');
+    stats.className = 'menu-stats';
     stats.textContent = t('menu.stats', { runs: profile.runs, wins: profile.wins, kills: profile.kills });
     const note = document.createElement('small');
     note.textContent = t('menu.note');
+    const saveNotice = document.createElement('p');
+    saveNotice.id = 'save-notice';
+    if (saved.kind !== 'full' && saved.notice) saveNotice.textContent = t(`save.${saved.notice}`);
+    saveNotice.hidden = !saveNotice.textContent;
     const question = document.createElement('p'),
       cancel = document.createElement('button'),
       confirm = document.createElement('button');
@@ -76,12 +94,29 @@ export class MenuPanel {
     resume.addEventListener(
       'click',
       () => {
-        if (checkpoint) scene.scene.start('Game', { checkpoint });
+        if (checkpoint) scene.scene.start('Game', resumeData());
       },
       { signal: this.abort.signal },
     );
-    this.root.append(title, subtitle, start, resume, question, cancel, confirm, help, controls, stats, note);
-    addSettings(this.root, this.abort.signal, () => scene.scene.restart());
+    this.root.append(
+      brand,
+      title,
+      subtitle,
+      start,
+      resume,
+      saveNotice,
+      question,
+      cancel,
+      confirm,
+      help,
+      instructions,
+      stats,
+      note,
+    );
+    const settingsRow = document.createElement('div');
+    settingsRow.className = 'menu-settings';
+    addSettings(settingsRow, this.abort.signal, () => scene.scene.restart());
+    this.root.append(settingsRow);
     document.documentElement.lang = settings.language;
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
@@ -98,7 +133,7 @@ export class MenuPanel {
         if (confirming || e.target instanceof HTMLButtonElement) return;
         if (e.key === 'Enter') {
           e.preventDefault();
-          scene.scene.start('Game', checkpoint ? { checkpoint } : {});
+          scene.scene.start('Game', resumeData());
         }
       },
       { signal: this.abort.signal },

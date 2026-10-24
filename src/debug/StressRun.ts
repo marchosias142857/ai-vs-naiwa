@@ -65,6 +65,7 @@ export class StressRun {
     if (fixed) this.sim.hitActor = () => false;
     scene.add.rectangle(B.x + B.width / 2, B.y + B.height / 2, B.width, B.height, COLORS.floor);
     this.bridge = new CombatBridge(scene, this.sim);
+    this.bridge.actors.enableArt(scene);
     this.arena = new RoomArena(scene, this.bridge, fixed);
     this.arena.setLayout(ROOM_LAYOUTS.length - 1);
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, this.bus);
@@ -143,7 +144,7 @@ export class StressRun {
     const p = this.player;
     if (p) {
       this.ui.playerX = p.x;
-      this.ui.playerY = p.y - p.radius;
+      this.ui.playerY = p.y;
     }
     this.fx.update();
     this.tools.update(delta);

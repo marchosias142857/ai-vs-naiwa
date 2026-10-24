@@ -22,3 +22,19 @@ export function removeValue(key: string): void {
     /* 无可用存储时保持本局可玩。 */
   }
 }
+
+/** 区分缺失与损坏，供菜单显示不同提示；存储禁用时仍可开局。 */
+export function inspectValue(key: string): { found: false } | { found: true; value: unknown } {
+  let raw: string | null;
+  try {
+    raw = localStorage.getItem(key);
+  } catch {
+    return { found: false };
+  }
+  if (raw === null) return { found: false };
+  try {
+    return { found: true, value: JSON.parse(raw) as unknown };
+  } catch {
+    return { found: true, value: null };
+  }
+}

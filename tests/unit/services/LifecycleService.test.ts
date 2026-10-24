@@ -1,6 +1,8 @@
 import { EventEmitter } from 'node:events';
 import type { Game } from 'phaser';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { bindCombatPause } from '../../../src/game/world/combatPause';
+import type { Scene } from 'phaser';
 import { bindLifecycle } from '../../../src/game/bindLifecycle';
 import { LifecycleService } from '../../../src/services/LifecycleService';
 
@@ -157,6 +159,7 @@ describe('Phaser 桥接层', () => {
     const game = {
       loop,
       events: new EventEmitter(),
+      registry: new Map(),
       isPaused: true,
       resume: vi.fn(),
       input: { enabled: true, keyboard: { enabled: false }, pointers: [{ reset: vi.fn() }] },
@@ -185,6 +188,36 @@ describe('Phaser 桥接层', () => {
     expect(scene.resume).not.toHaveBeenCalled();
   });
 
+  it('生命周期恢复在 wake 的同步首帧之前重置倒计时并清空输入', () => {
+    const { game } = engine();
+    let now = 0;
+    const clock = vi.spyOn(performance, 'now').mockImplementation(() => now);
+    const clear = vi.fn();
+    const battle = {
+      game,
+      events: new EventEmitter(),
+      physics: { world: { _elapsed: 12 }, pause: vi.fn(), resume: vi.fn() },
+    };
+    const pause = bindCombatPause(battle as unknown as Scene, clear);
+    lifecycle = bindLifecycle(game as unknown as Game);
+    pause.set('restore', true);
+    now = 1000;
+    pause.update();
+    expect(pause.remaining).toBe(2);
+    visibility(true);
+    now = 100000;
+    game.loop.wake.mockImplementation(() => {
+      expect(pause.remaining).toBe(3);
+      expect(pause.blocked).toBe(true);
+      expect(clear).toHaveBeenCalledTimes(3);
+      expect(battle.physics.world._elapsed).toBe(0);
+    });
+    visibility(false);
+    expect(game.loop.wake).toHaveBeenCalledOnce();
+    battle.events.emit('shutdown');
+    clock.mockRestore();
+  });
+
   it('不唤醒本来就被其他模块停止的循环', () => {
     const { game } = engine();
     game.loop.running = false;
@@ -205,4 +238,28 @@ describe('Phaser 桥接层', () => {
     expect(game.loop.sleep).toHaveBeenCalledOnce();
     expect(overlay.hidden).toBe(false);
   });
+});
+
+it('pagehide 单独发生也先暂停再同步保存；pageshow 复用现有实例', () => {
+  const trace: string[] = [];
+  lifecycle = new LifecycleService(overlay, {
+    onPauseChange: (p) => trace.push(p ? 'pause' : 'resume'),
+    unlockAudio: audio,
+    onHidden: () => trace.push('hidden-save'),
+    onPageHide: () => trace.push('pagehide-save'),
+  });
+  win.dispatchEvent(new Event('pagehide'));
+  expect(trace).toEqual(['pause', 'hidden-save', 'pagehide-save']);
+  visibility(true);
+  win.dispatchEvent(new Event('pagehide'));
+  expect(trace.at(-1)).toBe('pagehide-save');
+  visibility(false);
+  expect(lifecycle.isPaused).toBe(true);
+  win.dispatchEvent(new Event('pageshow'));
+  expect(trace.at(-1)).toBe('resume');
+  expect(lifecycle.isPaused).toBe(false);
+  lifecycle.destroy();
+  const length = trace.length;
+  win.dispatchEvent(new Event('pagehide'));
+  expect(trace).toHaveLength(length);
 });
