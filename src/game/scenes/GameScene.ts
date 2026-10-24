@@ -1,3 +1,4 @@
+import { StressRun } from '../../debug/StressRun';
 import { CombatAudio } from '../fx/CombatAudio';
 import { parseCheckpoint, type FloorCheckpoint } from '../../sim/run/checkpoint';
 import { RunPersistence } from '../systems/RunPersistence';
@@ -13,6 +14,7 @@ import { M1Scene } from './M1Scene';
 
 /** 默认进入完整 demo；?room=arena 保留 M1 手感与接口回归场景。 */
 export class GameScene extends M1Scene {
+  private stress?: StressRun;
   private demo?: DemoSession;
   private hud?: DemoHud;
   private objects?: DemoObjects;
@@ -20,7 +22,12 @@ export class GameScene extends M1Scene {
   private persistence?: RunPersistence;
   override create(data?: { checkpoint?: FloorCheckpoint }): void {
     this.demo = undefined;
+    this.stress = undefined;
     const params = debugParams();
+    if (params.stress) {
+      this.stress = new StressRun(this, params.seed ?? 42, params.stress === 'capacity');
+      return;
+    }
     if (params.room === 'arena') {
       super.create();
       return;
@@ -80,6 +87,10 @@ export class GameScene extends M1Scene {
     setTestHooks({ ready: true, scene: 'Game', seed });
   }
   override update(time: number, delta: number): void {
+    if (this.stress) {
+      this.stress.update(delta);
+      return;
+    }
     if (!this.demo) {
       super.update(time, delta);
       return;
