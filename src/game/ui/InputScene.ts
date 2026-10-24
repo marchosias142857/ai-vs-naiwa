@@ -17,7 +17,6 @@ export class InputScene extends Scene {
   private pausePanel?: PausePanel;
   private graphics!: GameObjects.Graphics;
   private resumeLabel!: GameObjects.Text;
-  private fireScale = 1;
   private layoutScale = 0;
   private pauseLabel!: GameObjects.Text;
   /** 鼠标瞄准原点：由战斗场景在物理后发布的玩家身体中心（脚底 y - radius）。 */
@@ -29,7 +28,6 @@ export class InputScene extends Scene {
   create(data?: { demo?: boolean }): void {
     // scene.restart 会复用场景实例；布局缓存必须清掉，否则同尺寸重来时跳过布局，暂停符号停在 (0, 0)。
     this.layoutScale = 0;
-    this.fireScale = 1;
     const battle = this.scene.get(SCENES.game);
     const battleInputEnabled = battle.input.enabled;
     // UI 统一拥有指针，控件触摸不能穿透到战斗场景。
@@ -70,18 +68,11 @@ export class InputScene extends Scene {
       setInputProbe(undefined);
     });
   }
-  override update(_time: number, delta: number): void {
+  override update(): void {
     const c = this.controls,
       s = c.rect.width / GAME_WIDTH;
     c.sample(this.playerX, this.playerY);
     if (!s) return;
-    const targetScale = c.touch.fireId >= 0 ? UI.fire.pressedScale : 1;
-    this.fireScale +=
-      Math.sign(targetScale - this.fireScale) *
-      Math.min(
-        Math.abs(targetScale - this.fireScale),
-        ((1 - UI.fire.pressedScale) * delta) / UI.fire.transitionMs,
-      );
     const g = this.graphics;
     g.clear();
     const paused = c.battle.scene.isPaused(),
@@ -119,13 +110,16 @@ export class InputScene extends Scene {
         t.moveId >= 0,
         t.moveId >= 0 ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
       );
-      this.circle(
-        GAME_WIDTH - UI.fire.inset / s,
-        GAME_HEIGHT - UI.fire.inset / s,
-        (UI.fire.radius / s) * this.fireScale,
-        t.fireId >= 0,
-        1,
-      );
+      const x = GAME_WIDTH - UI.aimWheel.inset / s,
+        y = GAME_HEIGHT - UI.aimWheel.inset / s,
+        held = t.fireId >= 0,
+        alpha = held ? 1 : UI.joystick.idleAlpha;
+      this.circle(x, y, UI.aimWheel.radius / s, held, alpha);
+      this.circle(x + t.fireDx / s, y + t.fireDy / s, UI.aimWheel.knobRadius / s, held, alpha);
+      const r = UI.aimWheel.iconRadius / s;
+      g.lineStyle(UI.outline / s, UI.look.pressedColor, alpha)
+        .lineBetween(x - r, y, x + r, y)
+        .lineBetween(x, y - r, x, y + r);
     }
     const mouse = c.frame.source === 'keyboard' && c.frame.aim !== null && !paused && !locked;
     this.game.canvas.style.cursor = mouse ? 'none' : '';

@@ -52,8 +52,8 @@ for (const mode of ['1', 'combat']) {
       },
       fire = {
         id: 2,
-        x: box.x + box.width - INPUT_UI.fire.inset,
-        y: box.y + box.height - INPUT_UI.fire.inset,
+        x: box.x + box.width - INPUT_UI.aimWheel.inset,
+        y: box.y + box.height - INPUT_UI.aimWheel.inset,
       };
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [move] });
     move.x += INPUT_UI.joystick.radius * 0.8;

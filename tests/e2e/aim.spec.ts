@@ -4,7 +4,7 @@ import { GAME_WIDTH } from '../../src/config';
 
 for (const room of ['arena', 'dungeon']) {
   test(`${room}：手动瞄准射线从身体中心穿过光标`, async ({ page, isMobile }, info) => {
-    test.skip(isMobile, '鼠标回归；手机使用触摸自动瞄准');
+    test.skip(isMobile, '鼠标回归；手机触摸轮盘另有回归测试');
     await page.goto(`/?scene=Game&seed=42&god=1&room=${room}`);
     await page.waitForFunction(
       () => !!window.__AVN__?.input && !!(window.__AVN__.combat || window.__AVN__.demo),
