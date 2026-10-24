@@ -1,3 +1,6 @@
+import { settings } from '../../services/settings';
+import { t } from '../../i18n/t';
+import { addSettings } from './SettingsControls';
 import { MenuNavigation } from './MenuNavigation';
 import type { Scene } from 'phaser';
 import { CHECKPOINT_KEY, readProfile } from '../../services/profile';
@@ -16,26 +19,25 @@ export class MenuPanel {
     this.root.id = 'demo-menu-panel';
     this.root.className = 'demo-dialog';
     const title = document.createElement('h2');
-    title.textContent = 'AI 大战奶蛙';
+    title.textContent = t('app.title');
     const subtitle = document.createElement('p');
-    subtitle.textContent = 'AI VS NAIWA · 地牢冒险';
+    subtitle.textContent = t('menu.subtitle');
     const start = document.createElement('button');
     start.id = 'start-run';
-    start.textContent = '开始新一局';
+    start.textContent = t('menu.new');
     const resume = document.createElement('button');
     resume.id = 'continue-run';
-    resume.textContent = checkpoint ? `继续第 ${checkpoint.floor} 层（从入口恢复）` : '暂无进行中的冒险';
+    resume.textContent = checkpoint ? t('menu.continue', { floor: checkpoint.floor }) : t('menu.noSave');
     resume.disabled = !checkpoint;
     const help = document.createElement('p');
-    help.textContent = '穿过房门，清理敌人，寻找武器与出口。通过三层地牢，击败终层 Boss。';
+    help.textContent = t('menu.help');
     const controls = document.createElement('p');
     controls.className = 'menu-controls';
-    controls.textContent =
-      '键鼠：WASD 移动 · 鼠标射击 · Space 冲刺 · Q 切枪 · E 拾取\n触屏：左摇杆移动 · 右按钮自动射击 · 下方技能/切枪/拾取\n手柄：左杆移动 · RT 射击 · B 冲刺 · Y 切枪 · A 拾取 · Start 暂停';
+    controls.textContent = t('menu.controls');
     const stats = document.createElement('p');
-    stats.textContent = `已完成 ${profile.runs} 局 · 通关 ${profile.wins} 次 · 总击杀 ${profile.kills}`;
+    stats.textContent = t('menu.stats', { runs: profile.runs, wins: profile.wins, kills: profile.kills });
     const note = document.createElement('small');
-    note.textContent = '灰盒试玩 · 每层入口自动保存 · 可离线游玩';
+    note.textContent = t('menu.note');
     start.addEventListener('click', () => scene.scene.start('Game', {}), { signal: this.abort.signal });
     resume.addEventListener(
       'click',
@@ -45,6 +47,8 @@ export class MenuPanel {
       { signal: this.abort.signal },
     );
     this.root.append(title, subtitle, start, resume, help, controls, stats, note);
+    addSettings(this.root, this.abort.signal, () => scene.scene.restart());
+    document.documentElement.lang = settings.language;
     document.body.append(this.root);
     this.navigation = new MenuNavigation(this.root, scene);
     window.addEventListener(

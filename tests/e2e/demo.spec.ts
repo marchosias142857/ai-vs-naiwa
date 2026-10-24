@@ -130,3 +130,19 @@ test('demo：手柄菜单松开再确认，暂停继续后能切回键盘', asyn
   await page.waitForFunction((x) => window.__AVN__!.demo!.x > x + 5, x);
   await page.keyboard.up('d');
 });
+
+test('demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用', async ({ page }, info) => {
+  await page.goto('/?seed=42');
+  await page.locator('#settings-flashes').click();
+  await page.locator('#settings-sound').click();
+  await page.locator('#settings-language').click();
+  await expect(page.locator('#start-run')).toHaveText('New adventure');
+  await page.reload();
+  await expect(page.locator('#settings-flashes')).toHaveText('Hit flashes: Off');
+  await expect(page.locator('#settings-sound')).toHaveText('Sound: Off');
+  await page.locator('#start-run').click();
+  await expect(page.locator('.demo-status')).toContainText('HP 6/6');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#pause-menu')).toHaveText('Menu (keep floor checkpoint)');
+  await page.screenshot({ path: info.outputPath('demo-english.png'), scale: 'css' });
+});

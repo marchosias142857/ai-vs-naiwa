@@ -1,10 +1,11 @@
+import { t, type TextKey } from '../../i18n/t';
 import { MenuNavigation } from './MenuNavigation';
 import type { Scene } from 'phaser';
 import { DUNGEON } from '../../data/dungeon';
 import { UPGRADES } from '../../data/player';
 import type { WeaponId } from '../../data/weapons';
 import type { DemoSession } from '../systems/DemoSession';
-import { WEAPON_LABELS } from './labels';
+import { weaponLabel } from './labels';
 import './demo.css';
 
 /** 灰盒 HUD：固定 DOM 对象；只有计数文字按 4 Hz 刷新，小地图只在房间状态变化时画。 */
@@ -34,7 +35,7 @@ export class DemoHud {
     this.map.className = 'demo-map';
     this.map.width = this.map.height = 80;
     this.modal.className = 'demo-dialog';
-    this.modal.setAttribute('aria-label', '局内选择与结算');
+    this.modal.setAttribute('aria-label', t('hud.dialog'));
     this.modal.append(this.title, this.detail);
     for (let i = 0; i < 3; i++) {
       const button = document.createElement('button');
@@ -45,8 +46,8 @@ export class DemoHud {
       this.modal.append(button);
     }
     this.restart.type = this.menu.type = 'button';
-    this.restart.textContent = '再来一局 / Enter';
-    this.menu.textContent = '返回主菜单';
+    this.restart.textContent = t('hud.restart');
+    this.menu.textContent = t('hud.menu');
     this.restart.id = 'demo-restart';
     this.menu.id = 'demo-menu';
     this.restart.addEventListener('click', () => scene.scene.restart({}), { signal: this.abort.signal });
@@ -98,16 +99,22 @@ export class DemoHud {
       this.mode = mode;
       this.modal.hidden = mode === 'none';
       this.title.textContent =
-        mode === 'offer' ? '选择一项升级' : d.phase === 'won' ? '通关成功' : '本局结束';
+        mode === 'offer' ? t('hud.upgrade') : d.phase === 'won' ? t('hud.won') : t('hud.lost');
       this.detail.textContent =
         mode === 'offer'
-          ? '按 1 / 2 / 3 或点击选择，然后前往下一层'
-          : `到达第 ${d.floor} 层 · 清理 ${d.roomsCleared} 间 · 击杀 ${d.kills} · 金币 ${r.coins} · ${Math.floor(d.elapsed)} 秒`;
+          ? t('hud.choose')
+          : t('hud.result', {
+              floor: d.floor,
+              rooms: d.roomsCleared,
+              kills: d.kills,
+              coins: r.coins,
+              seconds: Math.floor(d.elapsed),
+            });
       for (let i = 0; i < this.choices.length; i++) {
         const button = this.choices[i]!,
           id = s.offers[i];
         button.hidden = mode !== 'offer' || !id;
-        if (id) button.textContent = `${i + 1}. ${UPGRADES[id].name}`;
+        if (id) button.textContent = `${i + 1}. ${t(UPGRADES[id].name as TextKey)}`;
       }
       this.restart.hidden = this.menu.hidden = mode !== 'result';
     }
@@ -115,18 +122,37 @@ export class DemoHud {
     this.refresh += deltaMs;
     if (this.refresh < 250) return;
     this.refresh = 0;
-    this.status.textContent = `生命 ${p?.hp ?? 0}/${p?.maxHp ?? 0}  护甲 ${r.armor}/${r.maxArmor}  能量 ${Math.floor(r.energy)}/${r.maxEnergy}  金币 ${r.coins}\n第 ${d.floor}/${DUNGEON.floors + 1} 层  ${d.locked ? `战斗 · 第 ${d.wave} 波 · 剩余 ${d.alive}` : '探索'}  ${WEAPON_LABELS[s.sim.weaponId as WeaponId]}  技能 ${r.skillRemaining > 0 ? `${Math.ceil(r.skillRemaining)}s` : '就绪'}`;
+    this.status.textContent =
+      t('hud.resources', {
+        hp: p?.hp ?? 0,
+        maxHp: p?.maxHp ?? 0,
+        armor: r.armor,
+        maxArmor: r.maxArmor,
+        energy: Math.floor(r.energy),
+        maxEnergy: r.maxEnergy,
+        coins: r.coins,
+      }) +
+      '\n' +
+      t('hud.progress', {
+        floor: d.floor,
+        floors: DUNGEON.floors + 1,
+        state: d.locked ? t('hud.fighting', { wave: d.wave, alive: d.alive }) : t('hud.explore'),
+        weapon: weaponLabel(s.sim.weaponId as WeaponId),
+        skill: r.skillRemaining > 0 ? `${Math.ceil(r.skillRemaining)}s` : t('hud.ready'),
+      });
     this.hint.textContent = d.finished
       ? ''
-      : d.room.kind === 'start'
-        ? '沿门口探索 · WASD / 左摇杆移动，鼠标 / RT 射击'
-        : d.room.kind === 'exit'
-          ? '走到房间中央，按 E / A / 拾取进入下一层'
-          : d.room.kind === 'chest'
-            ? '靠近武器后按 E / A / 拾取；Q / Y 切枪'
-            : d.locked
-              ? '消灭全部敌人后开门 · Space / B 冲刺'
-              : '房间已清理 · 靠近补给自动拾取';
+      : t(
+          d.room.kind === 'start'
+            ? 'hint.start'
+            : d.room.kind === 'exit'
+              ? 'hint.exit'
+              : d.room.kind === 'chest'
+                ? 'hint.chest'
+                : d.locked
+                  ? 'hint.fight'
+                  : 'hint.clear',
+        );
     if (this.mapRevision !== d.revision) {
       this.drawMap();
       this.mapRevision = d.revision;
