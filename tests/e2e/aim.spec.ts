@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test';
-import { CHARACTERS } from '../../src/data/characters';
 import { GAME_WIDTH } from '../../src/config';
 
 for (const room of ['arena', 'dungeon']) {
@@ -23,7 +22,7 @@ for (const room of ['arena', 'dungeon']) {
     await page.waitForFunction(() => !!window.__AVN__!.input!.aim);
     const aim = await page.evaluate(() => window.__AVN__!.input!.aim!);
     const dx = target.x - player.x,
-      dy = target.y - (player.y - CHARACTERS.ai_proto.radius);
+      dy = target.y - player.y;
     // 单位方向与目标向量的叉积就是光标到弹道直线的距离（游戏像素）。
     expect(Math.abs(aim.x * dy - aim.y * dx)).toBeLessThan(1e-4);
     expect(aim.x * dx + aim.y * dy).toBeGreaterThan(0);
