@@ -15,7 +15,7 @@ interface ActorSlot {
 
 /** 角色位置统一为身体圆心；动画贴图独立于物理代理，换帧不修改物理体。 */
 export class CombatActors {
-  readonly art?: ActorArt;
+  art?: ActorArt;
   readonly group: Physics.Arcade.Group;
   readonly slots: ActorSlot[] = [];
   private readonly byId = new Map<number, ActorSlot>();
@@ -34,7 +34,10 @@ export class CombatActors {
       this.slots.push(slot);
       this.byImage.set(image, slot);
     }
-    if (scene.textures.exists(ART.hero)) this.art = new ActorArt(scene, sim, this);
+  }
+  /** 正式 demo / 压测接入图集，M1 兼容性场景保留静态灰盒。 */
+  enableArt(scene: Scene): void {
+    if (!this.art && scene.textures.exists(ART.hero)) this.art = new ActorArt(scene, this.sim, this);
   }
   /** 在 POST_UPDATE 之前只读 body.center，不读滞后一帧的贴图坐标。 */
   syncPositions(): void {
