@@ -15,9 +15,14 @@ export class Random {
     this.state = seed >>> 0;
   }
 
-  /** 当前内部状态，用于存档；用 new Random(state) 可恢复。 */
+  /** 当前内部状态，用于存档；用 new Random(state) 或 `restore` 可恢复。 */
   get snapshot(): number {
     return this.state;
+  }
+
+  /** 把内部状态恢复为 `snapshot` 的值（ADR 0019）；之后的序列与存档时完全相同。 */
+  restore(state: number): void {
+    this.state = state >>> 0;
   }
 
   /** [0, 1) 均匀分布。 */

@@ -118,6 +118,12 @@ class FakeWorld implements CombatWorld {
   debugKillEnemies() {
     this.logs.push('debug-kill');
   }
+  save(): never {
+    throw new Error('FakeWorld 不支持存档');
+  }
+  load(): never {
+    throw new Error('FakeWorld 不支持存档');
+  }
 }
 interface Harness {
   stop(): void;

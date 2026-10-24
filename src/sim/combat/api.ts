@@ -1,6 +1,7 @@
 import type { PlayerRules } from '../../data/schema/player';
 import type { UpgradeId } from '../../data/player';
-import type { PlayerResources } from '../stats/PlayerResources';
+import type { PlayerResources, PlayerResourcesState } from '../stats/PlayerResources';
+import type { EnemyBrain } from '../ai/brain';
 import type { CharacterId } from '../../data/characters';
 import type { WeaponId } from '../../data/weapons';
 import type { EnemyId } from '../../data/enemies';
@@ -190,6 +191,88 @@ export interface CombatWorld {
    * 之后照常由 game 层在死亡表现结束后调用 `removeActor`。不要在正式玩法里调用。
    */
   debugKillEnemies(): void;
+
+  /** 导出存档数据（ADR 0019）。只能在两次调用之间使用，不能在 step、hitActor 等调用的事件回调里调用。 */
+  save(): CombatWorldState;
+  /**
+   * 把存档数据写入一个刚创建、还没有生成任何实体的世界（ADR 0019）。不发任何事件。
+   * 数据须先按 ADR 0019 第 4 节校验；超出实体或子弹容量时抛错。
+   */
+  load(state: Readonly<CombatWorldState>): void;
+}
+
+/** 实体记录的存档数据（ADR 0019），按 `actors` 的顺序保存。字段含义同 ActorView 与 sim 内部状态。 */
+export interface ActorState {
+  id: EntityId;
+  team: Team;
+  kind: string;
+  phase: ActorPhase;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  radius: number;
+  hp: number;
+  maxHp: number;
+  invulnerable: boolean;
+  facing: number;
+  activateAt: number;
+  invulnUntil: number;
+  invulnTime: number;
+  baseX: number;
+  baseY: number;
+  moveSpeed: number;
+  contactDamage: number;
+  knock: {
+    dirX: number;
+    dirY: number;
+    total: number;
+    left: number;
+    timeLeft: number;
+    speed: number;
+    fresh: boolean;
+  };
+  brain: EnemyBrain;
+  warning: boolean;
+}
+
+/** 存活子弹的存档数据（ADR 0019）。`source` 是发射时的武器或敌方攻击定义 ID，用来重建半径与外观。 */
+export interface BulletState {
+  id: EntityId;
+  team: Team;
+  ownerId: EntityId;
+  source: string;
+  angle: number;
+  damage: number;
+  critChance: number;
+  knockback: number;
+  pierceLeft: number;
+  /** 已命中过的实体编号；可以指向已经回收的实体。 */
+  hitIds: EntityId[];
+}
+
+/** `CombatWorld.save()` 的结果：纯 JSON 数据，不含引用（ADR 0019）。 */
+export interface CombatWorldState {
+  time: number;
+  nextId: number;
+  playerId: EntityId | null;
+  playerDied: boolean;
+  secondaryWeapon: WeaponId | null;
+  player: {
+    weaponId: WeaponId;
+    cooldown: number;
+    burstLeft: number;
+    burstWait: number;
+    maxSpeed: number;
+    accelTime: number;
+    decelTime: number;
+  } | null;
+  lastMoveDir: Vec2;
+  dashDirection: Vec2;
+  resources: PlayerResourcesState;
+  rng: { spread: number; crit: number };
+  actors: ActorState[];
+  bullets: BulletState[];
 }
 
 /** 新建一局战斗。实现在 `CombatWorld.ts`，这里只是稳定的入口。 */

@@ -7,6 +7,22 @@ import { generateDungeon, type DungeonMap, type DungeonRoom } from '../dungeon/g
 
 export type DungeonPhase = 'exploring' | 'fighting' | 'won' | 'lost';
 
+/** 存档用的纯数据（ADR 0019）；地图由种子与楼层重新生成，不保存。 */
+export interface DungeonRunState {
+  floor: number;
+  roomId: number;
+  phase: DungeonPhase;
+  visited: boolean[];
+  cleared: boolean[];
+  claimed: boolean[];
+  wave: number;
+  wait: number;
+  alive: number;
+  kills: number;
+  roomsCleared: number;
+  elapsed: number;
+}
+
 /** 房间规则状态。每个 WORLD_STEP 在战斗之后调用；game 负责消费 spawnCount 并实际刷怪。 */
 export class DungeonRun {
   floor = 1;
@@ -33,14 +49,54 @@ export class DungeonRun {
     readonly seed: number,
     private readonly bus: EventBus<GameEvents>,
     startFloor = 1,
+    restore?: Readonly<DungeonRunState>,
   ) {
-    if (!Number.isInteger(startFloor) || startFloor < 1 || startFloor > DUNGEON.floors + 1)
+    const floor = restore?.floor ?? startFloor;
+    if (!Number.isInteger(floor) || floor < 1 || floor > DUNGEON.floors + 1)
       throw new RangeError('invalid starting floor');
-    this.floor = startFloor;
+    this.floor = floor;
     this.root = new Random(seed);
     this.map = this.generate();
-    this.enterCurrent();
+    // 读档不走入场流程，也不发 room:entered（ADR 0019：恢复不重放业务事件）。
+    if (restore) this.load(restore);
+    else this.enterCurrent();
     bus.on('entity:died', this.onDied);
+  }
+  /** 从存档重建；数据须先按 ADR 0019 第 4 节校验。 */
+  static restore(seed: number, bus: EventBus<GameEvents>, state: Readonly<DungeonRunState>): DungeonRun {
+    return new DungeonRun(seed, bus, state.floor, state);
+  }
+  save(): DungeonRunState {
+    return {
+      floor: this.floor,
+      roomId: this.roomId,
+      phase: this.phase,
+      visited: Array.from(this.map.rooms, (_, i) => !!this.visited[i]),
+      cleared: Array.from(this.map.rooms, (_, i) => !!this.cleared[i]),
+      claimed: Array.from(this.map.rooms, (_, i) => !!this.claimed[i]),
+      wave: this.wave,
+      wait: this.wait,
+      alive: this.alive,
+      kills: this.kills,
+      roomsCleared: this.roomsCleared,
+      elapsed: this.elapsed,
+    };
+  }
+  private load(s: Readonly<DungeonRunState>): void {
+    this.roomId = s.roomId;
+    this.phase = s.phase;
+    this.visited.length = this.cleared.length = this.claimed.length = 0;
+    this.visited.push(...s.visited);
+    this.cleared.push(...s.cleared);
+    this.claimed.push(...s.claimed);
+    this.wave = s.wave;
+    this.wait = s.wait;
+    this.alive = s.alive;
+    this.kills = s.kills;
+    this.roomsCleared = s.roomsCleared;
+    this.elapsed = s.elapsed;
+    this.spawnCount = 0;
+    this.revision++;
   }
   private readonly onDied = (e: GameEvents['entity:died']): void => {
     if (e.team === 'enemy' && !this.finished) this.kills++;

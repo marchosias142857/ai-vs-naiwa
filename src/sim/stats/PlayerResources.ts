@@ -1,5 +1,22 @@
 import type { PlayerRules } from '../../data/schema/player';
 
+/** 存档用的纯数据（ADR 0019）；`rules` 来自 data，不保存。 */
+export interface PlayerResourcesState {
+  armor: number;
+  maxArmor: number;
+  energy: number;
+  maxEnergy: number;
+  coins: number;
+  skillRemaining: number;
+  dashRemaining: number;
+  damageScale: number;
+  fireRateScale: number;
+  regenScale: number;
+  skillScale: number;
+  safeTime: number;
+  regenTime: number;
+}
+
 /** 生命周期归 CombatWorld；表现层只读取 api 的 Readonly 视图。 */
 export class PlayerResources {
   armor: number;
@@ -58,5 +75,38 @@ export class PlayerResources {
     this.skillRemaining = this.rules.skillCooldown / this.skillScale;
     this.dashRemaining = this.rules.dashTime;
     return true;
+  }
+
+  save(): PlayerResourcesState {
+    return {
+      armor: this.armor,
+      maxArmor: this.maxArmor,
+      energy: this.energy,
+      maxEnergy: this.maxEnergy,
+      coins: this.coins,
+      skillRemaining: this.skillRemaining,
+      dashRemaining: this.dashRemaining,
+      damageScale: this.damageScale,
+      fireRateScale: this.fireRateScale,
+      regenScale: this.regenScale,
+      skillScale: this.skillScale,
+      safeTime: this.safeTime,
+      regenTime: this.regenTime,
+    };
+  }
+  load(s: Readonly<PlayerResourcesState>): void {
+    this.armor = s.armor;
+    this.maxArmor = s.maxArmor;
+    this.energy = s.energy;
+    this.maxEnergy = s.maxEnergy;
+    this.coins = s.coins;
+    this.skillRemaining = s.skillRemaining;
+    this.dashRemaining = s.dashRemaining;
+    this.damageScale = s.damageScale;
+    this.fireRateScale = s.fireRateScale;
+    this.regenScale = s.regenScale;
+    this.skillScale = s.skillScale;
+    this.safeTime = s.safeTime;
+    this.regenTime = s.regenTime;
   }
 }

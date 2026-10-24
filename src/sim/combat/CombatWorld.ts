@@ -15,11 +15,13 @@ import type { EntityId, InputFrame, Team, Vec2 } from '../core/types';
 import { getPattern, type BulletSink, type FireContext, type FirePattern } from '../weapons/patterns';
 import type {
   ActorPhase,
+  ActorState,
   ActorView,
   BulletSpawn,
   CombatWorld,
   CombatWorldOptions,
   LineOfSight,
+  CombatWorldState,
   StepResult,
 } from './api';
 import { stepVelocity, type MoveTuning } from './movement';
@@ -91,6 +93,8 @@ interface Bullet {
   critChance: number;
   knockback: number;
   pierceLeft: number;
+  /** 发射时的武器或敌方攻击定义 ID（ADR 0019：存档后用来重建子弹半径与外观）。 */
+  source: string;
   /** 已经命中过的实体（每个目标最多命中一次），长度为 `hitCount`。 */
   hitIds: EntityId[];
   hitCount: number;
@@ -131,6 +135,7 @@ function newBullet(): Bullet {
     pierceLeft: 0,
     hitIds: new Array<EntityId>(HIT_RECORD_CAPACITY).fill(0),
     hitCount: 0,
+    source: '',
   };
 }
 
@@ -174,6 +179,71 @@ function newActor(): Actor {
     warning: false,
     knock: { dirX: 0, dirY: 0, total: 0, left: 0, timeLeft: 0, speed: 0, fresh: false },
   };
+}
+
+function saveActor(a: Actor): ActorState {
+  const k = a.knock,
+    b = a.brain;
+  return {
+    id: a.id,
+    team: a.team,
+    kind: a.kind,
+    phase: a.phase,
+    x: a.x,
+    y: a.y,
+    vx: a.vx,
+    vy: a.vy,
+    radius: a.radius,
+    hp: a.hp,
+    maxHp: a.maxHp,
+    invulnerable: a.invulnerable,
+    facing: a.facing,
+    activateAt: a.activateAt,
+    invulnUntil: a.invulnUntil,
+    invulnTime: a.invulnTime,
+    baseX: a.base.x,
+    baseY: a.base.y,
+    moveSpeed: a.moveSpeed,
+    contactDamage: a.contactDamage,
+    knock: {
+      dirX: k.dirX,
+      dirY: k.dirY,
+      total: k.total,
+      left: k.left,
+      timeLeft: k.timeLeft,
+      speed: k.speed,
+      fresh: k.fresh,
+    },
+    brain: { cooldown: b.cooldown, stage: b.stage, time: b.time, dirX: b.dirX, dirY: b.dirY },
+    warning: a.warning,
+  };
+}
+
+/** 写入一条预热的实体记录；复用记录上的 base / knock / brain 对象，不新建。 */
+function loadActor(a: Actor, s: Readonly<ActorState>): void {
+  a.id = s.id;
+  a.team = s.team;
+  a.kind = s.kind;
+  a.phase = s.phase;
+  a.x = s.x;
+  a.y = s.y;
+  a.vx = s.vx;
+  a.vy = s.vy;
+  a.radius = s.radius;
+  a.hp = s.hp;
+  a.maxHp = s.maxHp;
+  a.invulnerable = s.invulnerable;
+  a.facing = s.facing;
+  a.activateAt = s.activateAt;
+  a.invulnUntil = s.invulnUntil;
+  a.invulnTime = s.invulnTime;
+  a.base.x = s.baseX;
+  a.base.y = s.baseY;
+  a.moveSpeed = s.moveSpeed;
+  a.contactDamage = s.contactDamage;
+  Object.assign(a.knock, s.knock);
+  Object.assign(a.brain, s.brain);
+  a.warning = s.warning;
 }
 
 /** 每种事件一个 payload 复用栈。 */
@@ -273,6 +343,7 @@ class CombatWorldImpl implements CombatWorld {
   /** 当前开火者与武器，供 `sink` 读取；用字段而不是每次新建对象或闭包。 */
   private firingOwner: Actor | null = null;
   private firingWeapon: Readonly<WeaponDef> = WEAPONS.pistol_basic;
+  private firingSource = '';
   private readonly sink: BulletSink = { add: (x, y, angle) => this.addBullet(x, y, angle) };
 
   constructor(options: CombatWorldOptions) {
@@ -494,10 +565,17 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   hitWall(bulletId: EntityId, x: number, y: number): void {
-    const bullet = this.bullets.get(bulletId);
-    if (!bullet) return;
-    this.emitHit(bullet, x, y, null, false);
-    this.finishBullet(bullet);
+    // 计入调用深度：bullet:hit 的同步监听器里调用 save 会被拒绝（ADR 0019：不在调用中途存档）。
+    this.callDepth++;
+    try {
+      const bullet = this.bullets.get(bulletId);
+      if (!bullet) return;
+      this.emitHit(bullet, x, y, null, false);
+      this.finishBullet(bullet);
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
+    }
   }
 
   releaseBullet(bulletId: EntityId): void {
@@ -555,6 +633,99 @@ class CombatWorldImpl implements CombatWorld {
     if (last && last !== actor) this.actors[index] = last;
     if (this.callDepth) this.retired.push(actor);
     else this.actorPool.push(actor);
+  }
+
+  save(): CombatWorldState {
+    if (this.callDepth) throw new Error('不能在战斗调用的事件回调里存档');
+    const p = this.player,
+      r = this.resources;
+    const bullets: CombatWorldState['bullets'] = [];
+    for (const b of this.bullets.values())
+      bullets.push({
+        id: b.id,
+        team: b.team,
+        ownerId: b.ownerId,
+        source: b.source,
+        angle: b.angle,
+        damage: b.damage,
+        critChance: b.critChance,
+        knockback: b.knockback,
+        pierceLeft: b.pierceLeft,
+        hitIds: b.hitIds.slice(0, b.hitCount),
+      });
+    return {
+      time: this.time,
+      nextId: this.nextId,
+      playerId: this.playerId,
+      playerDied: this.playerDied,
+      secondaryWeapon: this.secondaryWeapon,
+      player: p && {
+        weaponId: p.weaponId,
+        cooldown: p.cooldown,
+        burstLeft: p.burstLeft,
+        burstWait: p.burstWait,
+        maxSpeed: p.tuning.maxSpeed,
+        accelTime: p.tuning.accelTime,
+        decelTime: p.tuning.decelTime,
+      },
+      lastMoveDir: { x: this.lastMoveDir.x, y: this.lastMoveDir.y },
+      dashDirection: { x: this.dashDirection.x, y: this.dashDirection.y },
+      resources: r.save(),
+      rng: { spread: this.spreadRng.snapshot, crit: this.critRng.snapshot },
+      actors: this.actors.map(saveActor),
+      bullets,
+    };
+  }
+
+  load(state: Readonly<CombatWorldState>): void {
+    if (this.time !== 0 || this.actors.length || this.bullets.size || this.playerId !== null)
+      throw new Error('只能把存档写入刚创建的世界');
+    if (state.actors.length > this.actorPool.length || state.bullets.length > this.bulletPool.length)
+      throw new RangeError('存档超出实体或子弹容量');
+    this.time = state.time;
+    this.nextId = state.nextId;
+    this.playerId = state.playerId;
+    this.playerDied = state.playerDied;
+    this.result.playerDead = state.playerDied;
+    this.secondaryWeapon = state.secondaryWeapon;
+    const p = state.player;
+    this.player = p && {
+      weapon: WEAPONS[p.weaponId],
+      weaponId: p.weaponId,
+      pattern: getPattern(WEAPONS[p.weaponId].pattern),
+      cooldown: p.cooldown,
+      burstLeft: p.burstLeft,
+      burstWait: p.burstWait,
+      tuning: { maxSpeed: p.maxSpeed, accelTime: p.accelTime, decelTime: p.decelTime },
+    };
+    this.lastMoveDir.x = state.lastMoveDir.x;
+    this.lastMoveDir.y = state.lastMoveDir.y;
+    this.dashDirection.x = state.dashDirection.x;
+    this.dashDirection.y = state.dashDirection.y;
+    this.resources.load(state.resources);
+    this.spreadRng.restore(state.rng.spread);
+    this.critRng.restore(state.rng.crit);
+    for (const a of state.actors) {
+      const actor = this.actorPool.pop()!;
+      loadActor(actor, a);
+      this.actors.push(actor);
+      this.byId.set(actor.id, actor);
+    }
+    for (const b of state.bullets) {
+      const bullet = this.bulletPool.pop()!;
+      bullet.id = b.id;
+      bullet.team = b.team;
+      bullet.ownerId = b.ownerId;
+      bullet.source = b.source;
+      bullet.angle = b.angle;
+      bullet.damage = b.damage;
+      bullet.critChance = b.critChance;
+      bullet.knockback = b.knockback;
+      bullet.pierceLeft = b.pierceLeft;
+      bullet.hitCount = 0;
+      for (const id of b.hitIds) this.recordHit(bullet, id);
+      this.bullets.set(bullet.id, bullet);
+    }
   }
 
   // ---- 内部 ----
@@ -719,6 +890,7 @@ class CombatWorldImpl implements CombatWorld {
     this.fireCtx.pelletCount = p.weapon.pattern === 'burst' ? 1 : p.weapon.pellets;
     this.firingOwner = owner;
     this.firingWeapon = p.weapon;
+    this.firingSource = p.weaponId;
     const before = this.spawns.length;
     p.pattern(this.fireCtx, this.sink);
     this.firingOwner = null;
@@ -754,6 +926,7 @@ class CombatWorldImpl implements CombatWorld {
     bullet.critChance = weapon.critChance;
     bullet.knockback = weapon.knockback;
     bullet.pierceLeft = weapon.pierce;
+    bullet.source = this.firingSource;
     bullet.hitCount = 0;
     this.bullets.set(id, bullet);
 
