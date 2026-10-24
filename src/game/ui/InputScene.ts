@@ -140,18 +140,18 @@ export class InputScene extends Scene {
         t.y / s,
         UI.joystick.radius / s,
         false,
-        t.moveId >= 0 ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
+        t.moveId !== null ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
       );
       this.circle(
         (t.x + t.dx) / s,
         (t.y + t.dy) / s,
         UI.joystick.knobRadius / s,
-        t.moveId >= 0,
-        t.moveId >= 0 ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
+        t.moveId !== null,
+        t.moveId !== null ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
       );
       const x = GAME_WIDTH - UI.aimWheel.inset / s,
         y = GAME_HEIGHT - UI.aimWheel.inset / s,
-        held = t.fireId >= 0,
+        held = t.fireId !== null,
         alpha = held ? 1 : UI.joystick.idleAlpha;
       this.circle(x, y, UI.aimWheel.radius / s, held, alpha);
       this.circle(x + t.fireDx / s, y + t.fireDy / s, UI.aimWheel.knobRadius / s, held, alpha);

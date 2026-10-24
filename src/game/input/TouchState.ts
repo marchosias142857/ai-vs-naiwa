@@ -15,9 +15,10 @@ export class TouchState {
   y: number = UI.joystick.homeInset;
   dx = 0;
   dy = 0;
-  moveId = -1;
-  fireId = -1;
-  pauseId = -1;
+  // Touch.identifier 是有符号编号，负数（包括 -1）也可能是有效触点。
+  moveId: number | null = null;
+  fireId: number | null = null;
+  pauseId: number | null = null;
   pausePressed = false;
   private pressedAt = 0;
   private dragged = false;
@@ -29,7 +30,7 @@ export class TouchState {
     this.reset();
   }
   reset(): void {
-    this.moveId = this.fireId = this.pauseId = -1;
+    this.moveId = this.fireId = this.pauseId = null;
     this.pausePressed = false;
     this.x = UI.joystick.homeInset;
     this.y = this.height - UI.joystick.homeInset;
@@ -39,7 +40,7 @@ export class TouchState {
   down(id: number, x: number, y: number, now = performance.now()): boolean {
     if (
       Math.hypot(x - (this.width - UI.pause.inset), y - UI.pause.inset) <= UI.pause.hitRadius &&
-      this.pauseId < 0
+      this.pauseId === null
     ) {
       this.pauseId = id;
       this.pausePressed = true;
@@ -50,7 +51,7 @@ export class TouchState {
       UI.aimWheel.radius + UI.aimWheel.hitPadding
     ) {
       // 右侧区域被占用时也不能把第二根手指分配给左摇杆。
-      if (this.fireId >= 0) return false;
+      if (this.fireId !== null) return false;
       this.fireId = id;
       this.pressedAt = now;
       this.firing = false;
@@ -64,7 +65,7 @@ export class TouchState {
       x <= this.width * UI.moveArea.widthFraction &&
       y >= UI.moveArea.top &&
       y <= this.height &&
-      this.moveId < 0
+      this.moveId === null
     ) {
       this.moveId = id;
       this.x = x;
@@ -111,20 +112,20 @@ export class TouchState {
   }
   up(id: number): void {
     if (id === this.moveId) {
-      this.moveId = -1;
+      this.moveId = null;
       this.x = UI.joystick.homeInset;
       this.y = this.height - UI.joystick.homeInset;
       this.dx = this.dy = this.move.x = this.move.y = 0;
     }
     if (id === this.fireId) {
-      this.fireId = -1;
+      this.fireId = null;
       this.clearAim();
     }
-    if (id === this.pauseId) this.pauseId = -1;
+    if (id === this.pauseId) this.pauseId = null;
   }
   /** 与 aim 在同一次渲染帧采样；短促出圈又回中的事件不能提前发出朝向错误的第一发。 */
   sampleFire(now = performance.now()): boolean {
-    if (this.fireId < 0) return false;
+    if (this.fireId === null) return false;
     this.firing ||= (this.dragged && this.aiming) || now - this.pressedAt >= UI.aimWheel.firstShotDelayMs;
     return this.firing;
   }

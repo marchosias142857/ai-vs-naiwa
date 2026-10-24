@@ -109,7 +109,7 @@ describe('固定开火轮盘', () => {
       expect(t.aiming).toBe(true);
       clear();
       t.drag(1, x, y - UI.aimWheel.radius);
-      expect(t.fireId).toBe(-1);
+      expect(t.fireId).toBeNull();
       expect(t.aiming).toBe(false);
       expect(t.aim).toEqual({ x: 0, y: 0 });
       expect(t.fireDx).toBe(0);
