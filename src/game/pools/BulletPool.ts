@@ -1,6 +1,9 @@
 import type { Physics, Scene } from 'phaser';
 import { DEPTH, POOL_SIZES } from '../../config';
-import type { BulletSpawn, CombatWorld } from '../../sim/combat/api';
+import type { BulletSpawn, BulletState, CombatWorld } from '../../sim/combat/api';
+import { ATTACKS } from '../../data/attacks';
+import { WEAPONS } from '../../data/weapons';
+import { loadBody, saveBody, type BulletPoolSnapshot } from '../world/bodySnapshot';
 import { TEX } from '../assets/keys';
 
 /** 预热的实体槽位；只复制 sim 的标量，不保存 BulletSpawn。 */
@@ -39,6 +42,9 @@ export class BulletPool {
       this.sim.releaseBullet(b.id);
       return;
     }
+    this.fill(slot, b);
+  }
+  private fill(slot: BulletSlot, b: BulletSpawn): void {
     slot.id = b.id;
     slot.remaining = b.lifetime;
     const image = slot.image;
@@ -50,6 +56,47 @@ export class BulletPool {
       .setCollideWorldBounds(true, 0, 0, true)
       .setVelocity(Math.cos(b.angle) * b.speed, Math.sin(b.angle) * b.speed);
     this.activeCount++;
+  }
+  save(): BulletPoolSnapshot {
+    return {
+      slots: this.slots.map((s) =>
+        s.id ? { id: s.id, remaining: s.remaining, ...saveBody(s.image) } : null,
+      ),
+      free: this.free.map((s) => this.slots.indexOf(s)),
+    };
+  }
+  /** 恢复已校验的原槽位和空闲栈；来源定义与发射者当前武器无关。 */
+  load(state: Readonly<BulletPoolSnapshot>, bullets: readonly BulletState[]): void {
+    if (this.activeCount || state.slots.length !== this.slots.length)
+      throw new Error('只能恢复到同容量的空子弹池');
+    const records = new Map(bullets.map((b) => [b.id, b]));
+    for (let i = 0; i < state.slots.length; i++) {
+      const s = state.slots[i];
+      if (!s) continue;
+      const b = records.get(s.id);
+      if (!b) throw new Error('子弹槽位缺少 sim 记录');
+      const definition =
+        b.team === 'player'
+          ? WEAPONS[b.source as keyof typeof WEAPONS]
+          : ATTACKS[b.source as keyof typeof ATTACKS];
+      if (!definition) throw new Error('未知子弹来源');
+      const slot = this.slots[i]!;
+      this.fill(slot, {
+        id: b.id,
+        team: b.team,
+        ownerId: b.ownerId,
+        x: 0,
+        y: 0,
+        angle: b.angle,
+        speed: 0,
+        radius: s.radius,
+        lifetime: s.remaining,
+        sprite: definition.bulletSprite,
+      });
+      loadBody(slot.image, s);
+    }
+    this.free.length = 0;
+    for (const i of state.free) this.free.push(this.slots[i]!);
   }
   /** 物理每个固定步进一次，和真实飞行时间保持同一时钟。 */
   tick(dt: number): void {

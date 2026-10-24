@@ -1,10 +1,17 @@
 import type { GameObjects, Physics, Scene, Tilemaps } from 'phaser';
-import { createInputFrame } from '../../sim/core/types';
+import { createInputFrame, resetInputFrame } from '../../sim/core/types';
 import { GRAYBOX_BOUNDS } from './graybox';
 import type { CombatWorld } from '../../sim/combat/api';
 import type { InputFrame } from '../../sim/core/types';
 import { CombatActors } from '../entities/CombatActors';
 import { BulletPool } from '../pools/BulletPool';
+import type { ActorSlotSnapshot, BulletPoolSnapshot } from './bodySnapshot';
+import type { CombatWorldState } from '../../sim/combat/api';
+
+export interface PhysicsSnapshot {
+  actors: (ActorSlotSnapshot | null)[];
+  bullets: BulletPoolSnapshot;
+}
 
 type ColliderObject =
   GameObjects.GameObject | Physics.Arcade.Body | Physics.Arcade.StaticBody | Tilemaps.Tile;
@@ -51,6 +58,23 @@ export class CombatBridge {
     input.swapPressed ||= frame.swapPressed;
     input.interactPressed ||= frame.interactPressed;
     input.pausePressed ||= frame.pausePressed;
+  }
+  /** 清除已经锁存的边沿；setInput(empty) 的 ||= 不能做到这一点。 */
+  clearInput(): void {
+    resetInputFrame(this.input);
+    this.aim.x = this.aim.y = 0;
+  }
+  save(): PhysicsSnapshot {
+    return { actors: this.actors.save(), bullets: this.bullets.save() };
+  }
+  /** sim 已恢复，物理尚未推进；不触发生成、命中或死亡事件。 */
+  load(state: Readonly<PhysicsSnapshot>, simState: Readonly<CombatWorldState>): void {
+    this.actors.load(state.actors);
+    this.bullets.load(state.bullets, simState.bullets);
+    this.playerDead = simState.playerDied;
+    this.clearInput();
+    // Phaser 4.1 World 的固定步长累加器没有公开 reset API（已核对 World.js）。
+    (this.scene.physics.world as Physics.Arcade.World & { _elapsed: number })._elapsed = 0;
   }
   private readonly hitActor = (a: ColliderObject, b: ColliderObject): void => {
     const bullet = this.bullets.byImage.get(a as Physics.Arcade.Image);
