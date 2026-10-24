@@ -1,4 +1,5 @@
 import type { CharacterId } from '../../data/characters';
+import type { WeaponId } from '../../data/weapons';
 import type { EnemyId } from '../../data/enemies';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
@@ -111,6 +112,9 @@ export interface CombatWorld {
   readonly actors: readonly ActorView[];
   /** 玩家实体的编号；尚未生成玩家时为 null。 */
   readonly playerId: EntityId | null;
+  readonly weaponId: string;
+  /** 装备武器；保留开火冷却并取消旧武器待发连射，死亡时拒绝。 */
+  equipWeapon(id: WeaponId): boolean;
   getActor(id: EntityId): ActorView | undefined;
 
   /** 生成玩家：没有出场预警，同一帧内依次发出 `entity:spawned` 与 `entity:activated`。 */

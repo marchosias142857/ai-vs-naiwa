@@ -2,7 +2,7 @@ import { BALANCE } from '../../data/balance';
 import { CHARACTERS, type CharacterId } from '../../data/characters';
 import { ENEMIES, type EnemyId } from '../../data/enemies';
 import type { WeaponDef } from '../../data/schema';
-import { WEAPONS } from '../../data/weapons';
+import { WEAPONS, type WeaponId } from '../../data/weapons';
 import { chaseVelocity } from '../ai/chase';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
@@ -99,6 +99,8 @@ interface PlayerState {
   pattern: FirePattern;
   cooldown: number;
   tuning: MoveTuning;
+  burstLeft: number;
+  burstWait: number;
 }
 
 const alwaysVisible: LineOfSight = () => true;
@@ -236,6 +238,20 @@ class CombatWorldImpl implements CombatWorld {
     }
   }
 
+  get weaponId(): string {
+    return this.player?.weaponId ?? '';
+  }
+
+  equipWeapon(id: WeaponId): boolean {
+    const p = this.player;
+    if (!p || this.playerDied || !Object.hasOwn(WEAPONS, id)) return false;
+    p.weapon = WEAPONS[id];
+    p.weaponId = id;
+    p.pattern = getPattern(p.weapon.pattern);
+    p.burstLeft = 0;
+    return true;
+  }
+
   getActor(id: EntityId): ActorView | undefined {
     return this.byId.get(id);
   }
@@ -252,6 +268,8 @@ class CombatWorldImpl implements CombatWorld {
       weaponId,
       pattern: getPattern(weapon.pattern),
       cooldown: 0,
+      burstLeft: 0,
+      burstWait: 0,
       tuning: { maxSpeed: def.moveSpeed, accelTime: def.accelTime, decelTime: def.decelTime },
     };
     this.playerId = actor.id;
@@ -488,12 +506,24 @@ class CombatWorldImpl implements CombatWorld {
 
     // 冷却：按住时连发并保留余量，保证射速准确；松开后冷却只减到 0，不会攒出连发。
     p.cooldown -= dt;
+    if (p.burstLeft > 0) {
+      p.burstWait -= dt;
+      while (p.burstLeft > 0 && p.burstWait <= 0) {
+        this.fire(actor, p);
+        p.burstLeft--;
+        p.burstWait += p.weapon.burstInterval ?? 1 / p.weapon.fireRate;
+      }
+    }
     if (!input.fire) {
       if (p.cooldown < 0) p.cooldown = 0;
       return;
     }
     while (p.cooldown <= 0) {
       this.fire(actor, p);
+      if (p.weapon.pattern === 'burst') {
+        p.burstLeft = p.weapon.pellets - 1;
+        p.burstWait = p.weapon.burstInterval ?? 1 / p.weapon.fireRate;
+      }
       p.cooldown += 1 / p.weapon.fireRate;
     }
   }
@@ -507,6 +537,7 @@ class CombatWorldImpl implements CombatWorld {
     this.fireCtx.y = muzzleY;
     this.fireCtx.aim = owner.facing;
     this.fireCtx.weapon = p.weapon;
+    this.fireCtx.pelletCount = p.weapon.pattern === 'burst' ? 1 : p.weapon.pellets;
     this.firingOwner = owner;
     this.firingWeapon = p.weapon;
     const before = this.spawns.length;
