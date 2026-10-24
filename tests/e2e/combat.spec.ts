@@ -65,7 +65,7 @@ test('开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来（固定种�
   test.setTimeout(60_000);
   const errors = collectErrors(page);
   await installPad(page);
-  await page.goto('/?scene=Game&seed=42');
+  await page.goto('/?scene=Game&room=arena&seed=42');
   await until(page, () => !!window.__AVN__?.combat && !!window.__AVN__.input);
   expect(await combat(page)).toMatchObject({ runs: 1, phase: 'playing', wave: 0, kills: 0 });
   const firstControls = await pausedControls(page);
@@ -104,7 +104,7 @@ test('开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来（固定种�
 test('移动中（含暂停恢复后）鼠标瞄准以玩家当前位置为原点', async ({ page, isMobile }) => {
   test.skip(isMobile);
   const errors = collectErrors(page);
-  await page.goto('/?scene=Game&seed=42');
+  await page.goto('/?scene=Game&room=arena&seed=42');
   await until(page, () => !!window.__AVN__?.combat && !!window.__AVN__.input);
   const rect = await page.evaluate(() => {
     const r = document.querySelector('canvas')!.getBoundingClientRect();
@@ -153,7 +153,7 @@ test('移动中（含暂停恢复后）鼠标瞄准以玩家当前位置为原�
 test('未固定种子时重来换新种子；点暂停键不会重来', async ({ page, isMobile }) => {
   test.setTimeout(60_000);
   const errors = collectErrors(page);
-  await page.goto('/?scene=Game');
+  await page.goto('/?scene=Game&room=arena');
   await until(page, () => !!window.__AVN__?.combat);
   const firstSeed = await page.evaluate(() => window.__AVN__!.seed);
   await until(page, () => window.__AVN__!.combat!.phase === 'restartable', 40_000);
