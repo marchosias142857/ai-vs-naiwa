@@ -144,11 +144,16 @@ describe('保持距离与炮台的移动', () => {
     expect(velocity('naiwa_spitter', desired / 2).x).toBeCloseTo(def.moveSpeed, 9);
     const far = desired + BALANCE.enemySeparation + 20;
     expect(velocity('naiwa_spitter', far).x).toBeCloseTo(-def.moveSpeed, 9);
-    expect(velocity('naiwa_spitter', desired + BALANCE.enemySeparation / 2)).toEqual({ x: 0, y: 0 });
+    // 区间内方向系数为 0，结果可能是 -0；比较速度大小即可。
+    const hold = velocity('naiwa_spitter', desired + BALANCE.enemySeparation / 2);
+    expect(Math.hypot(hold.x, hold.y)).toBe(0);
   });
 
   it('turret：任何距离都不移动', () => {
-    for (const x of [10, 100, 400]) expect(velocity('naiwa_turret', x)).toEqual({ x: 0, y: 0 });
+    for (const x of [10, 100, 400]) {
+      const v = velocity('naiwa_turret', x);
+      expect(Math.hypot(v.x, v.y)).toBe(0);
+    }
   });
 });
 
