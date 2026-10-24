@@ -144,7 +144,7 @@ export class StressRun {
     const p = this.player;
     if (p) {
       this.ui.playerX = p.x;
-      this.ui.playerY = p.y - p.radius;
+      this.ui.playerY = p.y;
     }
     this.fx.update();
     this.tools.update(delta);

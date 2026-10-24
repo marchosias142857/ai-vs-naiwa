@@ -182,11 +182,11 @@ export class DemoHud {
           d.room.kind === 'start'
             ? `hint.start.${device}`
             : d.room.kind === 'exit'
-              ? 'hint.exit'
+              ? `hint.exit.${device}`
               : d.room.kind === 'chest'
-                ? 'hint.chest'
+                ? `hint.chest.${device}`
                 : d.locked
-                  ? 'hint.fight'
+                  ? `hint.fight.${device}`
                   : 'hint.clear',
         );
     for (const slot of s.loot.slots)
@@ -198,7 +198,7 @@ export class DemoHud {
         Math.hypot(slot.x - p.x, slot.y - p.y) <= LOOT_RULES.weaponRadius
       ) {
         const w = WEAPONS[slot.weapon];
-        this.hint.textContent = t('hint.weapon', {
+        this.hint.textContent = t(`hint.weapon.${device}`, {
           weapon: weaponLabel(slot.weapon),
           damage: w.damage,
           pellets: w.pellets,

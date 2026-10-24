@@ -10,6 +10,7 @@ import { setInputProbe } from '../testHooks';
 import { textStyle } from './text';
 import { combatPause } from '../world/combatPause';
 import { RESUME_UI } from '../fx/params';
+import { ResumeCaption } from './ResumeCaption';
 
 /** 独立 UI 持有输入与恢复入口；#15 从 controls.frame 读取战斗输入。 */
 export class InputScene extends Scene {
@@ -21,7 +22,7 @@ export class InputScene extends Scene {
   private resumeLabel!: GameObjects.Text;
   private layoutScale = 0;
   private pauseLabel!: GameObjects.Text;
-  private countdownHint!: GameObjects.Text;
+  private countdownHint!: ResumeCaption;
   private countdown!: GameObjects.Text;
   /** 鼠标瞄准原点：由战斗场景在物理后发布的玩家身体中心。 */
   playerX = GAME_WIDTH / 2;
@@ -47,16 +48,7 @@ export class InputScene extends Scene {
       .setOrigin(0.5)
       .setDepth(DEPTH.touchControls)
       .setVisible(false);
-    this.countdownHint = this.add
-      .text(
-        GAME_WIDTH / 2,
-        GAME_HEIGHT / 2 + RESUME_UI.captionOffset,
-        t('input.ready'),
-        textStyle(RESUME_UI.captionSize),
-      )
-      .setOrigin(0.5)
-      .setDepth(DEPTH.touchControls)
-      .setVisible(false);
+    this.countdownHint = new ResumeCaption(this);
     const togglePause = () => {
       const pause = combatPause(battle);
       if (pause) {
@@ -89,6 +81,7 @@ export class InputScene extends Scene {
       this.actions?.destroy();
       this.actions = undefined;
       this.controls.destroy();
+      this.countdownHint.destroy();
       setInputProbe(undefined);
     });
   }
