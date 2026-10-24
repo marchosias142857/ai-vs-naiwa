@@ -31,10 +31,28 @@
 ## 验证证据
 
 - 本地 Node 24 + 锁定依赖：`npm run check`，40 文件 / 286 项单测，格式、ESLint、TypeScript、生产构建通过。
-- 完整组合浏览器回归：138 通过，8 按设备条件跳过，桌面与 Pixel 7 横屏 Chromium。覆盖四向握持/镜像/遮挡、移动换帧、重锤挥动中暂停→刷新→继续、Boss 实际击杀、死亡结算、完整存档、生命周期、多指、手柄、离线和更新。
+- 完整组合浏览器回归：138 通过，8 按设备条件跳过，桌面与 Pixel 7 横屏 Chromium。可复核记录：[提交 3f089f6 的完整 CI](https://github.com/marchosias142857/ai-vs-naiwa/actions/runs/40093013833)。覆盖四向握持/镜像/遮挡、移动换帧、重锤挥动中暂停→刷新→继续、Boss 实际击杀、死亡结算、完整存档、生命周期、多指、手柄、离线和更新。后续提交以 [#81 Checks](https://github.com/marchosias142857/ai-vs-naiwa/pull/81/checks) 为准。
 - 存档一致性：sim 近战挥动中 JSON 往返后，后续 180 个同输入步的完整状态与事件严格相同；真实 Arcade 场景也有 180 步一致性对照。轻量解析和 zod 共享字段规则并成对测试；运行时 sim 不依赖 zod。
 - 生产离线用例在断网关闭后重新打开 Game，检查真实角色视觉存在，并逐一获取五张 PNG，避免仅凭场景成功掩盖缺图回退。
 - 所有截图来自浏览器实际运行；既有测试中的 fixture 可保留灰盒，用于物理回归。以下交付截图来自正式入口，不使用 fixture 替代。
+
+### 实际画面与复核
+
+以下图片原样取自上述 CI 的 Playwright 产物，不是概念图。横屏菜单设置已在 `00257a1` 修正为同排且首屏可见；截图中的初始房间与持握行为未被后续文字清晰度调整改变。
+
+| 检查项                     | 画面                                                        |
+| -------------------------- | ----------------------------------------------------------- |
+| 桌面标题与菜单             | [menu-desktop.png](screenshots/production/menu-desktop.png) |
+| 横屏手机标题，设置无需滚动 | [menu-mobile.png](screenshots/production/menu-mobile.png)   |
+| 真实图集、资源条与触屏轮盘 | [room-mobile.png](screenshots/production/room-mobile.png)   |
+| 朝左镜像，握把跟随身体     | [aim-left.png](screenshots/production/aim-left.png)         |
+| 朝上武器在身体后方         | [aim-up.png](screenshots/production/aim-up.png)             |
+
+![横屏手机菜单](screenshots/production/menu-mobile.png)
+
+![横屏手机实际房间](screenshots/production/room-mobile.png)
+
+最后的截图自审还修正了倒计时中文：提高文本纹理分辨率和字号，加深色底以隔开地面/子弹。战斗、宝箱、出口及武器拾取提示也按当前键鼠/触屏/手柄显示对应操作。正式恢复用例检查触屏战斗提示不再出现 Space，并继续验证保存一致性和倒计时冻结；该轮倒计时及 Boss 截图在最新 CI 的 `playwright-report` 产物中。
 
 ### 包体、缓存与对象池
 
