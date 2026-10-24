@@ -84,7 +84,14 @@ export class DemoSession {
       this.dungeon.elapsed = checkpoint.elapsed;
     }
     this.loot = new LootSystem(this.root.fork(`loot:${this.dungeon.floor}`));
-    this.director = new RoomDirector(this.sim, this.dungeon, this.root, B, this.arena.isFree);
+    this.director = new RoomDirector(
+      this.sim,
+      this.dungeon,
+      this.root,
+      B,
+      this.arena.isFree,
+      POOL_SIZES.actors,
+    );
     this.showRoom();
     this.publishPosition();
     bus.on('entity:died', this.onDied);

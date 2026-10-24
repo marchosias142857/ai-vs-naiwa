@@ -111,6 +111,15 @@ interface PlayerState {
 
 const alwaysVisible: LineOfSight = () => true;
 
+/**
+ * 从射手身体中心指向目标碰撞圆心的角度。
+ * 枪口在身体中心（脚底上移一个半径）沿这个方向前移，所以弹道正好穿过目标圆心；
+ * 若按「脚底 → 脚底」算角度，弹道会整体平行上移一个射手半径，大体型射手的正中一发会擦过目标。
+ */
+function aimAngle(shooter: Readonly<Actor>, target: Readonly<Vec2>): number {
+  return Math.atan2(target.y - (shooter.y - shooter.radius), target.x - shooter.x);
+}
+
 function newBullet(): Bullet {
   return {
     id: 0,
@@ -674,7 +683,7 @@ class CombatWorldImpl implements CombatWorld {
     if (input.aim && (input.aim.x !== 0 || input.aim.y !== 0)) {
       actor.facing = Math.atan2(input.aim.y, input.aim.x);
     } else if (target) {
-      actor.facing = Math.atan2(target.y - actor.y, target.x - actor.x);
+      actor.facing = aimAngle(actor, target);
     } else {
       actor.facing = Math.atan2(this.lastMoveDir.y, this.lastMoveDir.x);
     }
@@ -825,7 +834,7 @@ class CombatWorldImpl implements CombatWorld {
         !this.lineOfSight(actor.x, actor.y, target.x, target.y)
       )
         continue;
-      actor.facing = Math.atan2(target.y - actor.y, target.x - actor.x);
+      actor.facing = aimAngle(actor, target);
       this.enemyGun.weapon = weapon;
       this.enemyGun.weaponId = attack;
       this.enemyGun.pattern = getPattern(weapon.pattern);
