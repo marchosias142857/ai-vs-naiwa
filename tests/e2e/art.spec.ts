@@ -57,11 +57,14 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
       canvas.x + ((p.x + dx! * 55) / 480) * canvas.width,
       canvas.y + ((p.y + dy! * 55) / 270) * canvas.height,
     );
+    await page.mouse.down();
     await page.waitForFunction(
       ({ dx, dy }) => {
         const v = window.__AVN__?.demo?.visual;
         return (
           !!v &&
+          window.__AVN__!.input!.fire &&
+          v.flipX === Math.cos(v.weapon.angle) >= 0 &&
           Math.abs(Math.cos(v.weapon.angle) - dx) < 0.01 &&
           Math.abs(Math.sin(v.weapon.angle) - dy) < 0.01
         );
@@ -71,11 +74,11 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
     const v = (await page.evaluate(() => window.__AVN__!.demo!.visual))!;
     expect(v.texture).toBe(HERO_ART.texture);
     expect(v.source).toContain(HERO_ART.source);
-    expect(v.flipX).toBe(dx! < 0);
-    expect(v.weapon.flipY).toBe(v.flipX);
+    expect(v.flipX).toBe(Math.cos(v.weapon.angle) >= 0);
+    expect(v.weapon.flipY).toBe(!v.flipX);
     expect(v.weapon.depth < v.depth).toBe(dy === -1);
     const f = HERO_FRAMES[v.frame as keyof typeof HERO_FRAMES],
-      sign = v.flipX ? -1 : 1;
+      sign = v.weapon.flipY ? 1 : -1;
     const left = (v.x - (v.flipX ? f.rect[2] - f.pivot.x : f.pivot.x) * HERO_ART.scale) * RENDER_SCALE;
     const top = (v.y - f.pivot.y * HERO_ART.scale) * RENDER_SCALE;
     expect(left).toBeCloseTo(Math.round(left));
@@ -83,6 +86,7 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
     expect(v.weapon.x - v.x).toBeCloseTo((f.grip.x - f.pivot.x) * HERO_ART.scale * sign);
     expect(v.weapon.y - v.y).toBeCloseTo((f.grip.y - f.pivot.y) * HERO_ART.scale);
     await page.screenshot({ path: info.outputPath(`art-direction-${dx}-${dy}.png`) });
+    await page.mouse.up();
   }
   await page.keyboard.down('d');
   await page.waitForFunction(() => String(window.__AVN__?.demo?.visual?.frame).startsWith('run_'));

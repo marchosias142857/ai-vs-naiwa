@@ -7,6 +7,8 @@ export const ArtFrameSchema = z.strictObject({
   seconds: z.number().positive(),
 });
 export const CharacterArtSchema = z.strictObject({
+  /** 未翻转源图的角色朝向；握持点仍使用源图坐标。 */
+  nativeFacing: z.enum(['left', 'right']),
   texture: z.string().min(1),
   source: z.string().min(1),
   reactionTexture: z.string().min(1),

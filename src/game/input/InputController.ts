@@ -30,6 +30,8 @@ export class InputController {
   rect: DOMRect;
   private readonly canvas: HTMLCanvasElement;
   private readonly coarse = matchMedia('(pointer: coarse)');
+  // 手机直接按 Touch.identifier 管理多指，不依赖浏览器的 Pointer Capture 生命周期。
+  private readonly nativeTouch = 'ontouchstart' in window;
   private mouseInside = false;
   private sampledFrame = -1;
   private configuredPad?: Input.Gamepad.Gamepad;
@@ -66,32 +68,21 @@ export class InputController {
       options,
     );
     window.addEventListener('keyup', (e) => this.state.key(e.code, false), options);
+    if (this.nativeTouch) {
+      const touchOptions = { ...options, passive: false };
+      this.canvas.addEventListener('touchstart', (e) => this.touches(e, true), touchOptions);
+      window.addEventListener('touchmove', (e) => this.touches(e, false), touchOptions);
+      const release = (e: TouchEvent) => {
+        for (const t of e.changedTouches) this.touch.up(t.identifier);
+      };
+      window.addEventListener('touchend', release, options);
+      window.addEventListener('touchcancel', release, options);
+    }
     this.canvas.addEventListener('pointerdown', (e) => this.pointer(e, true), options);
     this.canvas.addEventListener('pointermove', (e) => this.pointer(e, false), options);
-    window.addEventListener(
-      'pointerup',
-      (e) => {
-        this.touch.up(e.pointerId);
-        if (e.pointerType === 'mouse') this.state.mouseFire = false;
-      },
-      options,
-    );
-    this.canvas.addEventListener(
-      'pointercancel',
-      (e) => {
-        this.touch.up(e.pointerId);
-        this.state.mouseFire = false;
-      },
-      options,
-    );
-    this.canvas.addEventListener(
-      'lostpointercapture',
-      (e) => {
-        this.touch.up(e.pointerId);
-        this.state.mouseFire = false;
-      },
-      options,
-    );
+    window.addEventListener('pointerup', (e) => this.releasePointer(e), options);
+    this.canvas.addEventListener('pointercancel', (e) => this.releasePointer(e), options);
+    this.canvas.addEventListener('lostpointercapture', (e) => this.releasePointer(e), options);
     this.canvas.addEventListener(
       'pointerleave',
       () => {
@@ -124,8 +115,14 @@ export class InputController {
     }
     document.documentElement.style.setProperty('--game-canvas-top', `${this.rect.top}px`);
   };
+  private releasePointer(e: PointerEvent): void {
+    // 兼容鼠标的 pointerId 可能与原生 Touch.identifier 相同，不能释放另一根手指。
+    if (e.pointerType === 'mouse') this.state.mouseFire = false;
+    else if (!this.nativeTouch || e.pointerType !== 'touch') this.touch.up(e.pointerId);
+  }
   private pointer(e: PointerEvent, down: boolean): void {
     if (!this.ui.game.input.enabled) return;
+    if (this.nativeTouch && e.pointerType === 'touch') return;
     const x = e.clientX - this.rect.left,
       y = e.clientY - this.rect.top;
     if (e.pointerType === 'mouse') {
@@ -158,6 +155,34 @@ export class InputController {
           Math.hypot(x - this.rect.width / 2, y - this.rect.height / 2) <= UI.resume.radius))
     )
       this.togglePause();
+  }
+  private touches(e: TouchEvent, down: boolean): void {
+    if (!this.ui.game.input.enabled) return;
+    let handled = false;
+    for (const t of e.changedTouches) {
+      const x = t.clientX - this.rect.left,
+        y = t.clientY - this.rect.top;
+      if (down) {
+        if (
+          this.manualPaused &&
+          Math.hypot(x - this.rect.width / 2, y - this.rect.height / 2) <= UI.resume.radius
+        ) {
+          this.togglePause();
+          handled = true;
+        } else handled = this.touch.down(t.identifier, x, y) || handled;
+      } else if (
+        t.identifier === this.touch.moveId ||
+        t.identifier === this.touch.fireId ||
+        t.identifier === this.touch.pauseId
+      ) {
+        this.touch.drag(t.identifier, x, y);
+        handled = true;
+      }
+    }
+    if (handled) {
+      this.state.frame.source = 'touch';
+      if (e.cancelable) e.preventDefault();
+    }
   }
   /** 世界坐标原点由玩家位置提供，默认灰盒中心仅用于输入验收。 */
   sample(playerX: number, playerY: number) {

@@ -32,9 +32,18 @@ test('正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹', 
   await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.source)).toBe('touch');
   await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.fire)).toBe(true);
   await page.waitForFunction(() => window.__AVN__!.demo!.bullets > 0);
+  await expect.poll(() => page.evaluate(() => window.__AVN__!.demo!.visual!.flipX)).toBe(false);
   await page.screenshot({ path: info.outputPath('mobile-firing.png') });
+  // 先松左指，右指仍持续朝左开火；最后松右指，枪与身体回到刚才向右移动的方向。
+  await cdp.send('Input.dispatchTouchEvent', {
+    type: 'touchEnd',
+    touchPoints: [{ ...move, x: move.x + 24 }],
+  });
+  await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.fire)).toBe(true);
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.fire)).toBe(false);
+  await expect.poll(() => page.evaluate(() => window.__AVN__!.demo!.visual!.weapon.angle)).toBe(0);
+  await expect.poll(() => page.evaluate(() => window.__AVN__!.demo!.visual!.flipX)).toBe(true);
 });
 
 test('手机基础手枪按住可出弹；能量不足有提示并能切回手枪', async ({ page, isMobile }, info) => {
@@ -60,18 +69,28 @@ test('手机基础手枪按住可出弹；能量不足有提示并能切回手�
   await page.waitForFunction(() => window.__AVN__?.demo?.weapon === 'pistol_basic');
   const box = (await page.locator('#game canvas').boundingBox())!;
   const fire = { x: box.x + box.width - UI.aimWheel.inset, y: box.y + box.height - UI.aimWheel.inset };
-  // WebKit 无 CDP 多指 API；注入事件只替代原生捕获，不伪造游戏输入或子弹。
-  await page.locator('#game canvas').evaluate((canvas) => {
-    canvas.setPointerCapture = () => {};
-  });
-  await page.locator('#game canvas').dispatchEvent('pointerdown', {
-    pointerType: 'touch',
-    pointerId: 7,
-    clientX: fire.x,
-    clientY: fire.y,
-  });
+  // WebKit 无 CDP 多指 API：派发 DOM TouchEvent，经过正式输入控制器，不伪造游戏输入或子弹。
+  const touch = async (type: 'touchstart' | 'touchend') => {
+    await page.locator('#game canvas').evaluate(
+      (canvas, { type, fire }) => {
+        const point = new Touch({ identifier: 7, target: canvas, clientX: fire.x, clientY: fire.y });
+        const active = type === 'touchstart' ? [point] : [];
+        canvas.dispatchEvent(
+          new TouchEvent(type, {
+            bubbles: true,
+            cancelable: true,
+            touches: active,
+            targetTouches: active,
+            changedTouches: [point],
+          }),
+        );
+      },
+      { type, fire },
+    );
+  };
+  await touch('touchstart');
   await page.waitForFunction(() => window.__AVN__!.demo!.bullets > 0);
   await page.screenshot({ path: info.outputPath('mobile-empty-energy-pistol.png') });
-  await page.locator('#game canvas').dispatchEvent('pointerup', { pointerType: 'touch', pointerId: 7 });
+  await touch('touchend');
   await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.fire)).toBe(false);
 });
