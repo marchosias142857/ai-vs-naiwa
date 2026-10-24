@@ -9,6 +9,45 @@ function setup() {
 }
 
 describe('固定开火轮盘', () => {
+  it('每次按下等待 120 ms，死区内抖动不提前开火；松手和重置取消等待', () => {
+    const { touch: t, x, y } = setup(),
+      delay = UI.aimWheel.firstShotDelayMs;
+    t.down(1, x, y, 0);
+    expect(t.sampleFire(0)).toBe(false);
+    t.drag(1, x + UI.aimWheel.deadzone, y);
+    expect(t.sampleFire(delay - 1)).toBe(false);
+    expect(t.sampleFire(delay)).toBe(true);
+    expect(t.sampleFire(delay + 1)).toBe(true);
+    t.up(1);
+    expect(t.sampleFire(delay + 2)).toBe(false);
+    t.down(2, x, y, delay + 2);
+    expect(t.sampleFire(delay + 3)).toBe(false);
+    t.reset();
+    expect(t.sampleFire(delay * 10)).toBe(false);
+  });
+
+  it('拖出死区在同一采样帧确定方向并开火，回中持续射击', () => {
+    const { touch: t, x, y } = setup();
+    t.down(1, x, y, 0);
+    t.drag(1, x - UI.aimWheel.radius, y);
+    expect(t.sampleFire(1)).toBe(true);
+    expect(t.aim).toEqual({ x: -1, y: 0 });
+    t.drag(1, x, y);
+    expect(t.sampleFire(2)).toBe(true);
+    expect(t.aiming).toBe(false);
+  });
+
+  it('偏离圆心按下不立即开火；采样前出圈又回中仍等反应时间', () => {
+    const { touch: t, x, y } = setup();
+    t.down(1, x + UI.aimWheel.radius, y, 0);
+    expect(t.sampleFire(1)).toBe(false);
+    t.drag(1, x - UI.aimWheel.radius, y);
+    t.drag(1, x, y);
+    expect(t.sampleFire(2)).toBe(false);
+    t.up(1);
+    expect(t.sampleFire(UI.aimWheel.firstShotDelayMs)).toBe(false);
+  });
+
   it('按住中心或死区时只开火；超出死区输出单位方向，回中后取消瞄准', () => {
     const { touch: t, x, y } = setup();
     expect(t.down(1, x, y)).toBe(true);
