@@ -45,6 +45,15 @@ export interface SaveLimits {
 export function simSaveFields(limits: SaveLimits): SaveField {
   return object({
     world: object({
+      melee: object({
+        active: bool,
+        weaponId: weapon,
+        angle: signed,
+        remaining: nonnegative,
+        duration: nonnegative,
+        damage: nonnegative,
+        hitIds: array(id, limits.actors),
+      }),
       time: nonnegative,
       nextId: id,
       playerId: { ...id, nullable: true },

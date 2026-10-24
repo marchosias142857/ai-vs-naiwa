@@ -69,5 +69,8 @@
   "menu.continueEntry": "继续第 {floor} 层（从入口恢复）",
   "save.updated": "游戏已更新，从本层入口继续",
   "save.invalid": "存档异常，从本层入口继续",
-  "save.corrupt": "存档已损坏，无法继续"
+  "save.corrupt": "存档已损坏，无法继续",
+  "weapon.cutlass": "潮汐弯刀",
+  "weapon.anchor_hammer": "船锚重锤",
+  "character.ai_proto": "大肥鱼"
 }
