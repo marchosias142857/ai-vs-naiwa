@@ -187,7 +187,7 @@ export class InputController {
       f.move.x = this.touch.move.x;
       f.move.y = this.touch.move.y;
       f.fire = this.touch.fireId >= 0;
-      f.aim = null;
+      f.aim = this.touch.aiming ? this.touch.aim : null;
     }
     f.pausePressed ||= this.touch.pausePressed;
     this.touch.pausePressed = false;

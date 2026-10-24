@@ -5,6 +5,10 @@ const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v
 /** CSS 像素下的多指所有权与浮动摇杆。 */
 export class TouchState {
   readonly move = { x: 0, y: 0 };
+  readonly aim = { x: 0, y: 0 };
+  aiming = false;
+  fireDx = 0;
+  fireDy = 0;
   width = 0;
   height = 0;
   x: number = UI.joystick.homeInset;
@@ -27,6 +31,7 @@ export class TouchState {
     this.x = UI.joystick.homeInset;
     this.y = this.height - UI.joystick.homeInset;
     this.dx = this.dy = this.move.x = this.move.y = 0;
+    this.clearAim();
   }
   down(id: number, x: number, y: number): boolean {
     if (
@@ -38,10 +43,13 @@ export class TouchState {
       return true;
     }
     if (
-      Math.hypot(x - (this.width - UI.fire.inset), y - (this.height - UI.fire.inset)) <= UI.fire.radius &&
-      this.fireId < 0
+      Math.hypot(x - (this.width - UI.aimWheel.inset), y - (this.height - UI.aimWheel.inset)) <=
+      UI.aimWheel.radius + UI.aimWheel.hitPadding
     ) {
+      // 右侧区域被占用时也不能把第二根手指分配给左摇杆。
+      if (this.fireId >= 0) return false;
       this.fireId = id;
+      this.drag(id, x, y);
       return true;
     }
     if (
@@ -60,6 +68,18 @@ export class TouchState {
     return false;
   }
   drag(id: number, x: number, y: number): void {
+    if (id === this.fireId) {
+      const dx = x - (this.width - UI.aimWheel.inset),
+        dy = y - (this.height - UI.aimWheel.inset),
+        length = Math.hypot(dx, dy),
+        scale = UI.aimWheel.radius / Math.max(UI.aimWheel.radius, length);
+      this.fireDx = dx * scale;
+      this.fireDy = dy * scale;
+      this.aiming = length > UI.aimWheel.deadzone;
+      this.aim.x = this.aiming ? dx / length : 0;
+      this.aim.y = this.aiming ? dy / length : 0;
+      return;
+    }
     if (id !== this.moveId) return;
     const length = Math.hypot(x - this.x, y - this.y);
     if (length > UI.joystick.radius) {
@@ -88,7 +108,14 @@ export class TouchState {
       this.y = this.height - UI.joystick.homeInset;
       this.dx = this.dy = this.move.x = this.move.y = 0;
     }
-    if (id === this.fireId) this.fireId = -1;
+    if (id === this.fireId) {
+      this.fireId = -1;
+      this.clearAim();
+    }
     if (id === this.pauseId) this.pauseId = -1;
+  }
+  private clearAim(): void {
+    this.aiming = false;
+    this.fireDx = this.fireDy = this.aim.x = this.aim.y = 0;
   }
 }
