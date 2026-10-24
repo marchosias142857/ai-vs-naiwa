@@ -11,7 +11,7 @@ interface ActorSlot {
   id: number;
 }
 
-/** 角色脚底为物理圆心；贴图底部与脚底对齐，物理体允许伸出贴图底部。 */
+/** 角色位置统一为身体圆心；动画贴图独立于物理代理，换帧不修改物理体。 */
 export class CombatActors {
   readonly group: Physics.Arcade.Group;
   readonly slots: ActorSlot[] = [];
@@ -69,9 +69,9 @@ export class CombatActors {
         : ENEMIES[actor.kind as keyof typeof ENEMIES];
     const image = slot.image;
     image.setTexture(data?.sprite ?? (actor.team === 'player' ? TEX.player : TEX.enemy));
-    image.setOrigin(0.5, 1).setScale(1).setAngle(0).setAlpha(1).clearTint();
+    image.setOrigin(0.5, 0.5).setScale(1).setAngle(0).setAlpha(1).clearTint();
     image.enableBody(true, actor.x, actor.y, true, true);
-    image.setCircle(actor.radius, image.width / 2 - actor.radius, image.height - actor.radius);
+    image.setCircle(actor.radius, image.width / 2 - actor.radius, image.height / 2 - actor.radius);
     const body = image.body as Physics.Arcade.Body;
     body.updateFromGameObject();
     // 预警体不跑 preUpdate；激活当步却会跑 postUpdate，不能补出旧矩形到圆心的偏移。

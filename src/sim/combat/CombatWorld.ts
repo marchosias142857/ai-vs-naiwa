@@ -1,3 +1,4 @@
+import { playerMuzzle } from '../weapons/muzzle';
 import { sectorHitsCircle } from '../weapons/melee';
 import type { MeleeState } from './api';
 import { LOOT_RULES } from '../../data/loot';
@@ -122,7 +123,7 @@ const alwaysVisible: LineOfSight = () => true;
  * 若按「脚底 → 脚底」算角度，弹道会整体平行上移一个射手半径，大体型射手的正中一发会擦过目标。
  */
 function aimAngle(shooter: Readonly<Actor>, target: Readonly<Vec2>): number {
-  return Math.atan2(target.y - (shooter.y - shooter.radius), target.x - shooter.x);
+  return Math.atan2(target.y - shooter.y, target.x - shooter.x);
 }
 
 function newBullet(): Bullet {
@@ -333,6 +334,7 @@ class CombatWorldImpl implements CombatWorld {
     damage: 0,
     hitIds: [],
   };
+  private readonly muzzle = { x: 0, y: 0 };
   time = 0;
   readonly actors: Actor[] = [];
   playerId: EntityId | null = null;
@@ -919,10 +921,19 @@ class CombatWorldImpl implements CombatWorld {
       this.startMelee(owner, p.weapon, p.weaponId as WeaponId);
       return;
     }
-    // 枪口：身体中心（脚底向上一个半径）沿朝向前移一个半径再加 2 像素。
-    const reach = owner.radius + 2;
-    const muzzleX = owner.x + Math.cos(owner.facing) * reach;
-    const muzzleY = owner.y - owner.radius + Math.sin(owner.facing) * reach;
+    const muzzle = this.muzzle;
+    if (owner.team === 'player') playerMuzzle(muzzle, owner.x, owner.y, owner.facing, p.weaponId as WeaponId);
+    else {
+      muzzle.x = owner.x + Math.cos(owner.facing) * owner.radius;
+      muzzle.y = owner.y + Math.sin(owner.facing) * owner.radius;
+    }
+    // 枪口不能越过近墙；从身体发射让同一步物理墙体检测接管。
+    if (!this.lineOfSight(owner.x, owner.y, muzzle.x, muzzle.y)) {
+      muzzle.x = owner.x;
+      muzzle.y = owner.y;
+    }
+    const muzzleX = muzzle.x,
+      muzzleY = muzzle.y;
     this.fireCtx.x = muzzleX;
     this.fireCtx.y = muzzleY;
     this.fireCtx.aim = owner.facing;

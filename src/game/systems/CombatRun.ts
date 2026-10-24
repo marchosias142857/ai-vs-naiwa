@@ -120,7 +120,7 @@ export class CombatRun {
     const player = this.player;
     if (!player) return;
     this.options.inputScene.playerX = player.x;
-    this.options.inputScene.playerY = player.y - player.radius;
+    this.options.inputScene.playerY = player.y;
   }
 
   private readonly stepWaves = (dt: number): void => this.waves.step(dt);
