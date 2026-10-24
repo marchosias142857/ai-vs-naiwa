@@ -7,6 +7,7 @@ import {
   unlockSound,
   pauseSound,
   continueSound,
+  suspendSound,
 } from '../../../src/services/Sound';
 afterEach(() => {
   destroySound();
@@ -87,13 +88,38 @@ it('8 个音频声部预热后反复复用；静音和后台不发声', () => {
   document.hidden = false;
   document.dispatchEvent(new Event('visibilitychange'));
   expect(resumed).toBe(1);
+  // 游戏内暂停（即使先收到真实手势）不会 suspend/resume，也不会调度声音。
+  now += 1;
   pauseSound();
   unlockSound();
+  playSound('shot');
+  expect(scheduled).toBe(2000);
+  expect(suspended).toBe(1);
   expect(resumed).toBe(1);
-  continueSound();
-  expect(resumed).toBe(2);
+  continueSound(); // 手柄恢复：无需用户手势，不依赖 resume。
+  playSound('shot');
+  expect(scheduled).toBe(2001);
+  expect(resumed).toBe(1);
   audioState = 'interrupted';
   continueSound();
+  expect(resumed).toBe(2);
+  silenceSound();
+  expect(suspended).toBe(1);
+  // 退出场景才 suspend；下一次菜单手势先于新场景 create，旧 paused 不应阻止解锁。
+  pauseSound();
+  suspendSound();
+  expect(suspended).toBe(2);
+  unlockSound();
   expect(resumed).toBe(3);
-  expect(() => silenceSound()).not.toThrow();
+  now += 1;
+  playSound('shot');
+  expect(scheduled).toBe(2001);
+  continueSound();
+  playSound('shot');
+  expect(scheduled).toBe(2002);
+  expect(nodes).toBe(16);
+  destroySound();
+  document.hidden = true;
+  document.dispatchEvent(new Event('visibilitychange'));
+  expect(suspended).toBe(2);
 });

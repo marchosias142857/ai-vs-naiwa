@@ -18,7 +18,7 @@
 - loot schema 增加 noDropChance=0.4（40% 不掉、60% 再按权重抽取），weaponReserve=1；固定槽记录房间编号，武器只在所属房间展示并保留至换层。满额不会消耗旧武器或宝箱。
 - upgrades/loot/encounters 按楼层 fork；导航 schema 增加 radiusCaches=4，预热各半径 blocked/流场并有界轮换；目标格直接用坐标计算。
 - UpgradeDef 增加 display: number | percent，按钮数量按 upgradeChoices 创建，出口文字走 t()。手柄按钮编号集中到 INPUT_UI。
-- 音频在场景/物理暂停和后台 suspend；恢复时尝试 resume，被浏览器拒绝则等下一次真实手势。
+- 音频（#55 后续修订）：游戏内场景/物理暂停只静音，避免手柄恢复依赖新的浏览器授权；只在后台或离开战斗场景 suspend。后台恢复被浏览器拒绝时等下一次真实手势。
 
 ## 备选方案
 
