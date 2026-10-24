@@ -1,3 +1,4 @@
+import { installPad, padButton } from './helpers/gamepad';
 import { expect, test } from '@playwright/test';
 
 test('demo：默认地牢入口、行动按钮、真实走门、清房与暂停', async ({ page }, info) => {
@@ -21,6 +22,7 @@ test('demo：默认地牢入口、行动按钮、真实走门、清房与暂停'
   expect(before.locked).toBe(true);
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !!window.__AVN__!.input!.manualPaused);
+  await page.screenshot({ path: info.outputPath('demo-pause.png'), scale: 'css' });
   const time = await page.evaluate(() => window.__AVN__!.demo!.time);
   await page.waitForTimeout(200);
   expect(await page.evaluate(() => window.__AVN__!.demo!.time)).toBe(time);
@@ -91,4 +93,40 @@ test('demo：检查点继续、死亡结算与重来完整释放', async ({ page
   await expect(page.locator('#demo-actions')).toHaveCount(1);
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('avn.profile.v1')!).runs)).toBe(1);
   expect(errors).toEqual([]);
+});
+
+test('demo：暂停退出保留入口检查点，继续不重复输入界面', async ({ page }) => {
+  await page.goto('/?scene=Game&seed=42');
+  await page.waitForFunction(() => !!window.__AVN__?.demo);
+  await page.keyboard.press('Escape');
+  await page.locator('#pause-menu').click();
+  await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
+  await expect(page.locator('#demo-actions')).toHaveCount(0);
+  await expect(page.locator('#demo-hud')).toHaveCount(0);
+  await expect(page.locator('#continue-run')).toBeEnabled();
+  await page.locator('#continue-run').click();
+  await page.waitForFunction(() => window.__AVN__?.scene === 'Game');
+  await expect(page.locator('#demo-actions')).toHaveCount(1);
+  await expect(page.locator('#demo-hud')).toHaveCount(1);
+});
+
+test('demo：手柄菜单松开再确认，暂停继续后能切回键盘', async ({ page }) => {
+  await installPad(page);
+  await page.goto('/?seed=42');
+  await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
+  await expect(page.locator('#start-run')).toBeFocused();
+  await padButton(page, 0, true);
+  await page.waitForFunction(() => window.__AVN__?.scene === 'Game');
+  await padButton(page, 0, false);
+  await padButton(page, 9, true);
+  await page.waitForFunction(() => window.__AVN__!.input!.manualPaused);
+  await padButton(page, 9, false);
+  await expect(page.locator('#demo-pause button').first()).toBeFocused();
+  await padButton(page, 0, true);
+  await page.waitForFunction(() => !window.__AVN__!.input!.manualPaused);
+  await padButton(page, 0, false);
+  const x = await page.evaluate(() => window.__AVN__!.demo!.x);
+  await page.keyboard.down('d');
+  await page.waitForFunction((x) => window.__AVN__!.demo!.x > x + 5, x);
+  await page.keyboard.up('d');
 });

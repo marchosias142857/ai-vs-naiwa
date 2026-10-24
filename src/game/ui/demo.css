@@ -100,3 +100,14 @@
   text-align: left;
   font-size: 11px;
 }
+#demo-pause {
+  position: fixed;
+  color: #e8ecff;
+  z-index: 4;
+  font:
+    12px/1.5 system-ui,
+    sans-serif;
+}
+#demo-pause[hidden] {
+  display: none;
+}
