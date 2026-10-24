@@ -1,3 +1,4 @@
+import { settings } from '../../services/settings';
 import { Physics, type GameObjects, type Scene } from 'phaser';
 import { DEPTH, POOL_SIZES } from '../../config';
 import type { CombatWorld } from '../../sim/combat/api';
@@ -106,7 +107,7 @@ export class CombatFeedback {
         continue;
       }
       const color = FX.kinds[a.kind as keyof typeof FX.kinds] ?? FX.playerColor;
-      slot.image.setTint(state.flash ? FX.hitColor : color);
+      slot.image.setTint(state.flash && settings.flashes ? FX.hitColor : color);
       slot.image.setAlpha(a.invulnerable ? FX.invulnerableAlpha : 1);
       if (a.phase === 'dead') {
         slot.image.setAngle(Math.min(1, state.death / FX.deathSeconds) * FX.deathAngle);
@@ -124,7 +125,7 @@ export class CombatFeedback {
     }
     const overlay = this.overlay;
     overlay.clear();
-    if (this.hurt)
+    if (this.hurt && settings.flashes)
       overlay
         .lineStyle(FX.hurtWidth, FX.warningColor, this.hurt / FX.hurtSeconds)
         .strokeRect(0, 0, this.scene.scale.width, this.scene.scale.height);

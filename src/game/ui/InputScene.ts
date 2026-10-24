@@ -1,3 +1,4 @@
+import { t } from '../../i18n/t';
 import { PausePanel } from './PausePanel';
 import { ActionButtons } from './ActionButtons';
 import { INPUT_UI as UI } from '../fx/params';
@@ -34,7 +35,7 @@ export class InputScene extends Scene {
     battle.input.enabled = false;
     this.graphics = this.add.graphics().setDepth(DEPTH.touchControls);
     this.resumeLabel = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, '继续', textStyle(10))
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, t('input.resume'), textStyle(10))
       .setOrigin(0.5)
       .setDepth(DEPTH.touchControls);
     this.pauseLabel = this.add.text(0, 0, 'Ⅱ', textStyle(12)).setOrigin(0.5).setDepth(DEPTH.touchControls);

@@ -1,3 +1,4 @@
+import { t } from '../../i18n/t';
 import type { Scene } from 'phaser';
 import { COLORS } from '../../config';
 import { INPUT_UI } from '../fx/params';
@@ -14,12 +15,12 @@ export class ActionButtons {
   ) {
     const ui = INPUT_UI.actions;
     this.root.id = 'demo-actions';
-    this.root.setAttribute('aria-label', '战斗动作');
+    this.root.setAttribute('aria-label', t('input.actions'));
     this.root.style.cssText = `position:fixed;display:flex;gap:${ui.gap}px;z-index:3;`;
     const actions = [
-      ['技能 / Space', 'Space'],
-      ['切枪 / Q', 'KeyQ'],
-      ['拾取 / E', 'KeyE'],
+      [t('input.skill'), 'Space'],
+      [t('input.swap'), 'KeyQ'],
+      [t('input.interact'), 'KeyE'],
     ] as const;
     for (const [label, code] of actions) {
       const button = document.createElement('button');
