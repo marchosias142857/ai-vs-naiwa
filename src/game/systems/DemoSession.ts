@@ -130,6 +130,12 @@ export class DemoSession {
     const p = this.player;
     if (!p) return;
     if (this.dungeon.finished) {
+      if (!this.endTime)
+        for (const slot of this.bridge.bullets.slots)
+          if (slot.id) {
+            this.sim.releaseBullet(slot.id);
+            this.bridge.bullets.recycle(slot);
+          }
       this.endTime += dt;
       if (this.endTime >= BALANCE.deathRestartDelay) {
         this.settled = true;

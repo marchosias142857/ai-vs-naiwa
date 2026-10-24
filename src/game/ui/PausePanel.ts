@@ -1,3 +1,4 @@
+import { guardGameUi } from './guardGameUi';
 import { t } from '../../i18n/t';
 import type { Scene } from 'phaser';
 import { MenuNavigation } from './MenuNavigation';
@@ -18,6 +19,7 @@ export class PausePanel {
     exit.addEventListener('click', () => battle.scene.start('Menu'), { signal: this.abort.signal });
     this.root.append(continueButton, exit);
     this.root.hidden = true;
+    guardGameUi(this.root, ui, this.abort.signal);
     document.body.append(this.root);
     this.navigation = new MenuNavigation(this.root, ui);
   }

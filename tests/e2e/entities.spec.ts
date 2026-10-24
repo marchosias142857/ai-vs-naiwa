@@ -1,7 +1,7 @@
 import { LOOT_RULES } from '../../src/data/loot';
 import { expect, test } from '@playwright/test';
 import { build } from 'vite';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -267,6 +267,7 @@ test('100 秒锁步压力：持续 30 怪、弹丸与反馈池不增长', async 
   await page.goto(`${url}/demo.html`);
   await page.waitForFunction(() => window.stressScenario);
   const result = await page.evaluate(() => window.stressScenario());
+  await writeFile(info.outputPath('stress.json'), JSON.stringify(result, null, 2));
   await info.attach('stress-counters', {
     body: JSON.stringify(result, null, 2),
     contentType: 'application/json',

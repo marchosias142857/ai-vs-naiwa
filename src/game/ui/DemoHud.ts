@@ -1,3 +1,4 @@
+import { guardGameUi } from './guardGameUi';
 import { LOOT_RULES } from '../../data/loot';
 import { WEAPONS } from '../../data/weapons';
 import { t, type TextKey } from '../../i18n/t';
@@ -12,6 +13,7 @@ import './demo.css';
 
 /** 灰盒 HUD：固定 DOM 对象；只有计数文字按 4 Hz 刷新，小地图只在房间状态变化时画。 */
 export class DemoHud {
+  saveAvailable = true;
   private readonly root = document.createElement('div');
   private readonly status = document.createElement('div');
   private readonly hint = document.createElement('div');
@@ -67,6 +69,7 @@ export class DemoHud {
     );
     this.modal.append(this.shop, this.restart, this.menu);
     this.root.append(this.status, this.map, this.hint, this.modal);
+    guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
     this.layout();
     scene.scale.on('resize', this.layout);
@@ -74,7 +77,7 @@ export class DemoHud {
     window.addEventListener(
       'keydown',
       (e) => {
-        if (this.mode === 'none' || e.repeat) return;
+        if (!scene.game.input.enabled || this.mode === 'none' || e.repeat) return;
         if (e.key === 'Escape') {
           e.preventDefault();
           e.stopImmediatePropagation();
@@ -199,6 +202,7 @@ export class DemoHud {
         this.status.textContent += '\n' + t('hud.boss', { hp: Math.ceil(actor.hp), maxHp: actor.maxHp });
         break;
       }
+    if (!this.saveAvailable) this.hint.textContent = t('save.unavailable');
     if (this.mapRevision !== d.revision) {
       this.drawMap();
       this.mapRevision = d.revision;

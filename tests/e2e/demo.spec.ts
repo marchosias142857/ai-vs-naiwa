@@ -198,3 +198,17 @@ test('demo：真实自动瞄准与 Arcade 命中击败 Boss，保持 RT 不跳�
   await expect(page.locator('#demo-actions')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
+
+test('demo：存储被禁用仍可开局，明确显示未保存状态', async ({ page }) => {
+  await page.addInitScript(() => {
+    Storage.prototype.setItem = () => {
+      throw new DOMException('blocked');
+    };
+  });
+  await page.goto('/?scene=Game&seed=42');
+  await expect(page.locator('.demo-hint')).toContainText('无法保存进度');
+  const x = await page.evaluate(() => window.__AVN__!.demo!.x);
+  await page.keyboard.down('d');
+  await page.waitForFunction((x) => window.__AVN__!.demo!.x > x + 5, x);
+  await page.keyboard.up('d');
+});

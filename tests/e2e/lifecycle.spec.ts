@@ -41,7 +41,7 @@ test('竖屏：桌面留黑边继续运行，触屏显示遮罩并暂停；转�
   await expect
     .poll(() => page.evaluate(() => window.__AVN__?.lifecycle?.frame ?? 0))
     .toBeGreaterThan(before!.frame);
-  await page.locator('#game canvas').click();
+  await page.locator('#start-run').click();
   await page.waitForFunction(() => window.__AVN__?.scene === 'Game');
 });
 

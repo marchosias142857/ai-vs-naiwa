@@ -1,3 +1,4 @@
+import { guardGameUi } from './guardGameUi';
 import { settings } from '../../services/settings';
 import { t } from '../../i18n/t';
 import { addSettings } from './SettingsControls';
@@ -49,12 +50,13 @@ export class MenuPanel {
     this.root.append(title, subtitle, start, resume, help, controls, stats, note);
     addSettings(this.root, this.abort.signal, () => scene.scene.restart());
     document.documentElement.lang = settings.language;
+    guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
     this.navigation = new MenuNavigation(this.root, scene);
     window.addEventListener(
       'keydown',
       (e) => {
-        if (e.repeat || e.target instanceof HTMLButtonElement) return;
+        if (!scene.game.input.enabled || e.repeat || e.target instanceof HTMLButtonElement) return;
         if (e.key === 'Enter') scene.scene.start('Game', {});
       },
       { signal: this.abort.signal },
