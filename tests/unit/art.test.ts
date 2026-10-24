@@ -2,6 +2,7 @@ import { PRESENTATION } from '../../src/data/presentation';
 import { PresentationSchema } from '../../src/data/schema/art';
 import { frameAt } from '../../src/game/entities/artPose';
 import { readFileSync, statSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { DOOR_ART, ENEMY_ART, ENVIRONMENT_ART, HERO_ART, HERO_FRAMES, WEAPON_ART } from '../../src/data/art';
 import { ENEMIES } from '../../src/data/enemies';
@@ -10,7 +11,15 @@ import { ArtFrameSchema, CharacterArtSchema, WeaponArtSchema } from '../../src/d
 import { CHARACTER_ART, characterTexture } from '../../src/data/characterArt';
 import { CHARACTERS } from '../../src/data/characters';
 
-const files = ['da-fei-yu', 'da-fei-yu-reactions', 'weapons', 'enemies', 'environment', 'title', 'doors'];
+const files = [
+  'da-fei-yu-pixel-v2',
+  'da-fei-yu-pixel-reactions-v1',
+  'weapons',
+  'enemies',
+  'environment',
+  'title',
+  'doors',
+];
 function dimensions(name: string) {
   const file = `public/assets/demo/${name}.png`,
     buffer = readFileSync(file);
@@ -26,6 +35,22 @@ function inImage(file: string, rects: readonly (readonly number[])[]) {
   }
 }
 describe('真实 PNG 图集与持握数据', () => {
+  it('待机行走逐字节保留负责人参考图 2，角色新版本不复用旧缓存 URL', () => {
+    expect(
+      createHash('sha256')
+        .update(readFileSync(`public/assets/demo/${HERO_ART.source}`))
+        .digest('hex'),
+    ).toBe('5c4403dc7535f67f21ccef0da864e4042aaff4f24fcc68af90f0e9c9437731f7');
+    expect(HERO_ART.source).not.toBe('da-fei-yu.png');
+    expect(HERO_ART.reactionSource).not.toBe('da-fei-yu-reactions.png');
+    for (const action of ['hurt', 'death'] as const) {
+      let elapsed = 0;
+      for (const name of HERO_ART[action]) {
+        expect(frameAt(action, elapsed + HERO_FRAMES[name].seconds / 2)).toBe(name);
+        elapsed += HERO_FRAMES[name].seconds;
+      }
+    }
+  });
   it('全部可玩角色注册资源，独立动作名称、计时和反应图集可扩展', () => {
     expect(Object.keys(CHARACTER_ART).sort()).toEqual(Object.keys(CHARACTERS).sort());
     for (const art of Object.values(CHARACTER_ART)) {
@@ -62,11 +87,11 @@ describe('真实 PNG 图集与持握数据', () => {
   it('全部资源是 PNG，尺寸合法，单文件在离线缓存预算内', () => {
     for (const name of files) expect(dimensions(name)[0]).toBeGreaterThan(0);
     inImage(
-      'da-fei-yu',
+      'da-fei-yu-pixel-v2',
       [...HERO_ART.idle, ...HERO_ART.run].map((key) => HERO_FRAMES[key].rect),
     );
     inImage(
-      'da-fei-yu-reactions',
+      'da-fei-yu-pixel-reactions-v1',
       [...HERO_ART.hurt, ...HERO_ART.death].map((key) => HERO_FRAMES[key].rect),
     );
     inImage(
