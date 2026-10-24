@@ -280,7 +280,8 @@ describe('存档 v2：存读档与不中断一致（ADR 0019）', () => {
 
   it('满池：子弹池用满时，空闲栈顺序往返', () => {
     const full = (h: Harness) => h.save().game.free.length === 0;
-    const { saved } = compare({ ...base, seed: 3, god: true, weapon: 'ring_staff', maxBullets: 8 }, full, 600);
+    const options: Options = { ...base, seed: 3, god: true, weapon: 'ring_staff', maxBullets: 8 };
+    const { saved } = compare(options, full, 600);
     expect(saved.game.free).toEqual([]);
   });
 
