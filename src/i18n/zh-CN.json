@@ -58,5 +58,6 @@
   "upgrade.cooling": "技能冷却缩短",
   "shop.supplies": "补给：{price} 金币 → 生命 +{health} / 能量 +{energy}",
   "hint.weapon": "E / A / 拾取：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
-  "hud.boss": "奶蛙首领 {hp}/{maxHp}"
+  "hud.boss": "奶蛙首领 {hp}/{maxHp}",
+  "save.unavailable": "浏览器存储不可用：本局可玩，但无法保存进度"
 }

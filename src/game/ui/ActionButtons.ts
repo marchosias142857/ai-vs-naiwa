@@ -31,7 +31,11 @@ export class ActionButtons {
       button.addEventListener(
         'click',
         () => {
-          if (!controls.battle.scene.isPaused() && !controls.battle.physics.world.isPaused)
+          if (
+            scene.game.input.enabled &&
+            !controls.battle.scene.isPaused() &&
+            !controls.battle.physics.world.isPaused
+          )
             controls.state.action(code);
           button.blur();
         },

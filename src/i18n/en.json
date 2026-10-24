@@ -58,5 +58,6 @@
   "upgrade.cooling": "Shorter dash cooldown",
   "shop.supplies": "Supplies: {price} coins → HP +{health} / Energy +{energy}",
   "hint.weapon": "E / A / Use: {weapon} · Damage {damage} × {pellets} · Energy {cost}",
-  "hud.boss": "Naiwa boss {hp}/{maxHp}"
+  "hud.boss": "Naiwa boss {hp}/{maxHp}",
+  "save.unavailable": "Storage unavailable: you can play, but progress cannot be saved"
 }

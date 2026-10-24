@@ -86,6 +86,7 @@ export class GameScene extends M1Scene {
     }
     this.demo.update();
     this.persistence?.update();
+    if (this.hud) this.hud.saveAvailable = this.persistence?.saved ?? true;
     this.objects?.update();
     this.hud?.update(delta);
     this.tools?.update(delta);

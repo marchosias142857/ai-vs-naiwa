@@ -83,10 +83,12 @@ export class InputScene extends Scene {
       );
     const g = this.graphics;
     g.clear();
-    const paused = c.battle.scene.isPaused();
+    const paused = c.battle.scene.isPaused(),
+      locked = c.battle.physics.world.isPaused;
+    this.pauseLabel.setVisible(!locked);
     this.pausePanel?.update(paused);
     this.resumeLabel.setVisible(paused && !this.pausePanel);
-    this.actions?.setVisible(!paused);
+    this.actions?.setVisible(!paused && !locked);
     if (s !== this.layoutScale) {
       this.layoutScale = s;
       this.resumeLabel.setFontSize(UI.resume.fontSize / s);
@@ -98,8 +100,9 @@ export class InputScene extends Scene {
       g.fillStyle(UI.look.pauseColor, UI.look.pauseAlpha).fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
       this.circle(GAME_WIDTH / 2, GAME_HEIGHT / 2, UI.resume.radius / s, false, 1);
     }
-    this.circle(GAME_WIDTH - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
-    if (c.touchVisible && !paused) {
+    if (!locked)
+      this.circle(GAME_WIDTH - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
+    if (c.touchVisible && !paused && !locked) {
       const t = c.touch;
       this.circle(
         t.x / s,
@@ -123,7 +126,7 @@ export class InputScene extends Scene {
         1,
       );
     }
-    const mouse = c.frame.source === 'keyboard' && c.frame.aim !== null && !paused;
+    const mouse = c.frame.source === 'keyboard' && c.frame.aim !== null && !paused && !locked;
     this.game.canvas.style.cursor = mouse ? 'none' : '';
     if (mouse) {
       const x = Math.floor(c.mouse.x / s) + 0.5,
