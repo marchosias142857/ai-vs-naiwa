@@ -98,10 +98,10 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
     expect(v.weapon.depth < v.depth).toBe(dy === -1);
     const f = HERO_FRAMES[v.frame as keyof typeof HERO_FRAMES],
       sign = v.weapon.flipY ? 1 : -1;
-    const left = v.face.x * RENDER_SCALE;
+    const alignedX = (v.face.x + (v.flipX ? v.face.width : 0)) * RENDER_SCALE;
     const top = v.face.y * RENDER_SCALE;
     expect(v.face.visible).toBe(true);
-    expect(left).toBeCloseTo(Math.round(left));
+    expect(alignedX).toBeCloseTo(Math.round(alignedX));
     expect(top).toBeCloseTo(Math.round(top));
     expect(v.weapon.x - v.x).toBeCloseTo((f.grip.x - f.pivot.x) * HERO_ART.scale * sign);
     expect(v.weapon.y - v.y).toBeCloseTo((f.grip.y - f.pivot.y) * HERO_ART.scale);
