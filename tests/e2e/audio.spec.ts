@@ -17,10 +17,10 @@ test('真实 AudioContext：手柄暂停仅静音，后台和退出才 suspend�
       private readonly record: AudioStats;
       constructor(options?: AudioContextOptions) {
         super(options);
-        const context = this;
+        const readState = () => this.state;
         this.record = {
           get state() {
-            return context.state;
+            return readState();
           },
           voices: 0,
           ramps: 0,
