@@ -79,7 +79,8 @@ test('demo：有存档按 Enter 继续且保留检查点，死亡结算与重来
   await page.screenshot({ path: info.outputPath('demo-menu.png'), scale: 'css' });
   await page.keyboard.press('Enter');
   await page.waitForFunction(() => window.__AVN__?.demo?.floor === 2);
-  const retained = await page.evaluate(() => JSON.parse(localStorage.getItem('avn.floor.v1')!));
+  const retained = await page.evaluate(() => JSON.parse(localStorage.getItem('avn.run.v2')!).entry);
+  expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBeNull();
   expect(retained).toMatchObject({ floor: 2, seed: 42, secondary: 'shotgun_fan', kills: 12, coins: 10 });
   expect(await page.evaluate(() => window.__AVN__!.demo!.weapon)).toBe('shotgun_fan');
   expect(await page.evaluate(() => window.__AVN__!.demo!.hp)).toBe(1);
@@ -153,7 +154,7 @@ test('demo：语言与反馈设置持久保存，英文游戏与暂停菜单可�
   await page.locator('#start-run').click();
   await expect(page.locator('.demo-status')).toContainText('HP 6/6');
   await page.keyboard.press('Escape');
-  await expect(page.locator('#pause-menu')).toHaveText('Menu (keep floor checkpoint)');
+  await expect(page.locator('#pause-menu')).toHaveText('Menu (save adventure)');
   await page.screenshot({ path: info.outputPath('demo-english.png'), scale: 'css' });
 });
 
@@ -254,16 +255,17 @@ test('demo：存储被禁用仍可开局，明确显示未保存状态', async (
 
 test('demo：新局须确认，取消和重复 Enter 不覆盖检查点', async ({ page }, info) => {
   await page.goto('/?scene=Game&seed=42');
-  await page.waitForFunction(() => !!localStorage.getItem('avn.floor.v1'));
-  const saved = await page.evaluate(() => localStorage.getItem('avn.floor.v1'));
+  await page.waitForFunction(() => !!localStorage.getItem('avn.run.v2'));
   await page.goto('/?seed=42');
+  // 离开战斗页的 pagehide 会先写最新局面；比较菜单操作前后的这份存档。
+  const saved = await page.evaluate(() => localStorage.getItem('avn.run.v2'));
   await expect(page.locator('#confirm-new-run')).toBeHidden();
   await page.locator('#start-run').click();
   await expect(page.locator('#start-run')).toBeHidden();
   await expect(page.locator('#continue-run')).toBeHidden();
   await expect(page.locator('#confirm-new-run')).toBeVisible();
   await page.screenshot({ path: info.outputPath('demo-confirm.png'), scale: 'css' });
-  expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBe(saved);
+  expect(await page.evaluate(() => localStorage.getItem('avn.run.v2'))).toBe(saved);
   await page.locator('#cancel-new-run').click();
   await expect(page.locator('#start-run')).toBeVisible();
   await page.locator('#start-run').focus();
@@ -271,7 +273,7 @@ test('demo：新局须确认，取消和重复 Enter 不覆盖检查点', async 
   await expect(page.locator('#cancel-new-run')).toBeFocused();
   await page.keyboard.down('Enter');
   await page.keyboard.up('Enter');
-  expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBe(saved);
+  expect(await page.evaluate(() => localStorage.getItem('avn.run.v2'))).toBe(saved);
   await page.locator('#confirm-new-run').click();
   await page.waitForFunction(() => window.__AVN__?.demo?.floor === 1);
   await expect(page.locator('.demo-status')).toContainText('空槽');

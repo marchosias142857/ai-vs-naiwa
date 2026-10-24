@@ -3,7 +3,7 @@ import { t } from '../../i18n/t';
 import type { Scene } from 'phaser';
 import { MenuNavigation } from './MenuNavigation';
 import { SAVE_REQUEST } from '../world/combatPause';
-/** 临时暂停菜单：入口检查点已存盘；退出不丢失本层之前的进度。 */
+/** 临时暂停菜单；退出时先请求同步保存，再切换场景。 */
 export class PausePanel {
   private readonly root = document.createElement('div');
   private readonly abort = new AbortController();

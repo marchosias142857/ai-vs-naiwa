@@ -21,8 +21,10 @@ import type { InputScene } from '../ui/InputScene';
 import { CombatBridge } from '../world/CombatBridge';
 import { RoomArena } from '../world/RoomArena';
 import { GRAYBOX_BOUNDS as B } from '../world/graybox';
-import { bindCombatPause } from '../world/combatPause';
+import { bindCombatPause, SAVE_REQUEST } from '../world/combatPause';
 import type { PauseState } from '../world/PauseState';
+import { saveSim, loadSim, type RunRewards } from '../../sim/run/snapshot';
+import type { SessionSnapshot } from '../save/RunSnapshot';
 
 /** demo 的接线层；规则状态留在 sim，输入渲染帧采样、所有计时物理步推进。 */
 export class DemoSession {
@@ -33,12 +35,11 @@ export class DemoSession {
   readonly arena: RoomArena;
   readonly fx: CombatFeedback;
   readonly pause: PauseState;
-  readonly offers: UpgradeId[] = [];
-  private readonly upgrades: UpgradeId[] = [];
+  readonly rewards: RunRewards;
+  private entry!: FloorCheckpoint;
   settled = false;
   private readonly director: RoomDirector;
   private readonly root: Random;
-  private rewardRng: Random;
   private interact = false;
   private endTime = 0;
   private layout = 0;
@@ -52,9 +53,14 @@ export class DemoSession {
     god = false,
     weapon?: string | null,
     checkpoint?: FloorCheckpoint,
+    restored?: SessionSnapshot,
   ) {
     this.root = new Random(seed);
-    this.rewardRng = this.root.fork(`upgrades:${checkpoint?.floor ?? 1}`);
+    this.rewards = {
+      rng: this.root.fork(`upgrades:${restored?.sim.run.floor ?? checkpoint?.floor ?? 1}`),
+      upgrades: [],
+      offers: [],
+    };
     this.sim = createCombatWorld({
       seed,
       bus,
@@ -65,22 +71,24 @@ export class DemoSession {
       navigation: (x, y, tx, ty, radius, out) => this.arena?.steer(x, y, tx, ty, radius, out) ?? false,
       lineOfSight: (x1, y1, x2, y2) => this.arena?.lineOfSight(x1, y1, x2, y2) ?? true,
     });
-    this.sim.spawnPlayer('ai_proto', B.x + B.width / 2, B.y + B.height / 2);
-    if (checkpoint) {
+    if (!restored) this.sim.spawnPlayer('ai_proto', B.x + B.width / 2, B.y + B.height / 2);
+    if (checkpoint && !restored) {
       for (const id of checkpoint.upgrades) {
         this.sim.upgrade(id);
-        this.upgrades.push(id);
+        this.rewards.upgrades.push(id);
       }
       if (checkpoint.secondary) this.sim.takeWeapon(checkpoint.secondary);
       this.sim.equipWeapon(checkpoint.equipped);
       this.sim.restorePlayer(checkpoint);
     }
-    if (weapon && Object.hasOwn(WEAPONS, weapon)) this.sim.takeWeapon(weapon as WeaponId);
+    if (!restored && weapon && Object.hasOwn(WEAPONS, weapon)) this.sim.takeWeapon(weapon as WeaponId);
     this.bridge = new CombatBridge(scene, this.sim);
     this.arena = new RoomArena(scene, this.bridge);
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, bus);
-    this.dungeon = new DungeonRun(seed, bus, checkpoint?.floor);
-    if (checkpoint) {
+    this.dungeon = restored
+      ? DungeonRun.restore(seed, bus, restored.sim.run)
+      : new DungeonRun(seed, bus, checkpoint?.floor);
+    if (checkpoint && !restored) {
       this.dungeon.kills = checkpoint.kills;
       this.dungeon.roomsCleared = checkpoint.roomsCleared;
       this.dungeon.elapsed = checkpoint.elapsed;
@@ -94,9 +102,23 @@ export class DemoSession {
       this.arena.isFree,
       POOL_SIZES.actors,
     );
-    this.showRoom();
+    if (restored) {
+      loadSim(this.parts(), restored.sim);
+      this.rebuildRoom();
+      this.bridge.load(restored.game.physics, restored.sim.world);
+      this.fx.loadDeaths(restored.game.deaths);
+      this.endTime = restored.game.endTime;
+      this.entry = { ...restored.entry, upgrades: [...restored.entry.upgrades] };
+      this.settled = this.dungeon.finished && this.endTime >= BALANCE.deathRestartDelay;
+    } else {
+      this.showRoom();
+      this.entry = this.checkpoint();
+    }
     this.publishPosition();
     this.pause = bindCombatPause(scene, this.clearInput);
+    if (this.offers.length) this.pause.set('upgrade', true);
+    if (this.settled) this.pause.set('finished', true);
+    if (restored && this.dungeon.locked) this.pause.set('restore', true);
     bus.on('entity:died', this.onDied);
     bus.on('room:cleared', this.onCleared);
     scene.events.on(Scenes.Events.PRE_UPDATE, this.feedInput);
@@ -105,6 +127,26 @@ export class DemoSession {
   }
   get player() {
     return this.sim.playerId === null ? undefined : this.sim.getActor(this.sim.playerId);
+  }
+  get offers(): UpgradeId[] {
+    return this.rewards.offers;
+  }
+  private parts() {
+    return {
+      world: this.sim,
+      run: this.dungeon,
+      director: this.director,
+      loot: this.loot,
+      rewards: this.rewards,
+    };
+  }
+  /** 只在完整更新边界使用；entry 是进入本层时取下的独立副本。 */
+  save(): SessionSnapshot {
+    return {
+      entry: { ...this.entry, upgrades: [...this.entry.upgrades] },
+      sim: saveSim(this.parts()),
+      game: { physics: this.bridge.save(), deaths: this.fx.saveDeaths(), endTime: this.endTime },
+    };
   }
   get kills() {
     return this.dungeon.kills;
@@ -138,6 +180,8 @@ export class DemoSession {
     this.interact = false;
     if (this.offers.length) return;
     this.director.step(dt);
+    // 导演在 bridge 之后刷怪；完整步结束前也为新预警实体绑定槽位，保持存档的一一对应。
+    this.bridge.actors.apply();
     const p = this.player;
     if (!p) return;
     if (this.dungeon.finished) {
@@ -173,7 +217,7 @@ export class DemoSession {
     ) {
       // 升级只在换层时分配候选列表；选择期间暂停物理，不消费战斗时间。
       const candidates = Object.keys(UPGRADES) as UpgradeId[];
-      this.rewardRng.shuffle(candidates);
+      this.rewards.rng.shuffle(candidates);
       for (let i = 0; i < LOOT_RULES.upgradeChoices; i++) this.offers.push(candidates[i]!);
       this.pause.set('upgrade', true);
     }
@@ -195,14 +239,16 @@ export class DemoSession {
     )
       return false;
     this.offers.length = 0;
-    this.upgrades.push(id);
+    this.rewards.upgrades.push(id);
     this.dungeon.nextFloor();
-    this.rewardRng = this.root.fork(`upgrades:${this.dungeon.floor}`);
+    this.rewards.rng = this.root.fork(`upgrades:${this.dungeon.floor}`);
     this.loot.resetFloor(this.root.fork(`loot:${this.dungeon.floor}`));
     this.showRoom();
     this.arena.teleport();
     this.publishPosition();
+    this.entry = this.checkpoint();
     this.pause.set('upgrade', false);
+    this.scene.game.events.emit(SAVE_REQUEST);
     return true;
   }
   /** 仅在楼层入口调用；数据由调用方序列化，绝不保存 sim 复用视图。 */
@@ -213,7 +259,7 @@ export class DemoSession {
       version: 1,
       seed: this.seed,
       floor: d.floor,
-      upgrades: [...this.upgrades],
+      upgrades: [...this.rewards.upgrades],
       secondary: this.sim.secondaryWeapon,
       equipped: this.sim.weaponId,
       hp: this.player!.hp,
@@ -227,17 +273,21 @@ export class DemoSession {
   }
   private showRoom(): void {
     this.loot.enterRoom(this.dungeon.roomId);
-    this.layout = this.root
-      .fork(`layout:${this.dungeon.floor}:${this.dungeon.roomId}`)
-      .int(0, ROOM_LAYOUTS.length - 1);
-    this.arena.show(this.dungeon, this.layout);
-    this.drawnRevision = this.dungeon.revision;
+    this.rebuildRoom();
     if (
       this.dungeon.room.kind === 'chest' &&
       !this.dungeon.claimed[this.dungeon.roomId] &&
       this.loot.chest(B.x + B.width / 2, B.y + B.height / 2)
     )
       this.dungeon.claim();
+  }
+  /** 恢复只重建几何与绘制，不 enterRoom / teleport / claim。 */
+  private rebuildRoom(): void {
+    this.layout = this.root
+      .fork(`layout:${this.dungeon.floor}:${this.dungeon.roomId}`)
+      .int(0, ROOM_LAYOUTS.length - 1);
+    this.arena.show(this.dungeon, this.layout);
+    this.drawnRevision = this.dungeon.revision;
   }
   /** 本帧物理后发布位置，保持 #28 的鼠标瞄准顺序。 */
   update(): void {

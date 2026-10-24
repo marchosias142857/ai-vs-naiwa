@@ -6,7 +6,6 @@ import type { GameEvents } from '../../sim/core/events';
 /** 仅订阅事实事件，不参与伤害结算；监听随场景清理。 */
 export class CombatAudio {
   constructor(scene: Scene, bus: EventBus<GameEvents>) {
-    continueSound();
     // 场景与物理暂停可能叠加：只有两者都恢复后才允许新包络。
     const syncPause = () => {
       if (scene.sys.isPaused() || scene.physics.world.isPaused) pauseSound();
@@ -21,6 +20,8 @@ export class CombatAudio {
     scene.events.on('resume', syncPause);
     scene.physics.world.on('pause', syncPause);
     scene.physics.world.on('resume', syncPause);
+    // 完整恢复在安装音频监听前就可能进入倒计时 / 升级暂停。
+    syncPause();
     scene.events.once('shutdown', () => {
       bus.off('weapon:fired', this.fire);
       bus.off('bullet:hit', this.hit);
