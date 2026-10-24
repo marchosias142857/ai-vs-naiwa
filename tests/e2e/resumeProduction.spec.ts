@@ -31,20 +31,44 @@ test('生产入口：战斗暂停保存后刷新，正式校验器继续原局�
   expect(before.sim.world.bullets.length).toBeGreaterThan(0);
   await page.reload();
   await expect(page.locator('#save-notice')).toBeHidden();
-  await page.locator('#continue-run').click();
-  await page.waitForFunction(() => (window.__AVN__?.demo?.resumeRemaining ?? 0) > 0);
   const caption = page.locator('#resume-caption');
-  await expect(caption).toHaveCount(1);
-  await expect(caption).toBeVisible();
-  await expect(caption).toHaveText('准备继续战斗');
-  const restored = await page.evaluate(() => JSON.parse(localStorage.getItem('avn.run.v2')!) as RunSnapshot);
-  expect(restored.sim).toEqual(before.sim);
-  expect(restored.game).toEqual(before.game);
-  expect(await page.evaluate(() => window.__AVN__!.demo!.physicsPaused)).toBe(true);
-  await page.waitForTimeout(600);
-  expect(await page.evaluate(() => window.__AVN__!.demo!.time)).toBe(before.sim.world.time);
-  await page.screenshot({ path: info.outputPath('production-countdown.png'), scale: 'css' });
-  await page.waitForFunction(() => window.__AVN__!.demo!.resumeRemaining === 0);
+  // 先在页面内逐帧观察；慢 CI 的多次协议往返可能跨过真实倒计时截止点。
+  const [countdown] = await Promise.all([
+    page.evaluate(
+      () =>
+        new Promise<Array<{ time: number; physicsPaused: boolean }>>((resolve) => {
+          const frames: Array<{ time: number; physicsPaused: boolean }> = [];
+          const sample = () => {
+            const demo = window.__AVN__?.demo;
+            if (demo && demo.resumeRemaining > 0) {
+              frames.push({ time: demo.time, physicsPaused: demo.physicsPaused });
+            } else if (frames.length > 0) {
+              resolve(frames);
+              return;
+            }
+            requestAnimationFrame(sample);
+          };
+          requestAnimationFrame(sample);
+        }),
+    ),
+    (async () => {
+      await page.locator('#continue-run').click();
+      await expect(caption).toHaveCount(1);
+      await expect(caption).toBeVisible();
+      await expect(caption).toHaveText('准备继续战斗');
+      const restored = await page.evaluate(
+        () => JSON.parse(localStorage.getItem('avn.run.v2')!) as RunSnapshot,
+      );
+      expect(restored.sim).toEqual(before.sim);
+      expect(restored.game).toEqual(before.game);
+      await page.screenshot({ path: info.outputPath('production-countdown.png'), scale: 'css' });
+    })(),
+  ]);
+  expect(countdown.length).toBeGreaterThan(1);
+  for (const frame of countdown) {
+    expect(frame.time).toBe(before.sim.world.time);
+    expect(frame.physicsPaused).toBe(true);
+  }
   await expect(caption).toBeHidden();
   await page.waitForFunction((time) => window.__AVN__!.demo!.time > time, before.sim.world.time);
   expect(errors).toEqual([]);
