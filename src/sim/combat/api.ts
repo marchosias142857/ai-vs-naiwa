@@ -91,7 +91,7 @@ export interface CombatWorldOptions {
   seed: Seed;
   /** 事件发往的总线（ADR 0002 的战斗事件）。 */
   bus: EventBus<GameEvents>;
-  /** 视线判断，用于自动瞄准；不传时视为全部可见。 */
+  /** 视线判断，用于敌人开火；不传时视为全部可见。 */
   lineOfSight?: LineOfSight;
   /** 地图适配层可写入绕墙路点；返回 false 则沿原行为移动。out 为 sim 复用向量。 */
   navigation?: (x: number, y: number, targetX: number, targetY: number, radius: number, out: Vec2) => boolean;

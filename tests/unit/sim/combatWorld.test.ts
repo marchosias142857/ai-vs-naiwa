@@ -130,7 +130,7 @@ describe('CombatWorld：移动与开火', () => {
     expect(result.bulletSpawns[0]!.lifetime).toBeCloseTo(w.range / w.bulletSpeed, 9);
   });
 
-  it('朝向：手动瞄准 > 自动瞄准 > 最后的移动方向', () => {
+  it('朝向：正在瞄准 > 正在移动 > 保持上一次的朝向；没有自动瞄准（ADR 0020）', () => {
     const { world, input } = setup();
     const pid = world.spawnPlayer('ai_proto', 0, 0);
     input.move.y = 1;
@@ -139,16 +139,23 @@ describe('CombatWorld：移动与开火', () => {
     run(world, input, DT);
     expect(world.getActor(pid)!.facing).toBeCloseTo(Math.PI / 2, 6);
 
-    const eid = world.spawnEnemy('naiwa_chaser', -100, 0);
+    // 敌人在左边，但玩家不会自动转向它。
+    world.spawnEnemy('naiwa_chaser', -100, 0);
     run(world, input, BALANCE.spawnTelegraph + 0.05);
-    // 从身体中心（脚底上移一个半径）指向目标脚底，弹道才穿过目标的碰撞圆心。
-    const p = world.getActor(pid)!,
-      e = world.getActor(eid)!;
-    expect(p.facing).toBeCloseTo(Math.atan2(e.y - (p.y - p.radius), e.x - p.x), 9);
+    expect(world.getActor(pid)!.facing).toBeCloseTo(Math.PI / 2, 6);
 
     input.aim = { x: 0, y: -1 };
     run(world, input, DT);
     expect(world.getActor(pid)!.facing).toBeCloseTo(-Math.PI / 2, 6);
+
+    // 松开瞄准、站着不动：保持瞄准时的朝向，而不是回到上次的移动方向。
+    input.aim = null;
+    run(world, input, DT);
+    expect(world.getActor(pid)!.facing).toBeCloseTo(-Math.PI / 2, 6);
+
+    input.move.x = -1;
+    run(world, input, DT);
+    expect(Math.abs(world.getActor(pid)!.facing)).toBeCloseTo(Math.PI, 6);
   });
 
   it('子弹数达到 maxBullets 后不再生成，回收后恢复', () => {

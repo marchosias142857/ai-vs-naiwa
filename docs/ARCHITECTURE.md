@@ -18,7 +18,7 @@
 | `GameScene` / `DemoSession`      | 组装本局 sim、地图、输入、池、反馈、HUD；升级与胜负状态接线       |
 | `DungeonRun` / `generateDungeon` | 确定性拓扑、有限波次、房间锁门、清房、层间推进、胜负              |
 | `RoomDirector`                   | bridge 之后消费刷怪命令，按楼层派生随机流；实体池满时待有空位再刷 |
-| `CombatWorld`                    | 角色状态、AI、弹道、伤害、资源、技能、自动瞄准                    |
+| `CombatWorld`                    | 角色状态、AI、弹道、伤害、资源、技能、玩家朝向                    |
 | `CombatBridge` / `RoomArena`     | 输入边沿锁存、物理同步、碰撞反馈、墙体复用、门口切房、地图查询    |
 | `NavigationGrid`                 | 固定四邻网格，每个半径缓存 blocked 与流场，目标格由坐标计算       |
 | `LootSystem` / `DemoObjects`     | 固定楼层槽位、自动物资拾取、显式原槽换枪；只展示当前房间的武器    |

@@ -134,6 +134,13 @@ class DemoHarness extends Scene {
       tick(1);
       const telegraphHidden = !session.bridge.actors.slots.find((s) => s.id === id)!.image.visible;
       tick(45);
+      // 玩家没有自动瞄准（ADR 0020）：从身体中心对准敌人的碰撞圆心。
+      const p = session.player!,
+        enemy = session.sim.getActor(id)!,
+        dx = enemy.x - p.x,
+        dy = enemy.y - (p.y - p.radius),
+        length = Math.hypot(dx, dy);
+      input.aim = { x: dx / length, y: dy / length };
       input.fire = true;
       tick(30);
       input.fire = false;

@@ -1,5 +1,6 @@
 import { INPUT_UI } from '../../src/game/fx/params';
-import { installPad, padButton } from './helpers/gamepad';
+import { CHARACTERS } from '../../src/data/characters';
+import { installPad, padButton, type PadWindow } from './helpers/gamepad';
 import { expect, test } from '@playwright/test';
 
 test('demo：默认地牢入口、行动按钮、真实走门、清房与暂停', async ({ page, isMobile }, info) => {
@@ -156,7 +157,7 @@ test('demo：语言与反馈设置持久保存，英文游戏与暂停菜单可�
   await page.screenshot({ path: info.outputPath('demo-english.png'), scale: 'css' });
 });
 
-test('demo：真实自动瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算', async ({ page }, info) => {
+test('demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算', async ({ page }, info) => {
   test.setTimeout(50_000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
@@ -191,6 +192,34 @@ test('demo：真实自动瞄准与 Arcade 命中击败 Boss，保持 RT 不跳�
   await page.keyboard.down(key);
   await page.waitForFunction(() => window.__AVN__!.demo!.kind === 'boss');
   await page.keyboard.up(key);
+  // 玩家没有自动瞄准（ADR 0020）：每帧把右摇杆推向最近的敌人，从身体中心对准碰撞圆心。
+  const radius = CHARACTERS.ai_proto.radius;
+  await page.evaluate((bodyRadius) => {
+    const aim = () => {
+      const demo = window.__AVN__?.demo,
+        pad = window as PadWindow;
+      if (!demo || demo.settled) {
+        pad.setPadAxes!([0, 0, 0, 0]);
+        return;
+      }
+      let dx = 0,
+        dy = 0,
+        best = Infinity;
+      for (const e of demo.enemies) {
+        const x = e.x - demo.x,
+          y = e.y - (demo.y - bodyRadius),
+          d = Math.hypot(x, y);
+        if (d < best) {
+          best = d;
+          dx = x / d;
+          dy = y / d;
+        }
+      }
+      pad.setPadAxes!([0, 0, dx, dy]);
+      requestAnimationFrame(aim);
+    };
+    requestAnimationFrame(aim);
+  }, radius);
   await padButton(page, 7, true);
   await page.waitForFunction(() => window.__AVN__!.demo!.alive > 0);
   await expect(page.locator('.demo-status')).toContainText('奶蛙首领');

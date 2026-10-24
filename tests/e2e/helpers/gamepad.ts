@@ -1,5 +1,8 @@
 import type { Page } from '@playwright/test';
-export type PadWindow = Window & { setPadButton?: (index: number, down: boolean) => void };
+export type PadWindow = Window & {
+  setPadButton?: (index: number, down: boolean) => void;
+  setPadAxes?: (axes: readonly number[]) => void;
+};
 export async function installPad(page: Page): Promise<void> {
   await page.addInitScript(() => {
     const pad = {
@@ -14,6 +17,10 @@ export async function installPad(page: Page): Promise<void> {
     Object.defineProperty(navigator, 'getGamepads', { value: () => [pad] });
     (window as PadWindow).setPadButton = (index, down) => {
       pad.buttons[index] = { pressed: down, touched: down, value: Number(down) };
+      pad.timestamp = performance.now();
+    };
+    (window as PadWindow).setPadAxes = (axes) => {
+      pad.axes = [...axes];
       pad.timestamp = performance.now();
     };
   });
