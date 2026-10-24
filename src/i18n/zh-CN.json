@@ -81,5 +81,17 @@
   "input.ready": "准备继续战斗",
   "hint.start.keyboard": "沿门口探索 · WASD 移动 · 鼠标瞄准并射击",
   "hint.start.touch": "沿门口探索 · 左摇杆移动 · 右轮盘拖动瞄准、按住攻击",
-  "hint.start.gamepad": "沿门口探索 · 左杆移动 · 右杆瞄准 · RT 攻击"
+  "hint.start.gamepad": "沿门口探索 · 左杆移动 · 右杆瞄准 · RT 攻击",
+  "hint.exit.keyboard": "走到房间中央，按 E 进入下一层",
+  "hint.exit.touch": "走到房间中央，点击「拾取」进入下一层",
+  "hint.exit.gamepad": "走到房间中央，按 A 进入下一层",
+  "hint.chest.keyboard": "靠近武器后按 E 拾取 · Q 切枪",
+  "hint.chest.touch": "靠近武器后点击「拾取」· 点击「切枪」切换",
+  "hint.chest.gamepad": "靠近武器后按 A 拾取 · Y 切枪",
+  "hint.fight.keyboard": "消灭全部敌人后开门 · Space 冲刺",
+  "hint.fight.touch": "消灭全部敌人后开门 · 点击「冲刺」躲避",
+  "hint.fight.gamepad": "消灭全部敌人后开门 · B 冲刺",
+  "hint.weapon.keyboard": "E 拾取：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
+  "hint.weapon.touch": "点击「拾取」：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
+  "hint.weapon.gamepad": "A 拾取：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}"
 }

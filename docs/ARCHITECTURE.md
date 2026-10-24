@@ -12,25 +12,27 @@
 
 ## 2. 一局的模块与生命周期
 
-| 模块                             | 职责                                                              |
-| -------------------------------- | ----------------------------------------------------------------- |
-| `MenuScene` / `MenuPanel`        | 新局、检查点继续、战绩与设置；有存档时全局 Enter 继续，新局需确认 |
-| `GameScene` / `DemoSession`      | 组装本局 sim、地图、输入、池、反馈、HUD；升级与胜负状态接线       |
-| `DungeonRun` / `generateDungeon` | 确定性拓扑、有限波次、房间锁门、清房、层间推进、胜负              |
-| `RoomDirector`                   | bridge 之后消费刷怪命令，按楼层派生随机流；实体池满时待有空位再刷 |
-| `CombatWorld`                    | 角色状态、AI、弹道、伤害、资源、技能、玩家朝向                    |
-| `CombatBridge` / `RoomArena`     | 输入边沿锁存、物理同步、碰撞反馈、墙体复用、门口切房、地图查询    |
-| `NavigationGrid`                 | 固定四邻网格，每个半径缓存 blocked 与流场，目标格由坐标计算       |
-| `LootSystem` / `DemoObjects`     | 固定楼层槽位、自动物资拾取、显式原槽换枪；只展示当前房间的武器    |
-| `CombatFeedback` / `CombatAudio` | 事实事件到预热反馈/音频；死亡表现结束才回收角色                   |
-| `DemoHud` / `InputScene`         | 功能 HUD、地图、选择/结算；渲染帧输入和触屏操作                   |
-| `RunPersistence`                 | 楼层入口检查点，胜负清档并记录一次战绩                            |
+| 模块                             | 职责                                                                     |
+| -------------------------------- | ------------------------------------------------------------------------ |
+| `MenuScene` / `MenuPanel`        | 新局、现场续玩/入口兜底、战绩与设置；有存档时全局 Enter 继续，新局需确认 |
+| `GameScene` / `DemoSession`      | 组装本局 sim、地图、输入、池、反馈、HUD；升级与胜负状态接线              |
+| `DungeonRun` / `generateDungeon` | 确定性拓扑、有限波次、房间锁门、清房、层间推进、胜负                     |
+| `RoomDirector`                   | bridge 之后消费刷怪命令，按楼层派生随机流；实体池满时待有空位再刷        |
+| `CombatWorld`                    | 角色状态、AI、弹道、近战扇形命中、伤害、资源、技能、玩家朝向             |
+| `CombatBridge` / `RoomArena`     | 输入边沿锁存、物理同步、碰撞反馈、墙体复用、门口切房、地图查询           |
+| `NavigationGrid`                 | 固定四邻网格，每个半径缓存 blocked 与流场，目标格由坐标计算              |
+| `LootSystem` / `DemoObjects`     | 固定楼层槽位、自动物资拾取、显式原槽换枪；只展示当前房间的武器           |
+| `CombatFeedback` / `CombatAudio` | 事实事件到预热反馈/音频；死亡表现结束才回收角色                          |
+| `DemoHud` / `InputScene`         | 功能 HUD、地图、选择/结算；渲染帧输入和触屏操作                          |
+| `RunPersistence`                 | 完整现场同步保存及入口兜底，胜负清档并记录一次战绩                       |
 
 关闭场景时清理 WORLD_STEP、PRE_UPDATE、EventBus 订阅、DOM/手柄菜单、碰撞器与各池。重来新建 CombatWorld；InputScene 实例可复用，但 create 重置布局缓存。原 M1 入口保留在 `?scene=Game&room=arena`。
 
 ## 3. 时间、输入与物理（ADR 0004）
 
 每个渲染帧只 sample 一次。InputScene 按其输入插件时序采样，战斗 PRE_UPDATE 取得缓存帧交给 bridge。物理后的 GameScene.update 发布玩家当前位置作为下一帧瞄准原点。
+
+角色坐标、Arcade 碰撞圆与瞄准原点均为身体中心（ADR 0023）。触屏轮盘每次按下先保持 `fire=false`，拖出死区立即定向首发，留在死区达到 `INPUT_UI.aimWheel.firstShotDelayMs`（初值 120 ms）才朝当前面向首发；鼠标与手柄不经过该等待。sim 仍按「瞄准 > 移动 > 保持」决定朝向。
 
 Arcade 完成本物理步移动与 overlap 后，WORLD_STEP 依注册顺序执行：
 
@@ -42,13 +44,16 @@ Arcade 完成本物理步移动与 overlap 后，WORLD_STEP 依注册顺序执�
 
 ## 4. 规则、弹道与事件
 
-武器和敌方攻击共享 `FirePattern(ctx, sink)`：往预热 BulletSpawn 输出池写入，不返回新数组；开火上下文、弹丸记录、事件 payload 复用。规则给期望速度，Arcade 决定位置。碰撞调用 hitActor/hitWall/contact，寿命结束调用 releaseBullet。
+弹幕武器和敌方攻击共享 `FirePattern(ctx, sink)`：往预热 BulletSpawn 输出池写入，不返回新数组；开火上下文、弹丸记录、事件 payload 复用。规则给期望速度，Arcade 决定位置。碰撞调用 hitActor/hitWall/contact，寿命结束调用 releaseBullet。
+
+近战在 sim 的 WORLD_STEP 内按数据中的范围、扇形、挥动时长、冷却与墙体视线判定，同次挥动每个目标只受击一次，不使用子弹池（ADR 0022）。sim 枪口使用角色固定标准持握点与武器偏移；逐帧持握点只驱动画面，左向镜像和朝上背后遮挡不参与战斗结果（ADR 0021、0023）。
 
 | 事件                                  | 发送方      | 订阅方                               |
 | ------------------------------------- | ----------- | ------------------------------------ |
 | `entity:spawned` / `entity:activated` | CombatWorld | 实体表现/预警                        |
 | `entity:damaged` / `entity:died`      | CombatWorld | 反馈、音效、掉落、DungeonRun 统计    |
 | `weapon:fired` / `bullet:hit`         | CombatWorld | 闪光、命中反馈、音效                 |
+| `weapon:swung` / `melee:hit`          | CombatWorld | 近战弧光、命中反馈、音效             |
 | `room:entered` / `room:cleared`       | DungeonRun  | 场景、清房奖励、音效                 |
 | `run:ended`                           | DungeonRun  | 结束通知；GameScene 读取状态显示结算 |
 
@@ -60,24 +65,27 @@ Arcade 完成本物理步移动与 overlap 后，WORLD_STEP 依注册顺序执�
 
 武器掉落记录房间编号，换房保留、换层清空；普通物资换房清空。普通掉落不能占用武器预留槽。拾取第二把武器时，旧第二把直接放回原地面槽并移到脚下，满池也无需新增槽；手枪不掉。
 
-所有随机走 Random。地图 `map:${floor}`、布局 `layout:${floor}:${room}`、升级 `upgrades:${floor}`、掉落 `loot:${floor}`、刷怪 `encounters:${floor}` 独立 fork；刷怪再拆种类/位置。后面三条流每层重置，同一楼层入口的继续与连续推进一致。战斗散布/暴击流仍是局级，不承诺逐帧回放。
+所有随机走 Random。地图 `map:${floor}`、布局 `layout:${floor}:${room}`、升级 `upgrades:${floor}`、掉落 `loot:${floor}`、刷怪 `encounters:${floor}` 独立 fork；刷怪再拆种类/位置。后面三条流每层重置。完整存档保存各随机流（包括局级散布/暴击），在相同物理步输入下与不中断运行做精确一致性对照；入口兜底不承诺还原退出时战况。
 
 ## 6. 存储与浏览器生命周期
 
-| 当前存储          | 内容/时机                                                                        |
-| ----------------- | -------------------------------------------------------------------------------- |
-| `avn.floor.v1`    | 楼层入口种子、升级、装备（第二槽可空）、资源与成绩；开局/换层保存，死亡/胜利清除 |
-| `avn.profile.v1`  | 胜负局数、最高楼层、击杀；只在胜负时计入，中途退出不计                           |
-| `avn.settings.v1` | 语言、音效、受击闪光；修改即写                                                   |
+| 当前存储          | 内容/时机                                                                                             |
+| ----------------- | ----------------------------------------------------------------------------------------------------- |
+| `avn.run.v2`      | sim、物理槽位/空闲栈、子弹、死亡计时、挥动与入口副本；开局/换层、暂停、退出、pagehide/hidden 同步保存 |
+| `avn.floor.v1`    | 只为读取旧版入口检查点保留；成功写入 v2 后移除，死亡/胜利同时清除                                     |
+| `avn.profile.v1`  | 胜负局数、最高楼层、击杀；只在胜负时计入，中途退出不计                                                |
+| `avn.settings.v1` | 语言、音效、受击闪光；修改即写                                                                        |
 
-当前使用带版本的 localStorage，失败/损坏不会阻止游玩。继续从楼层入口开始，不恢复退出时房内战况。存档 v2（完整局面、pagehide/后台保存）在 #33 合并后单独做，由 Claude 起草 ADR 和 sim 保存/恢复，GPT 接存储和菜单。
+当前使用带版本的 localStorage，失败/损坏不会阻止新局。完整恢复通过 sim 轻量解析及 game 逐字段校验；data 中共享字段规则与 zod 成对测试。版本/数据变化或现场损坏时独立校验入口副本，并显示不同提示；JSON 损坏不可继续。同步写入失败保留旧档，终局不能兜底复活。实现遵循已批准的 ADR 0019，新增近战状态遵循 ADR 0022。
 
-竖屏触屏设备或 visibilitychange 自动暂停；不把暂停误写为已经保存完整快照。音频仅在真实手势首次解锁，游戏内场景/物理暂停只归零声部增益并阻止新包络；后台或离开战斗场景才 suspend。后台恢复被浏览器拒绝时等下一次真实手势重试。PWA 使用 Workbox，更新由用户明确刷新，不自动打断战斗。
+手动、生命周期、升级、终局、恢复分别持有暂停原因；解除一种原因不会越过其他原因。战斗现场恢复先冻结 sim 和物理倒计时 3 秒，期间再次暂停或切后台后重新计时；非战斗现场直接恢复。暂停、保存、恢复时清理输入与 bridge 边沿，持续按住的手柄须先回中。pagehide/hidden 在事件回调内同步保存，不能仅凭暂停或写入尝试就报告保存成功。
+
+音频仅在真实手势首次解锁，游戏内场景/物理暂停只归零声部增益并阻止新包络；后台或离开战斗场景才 suspend。后台恢复被浏览器拒绝时等下一次真实手势重试。PWA 使用 Workbox，更新由用户明确刷新，不自动打断战斗。
 
 ## 7. 参数、预算与验收
 
-内部分辨率 480×270，16 px 瓦片，Scale.FIT，pixelArt。现有功能视觉是灰盒，正式布局/美术/动画仍由 Claude 出方案、负责人确认。
+内部分辨率 480×270，16 px 瓦片，Scale.FIT，pixelArt。角色、武器、敌人、环境和标题共五张 PNG，角色与武器视图预热复用；每帧持握点、握把/枪口、遮挡阈值与动画时长集中在带 schema 的 data。当前 demo 由 GPT 独立设计、实现和自审，负责人试玩合并；进入合作细化阶段后再约定双方流程。
 
 性能目标：中端安卓平均 ≥55 fps、最低 ≥45 fps；战斗 draw call ≤30、内存 ≤300 MB、包体 ≤8 MB（不含音乐）。这些是目标，不是浏览器模拟已经证明的结果；iOS/Android 真机、带柱子房间+混合怪记录到 #18。
 
-验证用 Vitest（数据、边界、随机、规则、导航、池）、Playwright（真实 Arcade、菜单/输入/存储/生命周期、离线和连续更新）及负责人真机试玩。具体记录见 [demo 验收](testing/demo-acceptance.md)。
+验证用 Vitest（数据、边界、随机、规则、导航、池）、Playwright（真实 Arcade、菜单/输入/存储/生命周期、离线和连续更新）及负责人真机试玩。当前记录见 [demo 交付验收](testing/demo-production-acceptance.md)，旧灰盒记录保留作历史基线。

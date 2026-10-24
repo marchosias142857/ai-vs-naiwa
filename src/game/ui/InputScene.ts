@@ -54,6 +54,10 @@ export class InputScene extends Scene {
         t('input.ready'),
         textStyle(RESUME_UI.captionSize),
       )
+      // 小字号中文先以更高纹理分辨率绘制，避免 480×270 画布放大后笔画粘连。
+      .setResolution(RESUME_UI.captionResolution)
+      .setPadding(RESUME_UI.captionPadding)
+      .setBackgroundColor(RESUME_UI.captionBackground)
       .setOrigin(0.5)
       .setDepth(DEPTH.touchControls)
       .setVisible(false);

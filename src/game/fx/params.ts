@@ -81,7 +81,10 @@ export const COMBAT_FX = {
 export const RESUME_UI = {
   fontSize: 24,
   radius: 28,
-  captionSize: 9,
+  captionSize: 11,
+  captionResolution: 2,
+  captionPadding: 3,
+  captionBackground: '#081b29',
   captionOffset: 40,
   fill: 0x081b29,
   ring: 0x91f3e7,

@@ -81,5 +81,17 @@
   "input.ready": "READY TO RESUME",
   "hint.start.keyboard": "Explore through a doorway · WASD to move · Mouse to aim and fire",
   "hint.start.touch": "Explore through a doorway · Left stick to move · Drag right wheel to aim and attack",
-  "hint.start.gamepad": "Explore through a doorway · Left stick to move · Right stick to aim · RT to attack"
+  "hint.start.gamepad": "Explore through a doorway · Left stick to move · Right stick to aim · RT to attack",
+  "hint.exit.keyboard": "Move to the center · E to descend",
+  "hint.exit.touch": "Move to the center · Tap Pick up to descend",
+  "hint.exit.gamepad": "Move to the center · A to descend",
+  "hint.chest.keyboard": "E near a weapon to equip · Q to swap",
+  "hint.chest.touch": "Tap Pick up near a weapon to equip · Tap Swap to switch",
+  "hint.chest.gamepad": "A near a weapon to equip · Y to swap",
+  "hint.fight.keyboard": "Defeat all enemies to open doors · Space to dash",
+  "hint.fight.touch": "Defeat all enemies to open doors · Tap Dash to dodge",
+  "hint.fight.gamepad": "Defeat all enemies to open doors · B to dash",
+  "hint.weapon.keyboard": "E to equip: {weapon} · Damage {damage} × {pellets} · Energy {cost}",
+  "hint.weapon.touch": "Tap Pick up: {weapon} · Damage {damage} × {pellets} · Energy {cost}",
+  "hint.weapon.gamepad": "A to equip: {weapon} · Damage {damage} × {pellets} · Energy {cost}"
 }
