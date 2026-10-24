@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { I18nKeySchema, PositiveNumber, TextureKeySchema } from './common';
+import { I18nKeySchema, IdSchema, PositiveNumber, TextureKeySchema } from './common';
 
 /** 怪物行为。M1 只实现 `chase`，其余在 M3 加入注册表（docs/GDD.md「奶蛙怪物」）。 */
 export const EnemyBehaviorSchema = z.enum([
@@ -24,6 +24,22 @@ export const EnemyDefSchema = z.strictObject({
   /** 碰撞半径，像素。 */
   radius: PositiveNumber,
   behavior: EnemyBehaviorSchema,
+  attack: IdSchema.optional(),
+  desiredRange: PositiveNumber.optional(),
+  dash: z
+    .strictObject({
+      windup: PositiveNumber,
+      duration: PositiveNumber,
+      recovery: PositiveNumber,
+      speed: PositiveNumber,
+    })
+    .optional(),
+  phases: z
+    .array(
+      z.strictObject({ belowHp: z.number().min(0).max(1), attack: IdSchema, speedScale: PositiveNumber }),
+    )
+    .readonly()
+    .optional(),
 });
 
 export type EnemyDef = z.infer<typeof EnemyDefSchema>;

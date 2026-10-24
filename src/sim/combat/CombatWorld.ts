@@ -1,9 +1,10 @@
+import { ATTACKS, type AttackId } from '../../data/attacks';
 import { BALANCE } from '../../data/balance';
 import { CHARACTERS, type CharacterId } from '../../data/characters';
 import { ENEMIES, type EnemyId } from '../../data/enemies';
-import type { WeaponDef } from '../../data/schema';
+import type { EnemyDef, WeaponDef } from '../../data/schema';
 import { WEAPONS, type WeaponId } from '../../data/weapons';
-import { chaseVelocity } from '../ai/chase';
+import { createBrain, moveEnemy, type EnemyBrain } from '../ai/brain';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
 import { Random } from '../core/Random';
@@ -56,6 +57,8 @@ interface Actor extends ActorView {
   moveSpeed: number;
   contactDamage: number;
   knock: Knockback;
+  brain: EnemyBrain;
+  warning: boolean;
 }
 
 /**
@@ -211,6 +214,12 @@ class CombatWorldImpl implements CombatWorld {
   private readonly spreadRng: Random;
   private readonly critRng: Random;
   private readonly autoAim: AutoAim;
+  private readonly lineOfSight: LineOfSight;
+  private readonly enemyGun = {
+    weapon: ATTACKS.spit_single as Readonly<WeaponDef>,
+    weaponId: 'spit_single',
+    pattern: getPattern('single'),
+  };
   private player: PlayerState | null = null;
   /** 玩家是否已在本局死亡。锁存：之后即使 `removeActor` 回收了玩家，也保持为 true。 */
   private playerDied = false;
@@ -228,6 +237,7 @@ class CombatWorldImpl implements CombatWorld {
     this.bus = options.bus;
     this.maxBullets = options.maxBullets ?? DEFAULT_MAX_BULLETS;
     this.godMode = options.godMode ?? false;
+    this.lineOfSight = options.lineOfSight ?? alwaysVisible;
     this.autoAim = new AutoAim(BALANCE.autoAimRetargetInterval, options.lineOfSight ?? alwaysVisible);
     this.result = { bulletSpawns: this.spawns, playerDead: false };
     this.fireCtx = { x: 0, y: 0, aim: 0, weapon: WEAPONS.pistol_basic, rng: this.spreadRng };
@@ -304,7 +314,7 @@ class CombatWorldImpl implements CombatWorld {
       this.time += dt;
       for (const actor of this.actors) this.tickActor(actor, dt);
       this.updatePlayer(input, dt);
-      this.updateEnemies();
+      this.updateEnemies(dt);
       for (const actor of this.actors) this.applyVelocity(actor);
     }
     this.result.playerDead = this.playerDied;
@@ -424,6 +434,8 @@ class CombatWorldImpl implements CombatWorld {
       base: { x: 0, y: 0 },
       moveSpeed,
       contactDamage: 0,
+      brain: createBrain(),
+      warning: false,
       knock: { dirX: 0, dirY: 0, total: 0, left: 0, timeLeft: 0, speed: 0, fresh: false },
     };
     this.actors.push(actor);
@@ -528,7 +540,7 @@ class CombatWorldImpl implements CombatWorld {
     }
   }
 
-  private fire(owner: Actor, p: PlayerState): void {
+  private fire(owner: Actor, p: Pick<PlayerState, 'weapon' | 'weaponId' | 'pattern'>): void {
     // 枪口：身体中心（脚底向上一个半径）沿朝向前移一个半径再加 2 像素。
     const reach = owner.radius + 2;
     const muzzleX = owner.x + Math.cos(owner.facing) * reach;
@@ -605,13 +617,37 @@ class CombatWorldImpl implements CombatWorld {
     this.bulletPool.push(bullet);
   }
 
-  private updateEnemies(): void {
+  private updateEnemies(dt: number): void {
     const player = this.playerId === null ? undefined : this.byId.get(this.playerId);
     const target = player && player.phase === 'active' ? player : null;
     for (const actor of this.actors) {
       if (actor.team !== 'enemy' || actor.phase !== 'active') continue;
-      chaseVelocity(actor.base, actor, target, this.actors, actor.moveSpeed, BALANCE.enemySeparation);
+      const def: Readonly<EnemyDef> = ENEMIES[actor.kind as EnemyId];
+      let attack = def.attack,
+        speedScale = 1;
+      if (def.phases)
+        for (const phase of def.phases)
+          if (actor.hp / actor.maxHp <= phase.belowHp) {
+            attack = phase.attack;
+            speedScale = phase.speedScale;
+          }
+      moveEnemy(actor.base, actor, target, this.actors, def, actor.brain, dt, speedScale);
+      actor.warning = actor.brain.stage === 'windup';
       if (actor.base.x !== 0 || actor.base.y !== 0) actor.facing = Math.atan2(actor.base.y, actor.base.x);
+      if (!target || !attack || actor.brain.cooldown > 0) continue;
+      const weapon = ATTACKS[attack as AttackId];
+      if (
+        !weapon ||
+        Math.hypot(target.x - actor.x, target.y - actor.y) > weapon.range ||
+        !this.lineOfSight(actor.x, actor.y, target.x, target.y)
+      )
+        continue;
+      actor.facing = Math.atan2(target.y - actor.y, target.x - actor.x);
+      this.enemyGun.weapon = weapon;
+      this.enemyGun.weaponId = attack;
+      this.enemyGun.pattern = getPattern(weapon.pattern);
+      this.fire(actor, this.enemyGun);
+      actor.brain.cooldown = 1 / weapon.fireRate;
     }
   }
 
