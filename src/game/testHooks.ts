@@ -20,6 +20,10 @@ export interface DemoProbe {
   meleeActive: boolean;
   visual: {
     frame: string | number;
+    texture: string;
+    source: string;
+    sourceWidth: number;
+    sourceHeight: number;
     x: number;
     y: number;
     flipX: boolean;

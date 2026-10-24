@@ -1,6 +1,6 @@
 import { TintModes } from 'phaser';
 import type { GameObjects, Scene } from 'phaser';
-import { DEPTH, DEPTH_Y_SORT } from '../../config';
+import { DEPTH, DEPTH_Y_SORT, RENDER_SCALE } from '../../config';
 import { ENEMY_ART, WEAPON_ART } from '../../data/art';
 import { DEFAULT_CHARACTER_ART, characterArtFor, characterTexture } from '../../data/characterArt';
 import { PRESENTATION as P } from '../../data/presentation';
@@ -94,7 +94,8 @@ export class ActorArt {
         .setAngle(0)
         .setDepth(depth)
         .setAlpha(a.invulnerable ? P.invulnerableAlpha : 1);
-      if (slot.flash && settings.flashes) image.setTint(0xffffff).setTintMode(TintModes.FILL);
+      if (a.team === 'enemy' && slot.flash && settings.flashes)
+        image.setTint(0xffffff).setTintMode(TintModes.FILL);
       else image.clearTint().setTintMode(TintModes.MULTIPLY);
       slot.shadow
         .setPosition(a.x, a.y + a.radius)
@@ -130,6 +131,13 @@ export class ActorArt {
         .setTexture(texture, name)
         .setOrigin(left ? 1 - f.pivot.x / f.rect[2] : f.pivot.x / f.rect[2], f.pivot.y / f.rect[3])
         .setScale(scale);
+      // 只对齐角色图像左上角到渲染像素；不量化物理坐标或旋转武器。
+      const originX = (left ? f.rect[2] - f.pivot.x : f.pivot.x) * scale;
+      const originY = f.pivot.y * scale;
+      image.setPosition(
+        Math.round((a.x - originX) * RENDER_SCALE) / RENDER_SCALE + originX,
+        Math.round((a.y - originY) * RENDER_SCALE) / RENDER_SCALE + originY,
+      );
       if (a.phase !== 'active') continue;
       const id = this.sim.weaponId,
         art = WEAPON_ART[id],
@@ -149,7 +157,10 @@ export class ActorArt {
       this.weapon
         .setTexture(ART.weapons, id)
         .setVisible(true)
-        .setPosition(a.x + (f.grip.x - f.pivot.x) * scale * mirror, a.y + (f.grip.y - f.pivot.y) * scale)
+        .setPosition(
+          image.x + (f.grip.x - f.pivot.x) * scale * mirror,
+          image.y + (f.grip.y - f.pivot.y) * scale,
+        )
         .setOrigin(art.grip.x / art.rect[2], left ? 1 - art.grip.y / art.rect[3] : art.grip.y / art.rect[3])
         .setFlipY(left)
         .setScale(art.scale)
@@ -162,8 +173,13 @@ export class ActorArt {
     const index = this.actors.slots.findIndex((s) => s.id === this.sim.playerId),
       hero = this.slots[index]?.image;
     if (!hero) return null;
+    const source = hero.texture.getSourceImage();
     return {
       frame: hero.frame.name,
+      texture: hero.texture.key,
+      source: source instanceof HTMLImageElement ? source.src : '',
+      sourceWidth: source.width,
+      sourceHeight: source.height,
       x: hero.x,
       y: hero.y,
       flipX: hero.flipX,

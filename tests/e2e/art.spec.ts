@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { RENDER_SCALE } from '../../src/config';
 import { HERO_ART, HERO_FRAMES } from '../../src/data/art';
 
 test('待机与行走完整循环；停步重新待机、暂停冻结动作', async ({ page }) => {
@@ -9,11 +10,18 @@ test('待机与行走完整循环；停步重新待机、暂停冻结动作', as
       ({ action, count }) =>
         new Promise<string[]>((resolve) => {
           const frames = new Set<string>();
-          const deadline = performance.now() + 5000;
+          // CI 的渲染速度可能低于实时；按动画实际推进量收集完整循环。
+          const start = window.__AVN__!.demo!.time;
+          const deadline = performance.now() + 15_000;
           const sample = () => {
             const frame = String(window.__AVN__?.demo?.visual?.frame);
             if (frame.startsWith(action)) frames.add(frame);
-            if (frames.size === count || performance.now() > deadline) resolve([...frames].sort());
+            if (
+              frames.size === count ||
+              window.__AVN__!.demo!.time - start > 2.5 ||
+              performance.now() > deadline
+            )
+              resolve([...frames].sort());
             else requestAnimationFrame(sample);
           };
           sample();
@@ -61,11 +69,17 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
       { dx: dx!, dy: dy! },
     );
     const v = (await page.evaluate(() => window.__AVN__!.demo!.visual))!;
+    expect(v.texture).toBe(HERO_ART.texture);
+    expect(v.source).toContain(HERO_ART.source);
     expect(v.flipX).toBe(dx! < 0);
     expect(v.weapon.flipY).toBe(v.flipX);
     expect(v.weapon.depth < v.depth).toBe(dy === -1);
     const f = HERO_FRAMES[v.frame as keyof typeof HERO_FRAMES],
       sign = v.flipX ? -1 : 1;
+    const left = (v.x - (v.flipX ? f.rect[2] - f.pivot.x : f.pivot.x) * HERO_ART.scale) * RENDER_SCALE;
+    const top = (v.y - f.pivot.y * HERO_ART.scale) * RENDER_SCALE;
+    expect(left).toBeCloseTo(Math.round(left));
+    expect(top).toBeCloseTo(Math.round(top));
     expect(v.weapon.x - v.x).toBeCloseTo((f.grip.x - f.pivot.x) * HERO_ART.scale * sign);
     expect(v.weapon.y - v.y).toBeCloseTo((f.grip.y - f.pivot.y) * HERO_ART.scale);
     await page.screenshot({ path: info.outputPath(`art-direction-${dx}-${dy}.png`) });
@@ -141,4 +155,68 @@ test('标题与 HUD 完整画面；触屏提示使用轮盘说明', async ({ pag
     await expect(page.locator('.demo-hint')).not.toContainText('鼠标');
   }
   await page.screenshot({ path: info.outputPath('demo-room.png') });
+});
+
+test('参考图角色：受击使用新图集，死亡完整落地且隐藏武器', async ({ page }, info) => {
+  test.setTimeout(90_000);
+  await page.goto('/?seed=42');
+  await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
+  await page.evaluate(() => {
+    localStorage.setItem('avn.settings.v1', JSON.stringify({ flashes: false, sound: false }));
+    localStorage.setItem(
+      'avn.floor.v1',
+      JSON.stringify({
+        version: 1,
+        seed: 42,
+        floor: 2,
+        upgrades: [],
+        secondary: null,
+        equipped: 'pistol_basic',
+        hp: 2,
+        armor: 0,
+        energy: 50,
+        coins: 0,
+        kills: 0,
+        roomsCleared: 0,
+        elapsed: 0,
+      }),
+    );
+  });
+  await page.reload();
+  await page.locator('#continue-run').click();
+  await page.waitForFunction(() => !!window.__AVN__?.demo?.visual);
+  const initial = (await page.evaluate(() => window.__AVN__!.demo!.visual))!;
+  expect(initial.texture).toBe(HERO_ART.texture);
+  expect(initial.source).toContain(HERO_ART.source);
+  expect([initial.sourceWidth, initial.sourceHeight]).toEqual([1536, 1024]);
+  // 在页面内捕捉短受击窗口并立即暂停，避免协议往返错过动作。
+  await page.evaluate(() => {
+    const watch = () => {
+      const frame = String(window.__AVN__?.demo?.visual?.frame);
+      if (frame.startsWith('hurt_')) {
+        window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true }));
+        window.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape', code: 'Escape', bubbles: true }));
+      } else if (!window.__AVN__?.demo?.settled) requestAnimationFrame(watch);
+    };
+    requestAnimationFrame(watch);
+  });
+  const door = await page.evaluate(() => window.__AVN__!.demo!.links[0]!);
+  const key = door.dx > 0 ? 'd' : door.dx < 0 ? 'a' : door.dy > 0 ? 's' : 'w';
+  await page.keyboard.down(key);
+  await page.waitForFunction(() => window.__AVN__!.demo!.room !== 0);
+  await page.keyboard.up(key);
+  await expect(page.locator('#demo-pause')).toBeVisible({ timeout: 40_000 });
+  const hurt = (await page.evaluate(() => window.__AVN__!.demo!.visual))!;
+  expect(HERO_ART.hurt).toContain(hurt.frame);
+  expect(hurt.texture).toBe(HERO_ART.reactionTexture);
+  expect(hurt.source).toContain(HERO_ART.reactionSource);
+  expect([hurt.sourceWidth, hurt.sourceHeight]).toEqual([1536, 1024]);
+  await page.screenshot({ path: info.outputPath('reference-hurt.png') });
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, { timeout: 40_000 });
+  const dead = (await page.evaluate(() => window.__AVN__!.demo!.visual))!;
+  expect(dead.frame).toBe('death_3');
+  expect(dead.texture).toBe(HERO_ART.reactionTexture);
+  expect(dead.weapon.visible).toBe(false);
+  await page.screenshot({ path: info.outputPath('reference-death.png') });
 });
