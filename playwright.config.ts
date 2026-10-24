@@ -18,7 +18,7 @@ export default defineConfig({
     },
     {
       name: 'webkit-mobile',
-      testMatch: /(?:mobileFire|hdPresentation)\\.spec\\.ts/,
+      testMatch: /(?:mobileFire|hdPresentation)\.spec\.ts/,
       use: { ...devices['iPhone 13 landscape'], browserName: 'webkit' },
     },
   ],

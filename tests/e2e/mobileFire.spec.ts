@@ -1,7 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { INPUT_UI as UI } from '../../src/game/fx/params';
 
-test('正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹', async ({ page, context, isMobile, browserName }, info) => {
+test('正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹', async ({
+  page,
+  context,
+  isMobile,
+  browserName,
+}, info) => {
   test.skip(!isMobile || browserName !== 'chromium', '使用原生多点触屏事件');
   await page.goto('/?seed=42&god=1');
   await page.locator('#start-run').tap();
@@ -40,11 +45,13 @@ test('手机基础手枪按住可出弹；能量不足有提示并能切回手�
   await page.keyboard.press('Escape');
   await expect(page.locator('#demo-pause')).toBeVisible();
   // 用真实存档入口复现弹药耗尽，覆盖旧存档在手机上续玩。
-  await page.evaluate(() => {
+  const depleted = await page.evaluate(() => {
     const save = JSON.parse(localStorage.getItem('avn.run.v2')!);
     save.sim.world.resources.energy = 0;
-    localStorage.setItem('avn.run.v2', JSON.stringify(save));
+    return JSON.stringify(save);
   });
+  // pagehide 会保存当前局面；在新文档启动前放入测试存档，避免被正常保存覆盖。
+  await page.addInitScript((save) => localStorage.setItem('avn.run.v2', save), depleted);
   await page.reload();
   await page.locator('#continue-run').tap();
   await page.waitForFunction(() => window.__AVN__?.demo?.energy === 0);
