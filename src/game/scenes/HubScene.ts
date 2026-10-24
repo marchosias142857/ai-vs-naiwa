@@ -38,6 +38,7 @@ export class HubScene extends Scene {
     this.sim.spawnPlayer('ai_proto', HUB.spawn.x, HUB.spawn.y);
     this.bridge = new CombatBridge(this, this.sim);
     this.bridge.actors.enableArt(this);
+    if (this.bridge.actors.art) this.bridge.actors.art.showWeapon = false;
     this.scene.launch(InputScene.KEY, { hub: true });
     this.ui = this.scene.get(InputScene.KEY) as InputScene;
     this.pause = bindCombatPause(this, () => {
