@@ -13,6 +13,8 @@ export class CombatAudio {
     };
     bus.on('weapon:fired', this.fire);
     bus.on('bullet:hit', this.hit);
+    bus.on('melee:hit', this.hit);
+    bus.on('weapon:swung', this.swing);
     bus.on('entity:damaged', this.hurt);
     bus.on('entity:died', this.death);
     bus.on('room:cleared', this.reward);
@@ -25,6 +27,8 @@ export class CombatAudio {
     scene.events.once('shutdown', () => {
       bus.off('weapon:fired', this.fire);
       bus.off('bullet:hit', this.hit);
+      bus.off('melee:hit', this.hit);
+      bus.off('weapon:swung', this.swing);
       bus.off('entity:damaged', this.hurt);
       bus.off('entity:died', this.death);
       bus.off('room:cleared', this.reward);
@@ -36,8 +40,9 @@ export class CombatAudio {
       suspendSound();
     });
   }
+  private readonly swing = (): void => playSound('swing');
   private readonly fire = (): void => playSound('shot');
-  private readonly hit = (e: GameEvents['bullet:hit']): void => {
+  private readonly hit = (e: GameEvents['bullet:hit'] | GameEvents['melee:hit']): void => {
     if (e.targetId !== null) playSound('hit');
   };
   private readonly hurt = (e: GameEvents['entity:damaged']): void => {

@@ -48,6 +48,7 @@ export class CombatFeedback {
     this.freeCount = this.free.length;
     for (let i = 0; i < bridge.actors.slots.length; i++) this.states.push({ id: 0, flash: 0, death: 0 });
     bus.on('bullet:hit', this.onHit);
+    bus.on('melee:hit', this.onHit);
     bus.on('weapon:fired', this.onFire);
     bus.on('entity:damaged', this.onDamage);
     scene.physics.world.on(Physics.Arcade.Events.WORLD_STEP, this.tick);
@@ -80,7 +81,7 @@ export class CombatFeedback {
     }
     this.update();
   }
-  private readonly onHit = (e: GameEvents['bullet:hit']): void =>
+  private readonly onHit = (e: GameEvents['bullet:hit'] | GameEvents['melee:hit']): void =>
     this.emit(e.x, e.y, e.critical ? FX.criticalColor : FX.hitColor, FX.impactSeconds);
   private readonly onFire = (e: GameEvents['weapon:fired']): void =>
     this.emit(e.x, e.y, FX.muzzleColor, FX.muzzleSeconds);
@@ -135,6 +136,7 @@ export class CombatFeedback {
         state = this.states[i]!,
         a = this.sim.getActor(slot.id);
       if (!a) continue;
+      this.bridge.actors.art?.feedback(i, state.flash, state.death);
       const x = a.x,
         y = a.y;
       if (a.phase === 'telegraph') {
@@ -153,7 +155,7 @@ export class CombatFeedback {
         g.lineStyle(FX.lineWidth, FX.warningColor).strokeCircle(x, y, a.radius + FX.warningPadding);
       if (a.team === 'enemy') {
         const width = a.radius * 2,
-          top = y - slot.image.height - FX.healthOffset;
+          top = y - a.radius * 1.25 - FX.healthOffset;
         g.fillStyle(FX.healthBack).fillRect(x - a.radius, top, width, FX.healthHeight);
         g.fillStyle(color).fillRect(x - a.radius, top, (width * a.hp) / a.maxHp, FX.healthHeight);
       }
@@ -171,6 +173,7 @@ export class CombatFeedback {
   }
   private readonly destroy = (): void => {
     this.bus.off('bullet:hit', this.onHit);
+    this.bus.off('melee:hit', this.onHit);
     this.bus.off('weapon:fired', this.onFire);
     this.bus.off('entity:damaged', this.onDamage);
     this.scene.physics.world?.off(Physics.Arcade.Events.WORLD_STEP, this.tick);
