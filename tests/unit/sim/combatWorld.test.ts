@@ -139,9 +139,12 @@ describe('CombatWorld：移动与开火', () => {
     run(world, input, DT);
     expect(world.getActor(pid)!.facing).toBeCloseTo(Math.PI / 2, 6);
 
-    world.spawnEnemy('naiwa_chaser', -100, 0);
+    const eid = world.spawnEnemy('naiwa_chaser', -100, 0);
     run(world, input, BALANCE.spawnTelegraph + 0.05);
-    expect(Math.abs(world.getActor(pid)!.facing)).toBeCloseTo(Math.PI, 1);
+    // 从身体中心（脚底上移一个半径）指向目标脚底，弹道才穿过目标的碰撞圆心。
+    const p = world.getActor(pid)!,
+      e = world.getActor(eid)!;
+    expect(p.facing).toBeCloseTo(Math.atan2(e.y - (p.y - p.radius), e.x - p.x), 9);
 
     input.aim = { x: 0, y: -1 };
     run(world, input, DT);

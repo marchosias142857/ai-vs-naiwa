@@ -141,8 +141,7 @@ export interface CombatWorld {
       | 'skillScale'
     >
   >;
-  /** 替换第二武器并装备；第一槽始终保留免费手枪。 */
-  /** 装备第二槽；地面拾取须由 LootSystem 原槽置换，保留旧武器。 */
+  /** 装备第二槽（第一槽固定为免费手枪，传入手枪会被拒绝）；地面拾取由 LootSystem 原槽置换，保留旧武器。 */
   takeWeapon(id: WeaponId): boolean;
   /** 使用 data 中的补给价格购买生命/能量；满额、余额不足、死亡时不扣钱。 */
   buySupplies(): boolean;
