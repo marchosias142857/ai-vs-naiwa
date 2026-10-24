@@ -1,3 +1,4 @@
+import { CombatAudio } from '../fx/CombatAudio';
 import { parseCheckpoint, type FloorCheckpoint } from '../../sim/run/checkpoint';
 import { RunPersistence } from '../systems/RunPersistence';
 import { debugParams } from '../../debug/params';
@@ -37,6 +38,7 @@ export class GameScene extends M1Scene {
       params.weapon,
       checkpoint,
     ));
+    new CombatAudio(this, this.bus);
     this.persistence = new RunPersistence(demo);
     this.persistence.update();
     this.hud = new DemoHud(this, demo);

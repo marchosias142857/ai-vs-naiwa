@@ -1,3 +1,4 @@
+import { destroySound } from './services/Sound';
 import { AUTO, Game, Scale, VERSION } from 'phaser';
 import type { Types } from 'phaser';
 import { COLORS, GAME_HEIGHT, GAME_WIDTH } from './config';
@@ -34,3 +35,5 @@ const config: Types.Core.GameConfig = {
 setTestHooks({ ready: false, phaserVersion: VERSION });
 export const game = new Game(config);
 export const lifecycle = bindLifecycle(game);
+
+game.events.once('destroy', destroySound);
