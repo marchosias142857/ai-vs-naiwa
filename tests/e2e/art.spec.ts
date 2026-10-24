@@ -1,6 +1,37 @@
 import { test, expect } from '@playwright/test';
 import { HERO_ART, HERO_FRAMES } from '../../src/data/art';
 
+test('待机与行走完整循环；停步重新待机、暂停冻结动作', async ({ page }) => {
+  await page.goto('/?scene=Game&seed=42&god=1');
+  await page.waitForFunction(() => !!window.__AVN__?.demo?.visual);
+  const collect = (action: string, count: number) =>
+    page.evaluate(
+      ({ action, count }) =>
+        new Promise<string[]>((resolve) => {
+          const frames = new Set<string>();
+          const deadline = performance.now() + 5000;
+          const sample = () => {
+            const frame = String(window.__AVN__?.demo?.visual?.frame);
+            if (frame.startsWith(action)) frames.add(frame);
+            if (frames.size === count || performance.now() > deadline) resolve([...frames].sort());
+            else requestAnimationFrame(sample);
+          };
+          sample();
+        }),
+      { action, count },
+    );
+  expect(await collect('idle_', HERO_ART.idle.length)).toEqual([...HERO_ART.idle].sort());
+  await page.keyboard.down('KeyD');
+  expect(await collect('run_', HERO_ART.run.length)).toEqual([...HERO_ART.run].sort());
+  await page.keyboard.up('KeyD');
+  await expect.poll(() => page.evaluate(() => window.__AVN__?.demo?.visual?.frame)).toBe('idle_0');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#demo-pause')).toBeVisible();
+  const frame = await page.evaluate(() => window.__AVN__?.demo?.visual?.frame);
+  await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 300)));
+  expect(await page.evaluate(() => window.__AVN__?.demo?.visual?.frame)).toBe(frame);
+});
+
 test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中心', async ({ page }, info) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));

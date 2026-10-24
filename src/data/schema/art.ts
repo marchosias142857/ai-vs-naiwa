@@ -7,13 +7,19 @@ export const ArtFrameSchema = z.strictObject({
   seconds: z.number().positive(),
 });
 export const CharacterArtSchema = z.strictObject({
+  texture: z.string().min(1),
+  source: z.string().min(1),
+  reactionTexture: z.string().min(1),
+  reactionSource: z.string().min(1),
+  frames: z.record(z.string(), ArtFrameSchema),
   scale: z.number().positive(),
+  reactionScale: z.number().positive(),
   standardGrip: point,
   behindUpDegrees: z.number().min(0).max(90),
-  idle: z.array(z.string()).min(1),
-  run: z.array(z.string()).min(1),
-  hurt: z.array(z.string()).min(1),
-  death: z.array(z.string()).min(1),
+  idle: z.array(z.string()).min(1).readonly(),
+  run: z.array(z.string()).min(1).readonly(),
+  hurt: z.array(z.string()).min(1).readonly(),
+  death: z.array(z.string()).min(1).readonly(),
 });
 export const WeaponArtSchema = z.strictObject({
   rect: ArtFrameSchema.shape.rect,
@@ -23,6 +29,8 @@ export const WeaponArtSchema = z.strictObject({
   scale: z.number().positive(),
 });
 export type ArtFrame = z.infer<typeof ArtFrameSchema>;
+export type CharacterArt = z.infer<typeof CharacterArtSchema>;
+export type CharacterAction = 'idle' | 'run' | 'hurt' | 'death';
 export type WeaponArt = z.infer<typeof WeaponArtSchema>;
 export const PresentationSchema = z.strictObject({
   shadowColor: z.int().nonnegative(),

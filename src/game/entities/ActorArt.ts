@@ -1,7 +1,8 @@
 import { TintModes } from 'phaser';
 import type { GameObjects, Scene } from 'phaser';
 import { DEPTH, DEPTH_Y_SORT } from '../../config';
-import { ENEMY_ART, HERO_ART, HERO_FRAMES, WEAPON_ART } from '../../data/art';
+import { ENEMY_ART, WEAPON_ART } from '../../data/art';
+import { DEFAULT_CHARACTER_ART, characterArtFor, characterTexture } from '../../data/characterArt';
 import { PRESENTATION as P } from '../../data/presentation';
 import { WEAPONS } from '../../data/weapons';
 import type { WeaponDef } from '../../data/schema';
@@ -19,6 +20,8 @@ interface ArtSlot {
   death: number;
   hurtAt: number;
   wasHurt: boolean;
+  pose: 'idle' | 'run';
+  poseAt: number;
 }
 /** 所有图片预热；物理代理保持固定尺寸，换帧/翻面/持握点永不写入 Arcade。 */
 export class ActorArt {
@@ -32,7 +35,9 @@ export class ActorArt {
   ) {
     for (let i = 0; i < actors.slots.length; i++)
       this.slots.push({
-        image: scene.add.image(0, 0, ART.hero, 'idle_0').setVisible(false),
+        image: scene.add
+          .image(0, 0, DEFAULT_CHARACTER_ART.texture, DEFAULT_CHARACTER_ART.idle[0])
+          .setVisible(false),
         shadow: scene.add
           .ellipse(0, 0, 1, 1, P.shadowColor, P.shadowAlpha)
           .setDepth(DEPTH.shadows)
@@ -42,6 +47,8 @@ export class ActorArt {
         death: 0,
         hurtAt: -Infinity,
         wasHurt: false,
+        pose: 'idle',
+        poseAt: 0,
       });
     this.weapon = scene.add.image(0, 0, ART.weapons, 'pistol_basic').setVisible(false);
     this.arc = scene.add.graphics().setDepth(DEPTH.fx);
@@ -71,6 +78,8 @@ export class ActorArt {
         slot.id = a.id;
         slot.hurtAt = -Infinity;
         slot.wasHurt = false;
+        slot.pose = 'idle';
+        slot.poseAt = this.sim.time;
       }
       if (!visible) continue;
       if (slot.flash > 0 && !slot.wasHurt) slot.hurtAt = this.sim.time;
@@ -103,16 +112,22 @@ export class ActorArt {
         else if (a.vx || a.vy) image.y += Math.sin(this.sim.time * P.bobSpeed + a.id) * P.bobPixels;
         continue;
       }
-      const name =
-        a.phase === 'dead'
-          ? frameAt('death', slot.death)
-          : this.sim.time - slot.hurtAt < P.hurtSeconds
-            ? frameAt('hurt', this.sim.time - slot.hurtAt)
-            : frameAt(a.vx || a.vy ? 'run' : 'idle', this.sim.time);
-      const f = HERO_FRAMES[name],
-        scale = HERO_ART.scale;
+      const pose = a.vx || a.vy ? 'run' : 'idle';
+      if (slot.pose !== pose) {
+        slot.pose = pose;
+        slot.poseAt = this.sim.time;
+      }
+      const character = characterArtFor(a.kind);
+      const action =
+        a.phase === 'dead' ? 'death' : this.sim.time - slot.hurtAt < P.hurtSeconds ? 'hurt' : pose;
+      const time =
+        action === 'death' ? slot.death : this.sim.time - (action === 'hurt' ? slot.hurtAt : slot.poseAt);
+      const name = frameAt(action, time, character),
+        texture = characterTexture(character, action),
+        f = character.frames[name]!,
+        scale = action === 'hurt' || action === 'death' ? character.reactionScale : character.scale;
       image
-        .setTexture(ART.hero, name)
+        .setTexture(texture, name)
         .setOrigin(left ? 1 - f.pivot.x / f.rect[2] : f.pivot.x / f.rect[2], f.pivot.y / f.rect[3])
         .setScale(scale);
       if (a.phase !== 'active') continue;
@@ -130,7 +145,7 @@ export class ActorArt {
           .arc(a.x, a.y, def.melee.range, m.angle - half, angle, false)
           .strokePath();
       }
-      const up = Math.sin(angle) < -Math.cos((HERO_ART.behindUpDegrees * Math.PI) / 180);
+      const up = Math.sin(angle) < -Math.cos((character.behindUpDegrees * Math.PI) / 180);
       this.weapon
         .setTexture(ART.weapons, id)
         .setVisible(true)

@@ -1,6 +1,41 @@
 # Demo 美术来源与制作记录
 
-## 来源与使用范围
+## PR #83：最终方向（2026-10-24）
+
+- 负责人最终选择按两张《元气骑士》参考图的粗颗粒像素密度制作大肥鱼，约 24–32 原生像素高；这些图只用于密度与风格参考，不进入游戏资源。蓝发、白帽、围裙和鱼尾身份来自负责人此前提供的角色图。
+- `da-fei-yu.png`：6 帧上下摆尾待机、8 帧交替行走；身体不画手。使用负责人本轮补发的透明版 `大肥鱼动作帧(1).png` 原文件，已替换上一轮本地残留的带光晕候选稿；运行时按矩形帧读取并使用 NEAREST 采样。
+- `da-fei-yu-reactions.png`：原样复制负责人上传的 `Sprite Sheet Sleeve Cleanup(1).png`，只使用原受击 2 帧、死亡 4 帧；本轮未重绘。未使用的旧待机、行走也未修改源文件。
+- `weapons.png`：使用负责人本轮补发的 `武器图片.png` 原文件，12 件武器的手均为单色长方形，无手指、关节；手属于武器图层，随武器翻面与旋转。按该图重新校准手块中心，并扩展裁切边界保留枪口、弹匣与刀尖。
+- `doors.png`：内置图像工具新制的成对开放 / 锁闭海洋遗迹门框，蓝灰石材、浅色门柱、金色贝壳装饰，透明背景；仅替换门口视觉。
+- 负责人已授权引用上传素材、用内置图像工具制作并将选定游戏资源随本仓库提交。此前高细节待机 / 行走候选稿均未采用。下文最初 12 帧制作记录保留作历史。
+
+### 最终角色生成提示
+
+Use case: style-transfer. Asset: production transparent pixel-art playable character atlas for a top-down action game.
+Image 1 and image 2 are STYLE AND PIXEL-DENSITY REFERENCES: match their very coarse, intentionally tiny sprite resolution precisely. Image 3 is CHARACTER IDENTITY ONLY; do not copy its high detail or proportions.
+Create Da Fei Yu as an extremely cute chibi blue-haired whale maid in the same pixel precision as images1-2: each character body is ONLY about 24 pixels wide x 30 pixels high on a tiny native pixel grid, with a short whale tail reaching 8 pixels to the right. Render enlarged with nearest-neighbor hard square blocks. One apparent pixel is large and unmistakably square. Thick one-pixel near-black outlines; only 12-16 flat colors; no subpixel detail, no smooth gradients, no anti-aliasing. Face is a pale simple rectangle, two little vertical blue eye marks of 1x2 pixels, tiny pink 1px mouth, optional 1px cheeks. Oversized round blocky blue head, tiny squat navy maid dress, simple white apron and white maid cap, very short legs and two stubby dark shoes. Hair is two large blue masses, no hair strands. Tiny low-resolution whale-tail silhouette on right. Make it sweet, friendly and adorable.
+NO HANDS ANYWHERE on body, no exposed skin except face, no skirt-holding hand, no visible fingers, no weapons or props. Dark sleeves can end flush with torso with no hand. Weapon/rectangular hand will be a separate game layer.
+Exactly FOURTEEN distinct frames in a clean 4-column x4-row atlas, with 24px transparent gutters and generous outer border. Same character scale and aligned body centers in every cell. Row1 idle0 idle1 idle2 idle3; row2 idle4 idle5 EMPTY EMPTY; row3 walk0 walk1 walk2 walk3; row4 walk4 walk5 walk6 walk7. Every sprite fully inside cell, no tail or head clipped.
+Idle animation: BODY, FACE AND FEET STAY STILL. ONLY whale tail moves visibly UP AND DOWN. Tail y offsets over the six frames are neutral, UP2 tiny-pixels, UP4, neutral, DOWN3, DOWN1; keep tail rooted at hip. This is a continuous wag loop, not a breathing or blink animation.
+Walk: clear 8-frame alternating foot cycle: left foot forward, left contact, feet passing, right foot rising, right foot forward, right contact, feet passing, left foot rising. Short cute steps with at most 1-pixel body bob; tail follows gently.
+Use no text, no labels, no grid lines, no floor or shadows. Actual transparent PNG alpha. Keep large coarse pixels matching the two style references, NOT a detailed anime illustration.
+
+### 透明背景整理提示
+
+Use case: background-extraction. Edit the attached 14-frame coarse pixel-art sprite sheet. REMOVE ALL smoky blue/grey background, haze, halos and lighting around and between the characters. Empty space including gaps inside silhouettes must be genuinely 100% transparent alpha=0. The actual sprites must be fully opaque alpha=255, with clean hard square pixel silhouette boundaries. Preserve the existing sprite artwork exactly: same coarse pixel resolution, faces, tiny shoes, tail positions, colors, dimensions and arrangement. Do not redesign or move any sprite. No shadow outside silhouette, no glow, no new background, no checkerboard drawn into image. Keep all 14 fully separated frames and the two empty cells. Transparent PNG asset, ready for game atlas.
+
+### 武器手块修改提示
+
+Use case: precise-object-edit. Edit target is the attached 12-weapon transparent atlas. Change ONLY the peach-colored hand shape attached to each of the twelve weapon grips. Each hand must become ONE SMALL SOLID PEACH RECTANGLE with straight horizontal and vertical edges and four square corners, approximately 24px wide x28px high in this atlas. Absolutely no fingers, thumbs, knuckles, rounded corners, polygonal fists, skin shading, gradients, or separate arm. Keep each rectangle centered at the existing hand center so weapon grip metadata stays valid. Preserve the navy cuff behind it. Preserve ALL weapon designs, colors, outlines, dimensions, exact positions, source canvas size, empty space and 4 columns x3 rows layout. Do not move, scale, redraw or add any weapon. Transparent alpha background retained, no labels or grids.
+
+### 本轮附件校验
+
+两份附件均原样接入，没有再次生成或改绘。SHA-256：
+
+- `da-fei-yu.png`：`5c4403dc7535f67f21ccef0da864e4042aaff4f24fcc68af90f0e9c9437731f7`
+- `weapons.png`：`552f6b4b4e9477b9f83f983a3c835314550d68d14202b81cf12016cee58c3793`
+
+## 来源与使用范围（首次制作历史）
 
 - 负责人上传的大肥鱼动作帧（参考原图不随仓库发布），仅用于本项目角色身份与动作参考，未另行主张其权属或对外再许可。
 - `public/assets/demo/*.png`：GPT 在本轮为《AI 大战奶蛙》使用 OpenAI 图像生成工具新制的真实 PNG。无网络下载或第三方素材；武器、敌人、环境及主菜单构图为本项目原创生成，不使用现有作品角色。生成资源供本项目商用、修改及随游戏分发。

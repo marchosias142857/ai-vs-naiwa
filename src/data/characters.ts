@@ -1,6 +1,6 @@
 import type { CharacterDef } from './schema';
 
-/** 可玩角色。M1 只有一位原型 AI 娘，正式设定由负责人提供（docs/GDD.md「待定」）。 */
+/** 可玩角色；新增 ID 时须同步注册 characterArt.ts 中的图集与动作配置。 */
 export const CHARACTERS = {
   ai_proto: {
     name: 'character.ai_proto',

@@ -8,6 +8,17 @@ import { createInputFrame } from '../../../src/sim/core/types';
 import { playerMuzzle } from '../../../src/sim/weapons/muzzle';
 
 describe('标准持握枪口与身体圆心', () => {
+  it('不同角色的固定持握点独立生效，左右镜像只翻转水平偏移', () => {
+    const original = { x: 0, y: 0 },
+      changed = { x: 0, y: 0 };
+    const grip = { x: HERO_ART.standardGrip.x + 2, y: HERO_ART.standardGrip.y - 1 };
+    for (const angle of [0, Math.PI, -Math.PI / 2]) {
+      playerMuzzle(original, 100, 80, angle, 'pistol_basic');
+      playerMuzzle(changed, 100, 80, angle, 'pistol_basic', grip);
+      expect(changed.x - original.x).toBeCloseTo(Math.cos(angle) < 0 ? -2 : 2);
+      expect(changed.y - original.y).toBeCloseTo(-1);
+    }
+  });
   it('所有武器水平左右镜像：枪口高度不倒置，和动画帧无关', () => {
     const a = { x: 0, y: 0 },
       b = { x: 0, y: 0 };

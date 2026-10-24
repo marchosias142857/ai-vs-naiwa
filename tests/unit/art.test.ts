@@ -3,12 +3,14 @@ import { PresentationSchema } from '../../src/data/schema/art';
 import { frameAt } from '../../src/game/entities/artPose';
 import { readFileSync, statSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { ENEMY_ART, ENVIRONMENT_ART, HERO_ART, HERO_FRAMES, WEAPON_ART } from '../../src/data/art';
+import { DOOR_ART, ENEMY_ART, ENVIRONMENT_ART, HERO_ART, HERO_FRAMES, WEAPON_ART } from '../../src/data/art';
 import { ENEMIES } from '../../src/data/enemies';
 import { WEAPONS } from '../../src/data/weapons';
 import { ArtFrameSchema, CharacterArtSchema, WeaponArtSchema } from '../../src/data/schema/art';
+import { CHARACTER_ART, characterTexture } from '../../src/data/characterArt';
+import { CHARACTERS } from '../../src/data/characters';
 
-const files = ['da-fei-yu', 'weapons', 'enemies', 'environment', 'title'];
+const files = ['da-fei-yu', 'da-fei-yu-reactions', 'weapons', 'enemies', 'environment', 'title', 'doors'];
 function dimensions(name: string) {
   const file = `public/assets/demo/${name}.png`,
     buffer = readFileSync(file);
@@ -24,18 +26,48 @@ function inImage(file: string, rects: readonly (readonly number[])[]) {
   }
 }
 describe('真实 PNG 图集与持握数据', () => {
+  it('全部可玩角色注册资源，独立动作名称、计时和反应图集可扩展', () => {
+    expect(Object.keys(CHARACTER_ART).sort()).toEqual(Object.keys(CHARACTERS).sort());
+    for (const art of Object.values(CHARACTER_ART)) {
+      expect(CharacterArtSchema.safeParse(art).success).toBe(true);
+      for (const action of ['idle', 'run', 'hurt', 'death'] as const)
+        for (const name of art[action]) expect(art.frames).toHaveProperty(name);
+    }
+    const other = {
+      ...HERO_ART,
+      texture: 'second_body',
+      reactionTexture: 'second_reactions',
+      frames: {
+        rest_a: { ...HERO_FRAMES.idle_0, seconds: 0.15 },
+        rest_b: { ...HERO_FRAMES.idle_1, seconds: 0.25 },
+      },
+      idle: ['rest_a', 'rest_b'],
+      run: ['rest_b'],
+      hurt: ['rest_a'],
+      death: ['rest_b'],
+    };
+    expect(frameAt('idle', 0.2, other)).toBe('rest_b');
+    expect(frameAt('idle', 0.41, other)).toBe('rest_a');
+    expect(frameAt('death', 10, other)).toBe('rest_b');
+    expect(characterTexture(other, 'idle')).toBe('second_body');
+    expect(characterTexture(other, 'hurt')).toBe('second_reactions');
+  });
   it('视觉参数通过 schema，跑步循环、死亡停在末帧', () => {
     expect(PresentationSchema.safeParse(PRESENTATION).success).toBe(true);
     expect(frameAt('run', 0)).toBe('run_0');
     expect(frameAt('run', 0.11)).toBe('run_1');
-    expect(frameAt('run', 0.41)).toBe('run_0');
+    expect(frameAt('run', 0.61)).toBe('run_0');
     expect(frameAt('death', 10)).toBe('death_3');
   });
   it('全部资源是 PNG，尺寸合法，单文件在离线缓存预算内', () => {
     for (const name of files) expect(dimensions(name)[0]).toBeGreaterThan(0);
     inImage(
       'da-fei-yu',
-      Object.values(HERO_FRAMES).map((f) => f.rect),
+      [...HERO_ART.idle, ...HERO_ART.run].map((key) => HERO_FRAMES[key].rect),
+    );
+    inImage(
+      'da-fei-yu-reactions',
+      [...HERO_ART.hurt, ...HERO_ART.death].map((key) => HERO_FRAMES[key].rect),
     );
     inImage(
       'weapons',
@@ -43,6 +75,7 @@ describe('真实 PNG 图集与持握数据', () => {
     );
     inImage('enemies', Object.values(ENEMY_ART));
     inImage('environment', Object.values(ENVIRONMENT_ART));
+    inImage('doors', Object.values(DOOR_ART));
   });
   it('动作和武器数据通过 schema，逐帧 pivot / grip 在帧内，所有当前武器和怪物都有贴图', () => {
     expect(CharacterArtSchema.safeParse(HERO_ART).success).toBe(true);
