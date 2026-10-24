@@ -81,8 +81,8 @@ export const COMBAT_FX = {
 export const RESUME_UI = {
   fontSize: 24,
   radius: 28,
-  captionSize: 11,
-  captionResolution: 2,
+  /** 提示为 DOM 文字，字号/内边距用 CSS 像素；offset 仍为游戏像素。 */
+  captionSize: 16,
   captionPadding: 3,
   captionBackground: '#081b29',
   captionOffset: 40,

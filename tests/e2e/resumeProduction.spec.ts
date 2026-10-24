@@ -33,6 +33,10 @@ test('生产入口：战斗暂停保存后刷新，正式校验器继续原局�
   await expect(page.locator('#save-notice')).toBeHidden();
   await page.locator('#continue-run').click();
   await page.waitForFunction(() => (window.__AVN__?.demo?.resumeRemaining ?? 0) > 0);
+  const caption = page.locator('#resume-caption');
+  await expect(caption).toHaveCount(1);
+  await expect(caption).toBeVisible();
+  await expect(caption).toHaveText('准备继续战斗');
   const restored = await page.evaluate(() => JSON.parse(localStorage.getItem('avn.run.v2')!) as RunSnapshot);
   expect(restored.sim).toEqual(before.sim);
   expect(restored.game).toEqual(before.game);
@@ -41,6 +45,7 @@ test('生产入口：战斗暂停保存后刷新，正式校验器继续原局�
   expect(await page.evaluate(() => window.__AVN__!.demo!.time)).toBe(before.sim.world.time);
   await page.screenshot({ path: info.outputPath('production-countdown.png'), scale: 'css' });
   await page.waitForFunction(() => window.__AVN__!.demo!.resumeRemaining === 0);
+  await expect(caption).toBeHidden();
   await page.waitForFunction((time) => window.__AVN__!.demo!.time > time, before.sim.world.time);
   expect(errors).toEqual([]);
 });
