@@ -98,8 +98,9 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
     expect(v.weapon.depth < v.depth).toBe(dy === -1);
     const f = HERO_FRAMES[v.frame as keyof typeof HERO_FRAMES],
       sign = v.weapon.flipY ? 1 : -1;
-    const left = (v.x - (v.flipX ? f.rect[2] - f.pivot.x : f.pivot.x) * HERO_ART.scale) * RENDER_SCALE;
-    const top = (v.y - f.pivot.y * HERO_ART.scale) * RENDER_SCALE;
+    const left = v.face.x * RENDER_SCALE;
+    const top = v.face.y * RENDER_SCALE;
+    expect(v.face.visible).toBe(true);
     expect(left).toBeCloseTo(Math.round(left));
     expect(top).toBeCloseTo(Math.round(top));
     expect(v.weapon.x - v.x).toBeCloseTo((f.grip.x - f.pivot.x) * HERO_ART.scale * sign);
@@ -236,6 +237,7 @@ test('参考图角色：受击使用新图集，死亡完整落地且隐藏武�
   const hurt = (await page.evaluate(() => window.__AVN__!.demo!.visual))!;
   expect(HERO_ART.hurt).toContain(hurt.frame);
   expect(hurt.texture).toBe(HERO_ART.reactionTexture);
+  expect(hurt.face.visible).toBe(false);
   expectImageSource(await reactionImage, HERO_ART.reactionSource);
   expect([hurt.sourceWidth, hurt.sourceHeight]).toEqual([1536, 1024]);
   await page.screenshot({ path: info.outputPath('reference-hurt.png') });
@@ -245,5 +247,6 @@ test('参考图角色：受击使用新图集，死亡完整落地且隐藏武�
   expect(dead.frame).toBe('death_3');
   expect(dead.texture).toBe(HERO_ART.reactionTexture);
   expect(dead.weapon.visible).toBe(false);
+  expect(dead.face.visible).toBe(false);
   await page.screenshot({ path: info.outputPath('reference-death.png') });
 });

@@ -13,6 +13,10 @@ export const CharacterArtSchema = z.strictObject({
   source: z.string().min(1),
   reactionTexture: z.string().min(1),
   reactionSource: z.string().min(1),
+  /** 待机/行走复用的面部；pivot 相对这块贴图，反应动作仍用原帧。 */
+  face: z
+    .strictObject({ frame: z.string().min(1), rect: ArtFrameSchema.shape.rect.readonly(), pivot: point })
+    .optional(),
   frames: z.record(z.string(), ArtFrameSchema),
   scale: z.number().positive(),
   reactionScale: z.number().positive(),
