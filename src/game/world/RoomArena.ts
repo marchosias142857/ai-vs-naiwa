@@ -1,3 +1,5 @@
+import { createRoomArt } from './RoomArt';
+import { ART } from '../assets/demoArt';
 import { NavigationGrid } from '../../sim/dungeon/NavigationGrid';
 import { NAVIGATION } from '../../data/navigation';
 import type { Vec2 } from '../../sim/core/types';
@@ -13,6 +15,7 @@ import { GRAYBOX_BOUNDS as B } from './graybox';
 
 /** 房间切换复用固定的内墙池。门口跨越判定由 DungeonRun 校验连接与锁门状态。 */
 export class RoomArena {
+  private readonly art: boolean;
   private readonly navigation: NavigationGrid;
   private readonly graphics: GameObjects.Graphics;
   private readonly walls: Physics.Arcade.StaticGroup;
@@ -23,10 +26,12 @@ export class RoomArena {
     private readonly bridge: CombatBridge,
     reflectBullets = false,
   ) {
-    this.graphics = scene.add.graphics().setDepth(DEPTH.floor);
+    this.art = createRoomArt(scene);
+    this.graphics = scene.add.graphics().setDepth(DEPTH.floor + 1);
     this.walls = scene.physics.add.staticGroup();
     for (let i = 0; i < 8; i++) {
       const image = this.walls.create(0, 0, TEX.wall) as Physics.Arcade.Image;
+      if (this.art) image.setTexture(ART.environment, 'pillar');
       image.disableBody(true, true);
       this.slots.push(image);
     }
@@ -67,16 +72,18 @@ export class RoomArena {
   draw(run: DungeonRun): void {
     const g = this.graphics;
     g.clear();
-    g.fillStyle(COLORS.wall).fillRect(
-      B.x - TILE_SIZE,
-      B.y - TILE_SIZE,
-      B.width + 2 * TILE_SIZE,
-      B.height + 2 * TILE_SIZE,
-    );
-    g.fillStyle(COLORS.floor).fillRect(B.x, B.y, B.width, B.height);
-    g.lineStyle(1, COLORS.floorAlt);
-    for (let x = B.x; x < B.x + B.width; x += TILE_SIZE) g.lineBetween(x, B.y, x, B.y + B.height);
-    for (let y = B.y; y < B.y + B.height; y += TILE_SIZE) g.lineBetween(B.x, y, B.x + B.width, y);
+    if (!this.art) {
+      g.fillStyle(COLORS.wall).fillRect(
+        B.x - TILE_SIZE,
+        B.y - TILE_SIZE,
+        B.width + 2 * TILE_SIZE,
+        B.height + 2 * TILE_SIZE,
+      );
+      g.fillStyle(COLORS.floor).fillRect(B.x, B.y, B.width, B.height);
+      g.lineStyle(1, COLORS.floorAlt);
+      for (let x = B.x; x < B.x + B.width; x += TILE_SIZE) g.lineBetween(x, B.y, x, B.y + B.height);
+      for (let y = B.y; y < B.y + B.height; y += TILE_SIZE) g.lineBetween(B.x, y, B.x + B.width, y);
+    } else g.lineStyle(1, 0x647d80).strokeRect(B.x - 1, B.y - 1, B.width + 2, B.height + 2);
     const room = run.room,
       h = ROOM_RULES.doorHalfWidth;
     for (const id of room.links) {
@@ -85,7 +92,7 @@ export class RoomArena {
         dy = to.y - room.y;
       const x = B.x + B.width / 2 + (dx * B.width) / 2,
         y = B.y + B.height / 2 + (dy * B.height) / 2;
-      g.fillStyle(run.locked ? COLORS.wallTop : COLORS.floorAlt);
+      g.fillStyle(run.locked ? 0x6c384b : 0x397b83);
       g.fillRect(
         x - (dx ? TILE_SIZE : h),
         y - (dy ? TILE_SIZE : h),
@@ -128,7 +135,7 @@ export class RoomArena {
       const y = B.y + B.height / 2 - dy * (B.height / 2 - ROOM_RULES.entranceInset);
       const body = s.image.body as Physics.Arcade.Body;
       body.reset(x, y);
-      // reset 从贴图左上角定位；脚底圆形碰撞体必须重新应用 offset。
+      // reset 从贴图左上角定位；身体圆形碰撞体必须重新应用 offset。
       body.updateFromGameObject();
       body.prev.copy(body.position);
       body.prevFrame.copy(body.position);
