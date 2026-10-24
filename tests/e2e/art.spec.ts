@@ -68,3 +68,17 @@ test('重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记�
   const loaded = await page.evaluate(() => JSON.parse(localStorage.getItem('avn.run.v2')!).sim.world.melee);
   expect(loaded).toEqual(saved);
 });
+
+test('标题与 HUD 完整画面；触屏提示使用轮盘说明', async ({ page, isMobile }, info) => {
+  await page.goto('/?seed=42&god=1');
+  await expect(page.locator('#start-run')).toBeVisible();
+  await page.screenshot({ path: info.outputPath('demo-title.png') });
+  await page.locator('#start-run').click();
+  await page.waitForFunction(() => !!window.__AVN__?.demo?.visual);
+  await expect(page.locator('.demo-vitals [role=meter]')).toHaveCount(3);
+  if (isMobile) {
+    await expect(page.locator('.demo-hint')).toContainText('轮盘');
+    await expect(page.locator('.demo-hint')).not.toContainText('鼠标');
+  }
+  await page.screenshot({ path: info.outputPath('demo-room.png') });
+});
