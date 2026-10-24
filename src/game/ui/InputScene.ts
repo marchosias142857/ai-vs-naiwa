@@ -8,6 +8,8 @@ import { DEPTH, GAME_HEIGHT, GAME_WIDTH, SCENES } from '../../config';
 import { InputController } from '../input/InputController';
 import { setInputProbe } from '../testHooks';
 import { textStyle } from './text';
+import { combatPause } from '../world/combatPause';
+import { RESUME_UI } from '../fx/params';
 
 /** 独立 UI 持有输入与恢复入口；#15 从 controls.frame 读取战斗输入。 */
 export class InputScene extends Scene {
@@ -19,6 +21,7 @@ export class InputScene extends Scene {
   private resumeLabel!: GameObjects.Text;
   private layoutScale = 0;
   private pauseLabel!: GameObjects.Text;
+  private countdown!: GameObjects.Text;
   /** 鼠标瞄准原点：由战斗场景在物理后发布的玩家身体中心（脚底 y - radius）。 */
   playerX = GAME_WIDTH / 2;
   playerY = GAME_HEIGHT / 2 + 40;
@@ -38,7 +41,17 @@ export class InputScene extends Scene {
       .setOrigin(0.5)
       .setDepth(DEPTH.touchControls);
     this.pauseLabel = this.add.text(0, 0, 'Ⅱ', textStyle(12)).setOrigin(0.5).setDepth(DEPTH.touchControls);
+    this.countdown = this.add
+      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, '', textStyle(RESUME_UI.fontSize))
+      .setOrigin(0.5)
+      .setDepth(DEPTH.touchControls)
+      .setVisible(false);
     const togglePause = () => {
+      const pause = combatPause(battle);
+      if (pause) {
+        if (!pause.has('finished')) pause.set('manual', !pause.has('manual'));
+        return;
+      }
       // 楼层选择与结算持有物理暂停；此时不能再叠加手动 scene.pause。
       if (battle.physics.world.isPaused) return;
       this.controls.reset();
@@ -56,7 +69,7 @@ export class InputScene extends Scene {
       ...this.controls.frame,
       move: { ...this.controls.frame.move },
       aim: this.controls.frame.aim ? { ...this.controls.frame.aim } : null,
-      manualPaused: battle.scene.isPaused(),
+      manualPaused: this.controls.manualPaused,
     }));
     this.events.once('shutdown', () => {
       battle.input.enabled = battleInputEnabled;
@@ -75,9 +88,15 @@ export class InputScene extends Scene {
     if (!s) return;
     const g = this.graphics;
     g.clear();
-    const paused = c.battle.scene.isPaused(),
-      locked = c.battle.physics.world.isPaused;
-    this.pauseLabel.setVisible(!locked);
+    const pause = combatPause(c.battle);
+    pause?.update();
+    const paused = c.manualPaused,
+      locked = c.battle.physics.world.isPaused,
+      canPause = pause ? !pause.has('finished') : !locked;
+    this.countdown
+      .setText(String(Math.ceil(pause?.remaining ?? 0)))
+      .setVisible(!!pause?.has('restore') && !paused && !pause.has('lifecycle'));
+    this.pauseLabel.setVisible(canPause);
     this.pausePanel?.update(paused);
     this.resumeLabel.setVisible(paused && !this.pausePanel);
     this.actions?.setVisible(c.touchVisible && !paused && !locked);
@@ -92,7 +111,7 @@ export class InputScene extends Scene {
       g.fillStyle(UI.look.pauseColor, UI.look.pauseAlpha).fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
       this.circle(GAME_WIDTH / 2, GAME_HEIGHT / 2, UI.resume.radius / s, false, 1);
     }
-    if (!locked)
+    if (canPause)
       this.circle(GAME_WIDTH - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
     if (c.touchVisible && !paused && !locked) {
       const t = c.touch;

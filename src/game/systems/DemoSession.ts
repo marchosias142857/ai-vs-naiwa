@@ -13,7 +13,7 @@ import { createCombatWorld, type CombatWorld } from '../../sim/combat/api';
 import type { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
 import { Random } from '../../sim/core/Random';
-import { createInputFrame, type InputFrame } from '../../sim/core/types';
+import type { InputFrame } from '../../sim/core/types';
 import { LootSystem } from '../../sim/loot/LootSystem';
 import { DungeonRun } from '../../sim/run/DungeonRun';
 import { RoomDirector } from '../../sim/run/RoomDirector';
@@ -21,6 +21,8 @@ import type { InputScene } from '../ui/InputScene';
 import { CombatBridge } from '../world/CombatBridge';
 import { RoomArena } from '../world/RoomArena';
 import { GRAYBOX_BOUNDS as B } from '../world/graybox';
+import { bindCombatPause } from '../world/combatPause';
+import type { PauseState } from '../world/PauseState';
 
 /** demo 的接线层；规则状态留在 sim，输入渲染帧采样、所有计时物理步推进。 */
 export class DemoSession {
@@ -30,13 +32,13 @@ export class DemoSession {
   readonly loot: LootSystem;
   readonly arena: RoomArena;
   readonly fx: CombatFeedback;
+  readonly pause: PauseState;
   readonly offers: UpgradeId[] = [];
   private readonly upgrades: UpgradeId[] = [];
   settled = false;
   private readonly director: RoomDirector;
   private readonly root: Random;
   private rewardRng: Random;
-  private readonly empty = createInputFrame();
   private interact = false;
   private endTime = 0;
   private layout = 0;
@@ -94,6 +96,7 @@ export class DemoSession {
     );
     this.showRoom();
     this.publishPosition();
+    this.pause = bindCombatPause(scene, this.clearInput);
     bus.on('entity:died', this.onDied);
     bus.on('room:cleared', this.onCleared);
     scene.events.on(Scenes.Events.PRE_UPDATE, this.feedInput);
@@ -112,13 +115,20 @@ export class DemoSession {
 
   /** 与 CombatBridge 一样锁存交互边沿：0 步保留，多步只消费一次。 */
   setInput(frame: Readonly<InputFrame>): void {
-    if (this.dungeon.finished || this.offers.length) {
-      this.bridge.setInput(this.empty);
+    if (this.dungeon.finished || this.pause.blocked) {
+      this.bridge.clearInput();
+      this.interact = false;
       return;
     }
     this.bridge.setInput(frame);
     this.interact ||= frame.interactPressed;
   }
+  /** 三处锁存必须一起清空；冻结期间也不会累积新的玩法边沿。 */
+  readonly clearInput = (): void => {
+    this.inputScene.controls?.reset();
+    this.bridge.clearInput();
+    this.interact = false;
+  };
   private readonly feedInput = (): void => {
     const ui = this.inputScene;
     if (ui.sys.isActive() && ui.controls) this.setInput(ui.controls.sample(ui.playerX, ui.playerY));
@@ -140,7 +150,7 @@ export class DemoSession {
       this.endTime += dt;
       if (this.endTime >= BALANCE.deathRestartDelay) {
         this.settled = true;
-        this.scene.physics.pause();
+        this.pause.set('finished', true);
       }
       return;
     }
@@ -165,15 +175,25 @@ export class DemoSession {
       const candidates = Object.keys(UPGRADES) as UpgradeId[];
       this.rewardRng.shuffle(candidates);
       for (let i = 0; i < LOOT_RULES.upgradeChoices; i++) this.offers.push(candidates[i]!);
-      this.inputScene.controls?.reset();
-      this.scene.physics.pause();
+      this.pause.set('upgrade', true);
     }
   };
   buySupplies(): boolean {
-    return this.offers.length > 0 && this.sim.buySupplies();
+    return (
+      !this.pause.has('manual') &&
+      !this.pause.has('lifecycle') &&
+      this.offers.length > 0 &&
+      this.sim.buySupplies()
+    );
   }
   chooseUpgrade(id: UpgradeId): boolean {
-    if (!this.offers.includes(id) || !this.sim.upgrade(id)) return false;
+    if (
+      this.pause.has('manual') ||
+      this.pause.has('lifecycle') ||
+      !this.offers.includes(id) ||
+      !this.sim.upgrade(id)
+    )
+      return false;
     this.offers.length = 0;
     this.upgrades.push(id);
     this.dungeon.nextFloor();
@@ -181,10 +201,8 @@ export class DemoSession {
     this.loot.resetFloor(this.root.fork(`loot:${this.dungeon.floor}`));
     this.showRoom();
     this.arena.teleport();
-    this.inputScene.controls?.reset();
-    this.bridge.setInput(this.empty);
     this.publishPosition();
-    this.scene.physics.resume();
+    this.pause.set('upgrade', false);
     return true;
   }
   /** 仅在楼层入口调用；数据由调用方序列化，绝不保存 sim 复用视图。 */

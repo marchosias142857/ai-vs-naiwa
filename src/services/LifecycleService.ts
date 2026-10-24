@@ -3,6 +3,7 @@ export interface LifecycleCallbacks {
   unlockAudio(): void;
   /** M4 在 hidden 转换时接入局内快照；不能等到异步任务再保存。 */
   onHidden?(): void;
+  onPageHide?(): void;
 }
 
 /** 只依赖浏览器；自动原因与手动原因合并，任一原因存在都保持暂停。 */
@@ -13,6 +14,7 @@ export class LifecycleService {
   private manualPaused = false;
   private hidden = false;
   private paused = false;
+  private pageHidden = false;
 
   constructor(
     private readonly overlay: HTMLElement,
@@ -24,6 +26,8 @@ export class LifecycleService {
     // 二合一设备可以在同一窗口中切换输入模式，不能只在启动时判断一次。
     this.touchScreen.addEventListener('change', this.sync, options);
     document.addEventListener('visibilitychange', this.sync, options);
+    window.addEventListener('pagehide', this.pageHide, options);
+    window.addEventListener('pageshow', this.pageShow, options);
     const gestureOptions = { signal: this.gestures.signal, capture: true, passive: true };
     // touchend/click 在 iOS 上属于有效手势；捕获阶段也覆盖 DOM 遮罩上的首次触摸。
     document.addEventListener('touchend', this.onGesture, gestureOptions);
@@ -59,7 +63,7 @@ export class LifecycleService {
   private readonly sync = (): void => {
     const portrait = this.touchScreen.matches && window.innerHeight > window.innerWidth;
     this.overlay.hidden = !portrait;
-    const hidden = document.visibilityState === 'hidden';
+    const hidden = this.pageHidden || document.visibilityState === 'hidden';
     const enteredHidden = hidden && !this.hidden;
     this.hidden = hidden;
     const paused = portrait || hidden || this.manualPaused;
@@ -68,5 +72,14 @@ export class LifecycleService {
       this.callbacks.onPauseChange(paused);
     }
     if (enteredHidden) this.callbacks.onHidden?.();
+  };
+  private readonly pageHide = (): void => {
+    this.pageHidden = true;
+    this.sync();
+    this.callbacks.onPageHide?.();
+  };
+  private readonly pageShow = (): void => {
+    this.pageHidden = false;
+    this.sync();
   };
 }

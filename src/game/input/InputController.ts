@@ -4,6 +4,7 @@ import type { Input, Scene } from 'phaser';
 import { resetInputFrame } from '../../sim/core/types';
 import { InputState } from './InputState';
 import { TouchState } from './TouchState';
+import { combatPause } from '../world/combatPause';
 
 const CODES = new Set([
   'KeyW',
@@ -37,6 +38,9 @@ export class InputController {
   }
   get touchVisible() {
     return this.coarse.matches || this.frame.source === 'touch';
+  }
+  get manualPaused(): boolean {
+    return combatPause(this.battle)?.has('manual') ?? this.battle.scene.isPaused();
   }
   constructor(
     private readonly ui: Scene,
@@ -134,7 +138,7 @@ export class InputController {
       this.state.frame.source = 'touch';
       if (down) {
         if (
-          this.battle.scene.isPaused() &&
+          this.manualPaused &&
           Math.hypot(x - this.rect.width / 2, y - this.rect.height / 2) <= UI.resume.radius
         ) {
           this.togglePause();
@@ -148,7 +152,7 @@ export class InputController {
       down &&
       e.pointerType === 'mouse' &&
       (Math.hypot(x - (this.rect.width - UI.pause.inset), y - UI.pause.inset) <= UI.pause.hitRadius ||
-        (this.battle.scene.isPaused() &&
+        (this.manualPaused &&
           Math.hypot(x - this.rect.width / 2, y - this.rect.height / 2) <= UI.resume.radius))
     )
       this.togglePause();
@@ -192,7 +196,7 @@ export class InputController {
     f.pausePressed ||= this.touch.pausePressed;
     this.touch.pausePressed = false;
     if (f.pausePressed) this.togglePause();
-    if (this.battle.scene.isPaused()) resetInputFrame(f);
+    if (this.manualPaused || combatPause(this.battle)?.blocked) resetInputFrame(f);
     return f;
   }
   destroy(): void {

@@ -69,3 +69,5 @@ export const COMBAT_FX = {
     naiwa_boss: 0xff7799,
   },
 } as const;
+/** ADR 0019 的临时灰盒数字，正式视觉待 Claude 方案。 */
+export const RESUME_UI = { fontSize: 24 } as const;
