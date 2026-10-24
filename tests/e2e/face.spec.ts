@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { HERO_ART } from '../../src/data/art';
 import { RENDER_SCALE } from '../../src/config';
+import { writeFile } from 'node:fs/promises';
 
 test('待机与行走的全部帧使用相同眼睛像素，左右移动时不改变形状', async ({ page }, info) => {
   // 只保留上一帧的真实 WebGL 输出供读取，不改贴图、输入或动画时间。
@@ -21,6 +22,7 @@ test('待机与行走的全部帧使用相同眼睛像素，左右移动时不�
   });
   await page.goto('/?scene=Game&seed=42&god=1');
   await page.waitForFunction(() => !!window.__AVN__?.demo?.visual?.face?.visible);
+  const directions: string[] = [];
   for (const key of ['d', 'a']) {
     const masks: string[] = [];
     await page.keyboard.down(key);
@@ -74,6 +76,17 @@ test('待机与行走的全部帧使用相同眼睛像素，左右移动时不�
     expect(eyePixels).toBeGreaterThan(8);
     expect(eyePixels).toBeLessThan(80);
     expect(new Set(masks).size).toBe(1);
+    directions.push(masks[0]!);
     await page.screenshot({ path: info.outputPath(`stable-face-${key}.png`) });
   }
+  const width = Math.round(HERO_ART.face.rect[2] * HERO_ART.scale * RENDER_SCALE);
+  const mirrored = directions[0]!
+    .match(new RegExp(`.{${width}}`, 'g'))!
+    .map((row) => [...row].reverse().join(''))
+    .join('');
+  await writeFile(
+    info.outputPath('eye-mirror-pixels.json'),
+    JSON.stringify({ width, right: directions[0], left: directions[1], mirroredRight: mirrored }),
+  );
+  expect(directions[1], '左朝向必须逐行等于右朝向的镜像，眼睛不能多出一列').toBe(mirrored);
 });

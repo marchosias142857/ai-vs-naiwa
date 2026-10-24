@@ -141,10 +141,10 @@ export class ActorArt {
         .setFlipX(flipBody)
         .setOrigin(flipBody ? 1 - f.pivot.x / f.rect[2] : f.pivot.x / f.rect[2], f.pivot.y / f.rect[3])
         .setScale(scale);
-      // 固定脸部的采样相位；原帧裁切宽度各不相同，不能用它们的边缘对齐眼睛。
+      // 对齐同一条源图边缘：未翻转对齐左边，翻转后对齐右边，取样才能严格镜像。
       const face = action === 'idle' || action === 'run' ? character.face : undefined;
       const anchor = face ?? f;
-      const originX = (flipBody ? anchor.rect[2] - anchor.pivot.x : anchor.pivot.x) * scale;
+      const originX = (flipBody ? -anchor.pivot.x : anchor.pivot.x) * scale;
       const originY = anchor.pivot.y * scale;
       image.setPosition(
         Math.round((a.x - originX) * RENDER_SCALE) / RENDER_SCALE + originX,
