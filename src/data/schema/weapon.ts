@@ -23,6 +23,8 @@ export const FirePatternIdSchema = z.enum([
   'homing',
   'bounce',
   'charge',
+  'radial',
+  'twin',
 ]);
 
 /** 武器。玩家与敌人的攻击都用这份结构。 */
@@ -52,6 +54,8 @@ export const WeaponDefSchema = z.strictObject({
   knockback: z.number().min(0),
   critChance: Probability,
   pattern: FirePatternIdSchema,
+  /** burst 的弹间隔，秒；其他弹道不用。 */
+  burstInterval: PositiveNumber.optional(),
   bulletSprite: TextureKeySchema,
 });
 
