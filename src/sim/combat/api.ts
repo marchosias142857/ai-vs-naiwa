@@ -117,7 +117,18 @@ export interface CombatWorldOptions {
  * 一局战斗的规则状态。每次重来新建一个，不复用旧对象。
  * 实体与子弹的编号都由 sim 分配（取代 ADR 0002 中「由 game 层分配」的说法，见 ADR 0003）。
  */
+export interface MeleeState {
+  active: boolean;
+  weaponId: WeaponId;
+  angle: number;
+  remaining: number;
+  duration: number;
+  damage: number;
+  hitIds: EntityId[];
+}
+
 export interface CombatWorld {
+  readonly melee: Readonly<MeleeState>;
   /** sim 时间，秒，从 0 开始，只随 `step` 的 dt 增长。 */
   readonly time: number;
   /** 当前全部实体（含预警中与已死亡、尚未移除的）。数组由 sim 复用，不要修改或跨帧保存。 */
@@ -253,6 +264,7 @@ export interface BulletState {
 
 /** `CombatWorld.save()` 的结果：纯 JSON 数据，不含引用（ADR 0019）。 */
 export interface CombatWorldState {
+  melee: MeleeState;
   time: number;
   nextId: number;
   playerId: EntityId | null;

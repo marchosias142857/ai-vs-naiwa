@@ -3,6 +3,7 @@ import type { WeaponDef } from './schema';
 /** 武器。手感参照「元气骑士」的初始手枪（负责人确认的 M1 参照对象）。 */
 const pistol = {
   name: 'weapon.pistol_basic',
+  attack: 'projectile',
   rarity: 'white',
   type: 'pistol',
   damage: 3,
@@ -118,6 +119,30 @@ export const WEAPONS = {
     spread: 90,
     pattern: 'spread',
     energyCost: 3,
+  },
+  cutlass: {
+    ...pistol,
+    name: 'weapon.cutlass',
+    type: 'melee',
+    attack: 'melee',
+    pattern: 'melee_arc',
+    damage: 9,
+    fireRate: 2.5,
+    spread: 0,
+    knockback: 10,
+    melee: { range: 29, arcDegrees: 110, duration: 0.18, cooldown: 0.4 },
+  },
+  anchor_hammer: {
+    ...pistol,
+    name: 'weapon.anchor_hammer',
+    type: 'melee',
+    attack: 'melee',
+    pattern: 'melee_arc',
+    damage: 20,
+    fireRate: 1.25,
+    spread: 0,
+    knockback: 22,
+    melee: { range: 25, arcDegrees: 150, duration: 0.3, cooldown: 0.8 },
   },
 } as const satisfies Record<string, WeaponDef>;
 

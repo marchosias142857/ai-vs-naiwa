@@ -1,3 +1,4 @@
+import type { WeaponDef } from '../../data/schema';
 import { ATTACKS } from '../../data/attacks';
 import { CHARACTERS } from '../../data/characters';
 import { DUNGEON } from '../../data/dungeon';
@@ -114,6 +115,28 @@ export function createSimDecoder(limits: SaveLimits): (value: unknown, seed: num
       (w.player.weaponId !== 'pistol_basic' && w.player.weaponId !== w.secondaryWeapon)
     )
       return null;
+    const m = w.melee,
+      meleeDef = WEAPONS[m.weaponId] as WeaponDef;
+    if (
+      m.remaining > m.duration ||
+      new Set(m.hitIds).size !== m.hitIds.length ||
+      m.hitIds.some(
+        (id) =>
+          id >= w.nextId ||
+          id === w.playerId ||
+          w.bullets.some((b) => b.id === id) ||
+          w.actors.some((a) => a.id === id && a.team === 'player'),
+      ) ||
+      (m.active &&
+        (!meleeDef.melee ||
+          w.player.weaponId !== m.weaponId ||
+          w.playerDied ||
+          m.remaining <= 0 ||
+          m.damage <= 0 ||
+          m.duration > meleeDef.melee.duration)) ||
+      (!m.active && m.remaining !== 0)
+    )
+      return null;
     const resources = w.resources;
     if (resources.armor > resources.maxArmor || resources.energy > resources.maxEnergy) return null;
     for (const b of w.bullets) {
@@ -127,6 +150,7 @@ export function createSimDecoder(limits: SaveLimits): (value: unknown, seed: num
       )
         return null;
       const def = defs[b.source]!;
+      if ('attack' in def && def.attack !== 'projectile') return null;
       if (
         b.pierceLeft > def.pierce ||
         b.hitIds.length > def.pierce ||

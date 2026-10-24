@@ -69,5 +69,8 @@
   "menu.continueEntry": "Continue floor {floor} (from entrance)",
   "save.updated": "Game updated. Continue from this floor’s entrance.",
   "save.invalid": "Snapshot invalid. Continue from this floor’s entrance.",
-  "save.corrupt": "Save corrupted. Unable to continue."
+  "save.corrupt": "Save corrupted. Unable to continue.",
+  "weapon.cutlass": "Tide Cutlass",
+  "weapon.anchor_hammer": "Anchor Hammer",
+  "character.ai_proto": "Da Fei Yu"
 }

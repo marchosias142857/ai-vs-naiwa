@@ -53,6 +53,31 @@ describe('完整 sim 存档字段与业务校验', () => {
     expect(decode(s, 42)).toBe(s);
     expect(JSON.stringify(s)).toBe(before);
   });
+  it('挥动中快照通过两套字段规则，拒绝异常计时、武器与重复命中记录', () => {
+    const s = sample();
+    const world = createCombatWorld({ seed: 42, bus: new EventBus<GameEvents>() });
+    world.load(s.world);
+    world.takeWeapon('cutlass');
+    const input = createInputFrame();
+    input.fire = true;
+    for (let i = 0; i < 180 && !world.melee.active; i++) world.step(1 / 60, input);
+    s.world = world.save();
+    expect(s.world.melee.active).toBe(true);
+    expect(validateSaveFields(s, fields)).toBe(true);
+    expect(schema.safeParse(s).success).toBe(true);
+    expect(decode(s, 42)).toBe(s);
+    for (const change of [
+      { remaining: s.world.melee.duration + 1 },
+      { weaponId: 'pistol_basic' as const },
+      { hitIds: [s.world.playerId!] },
+      { hitIds: [s.world.nextId, s.world.nextId] },
+      { active: false },
+    ]) {
+      const copy = structuredClone(s);
+      Object.assign(copy.world.melee, change);
+      expect(decode(copy, 42)).toBeNull();
+    }
+  });
   it('合法负坐标、速度、击退计时、AI 冷却不被夹掉；已回收 owner 仍合法', () => {
     const s = sample(),
       a = s.world.actors[0]!;

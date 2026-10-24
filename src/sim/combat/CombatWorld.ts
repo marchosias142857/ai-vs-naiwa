@@ -1,3 +1,5 @@
+import { sectorHitsCircle } from '../weapons/melee';
+import type { MeleeState } from './api';
 import { LOOT_RULES } from '../../data/loot';
 import { UPGRADES, type UpgradeId } from '../../data/player';
 import { PlayerResources } from '../stats/PlayerResources';
@@ -292,6 +294,24 @@ function createPayloads() {
       y: 0,
       angle: 0,
     })),
+    swung: new PayloadStack<GameEvents['weapon:swung']>(() => ({
+      ownerId: 0,
+      weaponId: '',
+      x: 0,
+      y: 0,
+      angle: 0,
+      duration: 0,
+      range: 0,
+      arcDegrees: 0,
+    })),
+    meleeHit: new PayloadStack<GameEvents['melee:hit']>(() => ({
+      team: 'player',
+      x: 0,
+      y: 0,
+      angle: 0,
+      targetId: 0,
+      critical: false,
+    })),
     hit: new PayloadStack<GameEvents['bullet:hit']>(() => ({
       team: 'player',
       x: 0,
@@ -304,6 +324,15 @@ function createPayloads() {
 }
 
 class CombatWorldImpl implements CombatWorld {
+  readonly melee: MeleeState = {
+    active: false,
+    weaponId: 'cutlass',
+    angle: 0,
+    remaining: 0,
+    duration: 0,
+    damage: 0,
+    hitIds: [],
+  };
   time = 0;
   readonly actors: Actor[] = [];
   playerId: EntityId | null = null;
@@ -379,6 +408,9 @@ class CombatWorldImpl implements CombatWorld {
     p.weaponId = id;
     p.pattern = getPattern(p.weapon.pattern);
     p.burstLeft = 0;
+    this.melee.active = false;
+    this.melee.remaining = 0;
+    this.melee.hitIds.length = 0;
     return true;
   }
 
@@ -515,6 +547,7 @@ class CombatWorldImpl implements CombatWorld {
         this.time += dt;
         for (const actor of this.actors) this.tickActor(actor, dt);
         this.updatePlayer(input, dt);
+        this.updateMelee(dt);
         this.updateEnemies(dt);
         for (const actor of this.actors) this.applyVelocity(actor);
       }
@@ -654,6 +687,7 @@ class CombatWorldImpl implements CombatWorld {
         hitIds: b.hitIds.slice(0, b.hitCount),
       });
     return {
+      melee: { ...this.melee, hitIds: [...this.melee.hitIds] },
       time: this.time,
       nextId: this.nextId,
       playerId: this.playerId,
@@ -682,6 +716,8 @@ class CombatWorldImpl implements CombatWorld {
       throw new Error('只能把存档写入刚创建的世界');
     if (state.actors.length > this.actorPool.length || state.bullets.length > this.bulletPool.length)
       throw new RangeError('存档超出实体或子弹容量');
+    Object.assign(this.melee, state.melee);
+    this.melee.hitIds = [...state.melee.hitIds];
     this.time = state.time;
     this.nextId = state.nextId;
     this.playerId = state.playerId;
@@ -870,7 +906,7 @@ class CombatWorldImpl implements CombatWorld {
         p.burstLeft = p.weapon.pellets - 1;
         p.burstWait = p.weapon.burstInterval ?? 1 / p.weapon.fireRate;
       }
-      p.cooldown += 1 / (p.weapon.fireRate * r.fireRateScale);
+      p.cooldown += (p.weapon.melee?.cooldown ?? 1 / p.weapon.fireRate) / r.fireRateScale;
     }
   }
 
@@ -879,6 +915,10 @@ class CombatWorldImpl implements CombatWorld {
     p: { weapon: Readonly<WeaponDef>; weaponId: string; pattern: FirePattern },
   ): void {
     if (owner.team === 'player' && !this.resources.canFire(p.weapon.energyCost)) return;
+    if (p.weapon.attack === 'melee') {
+      this.startMelee(owner, p.weapon, p.weaponId as WeaponId);
+      return;
+    }
     // 枪口：身体中心（脚底向上一个半径）沿朝向前移一个半径再加 2 像素。
     const reach = owner.radius + 2;
     const muzzleX = owner.x + Math.cos(owner.facing) * reach;
@@ -907,6 +947,81 @@ class CombatWorldImpl implements CombatWorld {
     } finally {
       this.payloads.fired.release();
     }
+  }
+
+  private startMelee(owner: Actor, weapon: Readonly<WeaponDef>, weaponId: WeaponId): void {
+    const def = weapon.melee;
+    if (!def || this.melee.active) return;
+    const m = this.melee;
+    m.active = true;
+    m.weaponId = weaponId;
+    m.angle = owner.facing;
+    m.remaining = m.duration = def.duration / this.resources.fireRateScale;
+    m.damage = weapon.damage * this.resources.damageScale;
+    m.hitIds.length = 0;
+    this.resources.spend(weapon.energyCost);
+    const e = this.payloads.swung.acquire();
+    try {
+      e.ownerId = owner.id;
+      e.weaponId = weaponId;
+      e.x = owner.x;
+      e.y = owner.y;
+      e.angle = m.angle;
+      e.duration = m.duration;
+      e.range = def.range;
+      e.arcDegrees = def.arcDegrees;
+      this.bus.emit('weapon:swung', e);
+    } finally {
+      this.payloads.swung.release();
+    }
+  }
+
+  private updateMelee(dt: number): void {
+    const m = this.melee;
+    if (!m.active) return;
+    const owner = this.playerId === null ? undefined : this.byId.get(this.playerId);
+    if (!owner || owner.phase !== 'active') {
+      m.active = false;
+      m.remaining = 0;
+      return;
+    }
+    const weapon: Readonly<WeaponDef> = WEAPONS[m.weaponId],
+      def = weapon.melee!;
+    // 倒序容忍死亡监听器立即回收实体；本次挥动每个 id 只结算一次。
+    for (let i = this.actors.length - 1; i >= 0; i--) {
+      const a = this.actors[i];
+      if (
+        !a ||
+        a.team === owner.team ||
+        a.phase !== 'active' ||
+        m.hitIds.includes(a.id) ||
+        !sectorHitsCircle(a.x - owner.x, a.y - owner.y, a.radius, m.angle, def.range, def.arcDegrees) ||
+        !this.lineOfSight(owner.x, owner.y, a.x, a.y)
+      )
+        continue;
+      m.hitIds.push(a.id);
+      const critical = !this.ignoresDamage(a) && this.critRng.chance(weapon.critChance);
+      const dx = Math.cos(m.angle),
+        dy = Math.sin(m.angle);
+      if (!this.ignoresDamage(a)) {
+        this.damage(a, m.damage * (critical ? BALANCE.critMultiplier : 1), critical, dx, dy, owner.id);
+        if (a.phase === 'active' && weapon.knockback > 0) this.knockBack(a, dx, dy, weapon.knockback);
+      }
+      const e = this.payloads.meleeHit.acquire();
+      try {
+        e.team = owner.team;
+        e.x = a.x;
+        e.y = a.y;
+        e.angle = m.angle;
+        e.targetId = a.id;
+        e.critical = critical;
+        this.bus.emit('melee:hit', e);
+      } finally {
+        this.payloads.meleeHit.release();
+      }
+    }
+    m.remaining = Math.max(0, m.remaining - dt);
+    if (m.remaining === 0) m.active = false;
   }
 
   private addBullet(x: number, y: number, angle: number): boolean {
@@ -1058,7 +1173,11 @@ class CombatWorldImpl implements CombatWorld {
     target.base.x = 0;
     target.base.y = 0;
     this.applyVelocity(target);
-    if (target.id === this.playerId) this.playerDied = true;
+    if (target.id === this.playerId) {
+      this.playerDied = true;
+      this.melee.active = false;
+      this.melee.remaining = 0;
+    }
     const d = this.payloads.died.acquire();
     try {
       d.id = target.id;
