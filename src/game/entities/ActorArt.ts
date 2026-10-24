@@ -27,6 +27,7 @@ interface ArtSlot {
 export class ActorArt {
   readonly slots: ArtSlot[] = [];
   readonly weapon: GameObjects.Image;
+  showWeapon = true;
   private readonly arc: GameObjects.Graphics;
   constructor(
     private readonly scene: Scene,
@@ -142,7 +143,7 @@ export class ActorArt {
         Math.round((a.x - originX) * RENDER_SCALE) / RENDER_SCALE + originX,
         Math.round((a.y - originY) * RENDER_SCALE) / RENDER_SCALE + originY,
       );
-      if (a.phase !== 'active') continue;
+      if (a.phase !== 'active' || !this.showWeapon) continue;
       const id = this.sim.weaponId,
         art = WEAPON_ART[id],
         m = this.sim.melee;
