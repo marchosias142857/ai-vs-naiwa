@@ -65,6 +65,7 @@ export class StressRun {
     if (fixed) this.sim.hitActor = () => false;
     scene.add.rectangle(B.x + B.width / 2, B.y + B.height / 2, B.width, B.height, COLORS.floor);
     this.bridge = new CombatBridge(scene, this.sim);
+    this.bridge.actors.enableArt(scene);
     this.arena = new RoomArena(scene, this.bridge, fixed);
     this.arena.setLayout(ROOM_LAYOUTS.length - 1);
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, this.bus);

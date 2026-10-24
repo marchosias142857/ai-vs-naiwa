@@ -83,6 +83,7 @@ export class DemoSession {
     }
     if (!restored && weapon && Object.hasOwn(WEAPONS, weapon)) this.sim.takeWeapon(weapon as WeaponId);
     this.bridge = new CombatBridge(scene, this.sim);
+    this.bridge.actors.enableArt(scene);
     this.arena = new RoomArena(scene, this.bridge);
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, bus);
     this.dungeon = restored
