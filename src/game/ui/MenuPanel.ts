@@ -39,6 +39,7 @@ export class MenuPanel {
       : t('menu.noSave');
     resume.disabled = !checkpoint;
     const help = document.createElement('p');
+    help.className = 'menu-help';
     help.textContent = t('menu.help');
     const controls = document.createElement('p');
     controls.className = 'menu-controls';
@@ -48,6 +49,7 @@ export class MenuPanel {
     summary.textContent = t('menu.instructions');
     instructions.append(summary, controls);
     const stats = document.createElement('p');
+    stats.className = 'menu-stats';
     stats.textContent = t('menu.stats', { runs: profile.runs, wins: profile.wins, kills: profile.kills });
     const note = document.createElement('small');
     note.textContent = t('menu.note');
@@ -111,7 +113,10 @@ export class MenuPanel {
       stats,
       note,
     );
-    addSettings(this.root, this.abort.signal, () => scene.scene.restart());
+    const settingsRow = document.createElement('div');
+    settingsRow.className = 'menu-settings';
+    addSettings(settingsRow, this.abort.signal, () => scene.scene.restart());
+    this.root.append(settingsRow);
     document.documentElement.lang = settings.language;
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);

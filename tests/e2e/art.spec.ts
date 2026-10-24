@@ -89,6 +89,18 @@ test('重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记�
 test('标题与 HUD 完整画面；触屏提示使用轮盘说明', async ({ page, isMobile }, info) => {
   await page.goto('/?seed=42&god=1');
   await expect(page.locator('#start-run')).toBeVisible();
+  const layout = await page.locator('#demo-menu-panel').evaluate((panel) => {
+    const controls = Array.from(panel.querySelectorAll('.menu-settings button'));
+    return {
+      bottom: Math.max(...controls.map((button) => button.getBoundingClientRect().bottom)),
+      rows: new Set(controls.map((button) => button.getBoundingClientRect().top)).size,
+      viewport: innerHeight,
+      scroll: panel.scrollTop,
+    };
+  });
+  expect(layout.rows).toBe(1);
+  expect(layout.bottom).toBeLessThanOrEqual(layout.viewport);
+  expect(layout.scroll).toBe(0);
   await page.screenshot({ path: info.outputPath('demo-title.png') });
   await page.locator('#start-run').click();
   await page.waitForFunction(() => !!window.__AVN__?.demo?.visual);

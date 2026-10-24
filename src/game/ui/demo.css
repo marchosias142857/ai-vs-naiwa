@@ -158,14 +158,16 @@
   background: #a1e2d5;
   border-color: #d5f7dd;
 }
-#demo-menu-panel #settings-sound,
-#demo-menu-panel #settings-flashes,
-#demo-menu-panel #settings-language {
-  display: inline-block;
-  width: calc(33.33% - 5px);
-  margin-right: 5px;
+#demo-menu-panel .menu-settings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  margin-top: 12px;
+}
+#demo-menu-panel .menu-settings button {
+  width: 100%;
+  margin: 0;
   font-size: 10px;
-  vertical-align: top;
 }
 #demo-menu-panel details {
   margin: 10px 0;
@@ -176,6 +178,7 @@
   padding: 5px 0;
 }
 #demo-menu-panel small {
+  display: block;
   color: #809ca7;
 }
 .demo-status {
@@ -260,6 +263,28 @@
   }
   #demo-menu-panel .menu-brand {
     margin-bottom: 5px;
+  }
+  #demo-menu-panel .menu-help {
+    font-size: 10px;
+    line-height: 1.35;
+  }
+  #demo-menu-panel h2 {
+    margin-bottom: 3px;
+  }
+  #demo-menu-panel details {
+    margin: 3px 0;
+  }
+  #demo-menu-panel summary {
+    padding: 2px 0;
+  }
+  #demo-menu-panel .menu-settings {
+    margin-top: 5px;
+  }
+  #demo-menu-panel small {
+    display: none;
+  }
+  #demo-menu-panel .menu-stats {
+    font-size: 10px;
   }
   .demo-status {
     padding: 5px;
