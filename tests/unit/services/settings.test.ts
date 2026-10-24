@@ -18,5 +18,5 @@ it('设置容错；中英文键和替换占位符完整一致', () => {
   settings.language = 'en';
   expect(t('menu.continue', { floor: 2 })).toContain('floor 2');
   settings.language = 'zh-CN';
-  expect(t('app.title')).toBe('AI 大战奶蛙');
+  expect(t('app.title')).toBe('AI娘大战奶蛙');
 });

@@ -45,13 +45,13 @@ test.afterAll(async () => {
 });
 
 async function start(page: Page, mode: 'battle' | 'offer' | 'exit' | 'plain' = 'battle') {
-  await page.goto(`${url}/save.html?seed=42&god=1`);
-  await page.locator('#start-run').click();
+  await page.goto(`${url}/save.html?scene=Game&seed=42&god=1`);
   await page.waitForFunction(() => !!window.__AVN__?.demo);
+  await page.evaluate(() => history.replaceState(null, '', 'save.html?seed=42&god=1'));
   await page.evaluate((m) => window.saveFixture.prepare(m), mode);
 }
 async function resume(page: Page) {
-  await page.reload();
+  await page.goto(`${url}/save.html?seed=42&god=1`);
   await page.locator('#continue-run').click();
   await page.waitForFunction(() => !!window.__AVN__?.demo);
 }

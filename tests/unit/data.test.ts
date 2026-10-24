@@ -1,3 +1,5 @@
+import { HUB } from '../../src/data/hub';
+import { HubSchema } from '../../src/data/schema/hub';
 import { describe, expect, it } from 'vitest';
 import { BALANCE } from '../../src/data/balance';
 import { CHARACTERS } from '../../src/data/characters';
@@ -56,4 +58,8 @@ describe('数据校验', () => {
     const ids = [...Object.keys(CHARACTERS), ...Object.keys(WEAPONS), ...Object.keys(ENEMIES)];
     expect(new Set(ids).size).toBe(ids.length);
   });
+});
+
+it('大厅布局与交互距离符合契约', () => {
+  expect(HubSchema.safeParse(HUB).success).toBe(true);
 });

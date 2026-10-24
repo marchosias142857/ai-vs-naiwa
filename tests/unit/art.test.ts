@@ -17,7 +17,6 @@ const files = [
   'weapons',
   'enemies',
   'environment',
-  'title',
   'doors',
 ];
 function dimensions(name: string) {
@@ -84,7 +83,7 @@ describe('真实 PNG 图集与持握数据', () => {
     expect(frameAt('run', 0.61)).toBe('run_0');
     expect(frameAt('death', 10)).toBe('death_3');
   });
-  it('全部资源是 PNG，尺寸合法，单文件在离线缓存预算内', () => {
+  it('PNG 图集尺寸合法，单文件在离线缓存预算内', () => {
     for (const name of files) expect(dimensions(name)[0]).toBeGreaterThan(0);
     inImage(
       'da-fei-yu-pixel-v2',
@@ -101,6 +100,15 @@ describe('真实 PNG 图集与持握数据', () => {
     inImage('enemies', Object.values(ENEMY_ART));
     inImage('environment', Object.values(ENVIRONMENT_ART));
     inImage('doors', Object.values(DOOR_ART));
+  });
+  it('新开屏采用无损 WebP，纳入离线缓存且旧图已移除', () => {
+    const file = 'public/assets/demo/title-confrontation-v1.webp';
+    const buffer = readFileSync(file);
+    expect(buffer.subarray(0, 4).toString()).toBe('RIFF');
+    expect(buffer.subarray(8, 16).toString()).toBe('WEBPVP8L');
+    expect(statSync(file).size).toBeLessThan(2 * 1024 * 1024);
+    expect(readFileSync('vite.config.ts', 'utf8')).toContain('webp');
+    expect(() => statSync('public/assets/demo/title.png')).toThrow();
   });
   it('朝左原图的握持点在身体前方；逐帧换向不会改变固定标准握持距离', () => {
     expect(HERO_ART.nativeFacing).toBe('left');

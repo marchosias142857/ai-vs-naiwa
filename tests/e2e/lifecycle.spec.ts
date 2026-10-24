@@ -17,7 +17,7 @@ test('竖屏：桌面留黑边继续运行，触屏显示遮罩并暂停；转�
     expect(canvas.y + canvas.height).toBeLessThan(portrait.height);
     await page.screenshot({ path: info.outputPath('lifecycle-portrait.png') });
     await page.keyboard.press('Enter');
-    await page.waitForFunction(() => window.__AVN__?.scene === 'Game');
+    await page.waitForFunction(() => window.__AVN__?.scene === 'Hub');
     await page.setViewportSize(landscape);
     await expect(page.locator('#rotate-overlay')).toBeHidden();
     expect(await page.evaluate(() => window.__AVN__?.lifecycle?.loopRunning)).toBe(true);
@@ -42,7 +42,7 @@ test('竖屏：桌面留黑边继续运行，触屏显示遮罩并暂停；转�
     .poll(() => page.evaluate(() => window.__AVN__?.lifecycle?.frame ?? 0))
     .toBeGreaterThan(before!.frame);
   await page.locator('#start-run').click();
-  await page.waitForFunction(() => window.__AVN__?.scene === 'Game');
+  await page.waitForFunction(() => window.__AVN__?.scene === 'Hub');
 });
 
 test('后台暂停与输入设备的竖屏策略独立', async ({ page, isMobile }) => {

@@ -26,6 +26,7 @@ export const WEAPONS = {
   rifle_auto: {
     ...pistol,
     name: 'weapon.rifle_auto',
+    rarity: 'green',
     type: 'rifle',
     damage: 2,
     fireRate: 9,
@@ -35,6 +36,7 @@ export const WEAPONS = {
   shotgun_fan: {
     ...pistol,
     name: 'weapon.shotgun_fan',
+    rarity: 'green',
     type: 'shotgun',
     damage: 3,
     fireRate: 1.8,
@@ -47,6 +49,7 @@ export const WEAPONS = {
   sniper_pierce: {
     ...pistol,
     name: 'weapon.sniper_pierce',
+    rarity: 'purple',
     type: 'sniper',
     damage: 12,
     fireRate: 1,
@@ -59,6 +62,7 @@ export const WEAPONS = {
   twin_smg: {
     ...pistol,
     name: 'weapon.twin_smg',
+    rarity: 'blue',
     type: 'rifle',
     damage: 2,
     fireRate: 6,
@@ -69,6 +73,7 @@ export const WEAPONS = {
   ring_staff: {
     ...pistol,
     name: 'weapon.ring_staff',
+    rarity: 'orange',
     type: 'staff',
     damage: 4,
     fireRate: 1.2,
@@ -80,6 +85,7 @@ export const WEAPONS = {
   burst_rifle: {
     ...pistol,
     name: 'weapon.burst_rifle',
+    rarity: 'blue',
     type: 'rifle',
     damage: 3,
     fireRate: 2,
@@ -91,6 +97,7 @@ export const WEAPONS = {
   heavy_cannon: {
     ...pistol,
     name: 'weapon.heavy_cannon',
+    rarity: 'orange',
     type: 'pistol',
     damage: 15,
     fireRate: 0.8,
@@ -102,6 +109,7 @@ export const WEAPONS = {
   needle_rifle: {
     ...pistol,
     name: 'weapon.needle_rifle',
+    rarity: 'purple',
     type: 'rifle',
     damage: 1.5,
     fireRate: 12,
@@ -112,6 +120,7 @@ export const WEAPONS = {
   wide_staff: {
     ...pistol,
     name: 'weapon.wide_staff',
+    rarity: 'blue',
     type: 'staff',
     damage: 4,
     fireRate: 1.5,
@@ -123,6 +132,7 @@ export const WEAPONS = {
   cutlass: {
     ...pistol,
     name: 'weapon.cutlass',
+    rarity: 'green',
     type: 'melee',
     attack: 'melee',
     pattern: 'melee_arc',
@@ -135,6 +145,7 @@ export const WEAPONS = {
   anchor_hammer: {
     ...pistol,
     name: 'weapon.anchor_hammer',
+    rarity: 'purple',
     type: 'melee',
     attack: 'melee',
     pattern: 'melee_arc',

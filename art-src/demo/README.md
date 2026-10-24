@@ -73,3 +73,7 @@ Original production videogame environment asset atlas, crisp pixel-art, top-down
 ### 主菜单
 
 Create a polished original game title-screen background, landscape 16:9 pixel-art illustration. Use the attached blue-haired fish-maid character sprite sheet as the identity reference for the protagonist Da Fei Yu. Original nautical dungeon adventure, warm invitation and sense of mystery. Place the blue-haired fish girl on the RIGHT THIRD of the composition in three-quarter view: white maid cap, navy and white frilled dress, one hand lifting skirt, the other holding a little ivory and teal pistol with a peach-colored hand. Cute determined face, blue finlike hair flowing behind. She stands on a weathered stone bridge over dark turquoise water leading into a sunken temple doorway. Small green frog enemies peek from coral ruins in far background. A floating teal crystal lights her face; amber lanterns, cream stone arches, subtle gold shell motifs. LEFT HALF intentionally quiet and very dark navy with only soft distant silhouette, suitable for a readable menu overlay. Keep all text and titles absent. Strong art direction, deliberate clean pixel clusters, limited palette, beautifully layered environment, no interface, no labels, no grids, no watermark. This is a game key art composition, not a sprite sheet. All characters and architecture original, do not imitate any existing franchise. Opaque full bleed PNG.
+
+## 主城入口新版插画
+
+旧 `title.png` 已删除。开屏右侧改用 `title-confrontation-v1.webp`，两张负责人角色参考生成的对峙构图；左侧由原生 UI 放标题和入口。[制作与提示记录](title-confrontation-prompt.md)。

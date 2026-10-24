@@ -54,4 +54,5 @@ export const SCENES = {
   preload: 'Preload',
   menu: 'Menu',
   game: 'Game',
+  hub: 'Hub',
 } as const;

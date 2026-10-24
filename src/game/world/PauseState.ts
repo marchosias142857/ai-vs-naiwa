@@ -1,4 +1,4 @@
-export type PauseReason = 'manual' | 'lifecycle' | 'upgrade' | 'finished' | 'restore';
+export type PauseReason = 'manual' | 'lifecycle' | 'upgrade' | 'finished' | 'restore' | 'interaction';
 
 /** 原因分别持有暂停；倒计时结束只释放 restore，输入清理由每次变更回调统一完成。 */
 export class PauseState {

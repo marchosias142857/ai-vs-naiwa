@@ -1,5 +1,5 @@
 {
-  "app.title": "AI 大战奶蛙",
+  "app.title": "AI娘大战奶蛙",
   "menu.subtitle": "大肥鱼 · 潮汐遗迹",
   "menu.new": "开始新一局",
   "menu.continue": "继续第 {floor} 层",
@@ -94,5 +94,24 @@
   "hint.weapon.keyboard": "E 拾取：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
   "hint.weapon.touch": "点击「拾取」：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
   "hint.weapon.gamepad": "A 拾取：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
-  "hint.noEnergy": "能量不足：切回基础手枪即可继续射击（不耗能）。"
+  "hint.noEnergy": "能量不足：切回基础手枪即可继续射击（不耗能）。",
+  "menu.town": "回到主城",
+  "menu.resume": "继续冒险",
+  "menu.savedFloor": "已有存档 · 第 {floor} 层",
+  "menu.options": "设置",
+  "hub.title": "主城",
+  "hub.hint": "走向大门，开启新的冒险",
+  "hub.interact": "交互 · E / A",
+  "hub.question": "进入地牢？",
+  "hub.enter": "进入地牢",
+  "hub.newRun": "从第 1 层开始新的冒险。",
+  "hub.replaceSave": "进入后将开始新的冒险，并替换之前的冒险存档。",
+  "weapon.qualityLabel": "{name}［{quality}品质］",
+  "quality.white": "白色",
+  "quality.green": "绿色",
+  "quality.blue": "蓝色",
+  "quality.purple": "紫色",
+  "quality.orange": "橙色",
+  "quality.red": "红色",
+  "hub.cancel": "留在主城"
 }

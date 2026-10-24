@@ -1,6 +1,23 @@
-import { test, expect } from '@playwright/test';
+import { startAdventure } from './helpers/town';
+import { test, expect, type Page } from '@playwright/test';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { RENDER_SCALE } from '../../src/config';
 import { HERO_ART, HERO_FRAMES } from '../../src/data/art';
+
+/** Phaser 在解码后释放 blob URL；从实际素材响应核对字节，再检查渲染纹理和尺寸。 */
+function captureImageSource(page: Page, file: string): Promise<Buffer> {
+  return page
+    .waitForResponse((response) => response.url().endsWith(`/assets/demo/${file}`))
+    .then((response) => response.body());
+}
+function expectImageSource(bytes: Buffer, file: string): void {
+  expect(createHash('sha256').update(bytes).digest('hex')).toBe(
+    createHash('sha256')
+      .update(readFileSync(`public/assets/demo/${file}`))
+      .digest('hex'),
+  );
+}
 
 test('待机与行走完整循环；停步重新待机、暂停冻结动作', async ({ page }) => {
   await page.goto('/?scene=Game&seed=42&god=1');
@@ -41,6 +58,7 @@ test('待机与行走完整循环；停步重新待机、暂停冻结动作', as
 });
 
 test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中心', async ({ page }, info) => {
+  const heroImage = captureImageSource(page, HERO_ART.source);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/?scene=Game&seed=42&god=1&debug=1');
@@ -73,7 +91,8 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
     );
     const v = (await page.evaluate(() => window.__AVN__!.demo!.visual))!;
     expect(v.texture).toBe(HERO_ART.texture);
-    expect(v.source).toContain(HERO_ART.source);
+    expectImageSource(await heroImage, HERO_ART.source);
+    expect([v.sourceWidth, v.sourceHeight]).toEqual([1536, 1024]);
     expect(v.flipX).toBe(Math.cos(v.weapon.angle) >= 0);
     expect(v.weapon.flipY).toBe(!v.flipX);
     expect(v.weapon.depth < v.depth).toBe(dy === -1);
@@ -98,7 +117,7 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
 
 test('重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记录', async ({ page }, info) => {
   await page.goto('/?seed=42&god=1&weapon=anchor_hammer');
-  await page.locator('#start-run').click();
+  await startAdventure(page);
   await page.waitForFunction(() => window.__AVN__?.demo?.weapon === 'anchor_hammer');
   const canvas = (await page.locator('#game canvas').boundingBox())!;
   await page.mouse.move(canvas.x + canvas.width * 0.6, canvas.y + canvas.height * 0.5);
@@ -138,6 +157,7 @@ test('重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记�
 test('标题与 HUD 完整画面；触屏提示使用轮盘说明', async ({ page, isMobile }, info) => {
   await page.goto('/?seed=42&god=1');
   await expect(page.locator('#start-run')).toBeVisible();
+  await page.locator('#demo-menu-panel summary').click();
   const layout = await page.locator('#demo-menu-panel').evaluate((panel) => {
     const controls = Array.from(panel.querySelectorAll('.menu-settings button'));
     return {
@@ -150,8 +170,9 @@ test('标题与 HUD 完整画面；触屏提示使用轮盘说明', async ({ pag
   expect(layout.rows).toBe(1);
   expect(layout.bottom).toBeLessThanOrEqual(layout.viewport);
   expect(layout.scroll).toBe(0);
+  await page.locator('#demo-menu-panel summary').click();
   await page.screenshot({ path: info.outputPath('demo-title.png') });
-  await page.locator('#start-run').click();
+  await startAdventure(page);
   await page.waitForFunction(() => !!window.__AVN__?.demo?.visual);
   await expect(page.locator('.demo-vitals [role=meter]')).toHaveCount(3);
   if (isMobile) {
@@ -162,6 +183,8 @@ test('标题与 HUD 完整画面；触屏提示使用轮盘说明', async ({ pag
 });
 
 test('参考图角色：受击使用新图集，死亡完整落地且隐藏武器', async ({ page }, info) => {
+  const heroImage = captureImageSource(page, HERO_ART.source);
+  const reactionImage = captureImageSource(page, HERO_ART.reactionSource);
   test.setTimeout(90_000);
   await page.goto('/?seed=42');
   await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
@@ -172,7 +195,7 @@ test('参考图角色：受击使用新图集，死亡完整落地且隐藏武�
       JSON.stringify({
         version: 1,
         seed: 42,
-        floor: 2,
+        floor: 1,
         upgrades: [],
         secondary: null,
         equipped: 'pistol_basic',
@@ -191,7 +214,7 @@ test('参考图角色：受击使用新图集，死亡完整落地且隐藏武�
   await page.waitForFunction(() => !!window.__AVN__?.demo?.visual);
   const initial = (await page.evaluate(() => window.__AVN__!.demo!.visual))!;
   expect(initial.texture).toBe(HERO_ART.texture);
-  expect(initial.source).toContain(HERO_ART.source);
+  expectImageSource(await heroImage, HERO_ART.source);
   expect([initial.sourceWidth, initial.sourceHeight]).toEqual([1536, 1024]);
   // 在页面内捕捉短受击窗口并立即暂停，避免协议往返错过动作。
   await page.evaluate(() => {
@@ -213,7 +236,7 @@ test('参考图角色：受击使用新图集，死亡完整落地且隐藏武�
   const hurt = (await page.evaluate(() => window.__AVN__!.demo!.visual))!;
   expect(HERO_ART.hurt).toContain(hurt.frame);
   expect(hurt.texture).toBe(HERO_ART.reactionTexture);
-  expect(hurt.source).toContain(HERO_ART.reactionSource);
+  expectImageSource(await reactionImage, HERO_ART.reactionSource);
   expect([hurt.sourceWidth, hurt.sourceHeight]).toEqual([1536, 1024]);
   await page.screenshot({ path: info.outputPath('reference-hurt.png') });
   await page.keyboard.press('Escape');

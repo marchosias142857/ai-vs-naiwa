@@ -6,6 +6,7 @@ import { debugParams } from './debug/params';
 import { bindLifecycle } from './game/bindLifecycle';
 import { BootScene } from './game/scenes/BootScene';
 import { GameScene } from './game/scenes/GameScene';
+import { HubScene } from './game/scenes/HubScene';
 import { MenuScene } from './game/scenes/MenuScene';
 import { PreloadScene } from './game/scenes/PreloadScene';
 import { setTestHooks } from './game/testHooks';
@@ -29,7 +30,7 @@ const config: Types.Core.GameConfig = {
     arcade: { debug: debugParams().debug },
   },
   input: { activePointers: 3, gamepad: true },
-  scene: [BootScene, PreloadScene, MenuScene, GameScene, InputScene],
+  scene: [BootScene, PreloadScene, MenuScene, HubScene, GameScene, InputScene],
 };
 
 setTestHooks({ ready: false, phaserVersion: VERSION });
