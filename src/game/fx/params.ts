@@ -11,7 +11,15 @@ export const INPUT_UI = {
   },
   pause: { inset: 28, radius: 18, hitRadius: 22, fontSize: 18 },
   /** Issue #64 已确认的固定开火轮盘；不绘制瞄准提示线。 */
-  aimWheel: { inset: 88, radius: 56, hitPadding: 12, knobRadius: 22, deadzone: 12, iconRadius: 6 },
+  aimWheel: {
+    inset: 88,
+    radius: 56,
+    hitPadding: 12,
+    knobRadius: 22,
+    deadzone: 12,
+    iconRadius: 6,
+    firstShotDelayMs: 120,
+  },
   resume: { radius: 40, fontSize: 16 },
   joystick: { homeInset: 100, radius: 52, knobRadius: 22, activeAlpha: 0.8, idleAlpha: 0.35 },
   moveArea: { widthFraction: 0.45, top: 48 },
