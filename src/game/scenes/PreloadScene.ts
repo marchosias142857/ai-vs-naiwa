@@ -1,3 +1,4 @@
+import { configureCamera } from '../configureCamera';
 import { Scene } from 'phaser';
 import { COLORS, GAME_HEIGHT, GAME_WIDTH, SCENES } from '../../config';
 import { debugParams } from '../../debug/params';
@@ -13,6 +14,7 @@ export class PreloadScene extends Scene {
   }
 
   preload(): void {
+    configureCamera(this);
     const barW = 160;
     const x = (GAME_WIDTH - barW) / 2;
     const y = GAME_HEIGHT / 2;

@@ -1,3 +1,4 @@
+import { configureCamera } from '../configureCamera';
 import { t } from '../../i18n/t';
 import { PausePanel } from './PausePanel';
 import { ActionButtons } from './ActionButtons';
@@ -31,6 +32,7 @@ export class InputScene extends Scene {
     super(InputScene.KEY);
   }
   create(data?: { demo?: boolean }): void {
+    configureCamera(this);
     // scene.restart 会复用场景实例；布局缓存必须清掉，否则同尺寸重来时跳过布局，暂停符号停在 (0, 0)。
     this.layoutScale = 0;
     const battle = this.scene.get(SCENES.game);

@@ -1,3 +1,4 @@
+import { configureCamera } from '../configureCamera';
 import { StressRun } from '../../debug/StressRun';
 import { CombatAudio } from '../fx/CombatAudio';
 import { parseCheckpoint, type FloorCheckpoint } from '../../sim/run/checkpoint';
@@ -28,6 +29,7 @@ export class GameScene extends M1Scene {
   private tools?: DebugTools;
   private persistence?: RunPersistence;
   override create(data?: GameStart): void {
+    configureCamera(this);
     this.demo = undefined;
     this.stress = undefined;
     const params = debugParams();

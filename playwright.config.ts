@@ -16,6 +16,11 @@ export default defineConfig({
       name: 'mobile-landscape',
       use: { ...devices['Pixel 7 landscape'] },
     },
+    {
+      name: 'webkit-mobile',
+      testMatch: /(?:mobileFire|hdPresentation)\.spec\.ts/,
+      use: { ...devices['iPhone 13 landscape'], browserName: 'webkit' },
+    },
   ],
   webServer: {
     command: 'npm run build && npx vite preview --port 4173 --strictPort',

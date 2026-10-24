@@ -7,6 +7,7 @@ import { PlayerResources } from '../stats/PlayerResources';
 import { ATTACKS, type AttackId } from '../../data/attacks';
 import { BALANCE } from '../../data/balance';
 import { CHARACTERS, type CharacterId } from '../../data/characters';
+import { characterArtFor } from '../../data/characterArt';
 import { ENEMIES, type EnemyId } from '../../data/enemies';
 import type { EnemyDef, WeaponDef } from '../../data/schema';
 import { WEAPONS, type WeaponId } from '../../data/weapons';
@@ -922,7 +923,15 @@ class CombatWorldImpl implements CombatWorld {
       return;
     }
     const muzzle = this.muzzle;
-    if (owner.team === 'player') playerMuzzle(muzzle, owner.x, owner.y, owner.facing, p.weaponId as WeaponId);
+    if (owner.team === 'player')
+      playerMuzzle(
+        muzzle,
+        owner.x,
+        owner.y,
+        owner.facing,
+        p.weaponId as WeaponId,
+        characterArtFor(owner.kind).standardGrip,
+      );
     else {
       muzzle.x = owner.x + Math.cos(owner.facing) * owner.radius;
       muzzle.y = owner.y + Math.sin(owner.facing) * owner.radius;

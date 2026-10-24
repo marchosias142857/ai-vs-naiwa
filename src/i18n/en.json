@@ -93,5 +93,6 @@
   "hint.fight.gamepad": "Defeat all enemies to open doors · B to dash",
   "hint.weapon.keyboard": "E to equip: {weapon} · Damage {damage} × {pellets} · Energy {cost}",
   "hint.weapon.touch": "Tap Pick up: {weapon} · Damage {damage} × {pellets} · Energy {cost}",
-  "hint.weapon.gamepad": "A to equip: {weapon} · Damage {damage} × {pellets} · Energy {cost}"
+  "hint.weapon.gamepad": "A to equip: {weapon} · Damage {damage} × {pellets} · Energy {cost}",
+  "hint.noEnergy": "Not enough energy. Switch to the basic pistol to keep firing (no energy cost)."
 }

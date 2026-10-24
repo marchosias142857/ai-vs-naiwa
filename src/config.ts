@@ -4,6 +4,8 @@
  */
 export const GAME_WIDTH = 480;
 export const GAME_HEIGHT = 270;
+/** 世界坐标保持存档兼容；渲染到 1080p，原图不再先压缩到 270p。 */
+export const RENDER_SCALE = 4;
 export const TILE_SIZE = 16;
 
 /** 对象池预热数量（docs/ARCHITECTURE.md「对象池」）。 */

@@ -1,4 +1,5 @@
-import { HERO_ART, WEAPON_ART } from '../../data/art';
+import { WEAPON_ART } from '../../data/art';
+import { CHARACTER_ART } from '../../data/characterArt';
 import { ATTACKS } from '../../data/attacks';
 import { BALANCE } from '../../data/balance';
 import { CHARACTERS } from '../../data/characters';
@@ -18,7 +19,7 @@ export const SAVE_VERSION = {
   build: new URL(import.meta.url).pathname,
   dataHash: hashString(
     JSON.stringify({
-      HERO_ART,
+      CHARACTER_ART,
       WEAPON_ART,
       ATTACKS,
       BALANCE,

@@ -20,6 +20,7 @@ export class RoomArena {
   private readonly graphics: GameObjects.Graphics;
   private readonly walls: Physics.Arcade.StaticGroup;
   private readonly slots: Physics.Arcade.Image[] = [];
+  private readonly doors: GameObjects.Image[] = [];
   private readonly colliders: Physics.Arcade.Collider[];
   constructor(
     scene: Scene,
@@ -28,6 +29,15 @@ export class RoomArena {
   ) {
     this.art = createRoomArt(scene);
     this.graphics = scene.add.graphics().setDepth(DEPTH.floor + 1);
+    if (this.art && scene.textures.exists(ART.doors))
+      for (let i = 0; i < 4; i++)
+        this.doors.push(
+          scene.add
+            .image(0, 0, ART.doors, 'open')
+            .setDisplaySize(64, 40)
+            .setDepth(DEPTH.floor + 2)
+            .setVisible(false),
+        );
     this.walls = scene.physics.add.staticGroup();
     for (let i = 0; i < 8; i++) {
       const image = this.walls.create(0, 0, TEX.wall) as Physics.Arcade.Image;
@@ -86,12 +96,24 @@ export class RoomArena {
     } else g.lineStyle(1, 0x647d80).strokeRect(B.x - 1, B.y - 1, B.width + 2, B.height + 2);
     const room = run.room,
       h = ROOM_RULES.doorHalfWidth;
+    for (const door of this.doors) door.setVisible(false);
+    let doorIndex = 0;
     for (const id of room.links) {
       const to = run.map.rooms[id]!,
         dx = to.x - room.x,
         dy = to.y - room.y;
       const x = B.x + B.width / 2 + (dx * B.width) / 2,
         y = B.y + B.height / 2 + (dy * B.height) / 2;
+      const door = this.doors[doorIndex++];
+      if (door) {
+        door
+          .setTexture(ART.doors, run.locked ? 'locked' : 'open')
+          .setDisplaySize(64, 40)
+          .setPosition(x, y)
+          .setAngle(dx ? dx * 90 : dy > 0 ? 180 : 0)
+          .setVisible(true);
+        continue;
+      }
       g.fillStyle(run.locked ? 0x6c384b : 0x397b83);
       g.fillRect(
         x - (dx ? TILE_SIZE : h),
@@ -200,5 +222,6 @@ export class RoomArena {
   destroy(): void {
     for (const c of this.colliders) if (c.world) c.destroy();
     this.walls.destroy(true, true);
+    for (const door of this.doors) door.destroy();
   }
 }

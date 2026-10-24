@@ -48,7 +48,11 @@ test.beforeEach(async () => {
 });
 
 test.afterEach(async () => {
-  await new Promise<void>((done) => server.close(() => done()));
+  await new Promise<void>((done) => {
+    server.close(() => done());
+    // 离线页面可能仍持有未完成连接，不能让它拖住测试服务器清理。
+    server.closeAllConnections();
+  });
   await rm(directory, { recursive: true, force: true });
 });
 
@@ -85,14 +89,16 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
   // 正式图集同样必须离线可用；仅有 Game 场景会漏掉图片加载失败的灰盒回退。
   const art = await reopened.evaluate(async () =>
     Promise.all(
-      ['da-fei-yu', 'weapons', 'enemies', 'environment', 'title'].map(async (name) => {
-        const response = await fetch(`assets/demo/${name}.png`);
-        return {
-          ok: response.ok,
-          type: response.headers.get('content-type'),
-          size: (await response.blob()).size,
-        };
-      }),
+      ['da-fei-yu', 'da-fei-yu-reactions', 'weapons', 'enemies', 'environment', 'title', 'doors'].map(
+        async (name) => {
+          const response = await fetch(`assets/demo/${name}.png`);
+          return {
+            ok: response.ok,
+            type: response.headers.get('content-type'),
+            size: (await response.blob()).size,
+          };
+        },
+      ),
     ),
   );
   for (const file of art) {
