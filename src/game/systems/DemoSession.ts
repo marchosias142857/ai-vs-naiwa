@@ -35,7 +35,7 @@ export class DemoSession {
   settled = false;
   private readonly director: RoomDirector;
   private readonly root: Random;
-  private readonly rewardRng: Random;
+  private rewardRng: Random;
   private readonly empty = createInputFrame();
   private interact = false;
   private endTime = 0;
@@ -52,7 +52,7 @@ export class DemoSession {
     checkpoint?: FloorCheckpoint,
   ) {
     this.root = new Random(seed);
-    this.rewardRng = this.root.fork('upgrades');
+    this.rewardRng = this.root.fork(`upgrades:${checkpoint?.floor ?? 1}`);
     this.sim = createCombatWorld({
       seed,
       bus,
@@ -69,7 +69,7 @@ export class DemoSession {
         this.sim.upgrade(id);
         this.upgrades.push(id);
       }
-      this.sim.takeWeapon(checkpoint.secondary);
+      if (checkpoint.secondary) this.sim.takeWeapon(checkpoint.secondary);
       this.sim.equipWeapon(checkpoint.equipped);
       this.sim.restorePlayer(checkpoint);
     }
@@ -83,14 +83,8 @@ export class DemoSession {
       this.dungeon.roomsCleared = checkpoint.roomsCleared;
       this.dungeon.elapsed = checkpoint.elapsed;
     }
-    this.loot = new LootSystem(this.root.fork('loot'));
-    this.director = new RoomDirector(
-      this.sim,
-      this.dungeon,
-      this.root.fork('encounters'),
-      B,
-      this.arena.isFree,
-    );
+    this.loot = new LootSystem(this.root.fork(`loot:${this.dungeon.floor}`));
+    this.director = new RoomDirector(this.sim, this.dungeon, this.root, B, this.arena.isFree);
     this.showRoom();
     this.publishPosition();
     bus.on('entity:died', this.onDied);
@@ -176,6 +170,8 @@ export class DemoSession {
     this.offers.length = 0;
     this.upgrades.push(id);
     this.dungeon.nextFloor();
+    this.rewardRng = this.root.fork(`upgrades:${this.dungeon.floor}`);
+    this.loot.resetFloor(this.root.fork(`loot:${this.dungeon.floor}`));
     this.showRoom();
     this.arena.teleport();
     this.inputScene.controls?.reset();
@@ -194,7 +190,7 @@ export class DemoSession {
       floor: d.floor,
       upgrades: [...this.upgrades],
       secondary: this.sim.secondaryWeapon,
-      equipped: this.sim.weaponId as WeaponId,
+      equipped: this.sim.weaponId,
       hp: this.player!.hp,
       armor: r.armor,
       energy: r.energy,
@@ -205,14 +201,18 @@ export class DemoSession {
     };
   }
   private showRoom(): void {
-    this.loot.clear();
+    this.loot.enterRoom(this.dungeon.roomId);
     this.layout = this.root
       .fork(`layout:${this.dungeon.floor}:${this.dungeon.roomId}`)
       .int(0, ROOM_LAYOUTS.length - 1);
     this.arena.show(this.dungeon, this.layout);
     this.drawnRevision = this.dungeon.revision;
-    if (this.dungeon.room.kind === 'chest' && this.dungeon.claim())
-      this.loot.chest(B.x + B.width / 2, B.y + B.height / 2);
+    if (
+      this.dungeon.room.kind === 'chest' &&
+      !this.dungeon.claimed[this.dungeon.roomId] &&
+      this.loot.chest(B.x + B.width / 2, B.y + B.height / 2)
+    )
+      this.dungeon.claim();
   }
   /** 本帧物理后发布位置，保持 #28 的鼠标瞄准顺序。 */
   update(): void {

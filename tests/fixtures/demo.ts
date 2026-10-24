@@ -1,3 +1,4 @@
+import { parseCheckpoint, type FloorCheckpoint } from '../../src/sim/run/checkpoint';
 import type { ActorView } from '../../src/sim/combat/api';
 import { DemoHud } from '../../src/game/ui/DemoHud';
 import { AUTO, Game, Scene } from 'phaser';
@@ -19,7 +20,18 @@ class DemoHarness extends Scene {
     this.physics.disableUpdate();
     this.scene.launch(InputScene.KEY);
     const bus = new EventBus<GameEvents>(),
-      session = new DemoSession(this, bus, this.scene.get(InputScene.KEY) as InputScene, 42, true);
+      checkpoint = parseCheckpoint(JSON.parse(sessionStorage.getItem('fixture.checkpoint') ?? 'null')),
+      session = new DemoSession(
+        this,
+        bus,
+        this.scene.get(InputScene.KEY) as InputScene,
+        42,
+        true,
+        undefined,
+        checkpoint ?? undefined,
+      );
+    window.floorCheckpoint = () => session.checkpoint();
+    window.floorOffers = () => [...session.offers];
     this.hud = new DemoHud(this, session);
     window.offerState = () => ({
       floor: session.dungeon.floor,
@@ -156,7 +168,7 @@ class DemoHarness extends Scene {
         }
         if (session.dungeon.locked) throw Error('清房未开门');
       };
-      for (let floor = 1; floor <= DUNGEON.floors; floor++) {
+      for (let floor = session.dungeon.floor; floor <= DUNGEON.floors; floor++) {
         for (let room = 1; room <= session.dungeon.map.exit; room++) {
           next(room);
           clear();
@@ -202,6 +214,8 @@ class DemoHarness extends Scene {
 }
 declare global {
   interface Window {
+    floorCheckpoint: () => FloorCheckpoint;
+    floorOffers: () => string[];
     stressScenario: () => {
       peakBullets: number;
       peakFx: number;

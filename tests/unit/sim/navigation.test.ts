@@ -41,3 +41,29 @@ it('没有通路返回 false，不修改调用方已有输出', () => {
   expect(grid.steer(0, 0, 30, 30, 6, out)).toBe(false);
   expect(out).toEqual({ x: 7, y: 8 });
 });
+
+it('混合半径重用各自 blocked / 流场，目标同格不重建，换房全部失效', () => {
+  let probes = 0,
+    edges = 0;
+  const grid = new NavigationGrid(
+      { x: 0, y: 0, width: 192, height: 128 },
+      () => {
+        probes++;
+        return true;
+      },
+      () => {
+        edges++;
+        return true;
+      },
+    ),
+    out = { x: 0, y: 0 };
+  for (const radius of [4, 6, 9, 12]) grid.steer(32, 64, 160, 64, radius, out);
+  const warmProbes = probes;
+  edges = 0;
+  for (let i = 0; i < 20; i++) grid.steer(32, 64, 161, 65, [4, 6, 9, 12][i % 4]!, out);
+  expect(probes).toBe(warmProbes);
+  expect(edges).toBeLessThan(20 * 25); // 每次只检查附近路点，未重新遍历 BFS 邻边。
+  grid.invalidate();
+  for (const radius of [4, 6, 9, 12]) grid.steer(32, 64, 160, 64, radius, out);
+  expect(probes).toBe(warmProbes * 2);
+});

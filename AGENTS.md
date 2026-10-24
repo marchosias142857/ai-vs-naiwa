@@ -78,6 +78,7 @@ docs/              GDD、ARCHITECTURE、ROADMAP、DATA_SCHEMA、ART_GUIDE、adr/
 
 ### demo 阶段临时分工（负责人授权）
 
+- **本临时分工在集成 PR #33 合入 main 时结束**，届时 `src/sim/**` 与共享契约主责交回 Claude；GPT 恢复默认 game / services / 性能兼容性职责。存档 v2 等 Claude 的独立 ADR 后再接线。
 - **demo 阶段 sim 由 GPT 实现，Claude 事后评审**；包括地牢、AI、武器、掉落、本局状态，以及 game / UI / 服务层。
 - 从包含 #30 的 main 建立 `gpt/demo`；功能分支以 `gpt/demo` 为 base，分别开小 PR，目标 ≤ 400 行（不含数据、测试、生成文件）。
 - 负责人授权 GPT 将验证通过的小 PR squash 合入 `gpt/demo`。Claude 在 demo 完成后按 PR 顺序集中评审；集成分支到 main 的 PR 仍由负责人最终合并。

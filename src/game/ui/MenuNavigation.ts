@@ -1,4 +1,5 @@
 import type { Scene } from 'phaser';
+import { INPUT_UI } from '../fx/params';
 
 /** 菜单手柄边沿在渲染帧处理；进入菜单需松开确认键，避免 RT 连射穿透。 */
 export class MenuNavigation {
@@ -23,11 +24,11 @@ export class MenuNavigation {
     }
     const pad = this.scene.input.gamepad?.pad1;
     if (!pad?.connected) return;
-    const confirm = !!pad.buttons[0]?.pressed || pad.R2 > 0.5;
+    const confirm = !!pad.buttons[INPUT_UI.gamepad.confirm]?.pressed || pad.R2 > 0.5;
     const direction =
-      pad.leftStick.y > 0.5 || pad.buttons[13]?.pressed
+      pad.leftStick.y > 0.5 || pad.buttons[INPUT_UI.gamepad.down]?.pressed
         ? 1
-        : pad.leftStick.y < -0.5 || pad.buttons[12]?.pressed
+        : pad.leftStick.y < -0.5 || pad.buttons[INPUT_UI.gamepad.up]?.pressed
           ? -1
           : 0;
     if (!this.active) {

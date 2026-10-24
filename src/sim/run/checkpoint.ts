@@ -8,7 +8,7 @@ export interface FloorCheckpoint {
   seed: number;
   floor: number;
   upgrades: UpgradeId[];
-  secondary: WeaponId;
+  secondary: WeaponId | null;
   equipped: WeaponId;
   hp: number;
   armor: number;
@@ -39,8 +39,8 @@ export function parseCheckpoint(value: unknown): FloorCheckpoint | null {
   )
     return null;
   if (
-    typeof v.secondary !== 'string' ||
-    !Object.hasOwn(WEAPONS, v.secondary) ||
+    (v.secondary !== null && (typeof v.secondary !== 'string' || !Object.hasOwn(WEAPONS, v.secondary))) ||
+    typeof v.equipped !== 'string' ||
     (v.equipped !== 'pistol_basic' && v.equipped !== v.secondary)
   )
     return null;
@@ -58,7 +58,7 @@ export function parseCheckpoint(value: unknown): FloorCheckpoint | null {
     seed: Number(v.seed),
     floor: Number(v.floor),
     upgrades: [...v.upgrades] as UpgradeId[],
-    secondary: v.secondary as WeaponId,
+    secondary: v.secondary === 'pistol_basic' ? null : (v.secondary as WeaponId | null),
     equipped: v.equipped as WeaponId,
     hp: Number(v.hp),
     armor: Number(v.armor),

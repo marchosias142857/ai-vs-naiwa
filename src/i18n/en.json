@@ -59,5 +59,11 @@
   "shop.supplies": "Supplies: {price} coins → HP +{health} / Energy +{energy}",
   "hint.weapon": "E / A / Use: {weapon} · Damage {damage} × {pellets} · Energy {cost}",
   "hud.boss": "Naiwa boss {hp}/{maxHp}",
-  "save.unavailable": "Storage unavailable: you can play, but progress cannot be saved"
+  "save.unavailable": "Storage unavailable: you can play, but progress cannot be saved",
+  "menu.replaceSave": "A new adventure will replace your floor checkpoint. Continue?",
+  "menu.cancel": "Cancel, keep checkpoint",
+  "menu.confirmNew": "Confirm new adventure",
+  "hud.empty": "Empty",
+  "hud.slots": "Slots: {primary} / {secondary}",
+  "hint.portal": "[ ↑ EXIT ]"
 }

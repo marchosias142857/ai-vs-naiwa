@@ -88,7 +88,7 @@ export class InputScene extends Scene {
     this.pauseLabel.setVisible(!locked);
     this.pausePanel?.update(paused);
     this.resumeLabel.setVisible(paused && !this.pausePanel);
-    this.actions?.setVisible(!paused && !locked);
+    this.actions?.setVisible(c.touchVisible && !paused && !locked);
     if (s !== this.layoutScale) {
       this.layoutScale = s;
       this.resumeLabel.setFontSize(UI.resume.fontSize / s);

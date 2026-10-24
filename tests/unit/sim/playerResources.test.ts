@@ -96,3 +96,19 @@ it('补给原子扣款，余额不足与满额时不吞金币', () => {
   expect(world.buySupplies()).toBe(false);
   expect(world.resources.coins).toBe(8);
 });
+
+it('开局只有手枪，空槽切枪无效；首次拾取后才可切换，手枪不进入第二槽', () => {
+  const world = createCombatWorld({ seed: 1, bus: new EventBus<GameEvents>() }),
+    input = createInputFrame();
+  world.spawnPlayer('ai_proto', 0, 0);
+  expect(world.secondaryWeapon).toBeNull();
+  input.swapPressed = true;
+  world.step(1 / 60, input);
+  expect(world.weaponId).toBe('pistol_basic');
+  expect(world.takeWeapon('pistol_basic')).toBe(false);
+  expect(world.takeWeapon('rifle_auto')).toBe(true);
+  world.step(1 / 60, input);
+  expect(world.weaponId).toBe('pistol_basic');
+  world.step(1 / 60, input);
+  expect(world.weaponId).toBe('rifle_auto');
+});

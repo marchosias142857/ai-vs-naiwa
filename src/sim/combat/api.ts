@@ -123,8 +123,8 @@ export interface CombatWorld {
   readonly actors: readonly ActorView[];
   /** 玩家实体的编号；尚未生成玩家时为 null。 */
   readonly playerId: EntityId | null;
-  readonly weaponId: string;
-  readonly secondaryWeapon: WeaponId;
+  readonly weaponId: WeaponId;
+  readonly secondaryWeapon: WeaponId | null;
   readonly resources: Readonly<
     Pick<
       PlayerResources,
@@ -142,6 +142,7 @@ export interface CombatWorld {
     >
   >;
   /** 替换第二武器并装备；第一槽始终保留免费手枪。 */
+  /** 装备第二槽；地面拾取须由 LootSystem 原槽置换，保留旧武器。 */
   takeWeapon(id: WeaponId): boolean;
   /** 使用 data 中的补给价格购买生命/能量；满额、余额不足、死亡时不扣钱。 */
   buySupplies(): boolean;

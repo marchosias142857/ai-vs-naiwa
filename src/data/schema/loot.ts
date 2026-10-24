@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 export const LootRulesSchema = z.strictObject({
   capacity: z.int().positive(),
+  weaponReserve: z.int().positive(),
+  noDropChance: z.number().min(0).max(1),
   upgradeChoices: z.int().min(1).max(8),
   pickupRadius: z.number().positive(),
   weaponRadius: z.number().positive(),
