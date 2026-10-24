@@ -1,3 +1,4 @@
+import { MenuNavigation } from './MenuNavigation';
 import type { Scene } from 'phaser';
 import { CHECKPOINT_KEY, readProfile } from '../../services/profile';
 import { loadValue } from '../../services/storage';
@@ -7,6 +8,7 @@ import './demo.css';
 /** 灰盒功能菜单；正式版式待画面方案。 */
 export class MenuPanel {
   private readonly root = document.createElement('section');
+  private readonly navigation: MenuNavigation;
   private readonly abort = new AbortController();
   constructor(scene: Scene) {
     const checkpoint = parseCheckpoint(loadValue(CHECKPOINT_KEY)),
@@ -44,6 +46,7 @@ export class MenuPanel {
     );
     this.root.append(title, subtitle, start, resume, help, controls, stats, note);
     document.body.append(this.root);
+    this.navigation = new MenuNavigation(this.root, scene);
     window.addEventListener(
       'keydown',
       (e) => {
@@ -56,5 +59,8 @@ export class MenuPanel {
       this.abort.abort();
       this.root.remove();
     });
+  }
+  update(): void {
+    this.navigation.update(true);
   }
 }

@@ -50,7 +50,12 @@ export class InputController {
       'keydown',
       (e) => {
         if (!CODES.has(e.code) || !ui.game.input.enabled) return;
-        if (e.target instanceof HTMLElement && e.target.closest('button,input,textarea')) return;
+        if (
+          e.code !== 'Escape' &&
+          e.target instanceof HTMLElement &&
+          e.target.closest('button,input,textarea')
+        )
+          return;
         e.preventDefault();
         this.state.key(e.code, true, e.repeat);
       },

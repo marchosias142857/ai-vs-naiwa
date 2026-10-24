@@ -1,3 +1,4 @@
+import { MenuNavigation } from './MenuNavigation';
 import type { Scene } from 'phaser';
 import { DUNGEON } from '../../data/dungeon';
 import { UPGRADES } from '../../data/player';
@@ -22,7 +23,7 @@ export class DemoHud {
   private refresh = Infinity;
   private mapRevision = -1;
   private mode = 'none';
-  private fireReleased = false;
+  private readonly navigation: MenuNavigation;
   constructor(
     private readonly scene: Scene,
     private readonly session: DemoSession,
@@ -71,6 +72,7 @@ export class DemoHud {
       { signal: this.abort.signal },
     );
     this.modal.hidden = true;
+    this.navigation = new MenuNavigation(this.modal, session.inputScene);
   }
   private choose(index: number): void {
     const id = this.session.offers[index];
@@ -92,9 +94,9 @@ export class DemoHud {
       r = s.sim.resources;
     const mode = s.offers.length ? 'offer' : s.settled ? 'result' : 'none';
     if (mode !== this.mode) {
+      this.navigation.update(false);
       this.mode = mode;
       this.modal.hidden = mode === 'none';
-      this.fireReleased = false;
       this.title.textContent =
         mode === 'offer' ? '选择一项升级' : d.phase === 'won' ? '通关成功' : '本局结束';
       this.detail.textContent =
@@ -109,11 +111,7 @@ export class DemoHud {
       }
       this.restart.hidden = this.menu.hidden = mode !== 'result';
     }
-    if (mode === 'result') {
-      const fire = s.inputScene.controls?.frame.fire;
-      if (!fire) this.fireReleased = true;
-      else if (this.fireReleased) this.scene.scene.restart({});
-    }
+    this.navigation.update(mode !== 'none');
     this.refresh += deltaMs;
     if (this.refresh < 250) return;
     this.refresh = 0;

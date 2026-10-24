@@ -1,3 +1,4 @@
+import { PausePanel } from './PausePanel';
 import { ActionButtons } from './ActionButtons';
 import { INPUT_UI as UI } from '../fx/params';
 import { Scene } from 'phaser';
@@ -12,6 +13,7 @@ export class InputScene extends Scene {
   static readonly KEY = 'InputUI';
   controls!: InputController;
   private actions?: ActionButtons;
+  private pausePanel?: PausePanel;
   private graphics!: GameObjects.Graphics;
   private resumeLabel!: GameObjects.Text;
   private fireScale = 1;
@@ -36,7 +38,7 @@ export class InputScene extends Scene {
       .setOrigin(0.5)
       .setDepth(DEPTH.touchControls);
     this.pauseLabel = this.add.text(0, 0, 'Ⅱ', textStyle(12)).setOrigin(0.5).setDepth(DEPTH.touchControls);
-    this.controls = new InputController(this, battle, () => {
+    const togglePause = () => {
       // 楼层选择与结算持有物理暂停；此时不能再叠加手动 scene.pause。
       if (battle.physics.world.isPaused) return;
       this.controls.reset();
@@ -46,7 +48,9 @@ export class InputScene extends Scene {
         battle.tweens.prevTime = now;
         battle.scene.resume();
       } else battle.scene.pause();
-    });
+    };
+    this.controls = new InputController(this, battle, togglePause);
+    this.pausePanel = data?.demo ? new PausePanel(this, battle, togglePause) : undefined;
     this.actions = data?.demo ? new ActionButtons(this, this.controls) : undefined;
     setInputProbe(() => ({
       ...this.controls.frame,
@@ -56,6 +60,8 @@ export class InputScene extends Scene {
     }));
     this.events.once('shutdown', () => {
       battle.input.enabled = battleInputEnabled;
+      this.pausePanel?.destroy();
+      this.pausePanel = undefined;
       this.actions?.destroy();
       this.actions = undefined;
       this.controls.destroy();
@@ -77,7 +83,8 @@ export class InputScene extends Scene {
     const g = this.graphics;
     g.clear();
     const paused = c.battle.scene.isPaused();
-    this.resumeLabel.setVisible(paused);
+    this.pausePanel?.update(paused);
+    this.resumeLabel.setVisible(paused && !this.pausePanel);
     this.actions?.setVisible(!paused);
     if (s !== this.layoutScale) {
       this.layoutScale = s;
