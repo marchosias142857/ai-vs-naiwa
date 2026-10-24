@@ -16,7 +16,8 @@ PR #24 实测：按渲染帧调用 `step` 时，击退距离随帧率变化（�
 1. **sim 在 Arcade 的 `WORLD_STEP` 事件里推进**，每个物理步一次，`dt` 取物理步长。顺序（`CombatBridge.tick`，PR #26）：
    子弹寿命 → `syncPosition`（读 `body.center`）→ `step` → 清除输入边沿 → 设置速度 → 生成子弹。
    `WORLD_STEP` 在本步移动和重叠检测之后发出，所以写回的位置已经包含这一步的移动和碰撞，设置的速度用在下一步。
-2. **输入每个渲染帧采样一次**：战斗场景在 PRE_UPDATE（早于 Arcade 推进物理）调用 `controls.sample()`，交给 `bridge.setInput()`。bridge 复制一份，并锁存 `*Pressed` 边沿：本帧没有物理步时留到下一帧，有多个物理步时只交给第一步。
+2. **输入每个渲染帧采样一次**：战斗场景在 PRE_UPDATE（早于 Arcade 推进物理）取得本帧的 InputFrame，交给 `bridge.setInput()`。bridge 复制一份，并锁存 `*Pressed` 边沿：本帧没有物理步时留到下一帧，有多个物理步时只交给第一步。
+   Phaser 倒序更新场景，输入 UI 场景排在战斗场景之后，所以本帧的第一次 `sample()` 通常发生在 UI 场景里，PRE_UPDATE 拿到的是同一帧的缓存。为此，鼠标瞄准用的玩家位置由战斗场景在每帧物理之后写给输入层；下一帧采样前没有物理推进，两处拿到的都是玩家当前位置。手柄数据也由 UI 场景的输入插件在采样前刷新。
 3. **其他按时间推进的玩法逻辑也挂在 `WORLD_STEP` 上**，注册在 bridge 之后（例如刷怪导演 `WaveDirector`），与 sim 共用同一个时钟。这样同一种子的结果与帧率无关。
 4. `CombatWorld` 的接口签名不变；`api.ts` 中「每帧顺序」的说明改为「每个物理步」。
 

@@ -77,6 +77,7 @@ export class GameScene extends Scene {
 
     setCombatProbe(() => {
       const p = this.run.player;
+      const aim = this.run.lastAim;
       return {
         runs: runCount,
         phase: this.run.phase,
@@ -86,6 +87,11 @@ export class GameScene extends Scene {
         alive: this.run.waves.alive,
         kills: this.run.kills,
         time: this.run.sim.time,
+        playerX: p?.x ?? 0,
+        playerY: p?.y ?? 0,
+        aim: Number.isNaN(aim.x) ? null : { x: aim.x, y: aim.y },
+        aimOriginX: aim.originX,
+        aimOriginY: aim.originY,
       };
     });
     this.bus.emit('run:started', { seed: this.seed });

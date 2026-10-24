@@ -27,6 +27,12 @@ export interface CombatProbe {
   kills: number;
   /** sim 时间，秒。 */
   time: number;
+  playerX: number;
+  playerY: number;
+  /** 最近一次交给 sim 的瞄准方向与当时的玩家位置；没有手动瞄准时 aim 为 null。 */
+  aim: { x: number; y: number } | null;
+  aimOriginX: number;
+  aimOriginY: number;
 }
 
 interface LifecycleProbe {
