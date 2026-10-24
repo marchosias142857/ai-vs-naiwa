@@ -339,6 +339,7 @@ class CombatWorldImpl implements CombatWorld {
   time = 0;
   readonly actors: Actor[] = [];
   playerId: EntityId | null = null;
+  playerBodyFacing = 0;
 
   private nextId = 1;
   private readonly actorPool: Actor[] = [];
@@ -739,6 +740,7 @@ class CombatWorldImpl implements CombatWorld {
     };
     this.lastMoveDir.x = state.lastMoveDir.x;
     this.lastMoveDir.y = state.lastMoveDir.y;
+    this.playerBodyFacing = Math.atan2(this.lastMoveDir.y, this.lastMoveDir.x);
     this.dashDirection.x = state.dashDirection.x;
     this.dashDirection.y = state.dashDirection.y;
     this.resources.load(state.resources);
@@ -879,15 +881,18 @@ class CombatWorldImpl implements CombatWorld {
       actor.base.x = this.dashDirection.x * r.rules.dashSpeed;
       actor.base.y = this.dashDirection.y * r.rules.dashSpeed;
     } else stepVelocity(actor.base, input.move, p.tuning, dt);
-    // 朝向（ADR 0020）：正在瞄准 > 正在移动 > 保持上一次的朝向。玩家没有自动瞄准，aim 为 null 时朝面向开火。
-    if (input.aim && (input.aim.x !== 0 || input.aim.y !== 0)) {
-      actor.facing = Math.atan2(input.aim.y, input.aim.x);
-    } else if (input.move.x !== 0 || input.move.y !== 0) {
+    // 即使同时瞄准，也记录左摇杆最后方向；松开右摇杆后用它恢复手机武器朝向。
+    const moving = input.move.x !== 0 || input.move.y !== 0;
+    if (moving) {
       const len = Math.hypot(input.move.x, input.move.y);
       this.lastMoveDir.x = input.move.x / len;
       this.lastMoveDir.y = input.move.y / len;
-      actor.facing = Math.atan2(this.lastMoveDir.y, this.lastMoveDir.x);
     }
+    const moveAngle = Math.atan2(this.lastMoveDir.y, this.lastMoveDir.x);
+    if (input.aim && (input.aim.x !== 0 || input.aim.y !== 0)) {
+      actor.facing = Math.atan2(input.aim.y, input.aim.x);
+    } else if (moving || input.source === 'touch') actor.facing = moveAngle;
+    this.playerBodyFacing = input.fire || p.burstLeft > 0 || this.melee.active ? actor.facing : moveAngle;
 
     // 冷却：按住时连发并保留余量，保证射速准确；松开后冷却只减到 0，不会攒出连发。
     p.cooldown -= dt;
