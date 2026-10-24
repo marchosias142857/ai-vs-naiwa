@@ -17,6 +17,43 @@ class DemoHarness extends Scene {
     this.scene.launch(InputScene.KEY);
     const bus = new EventBus<GameEvents>(),
       session = new DemoSession(this, bus, this.scene.get(InputScene.KEY) as InputScene, 42, true);
+    window.feedbackScenario = () => {
+      const input = createInputFrame(),
+        children = this.children.length;
+      let steps = 0,
+        hits = 0;
+      bus.on('bullet:hit', (e) => {
+        if (e.targetId !== null) hits++;
+      });
+      const tick = (n: number) => {
+        for (let i = 0; i < n; i++) {
+          session.setInput(input);
+          this.physics.world.update((++steps * 1000) / 60, 1000 / 60);
+          this.physics.world.postUpdate();
+          session.update();
+        }
+      };
+      const id = session.sim.spawnEnemy('naiwa_tank', 330, 135);
+      tick(1);
+      const telegraphHidden = !session.bridge.actors.slots.find((s) => s.id === id)!.image.visible;
+      tick(45);
+      input.fire = true;
+      tick(30);
+      input.fire = false;
+      const effects = session.fx.activeCount;
+      session.sim.debugKillEnemies();
+      tick(1);
+      const delayedDeath = session.sim.getActor(id)?.phase === 'dead';
+      tick(30);
+      return {
+        hits,
+        effects,
+        telegraphHidden,
+        delayedDeath,
+        recycled: !session.sim.getActor(id),
+        stable: children === this.children.length,
+      };
+    };
     window.demoScenario = () => {
       const input = createInputFrame();
       let steps = 0,
@@ -95,6 +132,14 @@ class DemoHarness extends Scene {
 }
 declare global {
   interface Window {
+    feedbackScenario: () => {
+      hits: number;
+      effects: number;
+      telegraphHidden: boolean;
+      delayedDeath: boolean;
+      recycled: boolean;
+      stable: boolean;
+    };
     demoScenario: () => {
       phase: string;
       settled: boolean;

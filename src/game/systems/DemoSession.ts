@@ -1,3 +1,4 @@
+import { CombatFeedback } from '../fx/CombatFeedback';
 import { Physics, Scenes } from 'phaser';
 import type { Scene } from 'phaser';
 import { POOL_SIZES } from '../../config';
@@ -27,13 +28,13 @@ export class DemoSession {
   readonly dungeon: DungeonRun;
   readonly loot: LootSystem;
   readonly arena: RoomArena;
+  readonly fx: CombatFeedback;
   readonly offers: UpgradeId[] = [];
   settled = false;
   private readonly director: RoomDirector;
   private readonly root: Random;
   private readonly rewardRng: Random;
   private readonly empty = createInputFrame();
-  private readonly corpses: number[] = [];
   private interact = false;
   private endTime = 0;
   private layout = 0;
@@ -61,6 +62,7 @@ export class DemoSession {
     if (weapon && Object.hasOwn(WEAPONS, weapon)) this.sim.takeWeapon(weapon as WeaponId);
     this.bridge = new CombatBridge(scene, this.sim);
     this.arena = new RoomArena(scene, this.bridge);
+    this.fx = new CombatFeedback(scene, this.sim, this.bridge, bus);
     this.dungeon = new DungeonRun(seed, bus);
     this.loot = new LootSystem(this.root.fork('loot'));
     this.director = new RoomDirector(
@@ -166,8 +168,7 @@ export class DemoSession {
   /** 本帧物理后发布位置，保持 #28 的鼠标瞄准顺序。 */
   update(): void {
     this.publishPosition();
-    for (const id of this.corpses) this.bridge.actors.finishDeath(id);
-    this.corpses.length = 0;
+    this.fx.update();
     if (this.drawnRevision !== this.dungeon.revision) {
       this.arena.draw(this.dungeon);
       this.drawnRevision = this.dungeon.revision;
@@ -183,7 +184,6 @@ export class DemoSession {
   private readonly onDied = (e: GameEvents['entity:died']): void => {
     if (e.team === 'enemy') {
       this.loot.enemy(e.x, e.y);
-      this.corpses.push(e.id);
     }
   };
   private readonly onCleared = (): void => this.loot.reward(B.x + B.width / 2, B.y + B.height / 2);

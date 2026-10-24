@@ -32,3 +32,38 @@ export const DEATH_UI = {
   titleOffsetY: -12,
   hintOffsetY: 14,
 } as const;
+
+/** 灰盒可读性参数，时长秒、尺寸游戏像素；正式反馈仍待画面方案。 */
+export const COMBAT_FX = {
+  impactRadius: 2,
+  impactSeconds: 0.12,
+  muzzleSeconds: 0.05,
+  flashSeconds: 0.06,
+  hurtSeconds: 0.25,
+  deathSeconds: 0.2,
+  deathAngle: 90,
+  dimColor: COLORS.background,
+  dimAlpha: 0.6,
+  dimSeconds: 0.6,
+  hitColor: 0xffffff,
+  criticalColor: 0xffdd55,
+  muzzleColor: 0xfff3a0,
+  warningColor: 0xff4d6d,
+  playerColor: 0xffffff,
+  healthBack: COLORS.wall,
+  healthHeight: 2,
+  healthOffset: 3,
+  lineWidth: 1,
+  warningPadding: 4,
+  hurtWidth: 4,
+  invulnerableAlpha: 0.55,
+  kinds: {
+    naiwa_chaser: 0xffffff,
+    naiwa_scout: 0x7ee8ff,
+    naiwa_tank: 0xffcc77,
+    naiwa_spitter: 0xe599ff,
+    naiwa_turret: 0xff8888,
+    naiwa_charger: 0xffdd55,
+    naiwa_boss: 0xff7799,
+  },
+} as const;

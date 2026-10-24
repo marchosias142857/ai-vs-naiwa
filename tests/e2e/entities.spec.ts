@@ -218,3 +218,16 @@ test('真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用'
   expect(result.kills).toBeGreaterThan(0);
   expect(result.childrenStable).toBe(true);
 });
+
+test('真实命中反馈使用预热池，预警隐藏与死亡延迟回收', async ({ page }) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.feedbackScenario);
+  const result = await page.evaluate(() => window.feedbackScenario());
+  expect(result.hits).toBeGreaterThan(0);
+  expect(result.effects).toBeGreaterThan(0);
+  expect(result.effects).toBeLessThanOrEqual(100);
+  expect(result.telegraphHidden).toBe(true);
+  expect(result.delayedDeath).toBe(true);
+  expect(result.recycled).toBe(true);
+  expect(result.stable).toBe(true);
+});

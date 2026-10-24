@@ -1,5 +1,5 @@
 import type { GameObjects, Physics, Scene } from 'phaser';
-import { COLORS, DEPTH } from '../config';
+import { COLORS, DEPTH, POOL_SIZES } from '../config';
 import type { CombatWorld, ActorView } from '../sim/combat/api';
 import type { CombatBridge } from '../game/world/CombatBridge';
 
@@ -9,6 +9,7 @@ interface DebugSource {
   waves: { wave: number; alive: number };
   player: ActorView | undefined;
   kills: number;
+  fx?: { activeCount: number };
 }
 import { setDebugProbe } from '../game/testHooks';
 import { textStyle } from '../game/ui/text';
@@ -42,7 +43,7 @@ export class DebugTools {
   ) {
     // 放在左上角标题下方：右上角是暂停键，左下和右下是触屏摇杆与射击键。
     this.panel = scene.add
-      .text(PANEL_X, PANEL_Y, '', textStyle(8, COLORS.accent))
+      .text(run.fx ? 380 : PANEL_X, run.fx ? 50 : PANEL_Y, '', textStyle(run.fx ? 5 : 8, COLORS.accent))
       .setScrollFactor(0)
       .setDepth(DEPTH.hud);
     this.applyHitboxes();
@@ -72,6 +73,7 @@ export class DebugTools {
         `wave ${run.waves.wave} · alive ${run.waves.alive} · entities ${run.sim.actors.length}`,
         `bullets ${bullets.activeCount}/${bullets.slots.length}`,
         `actor slots ${actorSlots}/${run.bridge.actors.slots.length}`,
+        ...(run.fx ? [`fx ${run.fx.activeCount}/${POOL_SIZES.fx}`] : []),
         `hp ${p?.hp ?? 0}/${p?.maxHp ?? 0} · kills ${run.kills}${this.info.godMode ? ' · GOD' : ''}`,
         `F1 碰撞框${showHitboxes ? '：开' : ''} · F2 清房`,
       ].join('\n'),
