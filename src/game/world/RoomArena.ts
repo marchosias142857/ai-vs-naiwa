@@ -21,6 +21,7 @@ export class RoomArena {
   constructor(
     scene: Scene,
     private readonly bridge: CombatBridge,
+    reflectBullets = false,
   ) {
     this.graphics = scene.add.graphics().setDepth(DEPTH.floor);
     this.walls = scene.physics.add.staticGroup();
@@ -32,7 +33,9 @@ export class RoomArena {
     this.navigation = new NavigationGrid(B, this.isFree, this.pathClear);
     this.colliders = [
       scene.physics.add.collider(bridge.actors.group, this.walls),
-      scene.physics.add.overlap(bridge.bullets.group, this.walls, this.hitWall),
+      reflectBullets
+        ? scene.physics.add.collider(bridge.bullets.group, this.walls)
+        : scene.physics.add.overlap(bridge.bullets.group, this.walls, this.hitWall),
     ];
   }
   private readonly hitWall = (object: unknown): void => {
@@ -43,7 +46,12 @@ export class RoomArena {
     this.bridge.bullets.recycle(slot);
   };
   show(run: DungeonRun, layout: number): void {
-    const boxes = run.room.kind === 'combat' ? ROOM_LAYOUTS[layout % ROOM_LAYOUTS.length]! : ROOM_LAYOUTS[0];
+    this.setLayout(run.room.kind === 'combat' ? layout : 0);
+    this.draw(run);
+  }
+  /** 压测也复用正式房间的墙体、视线与导航缓存。 */
+  setLayout(layout: number): void {
+    const boxes = ROOM_LAYOUTS[layout % ROOM_LAYOUTS.length]!;
     for (let i = 0; i < this.slots.length; i++) {
       const image = this.slots[i]!,
         box = boxes[i];
@@ -55,7 +63,6 @@ export class RoomArena {
       image.setDisplaySize(box.width, box.height).refreshBody().setDepth(DEPTH.wallTops);
     }
     this.navigation.invalidate();
-    this.draw(run);
   }
   draw(run: DungeonRun): void {
     const g = this.graphics;

@@ -26,7 +26,8 @@ export class PreloadScene extends Scene {
 
   create(): void {
     createPlaceholderTextures(this);
-    const target = debugParams().scene === SCENES.game ? SCENES.game : SCENES.menu;
+    const params = debugParams();
+    const target = params.stress || params.scene === SCENES.game ? SCENES.game : SCENES.menu;
     this.scene.start(target);
   }
 }

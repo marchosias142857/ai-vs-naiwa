@@ -6,6 +6,7 @@ describe('parseDebugParams', () => {
     expect(parseDebugParams('')).toEqual({
       seed: null,
       debug: false,
+      stress: null,
       god: false,
       room: null,
       floor: null,
@@ -32,4 +33,10 @@ describe('parseDebugParams', () => {
     expect(parseDebugParams('?floor=1-3').floor).toBe('1-3');
     expect(parseDebugParams('?weapon=<script>').weapon).toBeNull();
   });
+});
+
+it('压测模式只接受明确参数', () => {
+  expect(parseDebugParams('?stress=1').stress).toBe('capacity');
+  expect(parseDebugParams('?stress=combat').stress).toBe('combat');
+  expect(parseDebugParams('?stress=no').stress).toBeNull();
 });

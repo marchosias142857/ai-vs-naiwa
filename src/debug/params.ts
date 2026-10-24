@@ -12,6 +12,7 @@
 export interface DebugParams {
   seed: number | null;
   debug: boolean;
+  stress: 'capacity' | 'combat' | null;
   god: boolean;
   room: string | null;
   floor: string | null;
@@ -33,6 +34,7 @@ export function parseDebugParams(search: string): DebugParams {
   return {
     seed: Number.isFinite(seedNum) && seedNum <= 0xffffffff ? seedNum : null,
     debug: flag('debug'),
+    stress: flag('stress') ? 'capacity' : q.get('stress') === 'combat' ? 'combat' : null,
     god: flag('god'),
     room: id('room'),
     floor: id('floor'),
