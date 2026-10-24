@@ -205,6 +205,7 @@ class CombatWorldImpl implements CombatWorld {
   private readonly bus: EventBus<GameEvents>;
   private readonly payloads = createPayloads();
   private readonly maxBullets: number;
+  private readonly godMode: boolean;
   private readonly spreadRng: Random;
   private readonly critRng: Random;
   private readonly autoAim: AutoAim;
@@ -224,6 +225,7 @@ class CombatWorldImpl implements CombatWorld {
     this.critRng = root.fork('crit');
     this.bus = options.bus;
     this.maxBullets = options.maxBullets ?? DEFAULT_MAX_BULLETS;
+    this.godMode = options.godMode ?? false;
     this.autoAim = new AutoAim(BALANCE.autoAimRetargetInterval, options.lineOfSight ?? alwaysVisible);
     this.result = { bulletSpawns: this.spawns, playerDead: false };
     this.fireCtx = { x: 0, y: 0, aim: 0, weapon: WEAPONS.pistol_basic, rng: this.spreadRng };
@@ -300,7 +302,7 @@ class CombatWorldImpl implements CombatWorld {
     if (this.alreadyHit(bullet, target.id)) return false;
     this.recordHit(bullet, target.id);
 
-    if (target.invulnerable) {
+    if (this.ignoresDamage(target)) {
       this.emitHit(bullet, x, y, target.id, false);
       this.finishBullet(bullet);
       return true;
@@ -340,7 +342,7 @@ class CombatWorldImpl implements CombatWorld {
     const player = this.byId.get(playerId);
     if (!enemy || !player || enemy.team === player.team) return;
     if (enemy.phase !== 'active' || player.phase !== 'active') return;
-    if (player.invulnerable || enemy.contactDamage <= 0) return;
+    if (this.ignoresDamage(player) || enemy.contactDamage <= 0) return;
     let dirX = player.x - enemy.x;
     let dirY = player.y - enemy.y;
     const d = Math.hypot(dirX, dirY);
@@ -352,6 +354,16 @@ class CombatWorldImpl implements CombatWorld {
       dirY = 1;
     }
     this.damage(player, enemy.contactDamage, false, dirX, dirY, enemy.id);
+  }
+
+  debugKillEnemies(): void {
+    // 倒序遍历：监听器在 entity:died 里同步调用 removeActor 移除当前实体时，不会跳过其他实体。
+    for (let i = this.actors.length - 1; i >= 0; i--) {
+      const actor = this.actors[i];
+      if (!actor || actor.team !== 'enemy' || actor.phase === 'dead') continue;
+      // 预警中的怪物没有碰撞，也一并清掉；按正常流程扣光生命，事件顺序与真实死亡相同。
+      this.damage(actor, actor.hp, false, 0, 0, null);
+    }
   }
 
   removeActor(id: EntityId): void {
@@ -589,7 +601,7 @@ class CombatWorldImpl implements CombatWorld {
     critical: boolean,
     dirX: number,
     dirY: number,
-    sourceId: EntityId,
+    sourceId: EntityId | null,
   ): void {
     target.hp = Math.max(0, target.hp - amount);
     if (target.invulnTime > 0) {
@@ -635,6 +647,11 @@ class CombatWorldImpl implements CombatWorld {
     } finally {
       this.payloads.died.release();
     }
+  }
+
+  /** 受伤无敌帧，或调试无敌（`godMode`）下的玩家。 */
+  private ignoresDamage(target: Actor): boolean {
+    return target.invulnerable || (this.godMode && target.id === this.playerId);
   }
 
   private knockBack(target: Actor, dirX: number, dirY: number, distance: number): void {

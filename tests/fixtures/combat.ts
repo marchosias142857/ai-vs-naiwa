@@ -93,6 +93,9 @@ class FakeWorld implements CombatWorld {
     this.logs.push(`remove:${id}`);
     this.actors = this.actors.filter((a) => a.id !== id);
   }
+  debugKillEnemies() {
+    this.logs.push('debug-kill');
+  }
 }
 interface Harness {
   stop(): void;

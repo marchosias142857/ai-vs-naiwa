@@ -23,6 +23,8 @@ export interface CombatRunOptions {
   bus: EventBus<GameEvents>;
   /** 提供输入的 UI 场景（#12）。它在战斗场景之后创建，所以每帧再取 `controls`。 */
   inputScene: InputScene;
+  /** 调试无敌（`?god=1`，ADR 0005）。 */
+  godMode?: boolean;
 }
 
 /**
@@ -54,9 +56,9 @@ export class CombatRun {
     private readonly scene: Scene,
     private readonly options: CombatRunOptions,
   ) {
-    const { seed, rng, bus } = options;
+    const { seed, rng, bus, godMode } = options;
     const bounds = GRAYBOX_BOUNDS;
-    this.sim = createCombatWorld({ seed, bus, maxBullets: POOL_SIZES.bullets });
+    this.sim = createCombatWorld({ seed, bus, maxBullets: POOL_SIZES.bullets, godMode });
     // 先生成玩家再建 bridge：bridge 构造时会为现有实体分配槽位。
     this.playerId = this.sim.spawnPlayer(
       'ai_proto',
