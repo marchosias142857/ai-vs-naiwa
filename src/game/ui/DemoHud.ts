@@ -6,7 +6,6 @@ import { MenuNavigation } from './MenuNavigation';
 import type { Scene } from 'phaser';
 import { DUNGEON } from '../../data/dungeon';
 import { UPGRADES } from '../../data/player';
-import type { WeaponId } from '../../data/weapons';
 import type { DemoSession } from '../systems/DemoSession';
 import { weaponLabel } from './labels';
 import './demo.css';
@@ -42,7 +41,7 @@ export class DemoHud {
     this.modal.className = 'demo-dialog';
     this.modal.setAttribute('aria-label', t('hud.dialog'));
     this.modal.append(this.title, this.detail);
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < LOOT_RULES.upgradeChoices; i++) {
       const button = document.createElement('button');
       button.type = 'button';
       button.dataset.choice = String(i);
@@ -83,7 +82,7 @@ export class DemoHud {
           e.stopImmediatePropagation();
           return;
         }
-        if (this.mode === 'offer' && /^[123]$/.test(e.key)) this.choose(Number(e.key) - 1);
+        if (this.mode === 'offer' && /^[1-8]$/.test(e.key)) this.choose(Number(e.key) - 1);
         else if (this.mode === 'result' && e.key === 'Enter') scene.scene.restart({});
       },
       { signal: this.abort.signal },
@@ -132,7 +131,7 @@ export class DemoHud {
         button.hidden = mode !== 'offer' || !id;
         if (id) {
           const upgrade = UPGRADES[id],
-            percent = ['damage', 'haste', 'regen', 'skill'].includes(upgrade.stat);
+            percent = upgrade.display === 'percent';
           button.textContent = `${i + 1}. ${t(upgrade.name as TextKey)} +${percent ? Math.round(upgrade.amount * 100) : upgrade.amount}${percent ? '%' : ''}`;
         }
       }
@@ -165,8 +164,14 @@ export class DemoHud {
         floor: d.floor,
         floors: DUNGEON.floors + 1,
         state: d.locked ? t('hud.fighting', { wave: d.wave, alive: d.alive }) : t('hud.explore'),
-        weapon: weaponLabel(s.sim.weaponId as WeaponId),
+        weapon: weaponLabel(s.sim.weaponId),
         skill: r.skillRemaining > 0 ? `${Math.ceil(r.skillRemaining)}s` : t('hud.ready'),
+      });
+    this.status.textContent +=
+      '\n' +
+      t('hud.slots', {
+        primary: weaponLabel('pistol_basic'),
+        secondary: s.sim.secondaryWeapon ? weaponLabel(s.sim.secondaryWeapon) : t('hud.empty'),
       });
     this.hint.textContent = d.finished
       ? ''
@@ -184,6 +189,7 @@ export class DemoHud {
     for (const slot of s.loot.slots)
       if (
         slot.active &&
+        slot.room === s.loot.room &&
         slot.kind === 'weapon' &&
         p &&
         Math.hypot(slot.x - p.x, slot.y - p.y) <= LOOT_RULES.weaponRadius

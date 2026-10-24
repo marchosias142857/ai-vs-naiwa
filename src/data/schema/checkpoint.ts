@@ -13,7 +13,10 @@ export const FloorCheckpointSchema = z
       .min(1)
       .max(DUNGEON.floors + 1),
     upgrades: z.array(z.string().refine((id) => Object.hasOwn(UPGRADES, id))).max(DUNGEON.floors),
-    secondary: z.string().refine((id) => Object.hasOwn(WEAPONS, id)),
+    secondary: z
+      .string()
+      .refine((id) => Object.hasOwn(WEAPONS, id))
+      .nullable(),
     equipped: z.string(),
     hp: value.positive(),
     armor: value,

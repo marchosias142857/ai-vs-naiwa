@@ -15,6 +15,7 @@ export const INPUT_UI = {
   joystick: { homeInset: 100, radius: 52, knobRadius: 22, activeAlpha: 0.8, idleAlpha: 0.35 },
   moveArea: { widthFraction: 0.45, top: 48 },
   actions: { width: 56, height: 44, gap: 8, bottom: 6, fontSize: 12 },
+  gamepad: { confirm: 0, skill: 1, swap: 3, pause: 9, up: 12, down: 13 },
   deadzone: 0.12,
   outline: 2,
   crosshair: { radius: 3, outline: 3, stroke: 1 },

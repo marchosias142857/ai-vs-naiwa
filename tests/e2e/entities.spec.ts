@@ -281,3 +281,19 @@ test('100 秒锁步压力：持续 30 怪、弹丸与反馈池不增长', async 
   expect(result.peakFx).toBeLessThanOrEqual(100);
   expect(result.stable).toBe(true);
 });
+
+test('楼层入口继续与不中断推进得到相同升级候选', async ({ page }) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.demoScenario);
+  await page.evaluate(() => window.demoScenario(true));
+  await page.locator('[data-choice="0"]').click();
+  const saved = await page.evaluate(() => window.floorCheckpoint());
+  expect(saved.floor).toBe(2);
+  await page.evaluate(() => window.demoScenario(true));
+  const uninterrupted = await page.evaluate(() => window.floorOffers());
+  await page.evaluate((saved) => sessionStorage.setItem('fixture.checkpoint', JSON.stringify(saved)), saved);
+  await page.reload();
+  await page.waitForFunction(() => window.demoScenario);
+  await page.evaluate(() => window.demoScenario(true));
+  expect(await page.evaluate(() => window.floorOffers())).toEqual(uninterrupted);
+});

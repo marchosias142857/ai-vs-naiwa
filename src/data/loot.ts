@@ -2,6 +2,8 @@ import type { LootRules, EncounterRules } from './schema/loot';
 
 export const LOOT_RULES = {
   capacity: 64,
+  weaponReserve: 1,
+  noDropChance: 0.4,
   upgradeChoices: 3,
   pickupRadius: 14,
   weaponRadius: 24,

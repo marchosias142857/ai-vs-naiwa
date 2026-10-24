@@ -8,19 +8,28 @@ import type { Rect } from './WaveDirector';
 
 /** 战斗之后的同一个 WORLD_STEP 执行；分别持有种类与位置随机流。 */
 export class RoomDirector {
-  private readonly kinds: Random;
-  private readonly positions: Random;
+  private kinds: Random;
+  private positions: Random;
+  private floor: number;
   constructor(
     private readonly world: CombatWorld,
     readonly run: DungeonRun,
-    rng: Random,
+    private readonly rng: Random,
     private readonly bounds: Rect,
     private readonly isFree: (x: number, y: number, radius: number) => boolean,
   ) {
-    this.kinds = rng.fork('enemy-kinds');
-    this.positions = rng.fork('enemy-positions');
+    this.floor = run.floor;
+    const floorRng = rng.fork(`encounters:${this.floor}`);
+    this.kinds = floorRng.fork('enemy-kinds');
+    this.positions = floorRng.fork('enemy-positions');
   }
   step(dt: number): void {
+    if (this.floor !== this.run.floor) {
+      this.floor = this.run.floor;
+      const rng = this.rng.fork(`encounters:${this.floor}`);
+      this.kinds = rng.fork('enemy-kinds');
+      this.positions = rng.fork('enemy-positions');
+    }
     let alive = 0;
     for (const a of this.world.actors) if (a.team === 'enemy' && a.phase !== 'dead') alive++;
     const p = this.world.playerId === null ? undefined : this.world.getActor(this.world.playerId);

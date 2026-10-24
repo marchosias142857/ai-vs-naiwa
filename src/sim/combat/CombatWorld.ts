@@ -101,7 +101,7 @@ type MutableSpawn = { -readonly [K in keyof BulletSpawn]: BulletSpawn[K] };
 
 interface PlayerState {
   weapon: Readonly<WeaponDef>;
-  weaponId: string;
+  weaponId: WeaponId;
   pattern: FirePattern;
   cooldown: number;
   tuning: MoveTuning;
@@ -251,7 +251,7 @@ class CombatWorldImpl implements CombatWorld {
   private readonly navigation: CombatWorldOptions['navigation'];
   private readonly route = { x: 0, y: 0 };
   readonly resources: PlayerResources;
-  secondaryWeapon: WeaponId = 'rifle_auto';
+  secondaryWeapon: WeaponId | null = null;
   private readonly dashDirection = { x: 1, y: 0 };
   private readonly enemyGun = {
     weapon: ATTACKS.spit_single as Readonly<WeaponDef>,
@@ -291,8 +291,8 @@ class CombatWorldImpl implements CombatWorld {
     }
   }
 
-  get weaponId(): string {
-    return this.player?.weaponId ?? '';
+  get weaponId(): WeaponId {
+    return this.player?.weaponId ?? 'pistol_basic';
   }
 
   equipWeapon(id: WeaponId): boolean {
@@ -306,7 +306,7 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   takeWeapon(id: WeaponId): boolean {
-    if (!this.equipWeapon(id)) return false;
+    if (id === 'pistol_basic' || !this.equipWeapon(id)) return false;
     this.secondaryWeapon = id;
     return true;
   }
@@ -650,7 +650,7 @@ class CombatWorldImpl implements CombatWorld {
 
     const r = this.resources;
     r.step(dt);
-    if (input.swapPressed)
+    if (input.swapPressed && this.secondaryWeapon)
       this.equipWeapon(p.weaponId === 'pistol_basic' ? this.secondaryWeapon : 'pistol_basic');
     if (input.skillPressed && r.skill()) {
       const moving = Math.hypot(input.move.x, input.move.y);
@@ -703,7 +703,10 @@ class CombatWorldImpl implements CombatWorld {
     }
   }
 
-  private fire(owner: Actor, p: Pick<PlayerState, 'weapon' | 'weaponId' | 'pattern'>): void {
+  private fire(
+    owner: Actor,
+    p: { weapon: Readonly<WeaponDef>; weaponId: string; pattern: FirePattern },
+  ): void {
     if (owner.team === 'player' && !this.resources.canFire(p.weapon.energyCost)) return;
     // 枪口：身体中心（脚底向上一个半径）沿朝向前移一个半径再加 2 像素。
     const reach = owner.radius + 2;

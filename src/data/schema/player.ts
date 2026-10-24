@@ -14,5 +14,6 @@ export const UpgradeDefSchema = z.strictObject({
   name: z.string(),
   stat: z.enum(['damage', 'armor', 'health', 'energy', 'speed', 'haste', 'regen', 'skill']),
   amount: z.number().positive(),
+  display: z.enum(['number', 'percent']),
 });
 export type UpgradeDef = z.infer<typeof UpgradeDefSchema>;

@@ -12,7 +12,7 @@ import { TEX } from '../../src/game/assets/keys';
 type MutableActor = { -readonly [K in keyof ActorView]: ActorView[K] };
 /** 只在独立测试构建中使用，不替代 Claude 的 sim 实现。 */
 class FakeWorld implements CombatWorld {
-  weaponId = 'pistol_basic';
+  weaponId = 'pistol_basic' as const;
   secondaryWeapon = 'rifle_auto' as const;
   resources = new PlayerResources();
   takeWeapon() {

@@ -29,8 +29,9 @@ export class ActionButtons {
       button.dataset.action = code;
       button.style.cssText = `width:${ui.width}px;height:${ui.height}px;font:${ui.fontSize}px sans-serif;background:#${COLORS.background.toString(16).padStart(6, '0')};color:${COLORS.text};border:1px solid ${COLORS.accent};touch-action:manipulation;cursor:pointer;`;
       button.addEventListener(
-        'click',
-        () => {
+        'pointerdown',
+        (event) => {
+          event.preventDefault();
           if (
             scene.game.input.enabled &&
             !controls.battle.scene.isPaused() &&

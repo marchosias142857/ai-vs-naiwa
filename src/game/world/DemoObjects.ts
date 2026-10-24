@@ -1,4 +1,5 @@
 import type { GameObjects, Scene } from 'phaser';
+import { t } from '../../i18n/t';
 import { COLORS, DEPTH } from '../../config';
 import type { DemoSession } from '../systems/DemoSession';
 import { textStyle } from '../ui/text';
@@ -22,7 +23,7 @@ export class DemoObjects {
           .setVisible(false),
       );
     this.portal = scene.add
-      .text(B.x + B.width / 2, B.y + B.height / 2, '[ ↑ E ]', textStyle(12, COLORS.accent))
+      .text(B.x + B.width / 2, B.y + B.height / 2, t('hint.portal'), textStyle(12, COLORS.accent))
       .setOrigin(0.5)
       .setDepth(DEPTH.floorDecals);
   }
@@ -34,7 +35,7 @@ export class DemoObjects {
     for (let i = 0; i < this.loot.length; i++) {
       const slot = s.loot.slots[i]!,
         text = this.loot[i]!;
-      text.setVisible(slot.active);
+      text.setVisible(slot.active && slot.room === s.loot.room);
       if (slot.active)
         text
           .setPosition(slot.x, slot.y)

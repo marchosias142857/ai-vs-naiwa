@@ -39,7 +39,40 @@ export class MenuPanel {
     stats.textContent = t('menu.stats', { runs: profile.runs, wins: profile.wins, kills: profile.kills });
     const note = document.createElement('small');
     note.textContent = t('menu.note');
-    start.addEventListener('click', () => scene.scene.start('Game', {}), { signal: this.abort.signal });
+    const question = document.createElement('p'),
+      cancel = document.createElement('button'),
+      confirm = document.createElement('button');
+    question.textContent = t('menu.replaceSave');
+    cancel.id = 'cancel-new-run';
+    confirm.id = 'confirm-new-run';
+    cancel.textContent = t('menu.cancel');
+    confirm.textContent = t('menu.confirmNew');
+    question.hidden = cancel.hidden = confirm.hidden = true;
+    let confirming = false;
+    const showConfirmation = (value: boolean) => {
+      confirming = value;
+      question.hidden = !value;
+      for (const button of this.root.querySelectorAll('button'))
+        button.hidden = button === confirm || button === cancel ? !value : value;
+      this.navigation.update(false);
+      (value ? cancel : start).focus();
+    };
+    start.addEventListener(
+      'click',
+      () => {
+        if (checkpoint) showConfirmation(true);
+        else scene.scene.start('Game', {});
+      },
+      { signal: this.abort.signal },
+    );
+    cancel.addEventListener('click', () => showConfirmation(false), { signal: this.abort.signal });
+    confirm.addEventListener(
+      'click',
+      () => {
+        if (confirming) scene.scene.start('Game', {});
+      },
+      { signal: this.abort.signal },
+    );
     resume.addEventListener(
       'click',
       () => {
@@ -47,7 +80,7 @@ export class MenuPanel {
       },
       { signal: this.abort.signal },
     );
-    this.root.append(title, subtitle, start, resume, help, controls, stats, note);
+    this.root.append(title, subtitle, start, resume, question, cancel, confirm, help, controls, stats, note);
     addSettings(this.root, this.abort.signal, () => scene.scene.restart());
     document.documentElement.lang = settings.language;
     guardGameUi(this.root, scene, this.abort.signal);
@@ -56,8 +89,17 @@ export class MenuPanel {
     window.addEventListener(
       'keydown',
       (e) => {
-        if (!scene.game.input.enabled || e.repeat || e.target instanceof HTMLButtonElement) return;
-        if (e.key === 'Enter') scene.scene.start('Game', {});
+        if (!scene.game.input.enabled) return;
+        if (e.repeat) {
+          if (e.key === 'Enter') e.preventDefault();
+          return;
+        }
+        if (confirming && e.key === 'Escape') showConfirmation(false);
+        if (confirming || e.target instanceof HTMLButtonElement) return;
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          scene.scene.start('Game', checkpoint ? { checkpoint } : {});
+        }
       },
       { signal: this.abort.signal },
     );

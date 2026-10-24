@@ -25,6 +25,9 @@ const save: FloorCheckpoint = {
 it('检查点 schema 与轻量解析一致；拒绝损坏/未来版本/未知 ID', () => {
   for (const value of [
     save,
+    { ...save, secondary: null },
+    { ...save, secondary: null, equipped: 'shotgun_fan' },
+    { ...save, secondary: null, equipped: null },
     null,
     {},
     { ...save, version: 2 },

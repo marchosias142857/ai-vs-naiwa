@@ -59,5 +59,11 @@
   "shop.supplies": "补给：{price} 金币 → 生命 +{health} / 能量 +{energy}",
   "hint.weapon": "E / A / 拾取：{weapon} · 伤害 {damage} × {pellets} · 能耗 {cost}",
   "hud.boss": "奶蛙首领 {hp}/{maxHp}",
-  "save.unavailable": "浏览器存储不可用：本局可玩，但无法保存进度"
+  "save.unavailable": "浏览器存储不可用：本局可玩，但无法保存进度",
+  "menu.replaceSave": "开始新一局将覆盖现有楼层检查点。确定继续？",
+  "menu.cancel": "取消，保留存档",
+  "menu.confirmNew": "确认开始新一局",
+  "hud.empty": "空槽",
+  "hud.slots": "武器槽：{primary} / {secondary}",
+  "hint.portal": "[ ↑ 出口 ]"
 }

@@ -1,21 +1,28 @@
+import { INPUT_UI } from '../../src/game/fx/params';
 import { installPad, padButton } from './helpers/gamepad';
 import { expect, test } from '@playwright/test';
 
-test('demo：默认地牢入口、行动按钮、真实走门、清房与暂停', async ({ page }, info) => {
+test('demo：默认地牢入口、行动按钮、真实走门、清房与暂停', async ({ page, isMobile }, info) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/?scene=Game&seed=42&debug=1&god=1');
   await page.waitForFunction(() => !!window.__AVN__?.demo);
   await expect(page.locator('#demo-hud')).toBeVisible();
-  await page.getByRole('button', { name: /切枪/ }).click();
-  await page.waitForFunction(() => window.__AVN__!.demo!.weapon === 'rifle_auto');
-  // 点击 DOM 操作键后不残留焦点，键盘能继续控制。
+  await expect(page.locator('.demo-status')).toContainText('空槽');
+  if (isMobile) await page.locator('[data-action="KeyQ"]').dispatchEvent('pointerdown');
+  else {
+    await expect(page.locator('#demo-actions')).toBeHidden();
+    await page.keyboard.press('q');
+  }
+  expect(await page.evaluate(() => window.__AVN__!.demo!.weapon)).toBe('pistol_basic');
+  // 按下 DOM 操作键后不残留焦点，键盘能继续控制。
   const door = await page.evaluate(() => window.__AVN__!.demo!.links[0]!);
   const key = door.dx > 0 ? 'd' : door.dx < 0 ? 'a' : door.dy > 0 ? 's' : 'w';
   await page.keyboard.down(key);
   await page.waitForFunction(() => window.__AVN__!.demo!.room !== 0);
   await page.keyboard.up(key);
-  await page.getByRole('button', { name: /技能/ }).click();
+  if (isMobile) await page.locator('[data-action="Space"]').dispatchEvent('pointerdown');
+  else await page.keyboard.press('Space');
   await page.waitForFunction(() => window.__AVN__!.demo!.skill > 0);
   await page.waitForFunction(() => window.__AVN__!.demo!.alive > 0);
   const before = await page.evaluate(() => window.__AVN__!.demo!);
@@ -40,7 +47,7 @@ test('demo：默认地牢入口、行动按钮、真实走门、清房与暂停'
   expect(errors).toEqual([]);
 });
 
-test('demo：检查点继续、死亡结算与重来完整释放', async ({ page }, info) => {
+test('demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放', async ({ page }, info) => {
   test.setTimeout(60_000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
@@ -69,8 +76,10 @@ test('demo：检查点继续、死亡结算与重来完整释放', async ({ page
   await page.reload();
   await expect(page.locator('#continue-run')).toBeEnabled();
   await page.screenshot({ path: info.outputPath('demo-menu.png'), scale: 'css' });
-  await page.locator('#continue-run').click();
+  await page.keyboard.press('Enter');
   await page.waitForFunction(() => window.__AVN__?.demo?.floor === 2);
+  const retained = await page.evaluate(() => JSON.parse(localStorage.getItem('avn.floor.v1')!));
+  expect(retained).toMatchObject({ floor: 2, seed: 42, secondary: 'shotgun_fan', kills: 12, coins: 10 });
   expect(await page.evaluate(() => window.__AVN__!.demo!.weapon)).toBe('shotgun_fan');
   expect(await page.evaluate(() => window.__AVN__!.demo!.hp)).toBe(1);
   expect(await page.evaluate(() => window.__AVN__!.demo!.energy)).toBe(50);
@@ -211,4 +220,54 @@ test('demo：存储被禁用仍可开局，明确显示未保存状态', async (
   await page.keyboard.down('d');
   await page.waitForFunction((x) => window.__AVN__!.demo!.x > x + 5, x);
   await page.keyboard.up('d');
+});
+
+test('demo：新局须确认，取消和重复 Enter 不覆盖检查点', async ({ page }, info) => {
+  await page.goto('/?scene=Game&seed=42');
+  await page.waitForFunction(() => !!localStorage.getItem('avn.floor.v1'));
+  const saved = await page.evaluate(() => localStorage.getItem('avn.floor.v1'));
+  await page.goto('/?seed=42');
+  await expect(page.locator('#confirm-new-run')).toBeHidden();
+  await page.locator('#start-run').click();
+  await expect(page.locator('#start-run')).toBeHidden();
+  await expect(page.locator('#continue-run')).toBeHidden();
+  await expect(page.locator('#confirm-new-run')).toBeVisible();
+  await page.screenshot({ path: info.outputPath('demo-confirm.png'), scale: 'css' });
+  expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBe(saved);
+  await page.locator('#cancel-new-run').click();
+  await expect(page.locator('#start-run')).toBeVisible();
+  await page.locator('#start-run').focus();
+  await page.keyboard.down('Enter');
+  await expect(page.locator('#cancel-new-run')).toBeFocused();
+  await page.keyboard.down('Enter');
+  await page.keyboard.up('Enter');
+  expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBe(saved);
+  await page.locator('#confirm-new-run').click();
+  await page.waitForFunction(() => window.__AVN__?.demo?.floor === 1);
+  await expect(page.locator('.demo-status')).toContainText('空槽');
+});
+
+test('demo：按住摇杆时，第二指按下技能立即生效，无需松手', async ({ page, context }) => {
+  await page.goto('/?scene=Game&god=1&seed=42');
+  await page.waitForFunction(() => !!window.__AVN__?.demo);
+  const canvas = (await page.locator('#game canvas').boundingBox())!;
+  const cdp = await context.newCDPSession(page);
+  const move = {
+    x: canvas.x + INPUT_UI.joystick.homeInset,
+    y: canvas.y + canvas.height - INPUT_UI.joystick.homeInset,
+    id: 1,
+  };
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [move] });
+  const moving = { ...move, x: move.x + INPUT_UI.joystick.radius * 0.8 };
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [moving] });
+  await expect(page.locator('#demo-actions')).toBeVisible();
+  const button = (await page.locator('[data-action="Space"]').boundingBox())!;
+  const skill = { x: button.x + button.width / 2, y: button.y + button.height / 2, id: 2 };
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [moving, skill] });
+  await page.waitForFunction(() => window.__AVN__!.demo!.skill > 0);
+  expect(await page.evaluate(() => window.__AVN__!.input!.move.x)).toBeGreaterThan(0.5);
+  expect(await page.locator('[data-action="Space"]').evaluate((e) => e === document.activeElement)).toBe(
+    false,
+  );
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchCancel', touchPoints: [] });
 });
