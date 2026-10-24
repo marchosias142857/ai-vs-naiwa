@@ -47,6 +47,8 @@ export interface ActorView {
   readonly invulnerable: boolean;
   /** 朝向，弧度。玩家为当前瞄准方向，怪物为移动方向；用于翻转贴图、放置枪口。 */
   readonly facing: number;
+  /** 敌方冲锋蓄力，灰盒可显示危险提示。 */
+  readonly warning?: boolean;
 }
 
 /** 需要生成的一颗子弹。对象由 sim 复用，只在下一次 `step` 之前有效；game 读取后立即从池中取子弹。 */
