@@ -1,3 +1,6 @@
+import type { PlayerRules } from '../../data/schema/player';
+import type { UpgradeId } from '../../data/player';
+import type { PlayerResources } from '../stats/PlayerResources';
 import type { CharacterId } from '../../data/characters';
 import type { WeaponId } from '../../data/weapons';
 import type { EnemyId } from '../../data/enemies';
@@ -101,6 +104,8 @@ export interface CombatWorldOptions {
    * 打到玩家的子弹按「命中无敌目标」处理：子弹消失，发出 `critical: false` 的 `bullet:hit`。
    */
   godMode?: boolean;
+  /** 传入时启用护甲、能量、冲刺；不传保留 M1 行为。 */
+  playerRules?: Readonly<PlayerRules>;
 }
 
 /**
@@ -115,6 +120,27 @@ export interface CombatWorld {
   /** 玩家实体的编号；尚未生成玩家时为 null。 */
   readonly playerId: EntityId | null;
   readonly weaponId: string;
+  readonly secondaryWeapon: WeaponId;
+  readonly resources: Readonly<
+    Pick<
+      PlayerResources,
+      | 'armor'
+      | 'maxArmor'
+      | 'energy'
+      | 'maxEnergy'
+      | 'coins'
+      | 'skillRemaining'
+      | 'dashRemaining'
+      | 'damageScale'
+      | 'fireRateScale'
+      | 'regenScale'
+      | 'skillScale'
+    >
+  >;
+  /** 替换第二武器并装备；第一槽始终保留免费手枪。 */
+  takeWeapon(id: WeaponId): boolean;
+  grantPickup(kind: 'health' | 'energy' | 'coin', amount: number): boolean;
+  upgrade(id: UpgradeId): boolean;
   /** 装备武器；保留开火冷却并取消旧武器待发连射，死亡时拒绝。 */
   equipWeapon(id: WeaponId): boolean;
   getActor(id: EntityId): ActorView | undefined;

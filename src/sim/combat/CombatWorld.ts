@@ -1,3 +1,5 @@
+import { UPGRADES, type UpgradeId } from '../../data/player';
+import { PlayerResources } from '../stats/PlayerResources';
 import { ATTACKS, type AttackId } from '../../data/attacks';
 import { BALANCE } from '../../data/balance';
 import { CHARACTERS, type CharacterId } from '../../data/characters';
@@ -215,6 +217,9 @@ class CombatWorldImpl implements CombatWorld {
   private readonly critRng: Random;
   private readonly autoAim: AutoAim;
   private readonly lineOfSight: LineOfSight;
+  readonly resources: PlayerResources;
+  secondaryWeapon: WeaponId = 'rifle_auto';
+  private readonly dashDirection = { x: 1, y: 0 };
   private readonly enemyGun = {
     weapon: ATTACKS.spit_single as Readonly<WeaponDef>,
     weaponId: 'spit_single',
@@ -232,6 +237,7 @@ class CombatWorldImpl implements CombatWorld {
 
   constructor(options: CombatWorldOptions) {
     const root = new Random(options.seed);
+    this.resources = new PlayerResources(options.playerRules);
     this.spreadRng = root.fork('spread');
     this.critRng = root.fork('crit');
     this.bus = options.bus;
@@ -259,6 +265,46 @@ class CombatWorldImpl implements CombatWorld {
     p.weaponId = id;
     p.pattern = getPattern(p.weapon.pattern);
     p.burstLeft = 0;
+    return true;
+  }
+
+  takeWeapon(id: WeaponId): boolean {
+    if (!this.equipWeapon(id)) return false;
+    this.secondaryWeapon = id;
+    return true;
+  }
+  grantPickup(kind: 'health' | 'energy' | 'coin', amount: number): boolean {
+    const actor = this.playerId === null ? undefined : this.byId.get(this.playerId);
+    if (!actor || actor.phase !== 'active' || !Number.isFinite(amount) || amount <= 0) return false;
+    if (kind === 'health') {
+      if (actor.hp >= actor.maxHp) return false;
+      actor.hp = Math.min(actor.maxHp, actor.hp + amount);
+    } else if (kind === 'energy') {
+      if (this.resources.energy >= this.resources.maxEnergy) return false;
+      this.resources.energy = Math.min(this.resources.maxEnergy, this.resources.energy + amount);
+    } else this.resources.coins += amount;
+    return true;
+  }
+  upgrade(id: UpgradeId): boolean {
+    const actor = this.playerId === null ? undefined : this.byId.get(this.playerId),
+      p = this.player;
+    if (!actor || !p || actor.phase !== 'active' || !Object.hasOwn(UPGRADES, id)) return false;
+    const { stat, amount } = UPGRADES[id],
+      r = this.resources;
+    if (stat === 'damage') r.damageScale += amount;
+    else if (stat === 'armor') {
+      r.maxArmor += amount;
+      r.armor = r.maxArmor;
+    } else if (stat === 'health') {
+      actor.maxHp += amount;
+      actor.hp = actor.maxHp;
+    } else if (stat === 'energy') {
+      r.maxEnergy += amount;
+      r.energy = r.maxEnergy;
+    } else if (stat === 'speed') p.tuning.maxSpeed += amount;
+    else if (stat === 'haste') r.fireRateScale += amount;
+    else if (stat === 'regen') r.regenScale += amount;
+    else r.skillScale += amount;
     return true;
   }
 
@@ -499,7 +545,21 @@ class CombatWorldImpl implements CombatWorld {
     const actor = this.playerId === null ? undefined : this.byId.get(this.playerId);
     if (!p || !actor || actor.phase !== 'active') return;
 
-    stepVelocity(actor.base, input.move, p.tuning, dt);
+    const r = this.resources;
+    r.step(dt);
+    if (input.swapPressed)
+      this.equipWeapon(p.weaponId === 'pistol_basic' ? this.secondaryWeapon : 'pistol_basic');
+    if (input.skillPressed && r.skill()) {
+      const moving = Math.hypot(input.move.x, input.move.y);
+      this.dashDirection.x = moving ? input.move.x / moving : Math.cos(actor.facing);
+      this.dashDirection.y = moving ? input.move.y / moving : Math.sin(actor.facing);
+      actor.invulnUntil = Math.max(actor.invulnUntil, this.time + r.dashRemaining);
+      actor.invulnerable = true;
+    }
+    if (r.dashRemaining > 0 && r.rules) {
+      actor.base.x = this.dashDirection.x * r.rules.dashSpeed;
+      actor.base.y = this.dashDirection.y * r.rules.dashSpeed;
+    } else stepVelocity(actor.base, input.move, p.tuning, dt);
     if (input.move.x !== 0 || input.move.y !== 0) {
       const len = Math.hypot(input.move.x, input.move.y);
       this.lastMoveDir.x = input.move.x / len;
@@ -536,11 +596,12 @@ class CombatWorldImpl implements CombatWorld {
         p.burstLeft = p.weapon.pellets - 1;
         p.burstWait = p.weapon.burstInterval ?? 1 / p.weapon.fireRate;
       }
-      p.cooldown += 1 / p.weapon.fireRate;
+      p.cooldown += 1 / (p.weapon.fireRate * r.fireRateScale);
     }
   }
 
   private fire(owner: Actor, p: Pick<PlayerState, 'weapon' | 'weaponId' | 'pattern'>): void {
+    if (owner.team === 'player' && !this.resources.canFire(p.weapon.energyCost)) return;
     // 枪口：身体中心（脚底向上一个半径）沿朝向前移一个半径再加 2 像素。
     const reach = owner.radius + 2;
     const muzzleX = owner.x + Math.cos(owner.facing) * reach;
@@ -556,6 +617,7 @@ class CombatWorldImpl implements CombatWorld {
     p.pattern(this.fireCtx, this.sink);
     this.firingOwner = null;
     if (this.spawns.length === before) return;
+    if (owner.team === 'player') this.resources.spend(p.weapon.energyCost);
     const e = this.payloads.fired.acquire();
     try {
       e.ownerId = owner.id;
@@ -581,7 +643,7 @@ class CombatWorldImpl implements CombatWorld {
     bullet.team = owner.team;
     bullet.ownerId = owner.id;
     bullet.angle = angle;
-    bullet.damage = weapon.damage;
+    bullet.damage = weapon.damage * (owner.team === 'player' ? this.resources.damageScale : 1);
     bullet.critChance = weapon.critChance;
     bullet.knockback = weapon.knockback;
     bullet.pierceLeft = weapon.pierce;
@@ -670,7 +732,8 @@ class CombatWorldImpl implements CombatWorld {
     dirY: number,
     sourceId: EntityId | null,
   ): void {
-    target.hp = Math.max(0, target.hp - amount);
+    const healthDamage = target.id === this.playerId ? this.resources.absorb(amount) : amount;
+    target.hp = Math.max(0, target.hp - healthDamage);
     if (target.invulnTime > 0) {
       target.invulnUntil = this.time + target.invulnTime;
       target.invulnerable = true;
