@@ -24,3 +24,21 @@ export const WeaponArtSchema = z.strictObject({
 });
 export type ArtFrame = z.infer<typeof ArtFrameSchema>;
 export type WeaponArt = z.infer<typeof WeaponArtSchema>;
+export const PresentationSchema = z.strictObject({
+  shadowColor: z.int().nonnegative(),
+  shadowAlpha: z.number().min(0).max(1),
+  shadowWidth: z.number().positive(),
+  shadowHeight: z.number().positive(),
+  enemySize: z.number().positive(),
+  bobPixels: z.number().nonnegative(),
+  bobSpeed: z.number().positive(),
+  invulnerableAlpha: z.number().min(0).max(1),
+  deathSeconds: z.number().positive(),
+  deathAngle: z.number().finite(),
+  hurtSeconds: z.number().positive(),
+  weaponDepth: z.number().positive(),
+  arcWidth: z.number().positive(),
+  arcColor: z.int().nonnegative(),
+  arcAlpha: z.number().min(0).max(1),
+});
+export type Presentation = z.infer<typeof PresentationSchema>;

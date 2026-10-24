@@ -61,6 +61,8 @@ export class GameScene extends M1Scene {
     this.objects = new DemoObjects(this, demo);
     this.tools = params.debug ? new DebugTools(this, demo, { seed, godMode: params.god }) : undefined;
     setDemoProbe(() => ({
+      meleeActive: demo.sim.melee.active,
+      visual: demo.bridge.actors.art?.inspect() ?? null,
       floor: demo.dungeon.floor,
       room: demo.dungeon.roomId,
       kind: demo.dungeon.room.kind,

@@ -1,3 +1,5 @@
+import { ActorArt } from './ActorArt';
+import { ART } from '../assets/demoArt';
 import type { Physics, Scene } from 'phaser';
 import { DEPTH, DEPTH_Y_SORT, POOL_SIZES } from '../../config';
 import { CHARACTERS } from '../../data/characters';
@@ -13,6 +15,7 @@ interface ActorSlot {
 
 /** 角色位置统一为身体圆心；动画贴图独立于物理代理，换帧不修改物理体。 */
 export class CombatActors {
+  readonly art?: ActorArt;
   readonly group: Physics.Arcade.Group;
   readonly slots: ActorSlot[] = [];
   private readonly byId = new Map<number, ActorSlot>();
@@ -31,6 +34,7 @@ export class CombatActors {
       this.slots.push(slot);
       this.byImage.set(image, slot);
     }
+    if (scene.textures.exists(ART.hero)) this.art = new ActorArt(scene, sim, this);
   }
   /** 在 POST_UPDATE 之前只读 body.center，不读滞后一帧的贴图坐标。 */
   syncPositions(): void {
@@ -117,6 +121,7 @@ export class CombatActors {
     this.sim.removeActor(id);
   }
   destroy(): void {
+    this.art?.destroy();
     this.group.destroy(true, true);
     this.byImage.clear();
     this.byId.clear();

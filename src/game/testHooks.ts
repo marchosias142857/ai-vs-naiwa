@@ -17,6 +17,15 @@ export interface TestHooks {
 }
 
 export interface DemoProbe {
+  meleeActive: boolean;
+  visual: {
+    frame: string | number;
+    x: number;
+    y: number;
+    flipX: boolean;
+    depth: number;
+    weapon: { x: number; y: number; flipY: boolean; angle: number; depth: number; visible: boolean };
+  } | null;
   floor: number;
   room: number;
   kind: string;

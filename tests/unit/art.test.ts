@@ -1,3 +1,6 @@
+import { PRESENTATION } from '../../src/data/presentation';
+import { PresentationSchema } from '../../src/data/schema/art';
+import { frameAt } from '../../src/game/entities/artPose';
 import { readFileSync, statSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ENEMY_ART, ENVIRONMENT_ART, HERO_ART, HERO_FRAMES, WEAPON_ART } from '../../src/data/art';
@@ -21,6 +24,13 @@ function inImage(file: string, rects: readonly (readonly number[])[]) {
   }
 }
 describe('真实 PNG 图集与持握数据', () => {
+  it('视觉参数通过 schema，跑步循环、死亡停在末帧', () => {
+    expect(PresentationSchema.safeParse(PRESENTATION).success).toBe(true);
+    expect(frameAt('run', 0)).toBe('run_0');
+    expect(frameAt('run', 0.11)).toBe('run_1');
+    expect(frameAt('run', 0.41)).toBe('run_0');
+    expect(frameAt('death', 10)).toBe('death_3');
+  });
   it('全部资源是 PNG，尺寸合法，单文件在离线缓存预算内', () => {
     for (const name of files) expect(dimensions(name)[0]).toBeGreaterThan(0);
     inImage(
