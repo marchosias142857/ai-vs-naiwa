@@ -32,7 +32,11 @@ export class DungeonRun {
   constructor(
     readonly seed: number,
     private readonly bus: EventBus<GameEvents>,
+    startFloor = 1,
   ) {
+    if (!Number.isInteger(startFloor) || startFloor < 1 || startFloor > DUNGEON.floors + 1)
+      throw new RangeError('invalid starting floor');
+    this.floor = startFloor;
     this.root = new Random(seed);
     this.map = this.generate();
     this.enterCurrent();

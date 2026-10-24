@@ -141,6 +141,8 @@ export interface CombatWorld {
   takeWeapon(id: WeaponId): boolean;
   grantPickup(kind: 'health' | 'energy' | 'coin', amount: number): boolean;
   upgrade(id: UpgradeId): boolean;
+  /** 仅允许 time=0 的新世界恢复入口资源，先由调用方重放升级；有限值会夹到上限。 */
+  restorePlayer(progress: { hp: number; armor: number; energy: number; coins: number }): boolean;
   /** 装备武器；保留开火冷却并取消旧武器待发连射，死亡时拒绝。 */
   equipWeapon(id: WeaponId): boolean;
   getActor(id: EntityId): ActorView | undefined;

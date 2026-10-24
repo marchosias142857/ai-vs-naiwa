@@ -285,6 +285,18 @@ class CombatWorldImpl implements CombatWorld {
     } else this.resources.coins += amount;
     return true;
   }
+  restorePlayer(progress: { hp: number; armor: number; energy: number; coins: number }): boolean {
+    const p = this.playerId === null ? undefined : this.byId.get(this.playerId);
+    if (!p || this.time !== 0 || p.phase !== 'active' || progress.hp <= 0) return false;
+    for (const value of [progress.hp, progress.armor, progress.energy, progress.coins])
+      if (!Number.isFinite(value) || value < 0 || value > Number.MAX_SAFE_INTEGER) return false;
+    p.hp = Math.min(p.maxHp, progress.hp);
+    this.resources.armor = Math.min(this.resources.maxArmor, progress.armor);
+    this.resources.energy = Math.min(this.resources.maxEnergy, progress.energy);
+    this.resources.coins = progress.coins;
+    return true;
+  }
+
   upgrade(id: UpgradeId): boolean {
     const actor = this.playerId === null ? undefined : this.byId.get(this.playerId),
       p = this.player;
