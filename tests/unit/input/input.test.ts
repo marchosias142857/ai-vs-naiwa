@@ -62,12 +62,12 @@ describe('输入快照与多指', () => {
     expect(t.down(3, t.width - UI.pause.inset, UI.pause.inset)).toBe(true);
     expect(t.pausePressed).toBe(true);
     t.up(2);
-    expect(t.fireId).toBe(-1);
+    expect(t.fireId).toBeNull();
     expect(t.moveId).toBe(1);
     t.up(1);
     expect(t.move).toEqual({ x: 0, y: 0 });
     t.resize(450, 800);
-    expect(t.pauseId).toBe(-1);
+    expect(t.pauseId).toBeNull();
     expect(t.down(5, 20, 20)).toBe(false);
   });
 });

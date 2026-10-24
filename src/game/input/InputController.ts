@@ -127,7 +127,7 @@ export class InputController {
       y = e.clientY - this.rect.top;
     if (e.pointerType === 'mouse') {
       // 触点持有轮盘时，兼容鼠标事件不能夺走设备所有权而静默停止开火。
-      if (this.touch.moveId >= 0 || this.touch.fireId >= 0) return;
+      if (this.touch.moveId !== null || this.touch.fireId !== null) return;
       this.mouse.x = x;
       this.mouse.y = y;
       this.mouseInside = true;
@@ -204,7 +204,7 @@ export class InputController {
       !!pad?.connected && !!pad.buttons[UI.gamepad.swap]?.pressed,
       !!pad?.connected && !!pad.buttons[UI.gamepad.confirm]?.pressed,
     );
-    if (this.touch.moveId >= 0 || this.touch.fireId >= 0) f.source = 'touch';
+    if (this.touch.moveId !== null || this.touch.fireId !== null) f.source = 'touch';
     if (f.source === 'keyboard' && this.mouseInside) {
       const scale = this.rect.width / this.ui.scale.width;
       this.battle.cameras.main.getWorldPoint(this.mouse.x / scale, this.mouse.y / scale, this.worldPointer);

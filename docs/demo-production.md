@@ -69,3 +69,13 @@
 - `npm run check`：42 文件、298 项单测，格式、ESLint、类型与生产构建通过。新增 DOM 到真实 sim 出弹、多指生命周期、方向优先级、存读档和帧握持一致性回归。
 - 浏览器回归已更新并尝试本地运行 `npx playwright test tests/e2e/mobileFire.spec.ts --project=mobile-landscape --workers=1 --max-failures=1`；启动即因缺少 Chromium headless shell 1248 失败，未执行页面检查或生成本轮游戏截图。不能计为 E2E 通过；不启动远端 CI 代跑。
 - 合并后手动试玩：打开 `?seed=42&god=1`，双指移动射击；先松左指确认持续开火，再松右指确认朝最后移动方向；电脑按 A 向左走、鼠标朝右，未开火身体朝左，按住开火身体朝右。受击/死亡继续检查像素对齐与姿态方向。
+
+## 手机轮盘可瞄准但不出弹：有符号触点修复（2026-10-24）
+
+- 负责人确认 #85 的其他行为正确，但右轮盘仍不能出弹。本轮基于合并后的 main `b424242`，只修触点有效性，不改朝向、美术或武器规则。
+- 浏览器复现：原代码收到编号 `-42` 的 TouchEvent 后，`aim=(-1,0)`、`fire=false`、子弹为 0。`drag` 按编号相等更新瞄准，但 `sampleFire` 把所有负数当成未按下，导致只有瞄准生效。编号 `-1` 还与旧空闲标记冲突。
+- `Touch.identifier` 的接口是有符号 `long`；WebKit 的 iOS 手势识别器以随机 unsigned 值初始化编号。来源：[Touch IDL](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/dom/Touch.idl)、[iOS 触摸编号实现](https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/ios/WKTouchEventsGestureRecognizer.mm)。不能用正负号判断触点是否存在。
+- 左、右、暂停触点改用 `number | null`，只以 null 表示空闲；同步修改输入设备所有权、鼠标兼容事件拦截和轮盘按下高亮。中心 120 ms 等待、移动和开火朝向规则保持不变。
+- 新增 `-1`、`-42`、`-2147483648` 三组回归：修改前全部因 fire=false 失败，修改后通过；覆盖实际出弹、中心长按、第三指抢占、独立释放和取消。浏览器用例等待 InputUI 真正就绪后再派发触摸，避免在监听注册前开始测试。
+- `npm run check` 通过：42 文件、301 项单测，格式/ESLint/类型/构建通过。本地补齐独立 Chromium 153 运行环境（未新增项目依赖），生产构建的 5 项手机开火 E2E 和 5 项输入 E2E 通过，1 项桌面不适用触屏测试跳过。没有启动远端 CI；iPhone 真机和 WebKit 本轮未跑。
+- [浏览器出弹截图](testing/mobile-signed-touch.jpg)：以真实浏览器 Touch/TouchEvent 对象派发负数编号，经过正式控制器、sim、物理子弹池和渲染器；未伪造 InputFrame 或子弹状态。原生 Chromium 多指事件也另有通过用例。

@@ -72,6 +72,39 @@ afterEach(() => {
 });
 
 describe('DOM 触控到战斗开火', () => {
+  it.each([-1, -42, -2147483648])('触点编号 %i：拖拽出弹、回中长按、双指所有权及释放', (id) => {
+    const { controls, sample, touch, pointer } = setup();
+    const clock = vi.spyOn(performance, 'now').mockReturnValue(0);
+    const moveId = id + 10;
+    touch('touchstart', [
+      [moveId, 100, 350],
+      [id, 712, 362],
+    ]);
+    touch('touchmove', [
+      [moveId, 130, 350],
+      [id, 672, 362],
+    ]);
+    expect(sample()).toMatchObject({ source: 'touch', fire: true, aim: { x: -1, y: 0 } });
+    pointer('pointermove', 'mouse', 99);
+    touch('touchstart', [[id + 1, 712, 362]]); // 第三指不能抢走已经占用的右轮盘。
+    expect(controls.touch.fireId).toBe(id);
+    expect(sample().move.x).toBeGreaterThan(0);
+    const world = createCombatWorld({ seed: 42, bus: new EventBus() });
+    world.spawnPlayer('ai_proto', 240, 135);
+    expect(world.step(1 / 60, sample()).bulletSpawns.length).toBeGreaterThan(0);
+    touch('touchend', [[moveId]]);
+    expect(sample()).toMatchObject({ fire: true, move: { x: 0, y: 0 } });
+    touch('touchcancel', [[id]]);
+    expect(sample()).toMatchObject({ fire: false, aim: null });
+    touch('touchstart', [[id, 712, 362]]);
+    expect(sample().fire).toBe(false);
+    clock.mockReturnValue(UI.aimWheel.firstShotDelayMs + 1);
+    expect(sample().fire).toBe(true);
+    touch('touchend', [[id]]);
+    expect(sample().fire).toBe(false);
+    controls.destroy();
+  });
+
   it('原生触摸按住中心出弹，不依赖 pointerdown 或捕获；销毁移除监听', () => {
     const { controls, sample, touch, canvas } = setup();
     const clock = vi.spyOn(performance, 'now').mockReturnValue(0);
@@ -86,7 +119,7 @@ describe('DOM 触控到战斗开火', () => {
     expect(sample().fire).toBe(false);
     controls.destroy();
     touch('touchstart', [[0, 712, 362]]);
-    expect(controls.touch.fireId).toBe(-1);
+    expect(controls.touch.fireId).toBeNull();
   });
 
   it('双指拖动即时出弹；重复指针/兼容鼠标释放不能停火；松左指保留右指', () => {
