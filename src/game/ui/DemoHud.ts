@@ -1,3 +1,5 @@
+import { LOOT_RULES } from '../../data/loot';
+import { WEAPONS } from '../../data/weapons';
 import { t, type TextKey } from '../../i18n/t';
 import { MenuNavigation } from './MenuNavigation';
 import type { Scene } from 'phaser';
@@ -20,6 +22,7 @@ export class DemoHud {
   private readonly choices: HTMLButtonElement[] = [];
   private readonly restart = document.createElement('button');
   private readonly menu = document.createElement('button');
+  private readonly shop = document.createElement('button');
   private readonly abort = new AbortController();
   private refresh = Infinity;
   private mapRevision = -1;
@@ -52,7 +55,17 @@ export class DemoHud {
     this.menu.id = 'demo-menu';
     this.restart.addEventListener('click', () => scene.scene.restart({}), { signal: this.abort.signal });
     this.menu.addEventListener('click', () => scene.scene.start('Menu'), { signal: this.abort.signal });
-    this.modal.append(this.restart, this.menu);
+    this.shop.id = 'buy-supplies';
+    this.shop.type = 'button';
+    this.shop.addEventListener(
+      'click',
+      () => {
+        this.session.buySupplies();
+        this.refresh = Infinity;
+      },
+      { signal: this.abort.signal },
+    );
+    this.modal.append(this.shop, this.restart, this.menu);
     this.root.append(this.status, this.map, this.hint, this.modal);
     document.body.append(this.root);
     this.layout();
@@ -114,14 +127,26 @@ export class DemoHud {
         const button = this.choices[i]!,
           id = s.offers[i];
         button.hidden = mode !== 'offer' || !id;
-        if (id) button.textContent = `${i + 1}. ${t(UPGRADES[id].name as TextKey)}`;
+        if (id) {
+          const upgrade = UPGRADES[id],
+            percent = ['damage', 'haste', 'regen', 'skill'].includes(upgrade.stat);
+          button.textContent = `${i + 1}. ${t(upgrade.name as TextKey)} +${percent ? Math.round(upgrade.amount * 100) : upgrade.amount}${percent ? '%' : ''}`;
+        }
       }
       this.restart.hidden = this.menu.hidden = mode !== 'result';
+      this.shop.hidden = mode !== 'offer';
     }
     this.navigation.update(mode !== 'none');
     this.refresh += deltaMs;
     if (this.refresh < 250) return;
     this.refresh = 0;
+    this.shop.textContent = t('shop.supplies', {
+      price: LOOT_RULES.shopPrice,
+      health: LOOT_RULES.shopHealth,
+      energy: LOOT_RULES.shopEnergy,
+    });
+    this.shop.disabled =
+      r.coins < LOOT_RULES.shopPrice || ((p?.hp ?? 0) >= (p?.maxHp ?? 0) && r.energy >= r.maxEnergy);
     this.status.textContent =
       t('hud.resources', {
         hp: p?.hp ?? 0,
@@ -153,6 +178,27 @@ export class DemoHud {
                   ? 'hint.fight'
                   : 'hint.clear',
         );
+    for (const slot of s.loot.slots)
+      if (
+        slot.active &&
+        slot.kind === 'weapon' &&
+        p &&
+        Math.hypot(slot.x - p.x, slot.y - p.y) <= LOOT_RULES.weaponRadius
+      ) {
+        const w = WEAPONS[slot.weapon];
+        this.hint.textContent = t('hint.weapon', {
+          weapon: weaponLabel(slot.weapon),
+          damage: w.damage,
+          pellets: w.pellets,
+          cost: w.energyCost,
+        });
+        break;
+      }
+    for (const actor of s.sim.actors)
+      if (actor.kind === 'naiwa_boss' && actor.phase !== 'dead') {
+        this.status.textContent += '\n' + t('hud.boss', { hp: Math.ceil(actor.hp), maxHp: actor.maxHp });
+        break;
+      }
     if (this.mapRevision !== d.revision) {
       this.drawMap();
       this.mapRevision = d.revision;

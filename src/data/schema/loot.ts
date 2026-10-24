@@ -19,6 +19,9 @@ export const LootRulesSchema = z.strictObject({
   roomCoins: z.int().positive(),
   roomEnergy: z.number().positive(),
   roomHealth: z.number().positive(),
+  shopPrice: z.number().positive(),
+  shopHealth: z.number().positive(),
+  shopEnergy: z.number().positive(),
 });
 export type LootRules = z.infer<typeof LootRulesSchema>;
 export const EncountersSchema = z.strictObject({

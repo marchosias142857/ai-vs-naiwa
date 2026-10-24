@@ -1,3 +1,4 @@
+import { LOOT_RULES } from '../../data/loot';
 import { UPGRADES, type UpgradeId } from '../../data/player';
 import { PlayerResources } from '../stats/PlayerResources';
 import { ATTACKS, type AttackId } from '../../data/attacks';
@@ -283,6 +284,21 @@ class CombatWorldImpl implements CombatWorld {
       if (this.resources.energy >= this.resources.maxEnergy) return false;
       this.resources.energy = Math.min(this.resources.maxEnergy, this.resources.energy + amount);
     } else this.resources.coins += amount;
+    return true;
+  }
+  buySupplies(): boolean {
+    const p = this.playerId === null ? undefined : this.byId.get(this.playerId),
+      r = this.resources;
+    if (
+      !p ||
+      p.phase !== 'active' ||
+      r.coins < LOOT_RULES.shopPrice ||
+      (p.hp >= p.maxHp && r.energy >= r.maxEnergy)
+    )
+      return false;
+    r.coins -= LOOT_RULES.shopPrice;
+    this.grantPickup('health', LOOT_RULES.shopHealth);
+    this.grantPickup('energy', LOOT_RULES.shopEnergy);
     return true;
   }
   restorePlayer(progress: { hp: number; armor: number; energy: number; coins: number }): boolean {

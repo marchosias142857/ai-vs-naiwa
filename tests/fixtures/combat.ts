@@ -21,6 +21,9 @@ class FakeWorld implements CombatWorld {
   grantPickup() {
     return true;
   }
+  buySupplies() {
+    return false;
+  }
   restorePlayer() {
     return true;
   }
