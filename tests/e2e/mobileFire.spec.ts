@@ -37,10 +37,7 @@ test('正式 demo：双指移动开火、兼容鼠标事件与第三指动作仍
   await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.fire)).toBe(false);
 });
 
-test('手机基础手枪按住可出弹；能量不足有提示并能切回手枪', async ({
-  page,
-  isMobile,
-}, info) => {
+test('手机基础手枪按住可出弹；能量不足有提示并能切回手枪', async ({ page, isMobile }, info) => {
   test.skip(!isMobile);
   await page.goto('/?seed=42&weapon=rifle_auto&god=1');
   await page.locator('#start-run').tap();

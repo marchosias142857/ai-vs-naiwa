@@ -46,9 +46,7 @@ export function createRoomArt(scene: Scene): boolean {
         .setDepth(DEPTH.floor);
   for (const x of [B.x + TILE_SIZE, B.x + B.width - TILE_SIZE]) {
     for (const radius of [12, 18, 25])
-      scene.add
-        .ellipse(x, B.y + 3, radius * 2, radius, 0xe9b657, 0.035)
-        .setDepth(DEPTH.floorDecals);
+      scene.add.ellipse(x, B.y + 3, radius * 2, radius, 0xe9b657, 0.035).setDepth(DEPTH.floorDecals);
     scene.add
       .image(x, B.y - TILE_SIZE / 2, ART.environment, 'lantern')
       .setDisplaySize(10, 17)
