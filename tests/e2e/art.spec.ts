@@ -54,8 +54,25 @@ test('重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记�
   const canvas = (await page.locator('#game canvas').boundingBox())!;
   await page.mouse.move(canvas.x + canvas.width * 0.6, canvas.y + canvas.height * 0.5);
   await page.mouse.down();
-  await page.waitForFunction(() => window.__AVN__?.demo?.meleeActive);
-  await page.keyboard.press('Escape');
+  // 在页面内同一帧请求暂停，避免 CI 往返延迟越过 300 ms 挥动窗口。
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        const pauseDuringSwing = () => {
+          if (!window.__AVN__?.demo?.meleeActive) {
+            requestAnimationFrame(pauseDuringSwing);
+            return;
+          }
+          window.dispatchEvent(
+            new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true }),
+          );
+          window.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape', code: 'Escape', bubbles: true }));
+          resolve();
+        };
+        pauseDuringSwing();
+      }),
+  );
+  await expect(page.locator('#demo-pause')).toBeVisible();
   await page.mouse.up();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('avn.run.v2')!).sim.world.melee);
   expect(saved.active).toBe(true);
