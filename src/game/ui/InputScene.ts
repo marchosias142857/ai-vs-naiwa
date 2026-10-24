@@ -1,3 +1,4 @@
+import { ActionButtons } from './ActionButtons';
 import { INPUT_UI as UI } from '../fx/params';
 import { Scene } from 'phaser';
 import type { GameObjects } from 'phaser';
@@ -10,6 +11,7 @@ import { textStyle } from './text';
 export class InputScene extends Scene {
   static readonly KEY = 'InputUI';
   controls!: InputController;
+  private actions?: ActionButtons;
   private graphics!: GameObjects.Graphics;
   private resumeLabel!: GameObjects.Text;
   private fireScale = 1;
@@ -20,7 +22,7 @@ export class InputScene extends Scene {
   constructor() {
     super(InputScene.KEY);
   }
-  create(): void {
+  create(data?: { demo?: boolean }): void {
     // scene.restart 会复用场景实例；布局缓存必须清掉，否则同尺寸重来时跳过布局，暂停符号停在 (0, 0)。
     this.layoutScale = 0;
     this.fireScale = 1;
@@ -43,6 +45,7 @@ export class InputScene extends Scene {
         battle.scene.resume();
       } else battle.scene.pause();
     });
+    this.actions = data?.demo ? new ActionButtons(this, this.controls) : undefined;
     setInputProbe(() => ({
       ...this.controls.frame,
       move: { ...this.controls.frame.move },
@@ -51,6 +54,8 @@ export class InputScene extends Scene {
     }));
     this.events.once('shutdown', () => {
       battle.input.enabled = battleInputEnabled;
+      this.actions?.destroy();
+      this.actions = undefined;
       this.controls.destroy();
       setInputProbe(undefined);
     });
@@ -71,6 +76,7 @@ export class InputScene extends Scene {
     g.clear();
     const paused = c.battle.scene.isPaused();
     this.resumeLabel.setVisible(paused);
+    this.actions?.setVisible(!paused);
     if (s !== this.layoutScale) {
       this.layoutScale = s;
       this.resumeLabel.setFontSize(UI.resume.fontSize / s);
