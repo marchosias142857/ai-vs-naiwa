@@ -112,7 +112,8 @@ describe('EventBus 派发中修改监听器（Issue #27）', () => {
     expect(bus.listenerCount('ping')).toBe(0);
   });
 
-  it('监听器集合不变时，多次派发遍历的是同一个数组（不复制）', () => {
+  // 只能证明派发不会改写存储的数组；emit 内部不做临时复制这一点靠实现本身（下标遍历）保证。
+  it('监听器集合不变时，多次派发后存储的数组身份不变', () => {
     const bus = new EventBus<TestEvents>();
     bus.on('ping', vi.fn());
     const lists = (bus as unknown as { listeners: Map<string, unknown> }).listeners;
