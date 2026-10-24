@@ -1,7 +1,7 @@
 # 存档 v2：game 接线与评审入口
 
 按已批准的 [ADR 0019](adr/0019-run-snapshot.md) 实现，依赖 sim PR #66。
-本说明覆盖 game 的实现与测试边界；sim 字段校验由 Claude 后续提供。
+本说明覆盖 game 的实现与测试边界；sim 字段校验与 game 接线均由 GPT 完成，自审后交负责人合并。
 
 ## 分 PR 评审
 
@@ -13,7 +13,7 @@
 | 4    | 本 PR | DemoSession / GameScene 恢复，保存时机、菜单和浏览器验收 |
 
 这些 PR 逐层依赖；合并依赖后再把下一项 rebase / retarget 到 main。
-没有修改 Claude 的 sim 实现或分支。
+各 PR 叠放在 GPT 自有分支；#66 已合入 main。
 
 ## 文件与状态
 
@@ -40,13 +40,11 @@ restore 按真实时间显示 3 秒灰盒数字，不推进任何 sim 或物理�
 
 Arcade 4.1 没有公开的累加器重置方法，`resetPhysicsClock` 把私有 `_elapsed` 的访问集中到一处。升级 Phaser 时必须复核此处。
 
-## 等 Claude 的接口
+## 正式解析器
 
-`SimDecoder = (value: unknown, seed: number) => SimSnapshot | null`。seed 用于生成地图并校验房间范围、数组长度等不变量。将 `pendingSimDecoder` 换成 Claude 的正式解析器；game 随后校验物理池、尸体和 entry 的交叉关系。
+`createSimDecoder(limits)` 接收与 game 一致的池容量，返回 `(value: unknown, seed: number) => SimSnapshot | null`。运行时不导入 zod。`data/saveFields.ts` 是字段范围的单一来源，`data/schema/save.ts` 用它创建 zod schema，`sim/run/parseSnapshot.ts` 做轻量字段检查及种子地图、编号、来源、资源与容器间的交叉检查。
 
-当前正式入口使用拒绝解析的占位实现，安全地走「存档异常，从本层入口继续」。**完整恢复接线 PR 保持 draft，正式解析器接入并验证前不能作为完成版存档上线。** 不会把外部 JSON 直接强转交给 sim.load。
-
-`tests/fixtures/save.ts` 只对自己生成的 save() 结果注入可信测试 decoder，从而在 sim 解析器到位前验证真实场景、Arcade 和 UI 接线；这不证明 sim 字段校验正确。接入正式解析器后，还需在普通入口跑同样的保存 / 继续流程。
+`RunSnapshot.decodeSimSnapshot` 已接入生产菜单与浏览器 fixture；解析失败继续使用独立验证的 entry。结构校验与 zod 成对测试，业务交叉约束另测；真实 Arcade 往返测试不再使用可信强转 decoder。冷却中的合法负 AI 计时、负坐标与速度、已回收的 owner / hitIds 均不会被修补。
 
 ## 验证与限制
 
@@ -54,4 +52,4 @@ Arcade 4.1 没有公开的累加器重置方法，`resetPhysicsClock` 把私有 
 - `entities.spec.ts`：真实 sim + Arcade，混合子弹半径、满池重分配、尸体回收、瞬移实际速度；完整快照与后续事件严格相等。
 - `save.spec.ts`：完整 DemoSession JSON 往返和后续 180 个同输入物理步；不重放业务事件；三种生命周期保存顺序、重复进出、BFCache 事件路径、终局、三种提示、升级界面、倒计时手动 / 后台 / 竖屏中断、输入边沿与手柄中立。
 - 浏览器自动化覆盖桌面和 Pixel 7 横屏视口。模拟 pagehide/pageshow 不等于浏览器实际 BFCache 驻留；iOS Safari / Android Chrome 真机还需检查完整保存时长（含取快照、序列化、setItem，目标 < 10 ms）、切 App / 系统回收 / 返回页面与音频恢复。
-- 倒计时只用灰盒数字，正式视觉待 Claude 画面方案。进程未触发任何生命周期回调就被杀时无法保证最后一刻已保存。
+- 倒计时当前用功能性数字，demo 美术阶段由 GPT 完善。进程未触发任何生命周期回调就被杀时无法保证最后一刻已保存。

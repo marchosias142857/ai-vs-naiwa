@@ -6,9 +6,8 @@ import { MenuPanel } from '../../src/game/ui/MenuPanel';
 import { InputScene } from '../../src/game/ui/InputScene';
 import { setTestHooks } from '../../src/game/testHooks';
 import { readSavedRun, RUN_KEY } from '../../src/game/save/runStorage';
-import type { RunSnapshot, SessionSnapshot } from '../../src/game/save/RunSnapshot';
+import { decodeSimSnapshot, type RunSnapshot, type SessionSnapshot } from '../../src/game/save/RunSnapshot';
 import type { DemoSession } from '../../src/game/systems/DemoSession';
-import type { SimSnapshot } from '../../src/sim/run/snapshot';
 import { createInputFrame } from '../../src/sim/core/types';
 import { SAVE_REQUEST, LIFECYCLE_PAUSE } from '../../src/game/world/combatPause';
 
@@ -24,9 +23,11 @@ class SaveMenu extends Scene {
     super('Menu');
   }
   create(): void {
-    // 仅测试：输入只来自本 fixture 的真实 save()；不代替 Claude 的 sim 字段校验器。
+    // 使用生产字段校验器；拒绝开关只用来测试入口兜底提示。
     this.panel = new MenuPanel(this, () =>
-      readSavedRun((value) => (sessionStorage.getItem('fixture.reject') ? null : (value as SimSnapshot))),
+      readSavedRun((value, seed) =>
+        sessionStorage.getItem('fixture.reject') ? null : decodeSimSnapshot(value, seed),
+      ),
     );
     setTestHooks({ scene: 'Menu', ready: true });
   }
