@@ -1,6 +1,15 @@
 import type { GameObjects, Physics, Scene } from 'phaser';
 import { COLORS, DEPTH } from '../config';
-import type { CombatRun } from '../game/systems/CombatRun';
+import type { CombatWorld, ActorView } from '../sim/combat/api';
+import type { CombatBridge } from '../game/world/CombatBridge';
+
+interface DebugSource {
+  sim: CombatWorld;
+  bridge: CombatBridge;
+  waves: { wave: number; alive: number };
+  player: ActorView | undefined;
+  kills: number;
+}
 import { setDebugProbe } from '../game/testHooks';
 import { textStyle } from '../game/ui/text';
 
@@ -28,7 +37,7 @@ export class DebugTools {
 
   constructor(
     private readonly scene: Scene,
-    private readonly run: CombatRun,
+    private readonly run: DebugSource,
     private readonly info: { seed: number; godMode: boolean },
   ) {
     // 放在左上角标题下方：右上角是暂停键，左下和右下是触屏摇杆与射击键。
