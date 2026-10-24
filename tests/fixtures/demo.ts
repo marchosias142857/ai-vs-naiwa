@@ -1,7 +1,9 @@
 import { parseCheckpoint, type FloorCheckpoint } from '../../src/sim/run/checkpoint';
 import type { ActorView } from '../../src/sim/combat/api';
 import { DemoHud } from '../../src/game/ui/DemoHud';
-import { AUTO, Game, Scene } from 'phaser';
+import { AUTO, Game, Scene, Physics } from 'phaser';
+import { POOL_SIZES } from '../../src/config';
+import { COMBAT_FX as FX } from '../../src/game/fx/params';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import { DemoSession } from '../../src/game/systems/DemoSession';
 import { InputScene } from '../../src/game/ui/InputScene';
@@ -77,6 +79,40 @@ class DemoHarness extends Scene {
         simulatedSeconds: session.sim.time,
         wallMs: performance.now() - started,
       };
+    };
+    window.feedbackPoolScenario = () => {
+      const images = this.children.list.filter((object) => object.type === 'Arc'),
+        before = this.children.length,
+        counts: number[] = [],
+        visible: number[] = [],
+        fire: GameEvents['weapon:fired'] = { ownerId: 1, weaponId: 'pistol_basic', x: 200, y: 100, angle: 0 },
+        hit: GameEvents['bullet:hit'] = {
+          team: 'player',
+          x: 210,
+          y: 100,
+          angle: 0,
+          targetId: null,
+          critical: false,
+        };
+      const sample = () => {
+        counts.push(session.fx.activeCount);
+        visible.push(images.filter((image) => 'visible' in image && image.visible).length);
+      };
+      for (let cycle = 0; cycle < 4; cycle++) {
+        for (let i = 0; i < POOL_SIZES.fx; i++)
+          if (i % 2) bus.emit('bullet:hit', hit);
+          else bus.emit('weapon:fired', fire);
+        bus.emit('bullet:hit', hit); // 满池丢弃，不能覆盖仍存活的效果。
+        sample();
+        this.physics.world.emit(Physics.Arcade.Events.WORLD_STEP, FX.muzzleSeconds);
+        sample(); // 只释放寿命较短的一半，不要求槽位按编号连续。
+        for (let i = 0; i < POOL_SIZES.fx; i++) bus.emit('bullet:hit', hit);
+        sample();
+        this.physics.world.emit(Physics.Arcade.Events.WORLD_STEP, FX.impactSeconds);
+        this.physics.world.emit(Physics.Arcade.Events.WORLD_STEP, FX.impactSeconds);
+        sample(); // 连续空闲步不能重复回收。
+      }
+      return { counts, visible, stable: this.children.length === before, capacity: images.length };
     };
     window.feedbackScenario = () => {
       const input = createInputFrame(),
@@ -225,6 +261,7 @@ declare global {
       simulatedSeconds: number;
       wallMs: number;
     };
+    feedbackPoolScenario: () => { counts: number[]; visible: number[]; stable: boolean; capacity: number };
     feedbackScenario: () => {
       hits: number;
       effects: number;

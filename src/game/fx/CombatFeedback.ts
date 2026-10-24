@@ -7,9 +7,18 @@ import type { GameEvents } from '../../sim/core/events';
 import type { CombatBridge } from '../world/CombatBridge';
 import { COMBAT_FX as FX } from './params';
 
+interface EffectSlot {
+  image: GameObjects.Arc;
+  remaining: number;
+  duration: number;
+}
+
 /** 灰盒反馈：预警/生命条用固定 Graphics，瞬时反馈与死亡计时均复用槽位。 */
 export class CombatFeedback {
-  private readonly effects: { image: GameObjects.Arc; remaining: number; duration: number }[] = [];
+  private readonly effects: EffectSlot[] = [];
+  /** 预热后只移动栈顶，不改变数组长度；满池丢弃次要反馈。 */
+  private readonly free: EffectSlot[] = [];
+  private freeCount = 0;
   private readonly states: { id: number; flash: number; death: number }[] = [];
   private readonly overlay: GameObjects.Graphics;
   private readonly marks: GameObjects.Graphics;
@@ -30,6 +39,8 @@ export class CombatFeedback {
         remaining: 0,
         duration: 0,
       });
+    for (let i = this.effects.length - 1; i >= 0; i--) this.free.push(this.effects[i]!);
+    this.freeCount = this.free.length;
     for (let i = 0; i < bridge.actors.slots.length; i++) this.states.push({ id: 0, flash: 0, death: 0 });
     bus.on('bullet:hit', this.onHit);
     bus.on('weapon:fired', this.onFire);
@@ -38,13 +49,11 @@ export class CombatFeedback {
     scene.events.once('shutdown', this.destroy);
   }
   private emit(x: number, y: number, color: number, duration: number): void {
-    for (const slot of this.effects)
-      if (!slot.remaining) {
-        slot.remaining = slot.duration = duration;
-        slot.image.setPosition(x, y).setFillStyle(color).setScale(1).setAlpha(1).setVisible(true);
-        this.activeCount++;
-        return;
-      }
+    if (!this.freeCount) return;
+    const slot = this.free[--this.freeCount]!;
+    slot.remaining = slot.duration = duration;
+    slot.image.setPosition(x, y).setFillStyle(color).setScale(1).setAlpha(1).setVisible(true);
+    this.activeCount++;
   }
   private readonly onHit = (e: GameEvents['bullet:hit']): void =>
     this.emit(e.x, e.y, e.critical ? FX.criticalColor : FX.hitColor, FX.impactSeconds);
@@ -71,6 +80,7 @@ export class CombatFeedback {
         if (!slot.remaining) {
           slot.image.setVisible(false);
           this.activeCount--;
+          this.free[this.freeCount++] = slot;
         }
       }
     for (let i = 0; i < this.states.length; i++) {

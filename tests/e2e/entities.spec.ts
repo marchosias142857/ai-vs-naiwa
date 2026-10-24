@@ -1,3 +1,4 @@
+import { POOL_SIZES } from '../../src/config';
 import { LOOT_RULES } from '../../src/data/loot';
 import { expect, test } from '@playwright/test';
 import { build } from 'vite';
@@ -296,4 +297,15 @@ test('楼层入口继续与不中断推进得到相同升级候选', async ({ pa
   await page.waitForFunction(() => window.demoScenario);
   await page.evaluate(() => window.demoScenario(true));
   expect(await page.evaluate(() => window.floorOffers())).toEqual(uninterrupted);
+});
+
+test('瞬时反馈池：满池、部分到期、反复回收不重复占槽或新建对象', async ({ page }) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.feedbackPoolScenario);
+  const result = await page.evaluate(() => window.feedbackPoolScenario());
+  const cycle = [POOL_SIZES.fx, POOL_SIZES.fx / 2, POOL_SIZES.fx, 0];
+  expect(result.counts).toEqual(Array.from({ length: 4 }, () => cycle).flat());
+  expect(result.visible).toEqual(result.counts);
+  expect(result.capacity).toBe(POOL_SIZES.fx);
+  expect(result.stable).toBe(true);
 });
