@@ -209,7 +209,8 @@ test('demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过�
         const x = e.x - demo.x,
           y = e.y - (demo.y - bodyRadius),
           d = Math.hypot(x, y);
-        if (d < best) {
+        // 目标恰好在枪口原点时跳过，避免把 NaN 写进模拟手柄。
+        if (d > 0 && d < best) {
           best = d;
           dx = x / d;
           dy = y / d;
