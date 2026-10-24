@@ -278,13 +278,16 @@ describe('存档 v2：存读档与不中断一致（ADR 0019）', () => {
     compare({ ...base, seed: 7, god: true, weapon: 'sniper_pierce' }, stale, 600);
   });
 
-  it('满池：子弹池与实体池都用满时，待刷数与空闲栈顺序往返', () => {
-    const { saved } = compare(
-      { ...base, seed: 3, god: true, weapon: 'ring_staff', maxActors: 4, maxBullets: 24 },
-      400,
-      600,
-    );
-    expect(saved.game.free.length).toBeLessThan(24);
+  it('满池：子弹池用满时，空闲栈顺序往返', () => {
+    const full = (h: Harness) => h.save().game.free.length === 0;
+    const { saved } = compare({ ...base, seed: 3, god: true, weapon: 'ring_staff', maxBullets: 8 }, full, 600);
+    expect(saved.game.free).toEqual([]);
+  });
+
+  it('满池：实体池放不下时，待刷数往返', () => {
+    const pending = (h: Harness) => h.save().sim.director.pending > 0;
+    const { saved } = compare({ ...base, seed: 3, god: true, maxActors: 3 }, pending, 600);
+    expect(saved.sim.director.pending).toBeGreaterThan(0);
   });
 
   it('Boss 层：阶段切换前后存档', () => {
@@ -293,9 +296,14 @@ describe('存档 v2：存读档与不中断一致（ADR 0019）', () => {
   });
 
   it('合法负值：负速度、负 AI 冷却原样往返', () => {
-    const { saved } = compare({ ...base, seed: 5 }, 400, 60);
-    const values = saved.sim.world.actors.flatMap((x) => [x.vx, x.vy, x.facing, x.brain.cooldown]);
-    expect(values.some((v) => v < 0)).toBe(true);
+    const negative = (h: Harness) => {
+      const actors = h.save().sim.world.actors;
+      return actors.some((x) => x.vx < 0 || x.vy < 0) && actors.some((x) => x.brain.cooldown < 0);
+    };
+    const { saved } = compare({ ...base, seed: 5 }, negative, 120);
+    const actors = saved.sim.world.actors;
+    expect(actors.some((x) => x.vx < 0 || x.vy < 0)).toBe(true);
+    expect(actors.some((x) => x.brain.cooldown < 0)).toBe(true);
   });
 
   it('出口三选一：升级候选与随机流往返', () => {
@@ -320,8 +328,20 @@ describe('存档 v2：存读档与不中断一致（ADR 0019）', () => {
     expect(b.events).toEqual([]);
   });
 
-  it('load 只接受刚创建的世界', () => {
+  it('load 只接受刚创建的世界；事件回调中途不能存档', () => {
     const a = new Harness({ ...base, seed: 1 });
     expect(() => a.world.load(a.world.save())).toThrow();
+    const errors: unknown[] = [];
+    a.bus.on('bullet:hit', () => {
+      try {
+        a.world.save();
+      } catch (e) {
+        errors.push(e);
+      }
+    });
+    const input = createInputFrame();
+    input.fire = true;
+    for (let i = 0; i < 120 && !errors.length; i++) a.step(input);
+    expect(errors.length).toBeGreaterThan(0);
   });
 });

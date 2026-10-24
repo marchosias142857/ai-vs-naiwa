@@ -565,10 +565,17 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   hitWall(bulletId: EntityId, x: number, y: number): void {
-    const bullet = this.bullets.get(bulletId);
-    if (!bullet) return;
-    this.emitHit(bullet, x, y, null, false);
-    this.finishBullet(bullet);
+    // 计入调用深度：bullet:hit 的同步监听器里调用 save 会被拒绝（ADR 0019：不在调用中途存档）。
+    this.callDepth++;
+    try {
+      const bullet = this.bullets.get(bulletId);
+      if (!bullet) return;
+      this.emitHit(bullet, x, y, null, false);
+      this.finishBullet(bullet);
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
+    }
   }
 
   releaseBullet(bulletId: EntityId): void {
