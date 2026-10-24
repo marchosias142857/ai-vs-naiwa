@@ -93,6 +93,11 @@ export interface CombatWorldOptions {
    * 不传时为 500。sim 不能读取 `src/config.ts`，所以由调用方传入。
    */
   maxBullets?: number;
+  /**
+   * 调试用无敌（`?god=1`，Issue #17，ADR 0005）：玩家不受任何伤害，也不会进入受伤无敌帧。
+   * 打到玩家的子弹按「命中无敌目标」处理：子弹消失，发出 `critical: false` 的 `bullet:hit`。
+   */
+  godMode?: boolean;
 }
 
 /**
@@ -139,6 +144,12 @@ export interface CombatWorld {
 
   /** 死亡表现播完、对象回收后调用，把已死亡的实体从 `actors` 中移除。 */
   removeActor(id: EntityId): void;
+  /**
+   * 调试用清房（F2，Issue #17，ADR 0005）：立即杀死全部怪物（含出场预警中的），
+   * 每只按正常死亡顺序发出 `entity:damaged` → `entity:died`，`sourceId` / `killerId` 为 null。
+   * 之后照常由 game 层在死亡表现结束后调用 `removeActor`。不要在正式玩法里调用。
+   */
+  debugKillEnemies(): void;
 }
 
 /** 新建一局战斗。实现在 `CombatWorld.ts`，这里只是稳定的入口。 */

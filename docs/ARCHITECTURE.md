@@ -114,5 +114,8 @@ export type FirePattern = (ctx: FireContext) => BulletSpawn[];
 
 ## 10. 调试工具
 
-URL 参数见 `src/debug/params.ts`。`?debug=1` 显示 FPS、种子、对象数（之后加实体数、子弹数、池占用、碰撞框、AI 状态）。
-调试快捷键（M1 起，仅调试模式）：F1 碰撞框、F2 清房、F3 随机武器、F4 下一关。
+URL 参数见 `src/debug/params.ts`。调试工具在 `src/debug/DebugTools.ts`，非调试模式下不创建、不注册任何监听。
+
+- `?debug=1`：左上角面板显示 FPS、种子、波次、存活数、实体数、子弹池与角色池占用、生命、击杀（之后加特效池占用、AI 状态）。
+- `?god=1`：玩家无敌（sim 的 `godMode`，ADR 0005），可以不带 `?debug=1` 单独使用。
+- 调试快捷键（仅调试模式）：F1 碰撞框（重来后保持）、F2 清房（M1 起）；F3 随机武器、F4 下一关（之后的里程碑）。

@@ -1,6 +1,7 @@
 import type { GameObjects } from 'phaser';
 import { Scene } from 'phaser';
 import { COLORS, DEPTH, GAME_HEIGHT, GAME_WIDTH, SCENES, TILE_SIZE } from '../../config';
+import { DebugTools } from '../../debug/DebugTools';
 import { debugParams } from '../../debug/params';
 import { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
@@ -26,7 +27,7 @@ export class GameScene extends Scene {
   private rng!: Random;
   private seed = 0;
   private run!: CombatRun;
-  private debugText?: GameObjects.Text;
+  private debugTools?: DebugTools;
   private deathDim!: GameObjects.Rectangle;
   private restartPrompt: GameObjects.Text[] = [];
   private dimStarted = false;
@@ -54,17 +55,17 @@ export class GameScene extends Scene {
       .setScrollFactor(0)
       .setDepth(DEPTH.hud);
 
-    if (debugParams().debug) {
-      this.debugText = this.add
-        .text(GAME_WIDTH - 6, 6, '', textStyle(8, COLORS.accent, { align: 'right' }))
-        .setOrigin(1, 0)
-        .setScrollFactor(0)
-        .setDepth(DEPTH.hud);
-    }
-
     this.scene.launch(InputScene.KEY);
     const inputScene = this.scene.get(InputScene.KEY) as InputScene;
-    this.run = new CombatRun(this, { seed: this.seed, rng: this.rng, bus: this.bus, inputScene });
+    const { god, debug } = debugParams();
+    this.run = new CombatRun(this, {
+      seed: this.seed,
+      rng: this.rng,
+      bus: this.bus,
+      inputScene,
+      godMode: god,
+    });
+    this.debugTools = debug ? new DebugTools(this, this.run, { seed: this.seed, godMode: god }) : undefined;
     this.createDeathScreen();
 
     this.events.once('shutdown', () => {
@@ -107,18 +108,7 @@ export class GameScene extends Scene {
     }
     if (this.run.phase === 'restartable') this.armRestart();
 
-    if (this.debugText) {
-      const p = this.run.player;
-      this.debugText.setText(
-        [
-          `FPS ${this.game.loop.actualFps.toFixed(0)}`,
-          `seed ${this.seed}`,
-          `wave ${this.run.waves.wave} · alive ${this.run.waves.alive}`,
-          `hp ${p?.hp ?? 0}/${p?.maxHp ?? 0} · kills ${this.run.kills}`,
-          `bullets ${this.run.bridge.bullets.activeCount}`,
-        ].join('\n'),
-      );
-    }
+    this.debugTools?.update(delta);
   }
 
   /** 进入可重来阶段：显示提示，开始接收「点击 / 任意键」。 */
@@ -141,8 +131,8 @@ export class GameScene extends Scene {
     window.addEventListener(
       'keydown',
       (e) => {
-        // Esc 是暂停键；长按产生的重复 keydown 不算新的按键。
-        if (e.repeat || e.key === 'Escape') return;
+        // Esc 是暂停键，F1–F12 留给调试工具；长按产生的重复 keydown 不算新的按键。
+        if (e.repeat || e.key === 'Escape' || /^F\d+$/.test(e.key)) return;
         this.restart();
       },
       options,

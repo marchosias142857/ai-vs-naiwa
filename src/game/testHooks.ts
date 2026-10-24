@@ -11,6 +11,13 @@ export interface TestHooks {
   readonly lifecycle?: LifecycleProbe;
   readonly input?: InputFrame & { manualPaused: boolean };
   readonly combat?: CombatProbe;
+  /** 调试工具（#17）的状态；只在 `?debug=1` 时存在。 */
+  readonly debug?: DebugProbe;
+}
+
+interface DebugProbe {
+  hitboxes: boolean;
+  godMode: boolean;
 }
 
 /** 战斗流程（#15）的只读快照。 */
@@ -53,6 +60,12 @@ export function setCombatProbe(read: typeof readCombat): void {
   setTestHooks({});
 }
 
+let readDebug: (() => DebugProbe) | undefined;
+export function setDebugProbe(read: typeof readDebug): void {
+  readDebug = read;
+  setTestHooks({});
+}
+
 let readLifecycle: (() => LifecycleProbe) | undefined;
 
 /** 按需读取简单状态，不暴露游戏对象，也不在帧循环中分配调试对象。 */
@@ -78,6 +91,9 @@ export function setTestHooks(patch: Partial<TestHooks>): void {
     ...patch,
     get input() {
       return readInput?.();
+    },
+    get debug() {
+      return readDebug?.();
     },
     get combat() {
       return readCombat?.();
