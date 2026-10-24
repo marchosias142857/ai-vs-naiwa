@@ -6,7 +6,7 @@ import type { WeaponId } from '../../data/weapons';
 import type { EnemyId } from '../../data/enemies';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
-import type { EntityId, InputFrame, Seed, Team } from '../core/types';
+import type { EntityId, InputFrame, Seed, Team, Vec2 } from '../core/types';
 import { createCombatWorldImpl } from './CombatWorld';
 
 /**
@@ -93,6 +93,8 @@ export interface CombatWorldOptions {
   bus: EventBus<GameEvents>;
   /** 视线判断，用于自动瞄准；不传时视为全部可见。 */
   lineOfSight?: LineOfSight;
+  /** 地图适配层可写入绕墙路点；返回 false 则沿原行为移动。out 为 sim 复用向量。 */
+  navigation?: (x: number, y: number, targetX: number, targetY: number, radius: number, out: Vec2) => boolean;
   /**
    * 同时存在的子弹上限，应与 game 层子弹池大小一致（`POOL_SIZES.bullets`）。
    * 达到上限时，本次开火中放不下的子弹不再生成。

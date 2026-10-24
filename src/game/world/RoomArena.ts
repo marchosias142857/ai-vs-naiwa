@@ -1,3 +1,6 @@
+import { NavigationGrid } from '../../sim/dungeon/NavigationGrid';
+import { NAVIGATION } from '../../data/navigation';
+import type { Vec2 } from '../../sim/core/types';
 import type { GameObjects, Physics, Scene } from 'phaser';
 import { COLORS, DEPTH, TILE_SIZE } from '../../config';
 import { ROOM_LAYOUTS } from '../../data/layouts';
@@ -10,6 +13,7 @@ import { GRAYBOX_BOUNDS as B } from './graybox';
 
 /** 房间切换复用固定的内墙池。门口跨越判定由 DungeonRun 校验连接与锁门状态。 */
 export class RoomArena {
+  private readonly navigation: NavigationGrid;
   private readonly graphics: GameObjects.Graphics;
   private readonly walls: Physics.Arcade.StaticGroup;
   private readonly slots: Physics.Arcade.Image[] = [];
@@ -25,6 +29,7 @@ export class RoomArena {
       image.disableBody(true, true);
       this.slots.push(image);
     }
+    this.navigation = new NavigationGrid(B, this.isFree, this.pathClear);
     this.colliders = [
       scene.physics.add.collider(bridge.actors.group, this.walls),
       scene.physics.add.overlap(bridge.bullets.group, this.walls, this.hitWall),
@@ -49,6 +54,7 @@ export class RoomArena {
       image.enableBody(true, B.x + B.width / 2 + box.x, B.y + B.height / 2 + box.y, true, true);
       image.setDisplaySize(box.width, box.height).refreshBody().setDepth(DEPTH.wallTops);
     }
+    this.navigation.invalidate();
     this.draw(run);
   }
   draw(run: DungeonRun): void {
@@ -124,11 +130,37 @@ export class RoomArena {
     }
   }
   readonly isFree = (x: number, y: number, r: number): boolean => {
+    if (x - r < B.x || x + r > B.x + B.width || y - r < B.y || y + r > B.y + B.height) return false;
     for (const s of this.slots)
       if (
         s.body?.enable &&
         Math.abs(s.x - x) < s.displayWidth / 2 + r &&
         Math.abs(s.y - y) < s.displayHeight / 2 + r
+      )
+        return false;
+    return true;
+  };
+  readonly steer = (x: number, y: number, tx: number, ty: number, radius: number, out: Vec2): boolean => {
+    if (this.pathClear(x, y, tx, ty, radius)) return false;
+    return this.navigation.steer(x, y, tx, ty, radius, out);
+  };
+  private readonly pathClear = (x1: number, y1: number, x2: number, y2: number, radius: number): boolean => {
+    // 接触墙面允许离开，避免闭线段的边界交点将紧贴墙面的怪物锁死。
+    const r = Math.max(0, radius - NAVIGATION.tieEpsilon);
+    if (!this.isFree(x1, y1, r) || !this.isFree(x2, y2, r)) return false;
+    for (const s of this.slots)
+      if (
+        s.body?.enable &&
+        segmentHitsBox(
+          x1,
+          y1,
+          x2,
+          y2,
+          s.x - s.displayWidth / 2 - r,
+          s.y - s.displayHeight / 2 - r,
+          s.x + s.displayWidth / 2 + r,
+          s.y + s.displayHeight / 2 + r,
+        )
       )
         return false;
     return true;

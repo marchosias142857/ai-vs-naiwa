@@ -252,3 +252,12 @@ test('出口升级界面可买补给，再选择升级进入下一层', async ({
   expect(await page.evaluate(() => window.offerState().floor)).toBe(2);
   expect(await page.evaluate(() => window.offerState().offers)).toBe(0);
 });
+
+test('真实 Arcade 中追击怪绕过内墙接近玩家', async ({ page }) => {
+  await page.goto(`${url}/room.html`);
+  await page.waitForFunction(() => window.navigationTest);
+  const result = await page.evaluate(() => window.navigationTest());
+  expect(result.detour).toBe(true);
+  expect(result.insideWall).toBe(false);
+  expect(result.distance).toBeLessThan(20);
+});
