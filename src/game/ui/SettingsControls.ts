@@ -1,3 +1,4 @@
+import { unlockSound, silenceSound } from '../../services/Sound';
 import { t } from '../../i18n/t';
 import { settings, setSettings } from '../../services/settings';
 /** 与主菜单共用按钮导航，不新增独立输入监听。 */
@@ -19,6 +20,8 @@ export function addSettings(root: HTMLElement, signal: AbortSignal, refreshLangu
     'click',
     () => {
       setSettings({ sound: !settings.sound });
+      if (settings.sound) unlockSound();
+      else silenceSound();
       refresh();
     },
     { signal },
