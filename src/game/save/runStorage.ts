@@ -2,7 +2,7 @@ import { CHECKPOINT_KEY } from '../../services/profile';
 import { inspectValue, loadValue, removeValue, saveValue } from '../../services/storage';
 import { parseCheckpoint, type FloorCheckpoint } from '../../sim/run/checkpoint';
 import { object, parseGameSnapshot } from './parseGameSnapshot';
-import { pendingSimDecoder, type RunSnapshot, type SessionSnapshot, type SimDecoder } from './RunSnapshot';
+import { decodeSimSnapshot, type RunSnapshot, type SessionSnapshot, type SimDecoder } from './RunSnapshot';
 import { SAVE_VERSION } from './version';
 
 export const RUN_KEY = 'avn.run.v2';
@@ -11,9 +11,16 @@ export type ResumeChoice =
   | { kind: 'entry'; checkpoint: FloorCheckpoint; notice?: 'updated' | 'invalid' }
   | { kind: 'none'; notice?: 'corrupt' };
 
-/** entry 始终独立校验；缺少 sim 校验器时绝不把外部 JSON 强转交给 load。 */
-export function decodeRun(value: unknown, decodeSim: SimDecoder = pendingSimDecoder): ResumeChoice {
+/** entry 始终独立校验；完整恢复必须通过 sim 与 game 两层按字段校验。 */
+export function decodeRun(value: unknown, decodeSim: SimDecoder = decodeSimSnapshot): ResumeChoice {
   if (!object(value)) return { kind: 'none', notice: 'corrupt' };
+  // 旧构建或局部损坏的终局同样不能降级成入口并复活。
+  if (
+    object(value.sim) &&
+    ((object(value.sim.run) && (value.sim.run.phase === 'won' || value.sim.run.phase === 'lost')) ||
+      (object(value.sim.world) && value.sim.world.playerDied === true))
+  )
+    return { kind: 'none', notice: 'corrupt' };
   const entry = parseCheckpoint(value.entry);
   if (!entry) return { kind: 'none', notice: 'corrupt' };
   const m = value.meta;
@@ -53,7 +60,7 @@ export function decodeRun(value: unknown, decodeSim: SimDecoder = pendingSimDeco
     return invalid;
   }
 }
-export function readSavedRun(decodeSim: SimDecoder = pendingSimDecoder): ResumeChoice {
+export function readSavedRun(decodeSim: SimDecoder = decodeSimSnapshot): ResumeChoice {
   const stored = inspectValue(RUN_KEY);
   if (stored.found) return decodeRun(stored.value, decodeSim);
   const checkpoint = parseCheckpoint(loadValue(CHECKPOINT_KEY));

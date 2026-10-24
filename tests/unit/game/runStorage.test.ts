@@ -168,8 +168,8 @@ describe('恢复分支与同步存储', () => {
       value = envelope(s),
       accept = () => s.sim;
     expect(decodeRun(value, accept).kind).toBe('full');
-    expect(decodeRun(value).kind).toBe('entry'); // sim 校验器尚未接入时安全拒绝。
-    expect(decodeRun(value)).toMatchObject({ notice: 'invalid' });
+    expect(decodeRun(value).kind).toBe('full');
+    expect(decodeRun({ ...value, sim: null })).toMatchObject({ notice: 'invalid' });
     expect(decodeRun({ ...value, meta: { ...value.meta, build: 'old' } }, accept)).toMatchObject({
       kind: 'entry',
       notice: 'updated',
@@ -195,6 +195,11 @@ describe('恢复分支与同步存储', () => {
     const s = sample();
     s.sim.run.phase = 'won';
     expect(decodeRun(envelope(s), () => s.sim).kind).toBe('none');
+    const stored = envelope(s);
+    stored.meta.build = 'old';
+    expect(decodeRun(stored).kind).toBe('none');
+    s.sim.world.rng.crit = -1;
+    expect(decodeRun(envelope(s)).kind).toBe('none');
   });
   it('写入失败保留旧 v2 和 v1；成功只写一次再迁移；终局只清理', () => {
     const values = new Map([
