@@ -82,3 +82,21 @@
     font-size: 16px;
   }
 }
+#demo-menu-panel {
+  position: fixed;
+  z-index: 3;
+  color: #e8ecff;
+  font:
+    12px/1.5 system-ui,
+    sans-serif;
+  max-height: calc(100dvh - 16px);
+}
+#demo-menu-panel button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.menu-controls {
+  white-space: pre-line;
+  text-align: left;
+  font-size: 11px;
+}
