@@ -7,6 +7,7 @@ import { join, resolve } from 'node:path';
 import type {} from '../fixtures/combat';
 import type {} from '../fixtures/knockback';
 import type {} from '../fixtures/room';
+import type {} from '../fixtures/demo';
 import { BALANCE } from '../../src/data/balance';
 import { WEAPONS } from '../../src/data/weapons';
 import { ENEMIES } from '../../src/data/enemies';
@@ -26,6 +27,7 @@ test.beforeAll(async () => {
           resolve('tests/fixtures/combat.html'),
           resolve('tests/fixtures/knockback.html'),
           resolve('tests/fixtures/room.html'),
+          resolve('tests/fixtures/demo.html'),
         ],
       },
     },
@@ -203,4 +205,16 @@ test('真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中
   expect(r.simX).toBe(128);
   expect(r.simY).toBe(135);
   await page.locator('canvas').screenshot({ path: `test-results/room-${info.project.name}.png` });
+});
+
+test('真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用', async ({ page }) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.demoScenario);
+  const result = await page.evaluate(() => window.demoScenario());
+  expect(result.phase).toBe('won');
+  expect(result.settled).toBe(true);
+  expect(result.floor).toBe(4);
+  expect(result.rooms).toBe(16);
+  expect(result.kills).toBeGreaterThan(0);
+  expect(result.childrenStable).toBe(true);
 });
