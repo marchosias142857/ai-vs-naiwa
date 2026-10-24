@@ -2,6 +2,7 @@ import type { Game } from 'phaser';
 import { LifecycleService } from '../services/LifecycleService';
 import { unlockAudio } from '../services/unlockAudio';
 import { setLifecycleProbe } from './testHooks';
+import { LIFECYCLE_PAUSE, SAVE_REQUEST } from './world/combatPause';
 
 /** 连接浏览器生命周期与 Phaser；只恢复本适配器持有的循环暂停。 */
 export function bindLifecycle(game: Game): LifecycleService {
@@ -11,6 +12,9 @@ export function bindLifecycle(game: Game): LifecycleService {
   let inputEnabled = true;
   let keyboardEnabled = true;
   const applyPause = (paused: boolean) => {
+    game.registry.set(LIFECYCLE_PAUSE, paused);
+    // 倒计时重置与三处输入清理必须发生在 wake 的同步首帧之前。
+    game.events.emit(LIFECYCLE_PAUSE, paused);
     if (!game.loop.started) return;
     if (paused && !ownsSleep && game.loop.running) {
       ownsSleep = true;
@@ -40,7 +44,10 @@ export function bindLifecycle(game: Game): LifecycleService {
     onPauseChange: applyPause,
     unlockAudio,
     onHidden() {
-      // M4：在循环已暂停后同步保存局内快照。
+      game.events.emit(SAVE_REQUEST);
+    },
+    onPageHide() {
+      game.events.emit(SAVE_REQUEST);
     },
   });
   // READY 在 loop.start() 之前；首帧末尾才能可靠 sleep，覆盖竖屏冷启动。

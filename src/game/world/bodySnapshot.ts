@@ -1,5 +1,10 @@
 import type { Physics } from 'phaser';
 
+/** Phaser 4.1 World.js 的固定步累加器没有公开 reset API。 */
+export function resetPhysicsClock(world: Physics.Arcade.World): void {
+  (world as Physics.Arcade.World & { _elapsed: number })._elapsed = 0;
+}
+
 /** 原始物理位置（左上角）避免中心坐标加减半径造成浮点往返损失。 */
 export interface BodySnapshot {
   x: number;

@@ -348,3 +348,30 @@ for (const mode of ['mixed', 'full', 'corpse', 'teleport'] as const) {
     expect(a.stable && b.stable).toBe(true);
   });
 }
+
+test('恢复冻结：真实物理和子弹寿命停住；暂停中断重新计时并清掉已锁存边沿', async ({ page }, info) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.resumeFreeze);
+  await page.evaluate(() => window.resumeFreeze());
+  const before = await page.evaluate(() => window.resumeTick());
+  expect(before.physics.bullets.slots.some((s) => s)).toBe(true);
+  await expect.poll(() => page.evaluate(() => window.resumeTick().remaining)).toBeLessThan(2.2);
+  const frozen = await page.evaluate(() => window.resumeTick());
+  expect(frozen.world).toEqual(before.world);
+  expect(frozen.physics).toEqual(before.physics);
+  await page
+    .locator('canvas')
+    .first()
+    .screenshot({ path: info.outputPath('resume-countdown.png') });
+  await page.evaluate(() => window.resumeManual(true));
+  await page.waitForTimeout(300);
+  await page.evaluate(() => window.resumeManual(false));
+  expect((await page.evaluate(() => window.resumeTick())).remaining).toBeGreaterThan(2.8);
+  await page.waitForTimeout(1500);
+  expect((await page.evaluate(() => window.resumeTick())).physics).toEqual(before.physics);
+  await expect.poll(() => page.evaluate(() => window.resumeTick().remaining)).toBe(0);
+  const after = await page.evaluate(() => window.resumeTick());
+  expect(after.world.time).toBeGreaterThan(before.world.time);
+  expect(after.world.resources.skillRemaining).toBe(0);
+  expect(after.world.player!.weaponId).toBe('shotgun_fan');
+});

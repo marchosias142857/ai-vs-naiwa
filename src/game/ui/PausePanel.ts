@@ -2,6 +2,7 @@ import { guardGameUi } from './guardGameUi';
 import { t } from '../../i18n/t';
 import type { Scene } from 'phaser';
 import { MenuNavigation } from './MenuNavigation';
+import { SAVE_REQUEST } from '../world/combatPause';
 /** 临时暂停菜单：入口检查点已存盘；退出不丢失本层之前的进度。 */
 export class PausePanel {
   private readonly root = document.createElement('div');
@@ -16,7 +17,14 @@ export class PausePanel {
     exit.id = 'pause-menu';
     exit.textContent = t('pause.exit');
     continueButton.addEventListener('click', resume, { signal: this.abort.signal });
-    exit.addEventListener('click', () => battle.scene.start('Menu'), { signal: this.abort.signal });
+    exit.addEventListener(
+      'click',
+      () => {
+        battle.game.events.emit(SAVE_REQUEST);
+        battle.scene.start('Menu');
+      },
+      { signal: this.abort.signal },
+    );
     this.root.append(continueButton, exit);
     this.root.hidden = true;
     guardGameUi(this.root, ui, this.abort.signal);

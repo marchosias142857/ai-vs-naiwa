@@ -76,8 +76,10 @@ export class DemoHud {
     window.addEventListener(
       'keydown',
       (e) => {
-        if (!scene.game.input.enabled || this.mode === 'none' || e.repeat) return;
+        if (!scene.game.input.enabled || this.mode === 'none' || e.repeat || session.pause.has('manual'))
+          return;
         if (e.key === 'Escape') {
+          if (this.mode === 'offer') return;
           e.preventDefault();
           e.stopImmediatePropagation();
           return;
@@ -138,7 +140,8 @@ export class DemoHud {
       this.restart.hidden = this.menu.hidden = mode !== 'result';
       this.shop.hidden = mode !== 'offer';
     }
-    this.navigation.update(mode !== 'none');
+    this.modal.hidden = mode === 'none' || s.pause.has('manual');
+    this.navigation.update(mode !== 'none' && !s.pause.has('manual'));
     this.refresh += deltaMs;
     if (this.refresh < 250) return;
     this.refresh = 0;
