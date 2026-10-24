@@ -66,7 +66,7 @@ export interface CombatProbe {
   time: number;
   playerX: number;
   playerY: number;
-  /** 最近一次交给 sim 的瞄准方向与当时的玩家位置；没有手动瞄准时 aim 为 null。 */
+  /** 最近一次交给 sim 的瞄准方向与当时的身体中心；没有手动瞄准时 aim 为 null。 */
   aim: { x: number; y: number } | null;
   aimOriginX: number;
   aimOriginY: number;

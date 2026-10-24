@@ -44,7 +44,7 @@ export class CombatRun {
   /** 最近一次采样时开火键是否按住（重来时判断手柄 RT）。 */
   fireHeld = false;
   /**
-   * 最近一次交给 sim 的瞄准方向（没有手动瞄准时为 NaN），以及当时玩家的真实位置。
+   * 最近一次交给 sim 的瞄准方向（没有手动瞄准时为 NaN），以及当时的身体中心。
    * 只给测试探针核对「瞄准原点是当前位置」，不参与逻辑。
    */
   readonly lastAim = { x: NaN, y: NaN, originX: NaN, originY: NaN };
@@ -106,22 +106,21 @@ export class CombatRun {
     const frame = controls.sample(ui.playerX, ui.playerY);
     this.fireHeld = frame.fire;
     this.bridge.setInput(frame);
-    const player = this.player;
     this.lastAim.x = frame.aim ? frame.aim.x : NaN;
     this.lastAim.y = frame.aim ? frame.aim.y : NaN;
-    this.lastAim.originX = player ? player.x : NaN;
-    this.lastAim.originY = player ? player.y : NaN;
+    this.lastAim.originX = ui.playerX;
+    this.lastAim.originY = ui.playerY;
   };
 
   /**
-   * 把玩家位置写给输入层，作为鼠标瞄准的原点。在战斗场景 update（本帧物理之后）写入：
+   * 把玩家身体中心写给输入层，与 sim 的开火原点对齐。在战斗场景 update（本帧物理之后）写入：
    * 下一帧无论是 InputScene 还是 PRE_UPDATE 先采样，中间都没有物理推进，拿到的就是玩家当前位置。
    */
   private publishPlayerPosition(): void {
     const player = this.player;
     if (!player) return;
     this.options.inputScene.playerX = player.x;
-    this.options.inputScene.playerY = player.y;
+    this.options.inputScene.playerY = player.y - player.radius;
   }
 
   private readonly stepWaves = (dt: number): void => this.waves.step(dt);

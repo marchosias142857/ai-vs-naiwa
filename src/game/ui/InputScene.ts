@@ -20,6 +20,7 @@ export class InputScene extends Scene {
   private fireScale = 1;
   private layoutScale = 0;
   private pauseLabel!: GameObjects.Text;
+  /** 鼠标瞄准原点：由战斗场景在物理后发布的玩家身体中心（脚底 y - radius）。 */
   playerX = GAME_WIDTH / 2;
   playerY = GAME_HEIGHT / 2 + 40;
   constructor() {

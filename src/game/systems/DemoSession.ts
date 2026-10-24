@@ -234,7 +234,7 @@ export class DemoSession {
     const p = this.player;
     if (p) {
       this.inputScene.playerX = p.x;
-      this.inputScene.playerY = p.y;
+      this.inputScene.playerY = p.y - p.radius;
     }
   }
   private readonly onDied = (e: GameEvents['entity:died']): void => {
