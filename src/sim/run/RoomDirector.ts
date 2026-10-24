@@ -6,6 +6,14 @@ import type { Random } from '../core/Random';
 import type { DungeonRun } from './DungeonRun';
 import type { Rect } from './WaveDirector';
 
+/** 存档用的纯数据（ADR 0019）。 */
+export interface RoomDirectorState {
+  floor: number;
+  pending: number;
+  kinds: number;
+  positions: number;
+}
+
 /** 与 `CombatWorldOptions.maxActors` 的默认值一致。 */
 const DEFAULT_MAX_ACTORS = 31;
 
@@ -32,6 +40,21 @@ export class RoomDirector {
     const floorRng = rng.fork(`encounters:${this.floor}`);
     this.kinds = floorRng.fork('enemy-kinds');
     this.positions = floorRng.fork('enemy-positions');
+  }
+  save(): RoomDirectorState {
+    return {
+      floor: this.floor,
+      pending: this.pending,
+      kinds: this.kinds.snapshot,
+      positions: this.positions.snapshot,
+    };
+  }
+  /** 写入存档；之后的刷怪种类、位置与待刷数都与存档时一致。 */
+  load(s: Readonly<RoomDirectorState>): void {
+    this.floor = s.floor;
+    this.pending = s.pending;
+    this.kinds.restore(s.kinds);
+    this.positions.restore(s.positions);
   }
   step(dt: number): void {
     if (this.floor !== this.run.floor) {

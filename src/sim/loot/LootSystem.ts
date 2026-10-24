@@ -15,6 +15,13 @@ export interface LootSlot {
 }
 const weapons = (Object.keys(WEAPONS) as WeaponId[]).filter((id) => id !== 'pistol_basic');
 
+/** 存档用的纯数据（ADR 0019），槽位按原顺序保存。 */
+export interface LootSystemState {
+  room: number;
+  rng: number;
+  slots: LootSlot[];
+}
+
 /** 固定楼层槽位；武器按房间保留，普通物资换房清空。 */
 export class LootSystem {
   readonly slots: LootSlot[] = [];
@@ -116,6 +123,21 @@ export class LootSystem {
   clear(): void {
     for (const s of this.slots) s.active = false;
     this.activeCount = 0;
+    this.revision++;
+  }
+  save(): LootSystemState {
+    return { room: this.room, rng: this.rng.snapshot, slots: this.slots.map((slot) => ({ ...slot })) };
+  }
+  /** 写入存档；槽位数必须与容量一致。不发事件。 */
+  load(s: Readonly<LootSystemState>): void {
+    if (s.slots.length !== this.slots.length) throw new RangeError('掉落槽位数与容量不一致');
+    this.room = s.room;
+    this.rng.restore(s.rng);
+    this.activeCount = 0;
+    for (let i = 0; i < this.slots.length; i++) {
+      Object.assign(this.slots[i]!, s.slots[i]!);
+      if (this.slots[i]!.active) this.activeCount++;
+    }
     this.revision++;
   }
 }
