@@ -21,6 +21,9 @@ export class InputScene extends Scene {
     super(InputScene.KEY);
   }
   create(): void {
+    // scene.restart 会复用场景实例；布局缓存必须清掉，否则同尺寸重来时跳过布局，暂停符号停在 (0, 0)。
+    this.layoutScale = 0;
+    this.fireScale = 1;
     const battle = this.scene.get(SCENES.game);
     const battleInputEnabled = battle.input.enabled;
     // UI 统一拥有指针，控件触摸不能穿透到战斗场景。
