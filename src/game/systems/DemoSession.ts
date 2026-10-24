@@ -1,3 +1,4 @@
+import type { FloorCheckpoint } from '../../sim/run/checkpoint';
 import { CombatFeedback } from '../fx/CombatFeedback';
 import { Physics, Scenes } from 'phaser';
 import type { Scene } from 'phaser';
@@ -30,6 +31,7 @@ export class DemoSession {
   readonly arena: RoomArena;
   readonly fx: CombatFeedback;
   readonly offers: UpgradeId[] = [];
+  private readonly upgrades: UpgradeId[] = [];
   settled = false;
   private readonly director: RoomDirector;
   private readonly root: Random;
@@ -47,6 +49,7 @@ export class DemoSession {
     readonly seed: number,
     god = false,
     weapon?: string | null,
+    checkpoint?: FloorCheckpoint,
   ) {
     this.root = new Random(seed);
     this.rewardRng = this.root.fork('upgrades');
@@ -59,11 +62,25 @@ export class DemoSession {
       lineOfSight: (x1, y1, x2, y2) => this.arena?.lineOfSight(x1, y1, x2, y2) ?? true,
     });
     this.sim.spawnPlayer('ai_proto', B.x + B.width / 2, B.y + B.height / 2);
+    if (checkpoint) {
+      for (const id of checkpoint.upgrades) {
+        this.sim.upgrade(id);
+        this.upgrades.push(id);
+      }
+      this.sim.takeWeapon(checkpoint.secondary);
+      this.sim.equipWeapon(checkpoint.equipped);
+      this.sim.restorePlayer(checkpoint);
+    }
     if (weapon && Object.hasOwn(WEAPONS, weapon)) this.sim.takeWeapon(weapon as WeaponId);
     this.bridge = new CombatBridge(scene, this.sim);
     this.arena = new RoomArena(scene, this.bridge);
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, bus);
-    this.dungeon = new DungeonRun(seed, bus);
+    this.dungeon = new DungeonRun(seed, bus, checkpoint?.floor);
+    if (checkpoint) {
+      this.dungeon.kills = checkpoint.kills;
+      this.dungeon.roomsCleared = checkpoint.roomsCleared;
+      this.dungeon.elapsed = checkpoint.elapsed;
+    }
     this.loot = new LootSystem(this.root.fork('loot'));
     this.director = new RoomDirector(
       this.sim,
@@ -146,6 +163,7 @@ export class DemoSession {
   chooseUpgrade(id: UpgradeId): boolean {
     if (!this.offers.includes(id) || !this.sim.upgrade(id)) return false;
     this.offers.length = 0;
+    this.upgrades.push(id);
     this.dungeon.nextFloor();
     this.showRoom();
     this.arena.teleport();
@@ -154,6 +172,26 @@ export class DemoSession {
     this.publishPosition();
     this.scene.physics.resume();
     return true;
+  }
+  /** 仅在楼层入口调用；数据由调用方序列化，绝不保存 sim 复用视图。 */
+  checkpoint(): FloorCheckpoint {
+    const d = this.dungeon,
+      r = this.sim.resources;
+    return {
+      version: 1,
+      seed: this.seed,
+      floor: d.floor,
+      upgrades: [...this.upgrades],
+      secondary: this.sim.secondaryWeapon,
+      equipped: this.sim.weaponId as WeaponId,
+      hp: this.player!.hp,
+      armor: r.armor,
+      energy: r.energy,
+      coins: r.coins,
+      kills: d.kills,
+      roomsCleared: d.roomsCleared,
+      elapsed: d.elapsed,
+    };
   }
   private showRoom(): void {
     this.loot.clear();

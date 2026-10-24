@@ -1,3 +1,5 @@
+import { parseCheckpoint, type FloorCheckpoint } from '../../sim/run/checkpoint';
+import { RunPersistence } from '../systems/RunPersistence';
 import { debugParams } from '../../debug/params';
 import { DebugTools } from '../../debug/DebugTools';
 import { freshSeed } from '../../sim/core/Random';
@@ -14,17 +16,29 @@ export class GameScene extends M1Scene {
   private hud?: DemoHud;
   private objects?: DemoObjects;
   private tools?: DebugTools;
-  override create(): void {
+  private persistence?: RunPersistence;
+  override create(data?: { checkpoint?: FloorCheckpoint }): void {
     this.demo = undefined;
     const params = debugParams();
     if (params.room === 'arena') {
       super.create();
       return;
     }
-    const seed = params.seed ?? freshSeed();
+    const checkpoint = parseCheckpoint(data?.checkpoint) ?? undefined;
+    const seed = checkpoint?.seed ?? params.seed ?? freshSeed();
     this.scene.launch(InputScene.KEY, { demo: true });
     const ui = this.scene.get(InputScene.KEY) as InputScene;
-    const demo = (this.demo = new DemoSession(this, this.bus, ui, seed, params.god, params.weapon));
+    const demo = (this.demo = new DemoSession(
+      this,
+      this.bus,
+      ui,
+      seed,
+      params.god,
+      params.weapon,
+      checkpoint,
+    ));
+    this.persistence = new RunPersistence(demo);
+    this.persistence.update();
     this.hud = new DemoHud(this, demo);
     this.objects = new DemoObjects(this, demo);
     this.tools = params.debug ? new DebugTools(this, demo, { seed, godMode: params.god }) : undefined;
@@ -69,6 +83,7 @@ export class GameScene extends M1Scene {
       return;
     }
     this.demo.update();
+    this.persistence?.update();
     this.objects?.update();
     this.hud?.update(delta);
     this.tools?.update(delta);

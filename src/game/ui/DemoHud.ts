@@ -48,7 +48,7 @@ export class DemoHud {
     this.menu.textContent = '返回主菜单';
     this.restart.id = 'demo-restart';
     this.menu.id = 'demo-menu';
-    this.restart.addEventListener('click', () => scene.scene.restart(), { signal: this.abort.signal });
+    this.restart.addEventListener('click', () => scene.scene.restart({}), { signal: this.abort.signal });
     this.menu.addEventListener('click', () => scene.scene.start('Menu'), { signal: this.abort.signal });
     this.modal.append(this.restart, this.menu);
     this.root.append(this.status, this.map, this.hint, this.modal);
@@ -66,7 +66,7 @@ export class DemoHud {
           return;
         }
         if (this.mode === 'offer' && /^[123]$/.test(e.key)) this.choose(Number(e.key) - 1);
-        else if (this.mode === 'result' && e.key === 'Enter') scene.scene.restart();
+        else if (this.mode === 'result' && e.key === 'Enter') scene.scene.restart({});
       },
       { signal: this.abort.signal },
     );
@@ -112,7 +112,7 @@ export class DemoHud {
     if (mode === 'result') {
       const fire = s.inputScene.controls?.frame.fire;
       if (!fire) this.fireReleased = true;
-      else if (this.fireReleased) this.scene.scene.restart();
+      else if (this.fireReleased) this.scene.scene.restart({});
     }
     this.refresh += deltaMs;
     if (this.refresh < 250) return;
