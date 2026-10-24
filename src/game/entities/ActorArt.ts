@@ -119,6 +119,9 @@ export class ActorArt {
         slot.poseAt = this.sim.time;
       }
       const character = characterArtFor(a.kind);
+      const bodyLeft = Math.cos(this.sim.playerBodyFacing) < 0,
+        flipBody = bodyLeft !== (character.nativeFacing === 'left'),
+        sourceMirror = character.nativeFacing === 'left' ? -1 : 1;
       const action =
         a.phase === 'dead' ? 'death' : this.sim.time - slot.hurtAt < P.hurtSeconds ? 'hurt' : pose;
       const time =
@@ -129,10 +132,11 @@ export class ActorArt {
         scale = action === 'hurt' || action === 'death' ? character.reactionScale : character.scale;
       image
         .setTexture(texture, name)
-        .setOrigin(left ? 1 - f.pivot.x / f.rect[2] : f.pivot.x / f.rect[2], f.pivot.y / f.rect[3])
+        .setFlipX(flipBody)
+        .setOrigin(flipBody ? 1 - f.pivot.x / f.rect[2] : f.pivot.x / f.rect[2], f.pivot.y / f.rect[3])
         .setScale(scale);
       // 只对齐角色图像左上角到渲染像素；不量化物理坐标或旋转武器。
-      const originX = (left ? f.rect[2] - f.pivot.x : f.pivot.x) * scale;
+      const originX = (flipBody ? f.rect[2] - f.pivot.x : f.pivot.x) * scale;
       const originY = f.pivot.y * scale;
       image.setPosition(
         Math.round((a.x - originX) * RENDER_SCALE) / RENDER_SCALE + originX,
@@ -158,7 +162,8 @@ export class ActorArt {
         .setTexture(ART.weapons, id)
         .setVisible(true)
         .setPosition(
-          image.x + (f.grip.x - f.pivot.x) * scale * mirror,
+          // 先将源图握持点归一到朝右，再按武器朝向镜像；身体可独立朝走路方向。
+          image.x + (f.grip.x - f.pivot.x) * scale * sourceMirror * mirror,
           image.y + (f.grip.y - f.pivot.y) * scale,
         )
         .setOrigin(art.grip.x / art.rect[2], left ? 1 - art.grip.y / art.rect[3] : art.grip.y / art.rect[3])

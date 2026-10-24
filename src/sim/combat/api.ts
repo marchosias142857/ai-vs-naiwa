@@ -135,6 +135,8 @@ export interface CombatWorld {
   readonly actors: readonly ActorView[];
   /** 玩家实体的编号；尚未生成玩家时为 null。 */
   readonly playerId: EntityId | null;
+  /** 表现用身体朝向：未开火随最后移动方向，开火随武器；不参与弹道或碰撞（ADR 0025）。 */
+  readonly playerBodyFacing: number;
   readonly weaponId: WeaponId;
   readonly secondaryWeapon: WeaponId | null;
   readonly resources: Readonly<

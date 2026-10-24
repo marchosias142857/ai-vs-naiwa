@@ -102,6 +102,18 @@ describe('真实 PNG 图集与持握数据', () => {
     inImage('environment', Object.values(ENVIRONMENT_ART));
     inImage('doors', Object.values(DOOR_ART));
   });
+  it('朝左原图的握持点在身体前方；逐帧换向不会改变固定标准握持距离', () => {
+    expect(HERO_ART.nativeFacing).toBe('left');
+    for (const action of ['idle', 'run', 'hurt', 'death'] as const) {
+      const scale = action === 'hurt' || action === 'death' ? HERO_ART.reactionScale : HERO_ART.scale;
+      for (const key of HERO_ART[action]) {
+        const f = HERO_FRAMES[key];
+        expect(f.grip.x).toBeLessThan(f.pivot.x);
+        expect(Math.abs((f.pivot.x - f.grip.x) * scale - HERO_ART.standardGrip.x)).toBeLessThan(0.05);
+        expect(Math.abs((f.grip.y - f.pivot.y) * scale - HERO_ART.standardGrip.y)).toBeLessThan(0.05);
+      }
+    }
+  });
   it('动作和武器数据通过 schema，逐帧 pivot / grip 在帧内，所有当前武器和怪物都有贴图', () => {
     expect(CharacterArtSchema.safeParse(HERO_ART).success).toBe(true);
     for (const key of [...HERO_ART.idle, ...HERO_ART.run, ...HERO_ART.hurt, ...HERO_ART.death]) {
