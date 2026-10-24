@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import type {} from '../fixtures/combat';
 import type {} from '../fixtures/knockback';
+import type {} from '../fixtures/room';
 import { BALANCE } from '../../src/data/balance';
 import { WEAPONS } from '../../src/data/weapons';
 import { ENEMIES } from '../../src/data/enemies';
@@ -21,7 +22,11 @@ test.beforeAll(async () => {
     build: {
       outDir: directory,
       rollupOptions: {
-        input: [resolve('tests/fixtures/combat.html'), resolve('tests/fixtures/knockback.html')],
+        input: [
+          resolve('tests/fixtures/combat.html'),
+          resolve('tests/fixtures/knockback.html'),
+          resolve('tests/fixtures/room.html'),
+        ],
       },
     },
   });
@@ -182,3 +187,20 @@ for (const fps of [60, 120]) {
     expect(error).toBeLessThan(0.5);
   });
 }
+
+test('真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中心一致', async ({ page }, info) => {
+  await page.goto(`${url}/room.html`);
+  await page.waitForFunction(() => window.roomTest);
+  const r = await page.evaluate(() => window.roomTest());
+  expect(r.hits).toBeGreaterThan(0);
+  expect(r.x).toBeLessThanOrEqual(158.01);
+  expect(r.blocked).toBe(true);
+  expect(r.clear).toBe(true);
+  expect(r.sameChildren).toBe(true);
+  expect(r.bullets).toBe(0);
+  expect(r.bodyX).toBeCloseTo(r.simX, 6);
+  expect(r.bodyY).toBeCloseTo(r.simY, 6);
+  expect(r.simX).toBe(128);
+  expect(r.simY).toBe(135);
+  await page.locator('canvas').screenshot({ path: `test-results/room-${info.project.name}.png` });
+});
