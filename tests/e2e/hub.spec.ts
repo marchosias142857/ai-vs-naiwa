@@ -100,19 +100,22 @@ test('手机只用左摇杆与门按钮即可进入地牢，开屏控件不溢�
   expect(layout.right).toBeLessThan(layout.width / 2);
   expect(layout.bottom).toBeLessThanOrEqual(layout.height);
   await page.locator('#start-run').tap();
-  await page.waitForFunction(() => window.__AVN__?.scene === 'Hub');
+  await page.waitForFunction(() => window.__AVN__?.scene === 'Hub' && !!window.__AVN__?.input?.touch);
   const box = (await page.locator('#game canvas').boundingBox())!;
+  const touch = await page.evaluate(() => window.__AVN__!.input!.touch);
   const cdp = await context.newCDPSession(page);
   const point = {
     id: 1,
-    x: box.x + INPUT_UI.joystick.homeInset,
-    y: box.y + box.height - INPUT_UI.joystick.homeInset,
+    x: box.x + touch.moveX,
+    y: box.y + touch.moveY,
   };
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [point] });
   await cdp.send('Input.dispatchTouchEvent', {
     type: 'touchMove',
-    touchPoints: [{ ...point, y: point.y - 40 }],
+    // 使用实际布局并拉满摇杆，不依赖半推摇杆在软件渲染下的到门时间。
+    touchPoints: [{ ...point, y: point.y - touch.moveRadius * 2 }],
   });
+  await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.move.y)).toBeLessThan(-0.9);
   await expect(page.locator('#hub-door')).toBeVisible();
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   await page.locator('#hub-door').tap();

@@ -93,6 +93,12 @@ test('真实 AudioContext：手柄暂停仅静音，后台和退出才 suspend�
   await page.waitForFunction(() => window.audioStats()!.state === 'suspended');
   await page.locator('#continue-run').click();
   await page.waitForFunction(() => window.audioStats()!.state === 'running');
+  // 音频先恢复；战斗仍有恢复倒计时，结束时会清空输入并要求手柄重新中立。
+  await page.waitForFunction(() => {
+    const demo = window.__AVN__?.demo;
+    return demo && demo.resumeRemaining === 0 && !demo.physicsPaused;
+  });
+  await padButton(page, 7, false);
   const reentered = await stats();
   await padButton(page, 7, true);
   await page.waitForFunction((n) => window.audioStats()!.ramps > n, reentered.ramps);
