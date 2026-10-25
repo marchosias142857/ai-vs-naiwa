@@ -96,14 +96,16 @@ export function normalizeRanks(value: unknown): TalentRanks {
 /** 价格上调后已花费超过累计获得时，从高层级往低层级逐级退回，直到不透支。 */
 export function trimRanks(ranks: Readonly<TalentRanks>, budget: number): TalentRanks {
   const out = normalizeRanks(ranks);
-  for (let i = ORDER.length - 1; i >= 0 && spentPoints(out) > budget; ) {
+  let i = ORDER.length - 1;
+  while (i >= 0 && spentPoints(out) > budget) {
     const id = ORDER[i]!;
-    if (!out[id]) {
-      i--;
-      continue;
+    const rank = out[id] ?? 0;
+    if (rank === 0) i--;
+    else {
+      if (rank === 1) delete out[id];
+      else out[id] = rank - 1;
+      for (const other of ORDER) if (out[other] && !requirementsMet(out, other)) delete out[other];
     }
-    if (--out[id] === 0) delete out[id];
-    for (const other of ORDER) if (out[other] && !requirementsMet(out, other)) delete out[other];
   }
   return out;
 }
