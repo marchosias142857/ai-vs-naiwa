@@ -41,7 +41,10 @@ for (const mode of ['1', 'combat']) {
       expect(result.actorMin).toBe(30);
       expect(result.bulletMin).toBe(400);
       expect(result.peakBullets).toBe(400);
-    } else expect(result.peakBullets).toBeGreaterThan(0);
+    } else {
+      expect(result.peakBullets).toBeGreaterThan(0);
+      expect(result.peakFx).toBeGreaterThan(0); // 左上角原点 + 高倍率相机不能误剔除屏内火花。
+    }
     expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBeNull();
     await padButton(page, 7, false);
     const box = (await page.locator('#game canvas').boundingBox())!,

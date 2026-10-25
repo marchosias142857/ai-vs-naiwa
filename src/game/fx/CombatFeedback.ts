@@ -7,9 +7,11 @@ import type { GameEvents } from '../../sim/core/events';
 import type { CombatBridge } from '../world/CombatBridge';
 import { COMBAT_FX as FX } from './params';
 import { deathSeconds, enemyAnimation } from '../../data/enemyArt';
+import { fxBudget, type FxBudget } from './FxBudget';
+import { impactTexture } from './impactTexture';
 
 interface EffectSlot {
-  image: GameObjects.Arc;
+  image: GameObjects.Image;
   remaining: number;
   duration: number;
 }
@@ -19,12 +21,14 @@ export interface DeathSnapshot {
   elapsed: number;
 }
 
-/** 灰盒反馈：预警/生命条用固定 Graphics，瞬时反馈与死亡计时均复用槽位。 */
+/** 预警/生命条用固定 Graphics，瞬时反馈与死亡计时均复用槽位。 */
 export class CombatFeedback {
   private readonly effects: EffectSlot[] = [];
   /** 预热后只移动栈顶，不改变数组长度；满池丢弃次要反馈。 */
   private readonly free: EffectSlot[] = [];
   private freeCount = 0;
+  private readonly active: EffectSlot[] = [];
+  private readonly budget: FxBudget;
   private readonly states: { id: number; flash: number; death: number }[] = [];
   private readonly overlay: GameObjects.Graphics;
   private readonly marks: GameObjects.Graphics;
@@ -37,16 +41,20 @@ export class CombatFeedback {
     private readonly bridge: CombatBridge,
     private readonly bus: EventBus<GameEvents>,
   ) {
+    this.budget = fxBudget(scene);
+    const texture = impactTexture(scene);
     this.marks = scene.add.graphics().setDepth(DEPTH.fx);
     this.overlay = scene.add.graphics().setDepth(DEPTH.screenFx);
     for (let i = 0; i < POOL_SIZES.fx; i++)
       this.effects.push({
-        image: scene.add.circle(0, 0, FX.impactRadius, FX.hitColor).setDepth(DEPTH.fx).setVisible(false),
+        image: scene.add.image(0, 0, texture).setDepth(DEPTH.fx).setVisible(false),
         remaining: 0,
         duration: 0,
       });
     for (let i = this.effects.length - 1; i >= 0; i--) this.free.push(this.effects[i]!);
     this.freeCount = this.free.length;
+    // 活动数组也预分配；只移动计数和交换元素，空闲步不扫描整池。
+    this.active.push(...this.effects);
     for (let i = 0; i < bridge.actors.slots.length; i++) this.states.push({ id: 0, flash: 0, death: 0 });
     bus.on('bullet:hit', this.onHit);
     bus.on('melee:hit', this.onHit);
@@ -56,11 +64,17 @@ export class CombatFeedback {
     scene.events.once('shutdown', this.destroy);
   }
   private emit(x: number, y: number, color: number, duration: number): void {
-    if (!this.freeCount) return;
+    if (!this.freeCount || !this.budget.admit('spark', this.scene.cameras.main, x, y, FX.impactRadius * 2))
+      return;
     const slot = this.free[--this.freeCount]!;
     slot.remaining = slot.duration = duration;
-    slot.image.setPosition(x, y).setFillStyle(color).setScale(1).setAlpha(1).setVisible(true);
-    this.activeCount++;
+    slot.image
+      .setPosition(x, y)
+      .setTint(color)
+      .setDisplaySize(FX.impactRadius * 2, FX.impactRadius * 2)
+      .setAlpha(1)
+      .setVisible(true);
+    this.active[this.activeCount++] = slot;
   }
   saveDeaths(): DeathSnapshot[] {
     const result: DeathSnapshot[] = [];
@@ -100,16 +114,17 @@ export class CombatFeedback {
   private readonly tick = (dt: number): void => {
     this.hurt = Math.max(0, this.hurt - dt);
     if (this.bridge.playerDead) this.death += dt;
-    for (const slot of this.effects)
-      if (slot.remaining) {
-        slot.remaining = Math.max(0, slot.remaining - dt);
-        slot.image.setAlpha(slot.remaining / slot.duration).setScale(2 - slot.remaining / slot.duration);
-        if (!slot.remaining) {
-          slot.image.setVisible(false);
-          this.activeCount--;
-          this.free[this.freeCount++] = slot;
-        }
+    for (let i = this.activeCount - 1; i >= 0; i--) {
+      const slot = this.active[i]!;
+      slot.remaining = Math.max(0, slot.remaining - dt);
+      const size = FX.impactRadius * 2 * (2 - slot.remaining / slot.duration);
+      slot.image.setAlpha(slot.remaining / slot.duration).setDisplaySize(size, size);
+      if (!slot.remaining) {
+        slot.image.setVisible(false);
+        this.active[i] = this.active[--this.activeCount]!;
+        this.free[this.freeCount++] = slot;
       }
+    }
     for (let i = 0; i < this.states.length; i++) {
       const slot = this.bridge.actors.slots[i]!,
         state = this.states[i]!;

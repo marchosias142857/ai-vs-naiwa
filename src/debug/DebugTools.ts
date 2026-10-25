@@ -13,6 +13,7 @@ interface DebugSource {
 }
 import { setDebugProbe } from '../game/testHooks';
 import { textStyle } from '../game/ui/text';
+import { fxBudget, type FxBudget } from '../game/fx/FxBudget';
 
 /** 面板文字每秒刷新的次数；调试面板不需要每帧重建字符串。 */
 const PANEL_HZ = 4;
@@ -35,15 +36,17 @@ export class DebugTools {
   private readonly panel: GameObjects.Text;
   private readonly abort = new AbortController();
   private sinceRefresh = Infinity;
+  private readonly effects: FxBudget;
 
   constructor(
     private readonly scene: Scene,
     private readonly run: DebugSource,
     private readonly info: { seed: number; godMode: boolean },
   ) {
+    this.effects = fxBudget(scene);
     // 放在左上角标题下方：右上角是暂停键，左下和右下是触屏摇杆与射击键。
     this.panel = scene.add
-      .text(run.fx ? 380 : PANEL_X, run.fx ? 50 : PANEL_Y, '', textStyle(run.fx ? 5 : 8, COLORS.accent))
+      .text(PANEL_X, run.fx ? 50 : PANEL_Y, '', textStyle(run.fx ? 5 : 8, COLORS.accent))
       .setScrollFactor(0)
       .setDepth(DEPTH.hud);
     this.applyHitboxes();
@@ -52,7 +55,17 @@ export class DebugTools {
       this.abort.abort();
       setDebugProbe(undefined);
     });
-    setDebugProbe(() => ({ hitboxes: showHitboxes, godMode: this.info.godMode }));
+    setDebugProbe(() => ({
+      hitboxes: showHitboxes,
+      godMode: this.info.godMode,
+      panel: {
+        x: this.panel.x,
+        y: this.panel.y,
+        width: this.panel.width,
+        height: this.panel.height,
+        text: this.panel.text,
+      },
+    }));
   }
 
   /** 由战斗场景 update 调用（早于 Arcade 在 POST_UPDATE 画碰撞框）；`deltaMs` 为毫秒。 */
@@ -74,6 +87,7 @@ export class DebugTools {
         `bullets ${bullets.activeCount}/${bullets.slots.length}`,
         `actor slots ${actorSlots}/${run.bridge.actors.slots.length}`,
         ...(run.fx ? [`fx ${run.fx.activeCount}/${POOL_SIZES.fx}`] : []),
+        `fx admitted ${this.effects.accepted} · limited ${this.effects.dropped} · offscreen ${this.effects.culled}`,
         `hp ${p?.hp ?? 0}/${p?.maxHp ?? 0} · kills ${run.kills}${this.info.godMode ? ' · GOD' : ''}`,
         `F1 碰撞框${showHitboxes ? '：开' : ''} · F2 清房`,
       ].join('\n'),

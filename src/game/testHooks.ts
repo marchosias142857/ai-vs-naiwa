@@ -85,6 +85,8 @@ export function setDemoProbe(read: typeof readDemo): void {
 interface DebugProbe {
   hitboxes: boolean;
   godMode: boolean;
+  /** 固定屏幕面板的局部范围；供可见性回归读取，不在帧循环里分配。 */
+  panel: { x: number; y: number; width: number; height: number; text: string };
 }
 
 /** 战斗流程（#15）的只读快照。 */
