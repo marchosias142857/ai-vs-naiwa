@@ -10,6 +10,7 @@ import type { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
 import { ART } from '../assets/demoArt';
 import { WEAPON_FX as W } from './weaponParams';
+import { fxBudget, type FxBudget } from './FxBudget';
 
 interface Bolt {
   x1: number;
@@ -18,6 +19,7 @@ interface Bolt {
   y2: number;
   age: number;
   seed: number;
+  points: Float64Array;
 }
 
 /** 不用随机数的抖动：同一道闪电在它存在期间形状固定。 */
@@ -28,18 +30,24 @@ function jitter(seed: number, k: number): number {
 
 /** 一道闪电的折线：两端固定，中间各节沿法线方向抖开。 */
 function strokeBolt(g: GameObjects.Graphics, b: Bolt, width: number, color: number, alpha: number): void {
+  g.lineStyle(width, color, alpha).beginPath().moveTo(b.x1, b.y1);
+  for (let k = 0; k < b.points.length; k += 2) g.lineTo(b.points[k]!, b.points[k + 1]!);
+  g.lineTo(b.x2, b.y2).strokePath();
+}
+
+/** 折线在闪电存活期间不变，生成时算一次，两条描边共用。 */
+function prepareBolt(b: Bolt): void {
   const dx = b.x2 - b.x1,
     dy = b.y2 - b.y1,
     len = Math.hypot(dx, dy) || 1;
   const nx = -dy / len,
     ny = dx / len;
-  g.lineStyle(width, color, alpha).beginPath().moveTo(b.x1, b.y1);
   for (let k = 1; k < W.chainSegments; k++) {
     const t = k / W.chainSegments,
       off = jitter(b.seed, k) * W.chainJitter;
-    g.lineTo(b.x1 + dx * t + nx * off, b.y1 + dy * t + ny * off);
+    b.points[(k - 1) * 2] = b.x1 + dx * t + nx * off;
+    b.points[(k - 1) * 2 + 1] = b.y1 + dy * t + ny * off;
   }
-  g.lineTo(b.x2, b.y2).strokePath();
 }
 
 /**
@@ -53,25 +61,46 @@ export class WeaponFx {
   private readonly bolts: Bolt[] = [];
   private boltSeed = 0;
   private last = 0;
+  private readonly budget: FxBudget;
 
   constructor(
     private readonly scene: Scene,
     private readonly sim: CombatWorld,
     private readonly bus: EventBus<GameEvents>,
   ) {
+    this.budget = fxBudget(scene);
     for (let i = 0; i < BALANCE.shotCapacity; i++) {
       this.images.push(
         scene.add.image(0, 0, ART.arsenal, 'shot_bubble').setVisible(false).setDepth(DEPTH.playerBullets),
       );
       this.ids.push(0);
     }
-    for (let i = 0; i < W.chainPool; i++) this.bolts.push({ x1: 0, y1: 0, x2: 0, y2: 0, age: 1, seed: 0 });
+    for (let i = 0; i < W.chainPool; i++)
+      this.bolts.push({
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 0,
+        age: 1,
+        seed: 0,
+        points: new Float64Array((W.chainSegments - 1) * 2),
+      });
     this.lines = scene.add.graphics().setDepth(DEPTH.fx);
     bus.on('weapon:chained', this.onChained);
     scene.events.once('shutdown', this.destroy);
   }
 
   private readonly onChained = (e: GameEvents['weapon:chained']): void => {
+    if (
+      !this.budget.admit(
+        'chain',
+        this.scene.cameras.main,
+        (e.x1 + e.x2) / 2,
+        (e.y1 + e.y2) / 2,
+        Math.hypot(e.x2 - e.x1, e.y2 - e.y1) / 2 + W.chainJitter,
+      )
+    )
+      return;
     let slot = this.bolts[0]!;
     for (const b of this.bolts) {
       if (b.age >= W.chainSeconds) {
@@ -86,6 +115,7 @@ export class WeaponFx {
     slot.y2 = e.y2;
     slot.age = 0;
     slot.seed = ++this.boltSeed;
+    prepareBolt(slot);
   };
 
   /** 每渲染帧调用。 */
@@ -142,6 +172,15 @@ export class WeaponFx {
     for (const b of this.bolts) {
       if (b.age >= W.chainSeconds) continue;
       b.age += dt;
+      if (
+        !this.budget.visible(
+          this.scene.cameras.main,
+          (b.x1 + b.x2) / 2,
+          (b.y1 + b.y2) / 2,
+          Math.hypot(b.x2 - b.x1, b.y2 - b.y1) / 2 + W.chainJitter,
+        )
+      )
+        continue;
       const alpha = Math.max(0, 1 - b.age / W.chainSeconds);
       strokeBolt(g, b, 3, W.chainGlow, 0.6 * alpha);
       strokeBolt(g, b, 1, W.chainCore, alpha);

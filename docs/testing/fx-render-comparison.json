@@ -1,0 +1,82 @@
+[
+  {
+    "project": "desktop",
+    "result": {
+      "canvas": [1920, 1080],
+      "samples": [
+        {
+          "mode": "arc",
+          "frames": 120,
+          "calls": 1,
+          "indices": 29700,
+          "averageRenderMs": 1.6166666665424902,
+          "arcTriangles": 99
+        },
+        {
+          "mode": "image",
+          "frames": 120,
+          "calls": 1,
+          "indices": 600,
+          "averageRenderMs": 0.7441666664555668,
+          "arcTriangles": 99
+        },
+        {
+          "mode": "arc",
+          "frames": 120,
+          "calls": 1,
+          "indices": 29700,
+          "averageRenderMs": 1.64000000047187,
+          "arcTriangles": 99
+        },
+        {
+          "mode": "image",
+          "frames": 120,
+          "calls": 1,
+          "indices": 600,
+          "averageRenderMs": 0.24499999973922967,
+          "arcTriangles": 99
+        }
+      ]
+    }
+  },
+  {
+    "project": "mobile-landscape",
+    "result": {
+      "canvas": [1920, 1080],
+      "samples": [
+        {
+          "mode": "arc",
+          "frames": 120,
+          "calls": 1,
+          "indices": 29700,
+          "averageRenderMs": 1.8591666663686435,
+          "arcTriangles": 99
+        },
+        {
+          "mode": "image",
+          "frames": 120,
+          "calls": 1,
+          "indices": 600,
+          "averageRenderMs": 1.108333333209157,
+          "arcTriangles": 99
+        },
+        {
+          "mode": "arc",
+          "frames": 120,
+          "calls": 1,
+          "indices": 29700,
+          "averageRenderMs": 1.5174999998882412,
+          "arcTriangles": 99
+        },
+        {
+          "mode": "image",
+          "frames": 120,
+          "calls": 1,
+          "indices": 600,
+          "averageRenderMs": 0.192500000136594,
+          "arcTriangles": 99
+        }
+      ]
+    }
+  }
+]

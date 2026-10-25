@@ -312,6 +312,18 @@ test('瞬时反馈池：满池、部分到期、反复回收不重复占槽或�
   expect(result.stable).toBe(true);
 });
 
+test('装饰事件风暴：分类预算、重复回收、纹理复用和 sim 隔离', async ({ page }) => {
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.fxBudgetScenario);
+  const result = await page.evaluate(() => window.fxBudgetScenario());
+  expect(result.counts).toEqual(Array(8).fill(48));
+  expect(result.accepted).toBe(8 * 80);
+  expect(result.dropped).toBe(8 * (6000 - 80));
+  expect(result.stable).toBe(true);
+  expect(result.unchanged).toBe(true);
+  expect(result.active).toBe(0);
+});
+
 for (const mode of ['mixed', 'full', 'corpse', 'teleport'] as const) {
   test(`存档物理往返：${mode}，真实 Arcade 后续命中与快照一致`, async ({ page }) => {
     await page.goto(`${url}/snapshot.html`);

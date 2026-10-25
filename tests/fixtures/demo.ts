@@ -14,6 +14,8 @@ import { createInputFrame } from '../../src/sim/core/types';
 import { BALANCE } from '../../src/data/balance';
 import { DUNGEON } from '../../src/data/dungeon';
 import { doorStage, ROOM_CENTER, walkTo } from './route';
+import { fxBudget, FX_LIMITS } from '../../src/game/fx/FxBudget';
+import { IMPACT_TEXTURE } from '../../src/game/fx/impactTexture';
 
 class DemoHarness extends Scene {
   private hud?: DemoHud;
@@ -106,7 +108,9 @@ class DemoHarness extends Scene {
       };
     };
     window.feedbackPoolScenario = () => {
-      const images = this.children.list.filter((object) => object.type === 'Arc'),
+      const images = this.children.list.filter(
+          (object) => 'texture' in object && (object.texture as { key: string }).key === IMPACT_TEXTURE,
+        ),
         before = this.children.length,
         counts: number[] = [],
         visible: number[] = [],
@@ -124,20 +128,65 @@ class DemoHarness extends Scene {
         visible.push(images.filter((image) => 'visible' in image && image.visible).length);
       };
       for (let cycle = 0; cycle < 4; cycle++) {
-        for (let i = 0; i < POOL_SIZES.fx; i++)
+        for (let i = 0; i < POOL_SIZES.fx; i++) {
+          if (i % FX_LIMITS.spark === 0) fxBudget(this).beginFrame();
           if (i % 2) bus.emit('bullet:hit', hit);
           else bus.emit('weapon:fired', fire);
+        }
         bus.emit('bullet:hit', hit); // 满池丢弃，不能覆盖仍存活的效果。
         sample();
         this.physics.world.emit(Physics.Arcade.Events.WORLD_STEP, FX.muzzleSeconds);
         sample(); // 只释放寿命较短的一半，不要求槽位按编号连续。
-        for (let i = 0; i < POOL_SIZES.fx; i++) bus.emit('bullet:hit', hit);
+        for (let i = 0; i < POOL_SIZES.fx; i++) {
+          if (i % FX_LIMITS.spark === 0) fxBudget(this).beginFrame();
+          bus.emit('bullet:hit', hit);
+        }
         sample();
         this.physics.world.emit(Physics.Arcade.Events.WORLD_STEP, FX.impactSeconds);
         this.physics.world.emit(Physics.Arcade.Events.WORLD_STEP, FX.impactSeconds);
         sample(); // 连续空闲步不能重复回收。
       }
       return { counts, visible, stable: this.children.length === before, capacity: images.length };
+    };
+    window.fxBudgetScenario = () => {
+      const budget = fxBudget(this);
+      let unchanged = true;
+      const children = this.children.length,
+        textures = this.textures.getTextureKeys().length;
+      const hit: GameEvents['bullet:hit'] = {
+        team: 'player',
+        x: 240,
+        y: 135,
+        angle: 0,
+        targetId: null,
+        critical: false,
+      };
+      const burst: GameEvents['combat:exploded'] = { team: 'player', x: 240, y: 135, radius: 12 };
+      const chain: GameEvents['weapon:chained'] = { team: 'player', x1: 220, y1: 135, x2: 260, y2: 135 };
+      const counts: number[] = [];
+      const accepted = budget.accepted,
+        dropped = budget.dropped;
+      for (let cycle = 0; cycle < 8; cycle++) {
+        const before = JSON.stringify(session.sim.save());
+        budget.beginFrame();
+        for (let i = 0; i < 2000; i++) {
+          bus.emit('bullet:hit', hit);
+          bus.emit('combat:exploded', burst);
+          bus.emit('weapon:chained', chain);
+        }
+        session.update();
+        counts.push(session.fx.activeCount);
+        unchanged &&= before === JSON.stringify(session.sim.save());
+        this.physics.world.emit(Physics.Arcade.Events.WORLD_STEP, 1);
+      }
+      return {
+        counts,
+        accepted: budget.accepted - accepted,
+        dropped: budget.dropped - dropped,
+        stable: children === this.children.length && textures === this.textures.getTextureKeys().length,
+        unchanged,
+        active: session.fx.activeCount,
+      };
     };
     window.feedbackScenario = () => {
       const input = createInputFrame(),
@@ -149,6 +198,7 @@ class DemoHarness extends Scene {
       });
       const tick = (n: number) => {
         for (let i = 0; i < n; i++) {
+          fxBudget(this).beginFrame(); // fixture 每次手动推进一帧，生产环境由 PRE_UPDATE 重置。
           session.setInput(input);
           this.physics.world.update((++steps * 1000) / 60, 1000 / 60);
           this.physics.world.postUpdate();
@@ -293,6 +343,14 @@ declare global {
       wallMs: number;
     };
     feedbackPoolScenario: () => { counts: number[]; visible: number[]; stable: boolean; capacity: number };
+    fxBudgetScenario: () => {
+      counts: number[];
+      accepted: number;
+      dropped: number;
+      stable: boolean;
+      unchanged: boolean;
+      active: number;
+    };
     feedbackScenario: () => {
       hits: number;
       effects: number;

@@ -11,6 +11,7 @@ import type { GameEvents } from '../../sim/core/events';
 import { settings } from '../../services/settings';
 import type { CombatBridge } from '../world/CombatBridge';
 import { HAZARD_FX as H, ROCK_PIXELS, ROCK_PALETTE } from './hazardParams';
+import { fxBudget, type FxBudget } from './FxBudget';
 
 interface Burst {
   x: number;
@@ -47,6 +48,7 @@ export class HazardLayer {
   private bossDeath: BossDeath | null = null;
   private time = 0;
   private destroyed = false;
+  private readonly budget: FxBudget;
 
   constructor(
     private readonly scene: Scene,
@@ -54,6 +56,7 @@ export class HazardLayer {
     private readonly bridge: CombatBridge,
     private readonly bus: EventBus<GameEvents>,
   ) {
+    this.budget = fxBudget(scene);
     this.ground = scene.add.graphics().setDepth(DEPTH.floorDecals);
     this.marks = scene.add.graphics().setDepth(DEPTH.fx);
     if (!scene.textures.exists(ROCK_TEXTURE)) makeRockTexture(scene);
@@ -88,6 +91,7 @@ export class HazardLayer {
 
   /** 取一个空闲冲击圈；都在播放时顶替播得最久的那个。 */
   private burst(x: number, y: number, radius: number, life: number, color: number): void {
+    if (!this.budget.admit('burst', this.scene.cameras.main, x, y, radius)) return;
     let slot = this.bursts[0]!;
     for (const b of this.bursts) {
       if (b.age >= b.life) {
@@ -296,6 +300,7 @@ export class HazardLayer {
   private drawBursts(m: GameObjects.Graphics): void {
     for (const b of this.bursts) {
       if (b.age >= b.life) continue;
+      if (!this.budget.visible(this.scene.cameras.main, b.x, b.y, b.radius)) continue;
       const t = b.age / b.life;
       m.lineStyle(2, b.color, 1 - t).strokeCircle(b.x, b.y, b.radius * (0.4 + 0.6 * t));
       if (t < 0.4 && settings.flashes)
