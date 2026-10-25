@@ -11,14 +11,18 @@ import { characterArtFor } from '../../data/characterArt';
 import { ENEMIES, type EnemyId } from '../../data/enemies';
 import type { EnemyDef, WeaponDef } from '../../data/schema';
 import { WEAPONS, type WeaponId } from '../../data/weapons';
-import { createBrain, moveEnemy, type EnemyBrain } from '../ai/brain';
+import { createBrain, resetBrain, type EnemyBrain } from '../ai/brain';
+import { EnemyAi, type AiHost } from '../ai/EnemyAi';
+import type { EnemyAction } from '../core/events';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
 import { Random } from '../core/Random';
 import type { EntityId, InputFrame, Team, Vec2 } from '../core/types';
 import { getPattern, type BulletSink, type FireContext, type FirePattern } from '../weapons/patterns';
 import type {
+  ActorMove,
   ActorPhase,
+  ActorPose,
   ActorState,
   ActorView,
   BulletSpawn,
@@ -26,7 +30,12 @@ import type {
   CombatWorldOptions,
   LineOfSight,
   CombatWorldState,
+  RockState,
+  RockView,
   StepResult,
+  ZoneKind,
+  ZoneState,
+  ZoneView,
 } from './api';
 import { stepVelocity, type MoveTuning } from './movement';
 import { PayloadStack } from './payloads';
@@ -38,6 +47,22 @@ const DEFAULT_MAX_BULLETS = 500;
 const HIT_RECORD_CAPACITY = 4;
 /** 剩余击退距离小于这个值（像素）就视为走完。 */
 const KNOCK_EPSILON = 1e-6;
+/** 爆炸把目标推开的距离，像素。 */
+const EXPLOSION_KNOCKBACK = 12;
+/** 找石块落点的重试次数；石块雨的预警时长最多再延长这么多倍。 */
+const ROCK_ATTEMPTS = 8;
+const ROCK_STAGGER = 0.6;
+/** 判断冲撞撞到什么时，往前探的距离，像素。 */
+const CRASH_REACH = 6;
+
+/** 点到线段的距离。 */
+function segmentDistance(px: number, py: number, x1: number, y1: number, x2: number, y2: number): number {
+  const dx = x2 - x1,
+    dy = y2 - y1,
+    len2 = dx * dx + dy * dy;
+  const t = len2 > 0 ? Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / len2)) : 0;
+  return Math.hypot(px - (x1 + dx * t), py - (y1 + dy * t));
+}
 
 /** 实体的内部状态；对外以 `ActorView` 只读暴露。 */
 interface Actor extends ActorView {
@@ -67,6 +92,34 @@ interface Actor extends ActorView {
   knock: Knockback;
   brain: EnemyBrain;
   warning: boolean;
+  pose: ActorPose;
+  lift: number;
+  aim: number;
+  move: ActorMove;
+  /** 召唤者编号；0 表示不是被召唤出来的。 */
+  parentId: number;
+}
+
+interface Zone extends ZoneView, ZoneState {
+  active: boolean;
+  team: Team;
+  kind: ZoneKind;
+  x: number;
+  y: number;
+  radius: number;
+  remaining: number;
+  duration: number;
+}
+
+interface Rock extends RockView, RockState {
+  active: boolean;
+  landed: boolean;
+  x: number;
+  y: number;
+  radius: number;
+  time: number;
+  fall: number;
+  life: number;
 }
 
 /**
@@ -117,15 +170,6 @@ interface PlayerState {
 }
 
 const alwaysVisible: LineOfSight = () => true;
-
-/**
- * 从射手身体中心指向目标碰撞圆心的角度。
- * 枪口在身体中心（脚底上移一个半径）沿这个方向前移，所以弹道正好穿过目标圆心；
- * 若按「脚底 → 脚底」算角度，弹道会整体平行上移一个射手半径，大体型射手的正中一发会擦过目标。
- */
-function aimAngle(shooter: Readonly<Actor>, target: Readonly<Vec2>): number {
-  return Math.atan2(target.y - shooter.y, target.x - shooter.x);
-}
 
 function newBullet(): Bullet {
   return {
@@ -181,7 +225,42 @@ function newActor(): Actor {
     contactDamage: 0,
     brain: createBrain(),
     warning: false,
+    pose: 'idle',
+    lift: 0,
+    aim: 0,
+    move: 'none',
+    parentId: 0,
     knock: { dirX: 0, dirY: 0, total: 0, left: 0, timeLeft: 0, speed: 0, fresh: false },
+  };
+}
+
+function newRock(): Rock {
+  return { active: false, landed: false, x: 0, y: 0, radius: 0, time: 0, fall: 0, life: 0, damage: 0 };
+}
+
+function saveZone(z: Readonly<Zone>): ZoneState {
+  const { team, kind, x, y, radius, remaining, duration, damage, tick, wait } = z;
+  return { team, kind, x, y, radius, remaining, duration, damage, tick, wait };
+}
+
+function saveRock(r: Readonly<Rock>): RockState {
+  const { landed, x, y, radius, time, fall, life, damage } = r;
+  return { landed, x, y, radius, time, fall, life, damage };
+}
+
+function newZone(): Zone {
+  return {
+    active: false,
+    team: 'enemy',
+    kind: 'poison',
+    x: 0,
+    y: 0,
+    radius: 0,
+    remaining: 0,
+    duration: 0,
+    damage: 0,
+    tick: 0,
+    wait: 0,
   };
 }
 
@@ -218,8 +297,13 @@ function saveActor(a: Actor): ActorState {
       speed: k.speed,
       fresh: k.fresh,
     },
-    brain: { cooldown: b.cooldown, stage: b.stage, time: b.time, dirX: b.dirX, dirY: b.dirY },
+    brain: { ...b },
     warning: a.warning,
+    pose: a.pose,
+    lift: a.lift,
+    aim: a.aim,
+    move: a.move,
+    parentId: a.parentId,
   };
 }
 
@@ -248,6 +332,11 @@ function loadActor(a: Actor, s: Readonly<ActorState>): void {
   Object.assign(a.knock, s.knock);
   Object.assign(a.brain, s.brain);
   a.warning = s.warning;
+  a.pose = s.pose;
+  a.lift = s.lift;
+  a.aim = s.aim;
+  a.move = s.move;
+  a.parentId = s.parentId;
 }
 
 /** 每种事件一个 payload 复用栈。 */
@@ -322,6 +411,20 @@ function createPayloads() {
       targetId: null,
       critical: false,
     })),
+    exploded: new PayloadStack<GameEvents['combat:exploded']>(() => ({
+      team: 'enemy',
+      x: 0,
+      y: 0,
+      radius: 0,
+    })),
+    acted: new PayloadStack<GameEvents['enemy:acted']>(() => ({
+      id: 0,
+      kind: '',
+      action: 'hop',
+      x: 0,
+      y: 0,
+      angle: 0,
+    })),
   };
 }
 
@@ -357,6 +460,33 @@ class CombatWorldImpl implements CombatWorld {
   private readonly godMode: boolean;
   private readonly spreadRng: Random;
   private readonly critRng: Random;
+  private readonly aiRng: Random;
+  readonly zones: Zone[] = [];
+  readonly rocks: Rock[] = [];
+  private readonly ai: EnemyAi;
+  private readonly bounds: CombatWorldOptions['bounds'];
+  /** 本步玩家的移动倍率（奶潭减速），每步由 updateZones 重算，不存档。 */
+  private playerSlow = 1;
+  private readonly aiHost: AiHost = {
+    actors: this.actors,
+    lineOfSight: (x1, y1, x2, y2) => this.los(x1, y1, x2, y2),
+    shoot: (e, attack, angle) => this.enemyShoot(e as Actor, attack, angle),
+    explode: (e, radius, damage) =>
+      this.explodeAt(e.x, e.y, radius, damage, e.team, e.id, EXPLOSION_KNOCKBACK),
+    lash: (e, angle, length, width, damage, pull) =>
+      this.lashAt(e as Actor, angle, length, width, damage, pull),
+    summon: (e, kind, count, telegraph) =>
+      this.spawnAround(e as Actor, kind as EnemyId, count, telegraph, e.id),
+    children: (e) => this.countChildren(e.id),
+    zone: (e, kind, radius, duration, damage, tick) =>
+      this.addZone(e as Actor, kind, radius, duration, damage, tick),
+    rocks: (e, target, count, spread, stagger) =>
+      this.dropRocks(e as Actor, target as Actor, count, spread, stagger),
+    crash: (e, angle) => this.crashInto(e as Actor, angle),
+    selfDestruct: (e) => this.damage(e as Actor, e.hp, false, 0, 0, null),
+    act: (e, action, angle) => this.emitAct(e as Actor, action, angle),
+    random: () => this.aiRng.next(),
+  };
   private readonly lineOfSight: LineOfSight;
   private readonly navigation: CombatWorldOptions['navigation'];
   private readonly route = { x: 0, y: 0 };
@@ -387,6 +517,11 @@ class CombatWorldImpl implements CombatWorld {
     this.resources = new PlayerResources(options.playerRules);
     this.spreadRng = root.fork('spread');
     this.critRng = root.fork('crit');
+    this.aiRng = root.fork('ai');
+    this.bounds = options.bounds;
+    for (let i = 0; i < BALANCE.zoneCapacity; i++) this.zones.push(newZone());
+    for (let i = 0; i < BALANCE.rockCapacity; i++) this.rocks.push(newRock());
+    this.ai = new EnemyAi(this.aiHost);
     this.bus = options.bus;
     this.maxBullets = options.maxBullets ?? DEFAULT_MAX_BULLETS;
     this.godMode = options.godMode ?? false;
@@ -520,15 +655,7 @@ class CombatWorldImpl implements CombatWorld {
   spawnEnemy(kind: EnemyId, x: number, y: number): EntityId {
     this.callDepth++;
     try {
-      const def = ENEMIES[kind];
-      const actor = this.createActor('enemy', kind, x, y, def.radius, def.hp, def.moveSpeed);
-      const telegraph = BALANCE.spawnTelegraph;
-      actor.contactDamage = def.contactDamage;
-      actor.phase = 'telegraph';
-      actor.activateAt = this.time + telegraph;
-      this.emitSpawned(actor, telegraph);
-      if (telegraph <= 0) this.activate(actor);
-      return actor.id;
+      return this.addEnemy(kind, x, y, BALANCE.spawnTelegraph, 0).id;
     } finally {
       this.callDepth--;
       if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
@@ -553,6 +680,7 @@ class CombatWorldImpl implements CombatWorld {
         this.updatePlayer(input, dt);
         this.updateMelee(dt);
         this.updateEnemies(dt);
+        this.updateZones(dt);
         for (const actor of this.actors) this.applyVelocity(actor);
       }
       this.result.playerDead = this.playerDied;
@@ -570,6 +698,8 @@ class CombatWorldImpl implements CombatWorld {
       if (!bullet) return true;
       const target = this.byId.get(targetId);
       if (!target || target.phase !== 'active' || target.team === bullet.team) return false;
+      // 钻在地下的怪物让子弹穿过去（ADR 0028）。
+      if (EnemyAi.hidden(target.brain) && target.team === 'enemy') return false;
       // 每颗子弹对每个目标最多命中一次：重叠的几帧里、或 A → B → A 的回调顺序都不会重复伤害。
       if (this.alreadyHit(bullet, target.id)) return false;
       this.recordHit(bullet, target.id);
@@ -615,6 +745,11 @@ class CombatWorldImpl implements CombatWorld {
     }
   }
 
+  clearHazards(): void {
+    for (const z of this.zones) z.active = false;
+    for (const r of this.rocks) r.active = false;
+  }
+
   releaseBullet(bulletId: EntityId): void {
     const bullet = this.bullets.get(bulletId);
     if (bullet) this.finishBullet(bullet);
@@ -627,7 +762,7 @@ class CombatWorldImpl implements CombatWorld {
       const player = this.byId.get(playerId);
       if (!enemy || !player || enemy.team === player.team) return;
       if (enemy.phase !== 'active' || player.phase !== 'active') return;
-      if (this.ignoresDamage(player) || enemy.contactDamage <= 0) return;
+      if (this.ignoresDamage(player) || enemy.contactDamage <= 0 || !EnemyAi.grounded(enemy.brain)) return;
       let dirX = player.x - enemy.x;
       let dirY = player.y - enemy.y;
       const d = Math.hypot(dirX, dirY);
@@ -709,14 +844,23 @@ class CombatWorldImpl implements CombatWorld {
       lastMoveDir: { x: this.lastMoveDir.x, y: this.lastMoveDir.y },
       dashDirection: { x: this.dashDirection.x, y: this.dashDirection.y },
       resources: r.save(),
-      rng: { spread: this.spreadRng.snapshot, crit: this.critRng.snapshot },
+      rng: { spread: this.spreadRng.snapshot, crit: this.critRng.snapshot, ai: this.aiRng.snapshot },
       actors: this.actors.map(saveActor),
       bullets,
+      zones: this.zones.filter((z) => z.active).map(saveZone),
+      rocks: this.rocks.filter((r) => r.active).map(saveRock),
     };
   }
 
   load(state: Readonly<CombatWorldState>): void {
-    if (this.time !== 0 || this.actors.length || this.bullets.size || this.playerId !== null)
+    if (
+      this.time !== 0 ||
+      this.actors.length ||
+      this.bullets.size ||
+      this.playerId !== null ||
+      this.zones.some((z) => z.active) ||
+      this.rocks.some((r) => r.active)
+    )
       throw new Error('只能把存档写入刚创建的世界');
     if (state.actors.length > this.actorPool.length || state.bullets.length > this.bulletPool.length)
       throw new RangeError('存档超出实体或子弹容量');
@@ -746,6 +890,13 @@ class CombatWorldImpl implements CombatWorld {
     this.resources.load(state.resources);
     this.spreadRng.restore(state.rng.spread);
     this.critRng.restore(state.rng.crit);
+    this.aiRng.restore(state.rng.ai);
+    if (state.zones.length > this.zones.length) throw new RangeError('存档超出区域容量');
+    if (state.rocks.length > this.rocks.length) throw new RangeError('存档超出石块容量');
+    for (let i = 0; i < state.zones.length; i++)
+      Object.assign(this.zones[i]!, state.zones[i], { active: true });
+    for (let i = 0; i < state.rocks.length; i++)
+      Object.assign(this.rocks[i]!, state.rocks[i], { active: true });
     for (const a of state.actors) {
       const actor = this.actorPool.pop()!;
       loadActor(actor, a);
@@ -798,10 +949,12 @@ class CombatWorldImpl implements CombatWorld {
     actor.base.x = actor.base.y = 0;
     actor.moveSpeed = moveSpeed;
     actor.contactDamage = 0;
-    actor.brain.cooldown = BALANCE.spawnTelegraph;
-    actor.brain.stage = 'ready';
-    actor.brain.time = actor.brain.dirX = actor.brain.dirY = 0;
+    resetBrain(actor.brain);
     actor.warning = false;
+    actor.pose = 'idle';
+    actor.lift = actor.aim = 0;
+    actor.move = 'none';
+    actor.parentId = 0;
     const k = actor.knock;
     k.dirX = k.dirY = k.total = k.left = k.timeLeft = k.speed = 0;
     k.fresh = false;
@@ -1019,6 +1172,7 @@ class CombatWorldImpl implements CombatWorld {
         !a ||
         a.team === owner.team ||
         a.phase !== 'active' ||
+        (a.team === 'enemy' && EnemyAi.hidden(a.brain)) ||
         m.hitIds.includes(a.id) ||
         !sectorHitsCircle(a.x - owner.x, a.y - owner.y, a.radius, m.angle, def.range, def.arcDegrees) ||
         !this.lineOfSight(owner.x, owner.y, a.x, a.y)
@@ -1102,7 +1256,9 @@ class CombatWorldImpl implements CombatWorld {
   private updateEnemies(dt: number): void {
     const player = this.playerId === null ? undefined : this.byId.get(this.playerId);
     const target = player && player.phase === 'active' ? player : null;
-    for (const actor of this.actors) {
+    // 按下标遍历：招式中途生成的子嗣追加在末尾，本步只登记不行动。
+    for (let i = 0; i < this.actors.length; i++) {
+      const actor = this.actors[i]!;
       if (actor.team !== 'enemy' || actor.phase !== 'active') continue;
       const def: Readonly<EnemyDef> = ENEMIES[actor.kind as EnemyId];
       let attack = def.attack,
@@ -1113,11 +1269,13 @@ class CombatWorldImpl implements CombatWorld {
             attack = phase.attack;
             speedScale = phase.speedScale;
           }
-      moveEnemy(actor.base, actor, target, this.actors, def, actor.brain, dt, speedScale);
-      // 只调整向目标接近的自主移动；炮台、后退和锁定冲锋保持原行为，击退稍后叠加。
+      this.ai.think(actor, def, target, dt, speedScale);
+      // 自爆等招式可能让自己当步死亡。
+      if (actor.phase !== 'active') continue;
+      // 只调整向目标接近的自主移动；炮台、后退、横移、跳跃和锁定冲锋保持原行为，击退稍后叠加。
       if (
         target &&
-        def.behavior !== 'charge_dash' &&
+        this.ai.navigable(actor, def) &&
         actor.base.x * (target.x - actor.x) + actor.base.y * (target.y - actor.y) > 0 &&
         this.navigation?.(actor.x, actor.y, target.x, target.y, actor.radius, this.route)
       ) {
@@ -1128,23 +1286,295 @@ class CombatWorldImpl implements CombatWorld {
         actor.base.x = distance ? (dx / distance) * speed : 0;
         actor.base.y = distance ? (dy / distance) * speed : 0;
       }
-      actor.warning = actor.brain.stage === 'windup';
       if (actor.base.x !== 0 || actor.base.y !== 0) actor.facing = Math.atan2(actor.base.y, actor.base.x);
-      if (!target || !attack || actor.brain.cooldown > 0) continue;
-      const weapon = ATTACKS[attack as AttackId];
-      if (
-        !weapon ||
-        Math.hypot(target.x - actor.x, target.y - actor.y) > weapon.range ||
-        !this.lineOfSight(actor.x, actor.y, target.x, target.y)
-      )
-        continue;
-      actor.facing = aimAngle(actor, target);
-      this.enemyGun.weapon = weapon;
-      this.enemyGun.weaponId = attack;
-      this.enemyGun.pattern = getPattern(weapon.pattern);
-      this.fire(actor, this.enemyGun);
-      actor.brain.cooldown = 1 / weapon.fireRate;
+      this.ai.shootRegular(actor, target, attack);
+      this.ai.pose(actor, target, attack);
     }
+  }
+
+  /** 区域计时与结算：毒气每 tick 秒伤一次另一阵营，奶潭让玩家减速（在 applyVelocity 里生效）。 */
+  private updateZones(dt: number): void {
+    this.playerSlow = 1;
+    const player = this.playerId === null ? undefined : this.byId.get(this.playerId);
+    for (const z of this.zones) {
+      if (!z.active) continue;
+      z.remaining -= dt;
+      if (z.remaining <= 0) {
+        z.active = false;
+        continue;
+      }
+      if (z.kind === 'milk') {
+        if (player && z.team !== 'player' && this.inside(player, z.x, z.y, z.radius))
+          this.playerSlow = Math.min(this.playerSlow, BALANCE.milkSlow);
+        continue;
+      }
+      z.wait -= dt;
+      if (z.wait > 0) continue;
+      z.wait += z.tick;
+      for (let i = this.actors.length - 1; i >= 0; i--) {
+        const a = this.actors[i];
+        if (!a || a.team === z.team || a.phase !== 'active' || !this.inside(a, z.x, z.y, z.radius)) continue;
+        if (a.team === 'enemy' && EnemyAi.hidden(a.brain)) continue;
+        if (!this.ignoresDamage(a)) this.damage(a, z.damage, false, 0, 0, null);
+      }
+    }
+    for (const r of this.rocks) {
+      if (!r.active) continue;
+      r.time -= dt;
+      if (r.time > 0) continue;
+      if (r.landed) {
+        r.active = false;
+        continue;
+      }
+      r.landed = true;
+      r.time = r.life;
+      this.crush(r);
+    }
+  }
+
+  /** 石块落地砸中落点内的玩家（不发爆炸事件，表现层按石块状态播落地效果）。 */
+  private crush(r: Readonly<Rock>): void {
+    for (let i = this.actors.length - 1; i >= 0; i--) {
+      const a = this.actors[i];
+      if (!a || a.team !== 'player' || a.phase !== 'active' || this.ignoresDamage(a)) continue;
+      if (!this.inside(a, r.x, r.y, r.radius)) continue;
+      const d = Math.hypot(a.x - r.x, a.y - r.y);
+      this.damage(a, r.damage, false, d > 0 ? (a.x - r.x) / d : 0, d > 0 ? (a.y - r.y) / d : 1, null);
+    }
+  }
+
+  private inside(a: Readonly<Actor>, x: number, y: number, radius: number): boolean {
+    return Math.hypot(a.x - x, a.y - y) <= radius + a.radius;
+  }
+
+  /**
+   * 范围爆炸（ADR 0028）：先发 `combat:exploded`，再对范围内、视线可达的另一阵营逐个结算伤害并推开。
+   * 倒序遍历，容忍死亡监听器立即回收实体。
+   */
+  private explodeAt(
+    x: number,
+    y: number,
+    radius: number,
+    damage: number,
+    team: Team,
+    sourceId: EntityId | null,
+    knockback: number,
+  ): void {
+    const e = this.payloads.exploded.acquire();
+    try {
+      e.team = team;
+      e.x = x;
+      e.y = y;
+      e.radius = radius;
+      this.bus.emit('combat:exploded', e);
+    } finally {
+      this.payloads.exploded.release();
+    }
+    for (let i = this.actors.length - 1; i >= 0; i--) {
+      const a = this.actors[i];
+      if (!a || a.team === team || a.phase !== 'active' || !this.inside(a, x, y, radius)) continue;
+      if ((a.team === 'enemy' && EnemyAi.hidden(a.brain)) || !this.los(x, y, a.x, a.y)) continue;
+      if (this.ignoresDamage(a)) continue;
+      const d = Math.hypot(a.x - x, a.y - y);
+      const dx = d > 0 ? (a.x - x) / d : 0,
+        dy = d > 0 ? (a.y - y) / d : 1;
+      this.damage(a, damage, false, dx, dy, sourceId);
+      if (a.phase === 'active' && knockback > 0) this.knockBack(a, dx, dy, knockback);
+    }
+  }
+
+  /** 召唤与分裂共用：在身边找视线可达的位置生成，实体记录不够时少生成。 */
+  private spawnAround(
+    source: Readonly<Actor>,
+    kind: EnemyId,
+    count: number,
+    telegraph: number,
+    parentId: number,
+  ): void {
+    const def = ENEMIES[kind];
+    for (let i = 0; i < count && this.actorPool.length; i++) {
+      const angle = this.aiRng.next() * Math.PI * 2,
+        distance = source.radius + def.radius + 2;
+      let x = source.x + Math.cos(angle) * distance,
+        y = source.y + Math.sin(angle) * distance;
+      if (!this.los(source.x, source.y, x, y)) {
+        x = source.x;
+        y = source.y;
+      }
+      this.addEnemy(kind, x, y, telegraph, parentId);
+    }
+  }
+
+  private addEnemy(kind: EnemyId, x: number, y: number, telegraph: number, parentId: number): Actor {
+    const def = ENEMIES[kind];
+    const actor = this.createActor('enemy', kind, x, y, def.radius, def.hp, def.moveSpeed);
+    actor.contactDamage = def.contactDamage;
+    actor.parentId = parentId;
+    actor.phase = 'telegraph';
+    actor.activateAt = this.time + telegraph;
+    this.ai.init(actor, def);
+    this.emitSpawned(actor, telegraph);
+    if (telegraph <= 0) this.activate(actor);
+    return actor;
+  }
+
+  /** 在目标附近挑石块落点：限制在房间内、不压住 Boss、不压在石柱上（用短线段视线粗测）。 */
+  private dropRocks(
+    e: Readonly<Actor>,
+    target: Readonly<Actor>,
+    count: number,
+    spread: number,
+    stagger: boolean,
+  ): void {
+    const def = ENEMIES[e.kind as EnemyId] as Readonly<EnemyDef>,
+      rock = def.rock;
+    if (!rock) return;
+    const b = this.bounds;
+    for (let i = 0; i < count; i++) {
+      const slot = this.rocks.find((r) => !r.active);
+      if (!slot) return;
+      let x = target.x,
+        y = target.y;
+      for (let attempt = 0; attempt < ROCK_ATTEMPTS; attempt++) {
+        const angle = this.aiRng.next() * Math.PI * 2,
+          distance = i === 0 && attempt === 0 ? 0 : this.aiRng.next() * spread;
+        x = target.x + Math.cos(angle) * distance;
+        y = target.y + Math.sin(angle) * distance;
+        if (b) {
+          x = Math.min(b.x + b.width - rock.radius, Math.max(b.x + rock.radius, x));
+          y = Math.min(b.y + b.height - rock.radius, Math.max(b.y + rock.radius, y));
+        }
+        if (
+          Math.hypot(x - e.x, y - e.y) > e.radius + rock.radius + 4 &&
+          this.lineOfSight(x - rock.radius, y, x + rock.radius, y) &&
+          this.lineOfSight(x, y - rock.radius, x, y + rock.radius) &&
+          !this.rocks.some((r) => r.active && Math.hypot(r.x - x, r.y - y) < r.radius + rock.radius)
+        )
+          break;
+      }
+      slot.active = true;
+      slot.landed = false;
+      slot.x = x;
+      slot.y = y;
+      slot.radius = rock.radius;
+      slot.fall = rock.fall * (stagger ? 1 + this.aiRng.next() * ROCK_STAGGER : 1);
+      slot.time = slot.fall;
+      slot.life = rock.life;
+      slot.damage = rock.damage;
+    }
+  }
+
+  /** 冲撞被挡：贴着房间边界算撞墙；否则撞的是石柱或石块，撞碎前方的石块。 */
+  private crashInto(e: Readonly<Actor>, angle: number): boolean {
+    const reach = e.radius + CRASH_REACH,
+      fx = e.x + Math.cos(angle) * reach,
+      fy = e.y + Math.sin(angle) * reach;
+    let rock = false;
+    for (const r of this.rocks)
+      if (r.active && r.landed && Math.hypot(r.x - fx, r.y - fy) <= r.radius + CRASH_REACH) {
+        r.active = false;
+        rock = true;
+        this.emitAct(e, 'shatter', angle, r.x, r.y);
+      }
+    if (rock) return true;
+    const b = this.bounds;
+    if (b) {
+      const m = e.radius + CRASH_REACH;
+      if (e.x - m <= b.x || e.x + m >= b.x + b.width || e.y - m <= b.y || e.y + m >= b.y + b.height)
+        return false;
+    }
+    return true;
+  }
+
+  /** 舌击：线段与目标圆相交且视线可达才命中；命中后把目标朝怪物拉近。 */
+  private lashAt(
+    e: Readonly<Actor>,
+    angle: number,
+    length: number,
+    width: number,
+    damage: number,
+    pull: number,
+  ): void {
+    const dx = Math.cos(angle),
+      dy = Math.sin(angle);
+    for (let i = this.actors.length - 1; i >= 0; i--) {
+      const a = this.actors[i];
+      if (!a || a.team === e.team || a.phase !== 'active' || this.ignoresDamage(a)) continue;
+      const t = Math.max(0, Math.min(length, (a.x - e.x) * dx + (a.y - e.y) * dy));
+      const px = e.x + dx * t,
+        py = e.y + dy * t;
+      if (Math.hypot(a.x - px, a.y - py) > a.radius + width / 2 || !this.los(e.x, e.y, a.x, a.y)) continue;
+      this.damage(a, damage, false, -dx, -dy, e.id);
+      if (a.phase === 'active' && pull > 0)
+        this.knockBack(a, -dx, -dy, Math.min(pull, Math.max(0, t - e.radius)));
+    }
+  }
+
+  private emitAct(e: Readonly<Actor>, action: EnemyAction, angle: number, x = e.x, y = e.y): void {
+    const p = this.payloads.acted.acquire();
+    try {
+      p.id = e.id;
+      p.kind = e.kind;
+      p.action = action;
+      p.x = x;
+      p.y = y;
+      p.angle = angle;
+      this.bus.emit('enemy:acted', p);
+    } finally {
+      this.payloads.acted.release();
+    }
+  }
+
+  private enemyShoot(e: Actor, attack: AttackId, angle: number): void {
+    const weapon = ATTACKS[attack];
+    e.facing = angle;
+    this.enemyGun.weapon = weapon;
+    this.enemyGun.weaponId = attack;
+    this.enemyGun.pattern = getPattern(weapon.pattern);
+    this.fire(e, this.enemyGun);
+  }
+
+  private countChildren(id: EntityId): number {
+    let n = 0;
+    for (const a of this.actors) if (a.parentId === id && a.phase !== 'dead') n++;
+    return n;
+  }
+
+  /** 在怪物脚下放一个区域；满额时顶替剩余时间最短的那个。 */
+  private addZone(
+    e: Readonly<Actor>,
+    kind: ZoneKind,
+    radius: number,
+    duration: number,
+    damage: number,
+    tick: number,
+  ): void {
+    let slot = this.zones[0]!;
+    for (const z of this.zones) {
+      if (!z.active) {
+        slot = z;
+        break;
+      }
+      if (z.remaining < slot.remaining) slot = z;
+    }
+    slot.active = true;
+    slot.team = e.team;
+    slot.kind = kind;
+    slot.x = e.x;
+    slot.y = e.y;
+    slot.radius = radius;
+    slot.remaining = slot.duration = duration;
+    slot.damage = damage;
+    slot.tick = tick;
+    slot.wait = 0;
+  }
+
+  /** 视线：地图墙体之外，落地的石块也挡视线（ADR 0028）。 */
+  private los(x1: number, y1: number, x2: number, y2: number): boolean {
+    if (!this.lineOfSight(x1, y1, x2, y2)) return false;
+    for (const r of this.rocks)
+      if (r.active && r.landed && segmentDistance(r.x, r.y, x1, y1, x2, y2) < r.radius) return false;
+    return true;
   }
 
   private applyVelocity(actor: Actor): void {
@@ -1154,8 +1584,9 @@ class CombatWorldImpl implements CombatWorld {
       return;
     }
     const k = actor.knock;
-    actor.vx = actor.base.x + k.dirX * k.speed;
-    actor.vy = actor.base.y + k.dirY * k.speed;
+    const slow = actor.id === this.playerId ? this.playerSlow : 1;
+    actor.vx = actor.base.x * slow + k.dirX * k.speed;
+    actor.vy = actor.base.y * slow + k.dirY * k.speed;
   }
 
   private damage(
@@ -1166,6 +1597,9 @@ class CombatWorldImpl implements CombatWorld {
     dirY: number,
     sourceId: EntityId | null,
   ): void {
+    // 冲撞撞晕的 Boss 受到额外伤害（ADR 0028）。
+    if (target.team === 'enemy' && target.brain.stage === 'stun')
+      amount *= (ENEMIES[target.kind as EnemyId] as Readonly<EnemyDef>).bump?.bonus ?? 1;
     const healthDamage = target.id === this.playerId ? this.resources.absorb(amount) : amount;
     target.hp = Math.max(0, target.hp - healthDamage);
     if (target.invulnTime > 0) {
@@ -1214,6 +1648,15 @@ class CombatWorldImpl implements CombatWorld {
       this.bus.emit('entity:died', d);
     } finally {
       this.payloads.died.release();
+    }
+    const enemyDef =
+      target.team === 'enemy' ? (ENEMIES[target.kind as EnemyId] as Readonly<EnemyDef>) : undefined;
+    // 会砸石块的 Boss 倒下时收起石块与奶潭，死亡演出不被遮挡。
+    if (enemyDef?.rock) this.clearHazards();
+    const split = enemyDef?.split;
+    if (split) {
+      this.emitAct(target, 'split', target.facing);
+      this.spawnAround(target, split.kind as EnemyId, split.count, split.telegraph, 0);
     }
   }
 

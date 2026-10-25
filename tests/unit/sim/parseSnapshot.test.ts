@@ -45,6 +45,32 @@ function sample(): SimSnapshot {
 }
 
 describe('完整 sim 存档字段与业务校验', () => {
+  it('ADR 0028 新字段：招式阶段、区域与石块通过两套规则；子嗣编号不能超前或指向自己', () => {
+    const s = JSON.parse(JSON.stringify(sample())) as SimSnapshot;
+    expect(schema.safeParse(s).success).toBe(true);
+    s.world.zones.push({
+      team: 'enemy',
+      kind: 'milk',
+      x: 10,
+      y: 10,
+      radius: 8,
+      remaining: 2,
+      duration: 3,
+      damage: 0,
+      tick: 0,
+      wait: 0,
+    });
+    s.world.rocks.push({ landed: true, x: 30, y: 30, radius: 9, time: 3, fall: 0.9, life: 7, damage: 1 });
+    expect(validateSaveFields(s, fields)).toBe(true);
+    expect(schema.safeParse(s).success).toBe(true);
+    expect(decode(s, 42)).toBe(s);
+    const child = JSON.parse(JSON.stringify(s)) as SimSnapshot;
+    child.world.actors[0]!.parentId = child.world.nextId;
+    expect(decode(child, 42)).toBeNull();
+    const stage = JSON.parse(JSON.stringify(s)) as SimSnapshot;
+    (stage.world.actors[0]!.brain as { stage: string }).stage = 'flying';
+    expect(validateSaveFields(stage, fields)).toBe(false);
+  });
   it('JSON 往返接受真实 save，包括指向已回收目标的穿透记录；不改写输入', () => {
     const s = JSON.parse(JSON.stringify(sample())) as SimSnapshot;
     expect(s.world.bullets[0]!.hitIds.length).toBe(1);

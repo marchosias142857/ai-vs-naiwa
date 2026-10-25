@@ -2,6 +2,7 @@ import { configureCamera } from '../configureCamera';
 import { RoomCamera } from '../RoomCamera';
 import { GRAYBOX_BOUNDS as B } from '../world/graybox';
 import { StressRun } from '../../debug/StressRun';
+import { debugCheckpoint } from '../../debug/floorCheckpoint';
 import { CombatAudio } from '../fx/CombatAudio';
 import { parseCheckpoint, type FloorCheckpoint } from '../../sim/run/checkpoint';
 import { RunPersistence } from '../systems/RunPersistence';
@@ -45,8 +46,10 @@ export class GameScene extends M1Scene {
       super.create();
       return;
     }
-    const checkpoint = parseCheckpoint(data?.checkpoint) ?? undefined;
     const snapshot = data?.snapshot;
+    const checkpoint =
+      parseCheckpoint(data?.checkpoint) ??
+      (snapshot ? undefined : debugCheckpoint(params.floor, params.seed ?? freshSeed()));
     const seed = snapshot?.entry.seed ?? checkpoint?.seed ?? params.seed ?? freshSeed();
     this.scene.launch(InputScene.KEY, { demo: true });
     const ui = this.scene.get(InputScene.KEY) as InputScene;

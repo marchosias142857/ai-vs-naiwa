@@ -13,6 +13,9 @@ type MutableActor = { -readonly [K in keyof ActorView]: ActorView[K] };
 /** 只在独立测试构建中使用，不替代 Claude 的 sim 实现。 */
 class FakeWorld implements CombatWorld {
   playerBodyFacing = 0;
+  readonly zones = [];
+  readonly rocks = [];
+  clearHazards() {}
   readonly melee = {
     active: false,
     weaponId: 'cutlass' as const,
@@ -85,6 +88,10 @@ class FakeWorld implements CombatWorld {
       maxHp: 6,
       invulnerable: false,
       facing: 0,
+      pose: 'idle',
+      lift: 0,
+      aim: 0,
+      move: 'none',
     });
     return id;
   }

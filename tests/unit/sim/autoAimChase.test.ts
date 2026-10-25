@@ -24,6 +24,10 @@ function actor(
     maxHp: 9,
     invulnerable: false,
     facing: 0,
+    pose: 'idle',
+    lift: 0,
+    aim: 0,
+    move: 'none',
   };
 }
 const visible = () => true;

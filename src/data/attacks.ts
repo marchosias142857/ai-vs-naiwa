@@ -33,5 +33,48 @@ export const ATTACKS = {
     bulletSpeed: 115,
     pattern: 'radial',
   },
+  /** ADR 0028：跳跳蛙落地、鼓鼓蛙爆开、泥潜蛙出土、街舞蛙旋转、蛙王砸地。 */
+  hop_ring: {
+    ...spit,
+    name: 'attack.hop_ring',
+    fireRate: 1,
+    pellets: 6,
+    bulletSpeed: 80,
+    range: 120,
+    pattern: 'radial',
+  },
+  bomb_ring: {
+    ...spit,
+    name: 'attack.bomb_ring',
+    fireRate: 1,
+    pellets: 8,
+    bulletSpeed: 105,
+    range: 140,
+    pattern: 'radial',
+  },
+  burrow_ring: {
+    ...spit,
+    name: 'attack.burrow_ring',
+    fireRate: 1,
+    pellets: 8,
+    bulletSpeed: 90,
+    pattern: 'radial',
+  },
+  spin_pair: {
+    ...spit,
+    name: 'attack.spin_pair',
+    fireRate: 1,
+    pellets: 3,
+    bulletSpeed: 100,
+    pattern: 'radial',
+  },
+  boss_slam: {
+    ...spit,
+    name: 'attack.boss_slam',
+    fireRate: 1,
+    pellets: 14,
+    bulletSpeed: 95,
+    pattern: 'radial',
+  },
 } as const satisfies Record<string, WeaponDef>;
 export type AttackId = keyof typeof ATTACKS;

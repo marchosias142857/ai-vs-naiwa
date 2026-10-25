@@ -5,7 +5,7 @@ import { NAVIGATION } from '../../data/navigation';
 import type { Vec2 } from '../../sim/core/types';
 import type { GameObjects, Physics, Scene } from 'phaser';
 import { COLORS, DEPTH, TILE_SIZE } from '../../config';
-import { ROOM_LAYOUTS } from '../../data/layouts';
+import { BOSS_ROOM_LAYOUT, ROOM_LAYOUTS } from '../../data/layouts';
 import { ROOM_RULES } from '../../data/rooms';
 import { segmentHitsBox } from '../../sim/dungeon/geometry';
 import type { DungeonRun } from '../../sim/run/DungeonRun';
@@ -61,12 +61,16 @@ export class RoomArena {
     this.bridge.bullets.recycle(slot);
   };
   show(run: DungeonRun, layout: number): void {
-    this.setLayout(run.room.kind === 'combat' ? layout : 0);
+    // Boss 房固定放石柱，冲撞撞柱会晕（ADR 0028）。
+    if (run.room.kind === 'boss') this.setBoxes(BOSS_ROOM_LAYOUT);
+    else this.setLayout(run.room.kind === 'combat' ? layout : 0);
     this.draw(run);
   }
   /** 压测也复用正式房间的墙体、视线与导航缓存。 */
   setLayout(layout: number): void {
-    const boxes = ROOM_LAYOUTS[layout % ROOM_LAYOUTS.length]!;
+    this.setBoxes(ROOM_LAYOUTS[layout % ROOM_LAYOUTS.length]!);
+  }
+  private setBoxes(boxes: readonly { x: number; y: number; width: number; height: number }[]): void {
     for (let i = 0; i < this.slots.length; i++) {
       const image = this.slots[i]!,
         box = boxes[i];
@@ -141,6 +145,7 @@ export class RoomArena {
     return null;
   }
   teleport(dx = 0, dy = 0): void {
+    this.bridge.sim.clearHazards();
     for (const b of this.bridge.bullets.slots)
       if (b.id) {
         this.bridge.sim.releaseBullet(b.id);

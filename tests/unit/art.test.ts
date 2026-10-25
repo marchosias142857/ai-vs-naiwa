@@ -6,8 +6,14 @@ import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { DOOR_ART, ENEMY_ART, ENVIRONMENT_ART, HERO_ART, HERO_FRAMES, WEAPON_ART } from '../../src/data/art';
 import { ENEMIES } from '../../src/data/enemies';
+import { MONSTER_TEXTURES, enemyAnimation } from '../../src/data/enemyArt';
 import { WEAPONS } from '../../src/data/weapons';
-import { ArtFrameSchema, CharacterArtSchema, WeaponArtSchema } from '../../src/data/schema/art';
+import {
+  ArtFrameSchema,
+  CharacterArtSchema,
+  MonsterArtSchema,
+  WeaponArtSchema,
+} from '../../src/data/schema/art';
 import { CHARACTER_ART, characterTexture } from '../../src/data/characterArt';
 import { CHARACTERS } from '../../src/data/characters';
 
@@ -18,6 +24,8 @@ const files = [
   'enemies',
   'environment',
   'doors',
+  'monsters-v1',
+  'naiguai-v1',
 ];
 function dimensions(name: string) {
   const file = `public/assets/demo/${name}.png`,
@@ -147,6 +155,27 @@ describe('真实 PNG 图集与持握数据', () => {
     }
     for (const f of Object.values(WEAPON_ART)) expect(WeaponArtSchema.safeParse(f).success).toBe(true);
     for (const key of Object.keys(WEAPONS)) expect(Object.hasOwn(WEAPON_ART, key)).toBe(true);
-    for (const key of Object.keys(ENEMIES)) expect(Object.hasOwn(ENEMY_ART, key)).toBe(true);
+    // 旧的单张静态图只是逐帧动画缺失时的替补（ADR 0028）。
+    for (const key of Object.keys(ENEMIES))
+      expect(Object.hasOwn(ENEMY_ART, key) || enemyAnimation(key) !== undefined).toBe(true);
+  });
+  it('每种怪物都有逐帧动画，帧在图集内，pivot 在帧内，必备动作齐全（ADR 0028）', () => {
+    for (const kind of Object.keys(ENEMIES)) {
+      const anim = enemyAnimation(kind);
+      expect(anim, kind).toBeDefined();
+      const art = anim!.art;
+      expect(MonsterArtSchema.safeParse(art).success).toBe(true);
+      const [w, h] = art.size;
+      expect(art.pivot.x).toBeGreaterThan(0);
+      expect(art.pivot.x).toBeLessThan(w);
+      expect(art.pivot.y).toBeGreaterThan(0);
+      expect(art.pivot.y).toBeLessThan(h);
+      for (const action of ['idle', 'death'])
+        expect(art.frames[action]?.length, `${kind} ${action}`).toBeGreaterThan(0);
+      for (const action of Object.keys(art.frames))
+        expect(art.seconds[action], `${kind} ${action}`).toBeGreaterThan(0);
+      const file = MONSTER_TEXTURES[anim!.texture].source.replace(/\.png$/, '');
+      inImage(file, Object.values(art.frames).flatMap((corners) => corners.map(([x, y]) => [x, y, w, h])));
+    }
   });
 });

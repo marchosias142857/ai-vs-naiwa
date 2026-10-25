@@ -82,7 +82,9 @@ export function createSimDecoder(limits: SaveLimits): (value: unknown, seed: num
         a.id >= w.nextId ||
         a.hp > a.maxHp ||
         (a.hp === 0) !== (a.phase === 'dead') ||
-        a.knock.left > a.knock.total
+        a.knock.left > a.knock.total ||
+        a.parentId >= w.nextId ||
+        a.parentId === a.id
       )
         return null;
       ids.add(a.id);

@@ -1,5 +1,6 @@
 import type { FloorCheckpoint } from '../../sim/run/checkpoint';
 import { CombatFeedback } from '../fx/CombatFeedback';
+import { HazardLayer } from '../fx/HazardLayer';
 import { Physics, Scenes } from 'phaser';
 import type { Scene } from 'phaser';
 import { POOL_SIZES } from '../../config';
@@ -34,6 +35,7 @@ export class DemoSession {
   readonly loot: LootSystem;
   readonly arena: RoomArena;
   readonly fx: CombatFeedback;
+  readonly hazards: HazardLayer;
   readonly pause: PauseState;
   readonly rewards: RunRewards;
   private entry!: FloorCheckpoint;
@@ -70,6 +72,7 @@ export class DemoSession {
       playerRules: PLAYER_RULES,
       navigation: (x, y, tx, ty, radius, out) => this.arena?.steer(x, y, tx, ty, radius, out) ?? false,
       lineOfSight: (x1, y1, x2, y2) => this.arena?.lineOfSight(x1, y1, x2, y2) ?? true,
+      bounds: B,
     });
     if (!restored) this.sim.spawnPlayer('ai_proto', B.x + B.width / 2, B.y + B.height / 2);
     if (checkpoint && !restored) {
@@ -86,6 +89,7 @@ export class DemoSession {
     this.bridge.actors.enableArt(scene);
     this.arena = new RoomArena(scene, this.bridge);
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, bus);
+    this.hazards = new HazardLayer(scene, this.sim, this.bridge, bus);
     this.dungeon = restored
       ? DungeonRun.restore(seed, bus, restored.sim.run)
       : new DungeonRun(seed, bus, checkpoint?.floor);
@@ -110,7 +114,9 @@ export class DemoSession {
       this.fx.loadDeaths(restored.game.deaths);
       this.endTime = restored.game.endTime;
       this.entry = { ...restored.entry, upgrades: [...restored.entry.upgrades] };
-      this.settled = this.dungeon.finished && this.endTime >= BALANCE.deathRestartDelay;
+      this.settled =
+        this.dungeon.finished &&
+        this.endTime >= (this.dungeon.phase === 'won' ? BALANCE.victoryDelay : BALANCE.deathRestartDelay);
     } else {
       this.showRoom();
       this.entry = this.checkpoint();
@@ -193,7 +199,9 @@ export class DemoSession {
             this.bridge.bullets.recycle(slot);
           }
       this.endTime += dt;
-      if (this.endTime >= BALANCE.deathRestartDelay) {
+      // 通关时等 Boss 死亡演出播完再弹结算（ADR 0028）。
+      const delay = this.dungeon.phase === 'won' ? BALANCE.victoryDelay : BALANCE.deathRestartDelay;
+      if (this.endTime >= delay) {
         this.settled = true;
         this.pause.set('finished', true);
       }
@@ -294,6 +302,7 @@ export class DemoSession {
   update(): void {
     this.publishPosition();
     this.fx.update();
+    this.hazards.update();
     if (this.drawnRevision !== this.dungeon.revision) {
       this.arena.draw(this.dungeon);
       this.drawnRevision = this.dungeon.revision;
@@ -308,7 +317,7 @@ export class DemoSession {
   }
   private readonly onDied = (e: GameEvents['entity:died']): void => {
     if (e.team === 'enemy') {
-      this.loot.enemy(e.x, e.y);
+      this.loot.enemy(e.x, e.y, e.kind);
     }
   };
   private readonly onCleared = (): void => this.loot.reward(B.x + B.width / 2, B.y + B.height / 2);
