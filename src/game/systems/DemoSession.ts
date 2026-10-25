@@ -1,4 +1,7 @@
-import type { FloorCheckpoint } from '../../sim/run/checkpoint';
+import type { FloorCheckpoint, RunStart } from '../../sim/run/checkpoint';
+import { newRunId } from '../../sim/meta/profile';
+import { normalizeRanks, offerCount, talentModifiers } from '../../sim/meta/talents';
+import type { CharacterId } from '../../data/characters';
 import { CombatFeedback } from '../fx/CombatFeedback';
 import { HazardLayer } from '../fx/HazardLayer';
 import { WeaponFx } from '../fx/WeaponFx';
@@ -7,7 +10,6 @@ import { Physics, Scenes } from 'phaser';
 import type { Scene } from 'phaser';
 import { POOL_SIZES } from '../../config';
 import { roomTheme } from '../../data/traps';
-import { LOOT_RULES } from '../../data/loot';
 import { BALANCE } from '../../data/balance';
 import { PLAYER_RULES, UPGRADES, type UpgradeId } from '../../data/player';
 import { ROOM_RULES } from '../../data/rooms';
@@ -43,6 +45,8 @@ export class DemoSession {
   readonly pause: PauseState;
   readonly rewards: RunRewards;
   private entry!: FloorCheckpoint;
+  /** 冒险 ID 与开局天赋，整局不变；入口与完整存档都带一份（ADR 0035）。 */
+  private readonly start: RunStart;
   settled = false;
   private readonly director: RoomDirector;
   private readonly root: Random;
@@ -60,7 +64,14 @@ export class DemoSession {
     weapon?: string | null,
     checkpoint?: FloorCheckpoint,
     restored?: SessionSnapshot,
+    /** 仅新开冒险使用：主城档案里当前的天赋；省略时为零天赋。 */
+    start?: Partial<RunStart>,
   ) {
+    const from = restored?.entry ?? checkpoint;
+    this.start = from
+      ? { runId: from.runId, talents: { ...from.talents } }
+      : { runId: start?.runId ?? newRunId(seed, Date.now()), talents: normalizeRanks(start?.talents) };
+    const kind: CharacterId = 'ai_proto';
     this.root = new Random(seed);
     this.rewards = {
       rng: this.root.fork(`upgrades:${restored?.sim.run.floor ?? checkpoint?.floor ?? 1}`),
@@ -78,7 +89,11 @@ export class DemoSession {
       lineOfSight: (x1, y1, x2, y2) => this.arena?.lineOfSight(x1, y1, x2, y2) ?? true,
       bounds: B,
     });
-    if (!restored) this.sim.spawnPlayer('ai_proto', B.x + B.width / 2, B.y + B.height / 2);
+    if (!restored) {
+      this.sim.spawnPlayer(kind, B.x + B.width / 2, B.y + B.height / 2);
+      // 天赋先于升级重放与入口资源恢复；完整读档的世界状态里已含天赋加成，不再施加。
+      this.sim.applyTalents(talentModifiers(this.start.talents, kind));
+    }
     if (checkpoint && !restored) {
       for (const id of checkpoint.upgrades) {
         this.sim.upgrade(id);
@@ -119,7 +134,11 @@ export class DemoSession {
       this.bridge.load(restored.game.physics, restored.sim.world);
       this.fx.loadDeaths(restored.game.deaths);
       this.endTime = restored.game.endTime;
-      this.entry = { ...restored.entry, upgrades: [...restored.entry.upgrades] };
+      this.entry = {
+        ...restored.entry,
+        upgrades: [...restored.entry.upgrades],
+        talents: { ...restored.entry.talents },
+      };
       this.settled =
         this.dungeon.finished &&
         this.endTime >= (this.dungeon.phase === 'won' ? BALANCE.victoryDelay : BALANCE.deathRestartDelay);
@@ -144,6 +163,14 @@ export class DemoSession {
   get offers(): UpgradeId[] {
     return this.rewards.offers;
   }
+  /** 结算去重用的冒险 ID。 */
+  get runId(): string {
+    return this.start.runId;
+  }
+  /** 本局开局时冻结的天赋；主城之后的改动不影响本局。 */
+  get talents(): Readonly<RunStart['talents']> {
+    return this.start.talents;
+  }
   private parts() {
     return {
       world: this.sim,
@@ -156,7 +183,7 @@ export class DemoSession {
   /** 只在完整更新边界使用；entry 是进入本层时取下的独立副本。 */
   save(): SessionSnapshot {
     return {
-      entry: { ...this.entry, upgrades: [...this.entry.upgrades] },
+      entry: { ...this.entry, upgrades: [...this.entry.upgrades], talents: { ...this.entry.talents } },
       sim: saveSim(this.parts()),
       game: { physics: this.bridge.save(), deaths: this.fx.saveDeaths(), endTime: this.endTime },
     };
@@ -233,7 +260,7 @@ export class DemoSession {
       // 升级只在换层时分配候选列表；选择期间暂停物理，不消费战斗时间。
       const candidates = Object.keys(UPGRADES) as UpgradeId[];
       this.rewards.rng.shuffle(candidates);
-      for (let i = 0; i < LOOT_RULES.upgradeChoices; i++) this.offers.push(candidates[i]!);
+      for (let i = 0, n = offerCount(this.start.talents); i < n; i++) this.offers.push(candidates[i]!);
       this.pause.set('upgrade', true);
     }
   };
@@ -271,8 +298,10 @@ export class DemoSession {
     const d = this.dungeon,
       r = this.sim.resources;
     return {
-      version: 1,
+      version: 2,
       seed: this.seed,
+      runId: this.start.runId,
+      talents: { ...this.start.talents },
       floor: d.floor,
       upgrades: [...this.rewards.upgrades],
       secondary: this.sim.secondaryWeapon,

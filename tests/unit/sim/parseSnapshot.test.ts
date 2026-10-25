@@ -12,6 +12,9 @@ import { DungeonRun } from '../../../src/sim/run/DungeonRun';
 import { RoomDirector } from '../../../src/sim/run/RoomDirector';
 import { createSimDecoder, validateSaveFields } from '../../../src/sim/run/parseSnapshot';
 import { saveSim, type SimSnapshot } from '../../../src/sim/run/snapshot';
+import { generateDungeon } from '../../../src/sim/dungeon/generate';
+import { LOOT_RULES } from '../../../src/data/loot';
+import { MAX_OFFER_BONUS } from '../../../src/data/talents';
 
 const limits = { actors: 31, bullets: 500 },
   fields = simSaveFields(limits),
@@ -144,6 +147,24 @@ describe('完整 sim 存档字段与业务校验', () => {
     expect(broken((c) => (c.world.traps[0]!.state = 'fuse'))).toBeNull();
     expect(broken((c) => (c.world.traps[1]!.hp = 99))).toBeNull();
     expect(broken((c) => (c.world.melee.traps = 4))).toBeNull();
+  });
+  it('ADR 0035：出口候选数可因天赋多出，上限为满级加成；精确数量由 game 层按入口天赋核对', () => {
+    const exit = generateDungeon(new Random(42).fork('map:1'), false).rooms.find(
+      (r) => r.kind === 'exit',
+    )!.id;
+    const all = ['power', 'plating', 'vitality', 'battery', 'mobility', 'trigger'] as const;
+    for (let n = LOOT_RULES.upgradeChoices - 1; n <= LOOT_RULES.upgradeChoices + MAX_OFFER_BONUS + 1; n++) {
+      const s = JSON.parse(JSON.stringify(sample())) as SimSnapshot;
+      s.run.roomId = s.loot.room = exit;
+      s.run.visited[exit] = true;
+      s.run.phase = 'exploring';
+      s.rewards.offers = all.slice(0, n);
+      const ok = n >= LOOT_RULES.upgradeChoices && n <= LOOT_RULES.upgradeChoices + MAX_OFFER_BONUS;
+      expect(!!decode(s, 42), `${n} offers`).toBe(ok);
+      if (n <= LOOT_RULES.upgradeChoices + MAX_OFFER_BONUS)
+        expect(schema.safeParse(s).success, `${n} zod`).toBe(true);
+      else expect(schema.safeParse(s).success, `${n} zod`).toBe(false);
+    }
   });
   it('JSON 往返接受真实 save，包括指向已回收目标的穿透记录；不改写输入', () => {
     const s = JSON.parse(JSON.stringify(sample())) as SimSnapshot;

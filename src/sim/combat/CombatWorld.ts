@@ -10,6 +10,7 @@ import { CHARACTERS, type CharacterId } from '../../data/characters';
 import { characterArtFor } from '../../data/characterArt';
 import { ENEMIES, type EnemyId } from '../../data/enemies';
 import type { EnemyDef, WeaponDef } from '../../data/schema';
+import type { UpgradeDef } from '../../data/schema/player';
 import { WEAPONS, type WeaponId } from '../../data/weapons';
 import { createBrain, resetBrain, type EnemyBrain } from '../ai/brain';
 import { EnemyAi, type AiHost } from '../ai/EnemyAi';
@@ -45,6 +46,7 @@ import type {
 } from './api';
 import { stepVelocity, type MoveTuning } from './movement';
 import { PayloadStack } from './payloads';
+import type { TalentModifiers } from '../meta/talents';
 
 /** `step` 单帧最大时长，秒（ADR 0003）。 */
 const MAX_DT = 0.05;
@@ -583,6 +585,8 @@ class CombatWorldImpl implements CombatWorld {
   private player: PlayerState | null = null;
   /** 玩家是否已在本局死亡。锁存：之后即使 `removeActor` 回收了玩家，也保持为 true。 */
   private playerDied = false;
+  /** 开局天赋只能施加一次；不存档，读档时直接置为已施加。 */
+  private talentsApplied = false;
   private readonly lastMoveDir: Vec2 = { x: 1, y: 0 };
   private readonly fireCtx: FireContext;
   /** 当前开火者与武器，供 `sink` 读取；用字段而不是每次新建对象或闭包。 */
@@ -728,8 +732,32 @@ class CombatWorldImpl implements CombatWorld {
     const actor = this.playerId === null ? undefined : this.byId.get(this.playerId),
       p = this.player;
     if (!actor || !p || actor.phase !== 'active' || !Object.hasOwn(UPGRADES, id)) return false;
-    const { stat, amount } = UPGRADES[id],
-      r = this.resources;
+    const { stat, amount } = UPGRADES[id];
+    this.boost(actor, p, stat, amount);
+    return true;
+  }
+
+  applyTalents(mods: Readonly<TalentModifiers>): boolean {
+    const actor = this.playerId === null ? undefined : this.byId.get(this.playerId),
+      p = this.player;
+    if (!actor || !p || actor.phase !== 'active' || this.time !== 0 || this.talentsApplied) return false;
+    for (const stat in mods) {
+      const value = mods[stat as keyof TalentModifiers];
+      if (!Number.isFinite(value) || value < 0 || value > Number.MAX_SAFE_INTEGER) return false;
+    }
+    this.talentsApplied = true;
+    for (const stat in mods) {
+      const value = mods[stat as keyof TalentModifiers];
+      if (!value || stat === 'offers') continue;
+      if (stat === 'coins') this.resources.coins += value;
+      else this.boost(actor, p, stat as UpgradeDef['stat'], value);
+    }
+    return true;
+  }
+
+  /** 局内升级与开局天赋共用的加法规则；生命、护甲、能量上限提升时同时补满（ADR 0035）。 */
+  private boost(actor: Actor, p: PlayerState, stat: UpgradeDef['stat'], amount: number): void {
+    const r = this.resources;
     if (stat === 'damage') r.damageScale += amount;
     else if (stat === 'armor') {
       r.maxArmor += amount;
@@ -744,7 +772,6 @@ class CombatWorldImpl implements CombatWorld {
     else if (stat === 'haste') r.fireRateScale += amount;
     else if (stat === 'regen') r.regenScale += amount;
     else r.skillScale += amount;
-    return true;
   }
 
   getActor(id: EntityId): ActorView | undefined {
@@ -1021,6 +1048,8 @@ class CombatWorldImpl implements CombatWorld {
     this.nextId = state.nextId;
     this.playerId = state.playerId;
     this.playerDied = state.playerDied;
+    // 存档里的属性已含开局天赋；即使存于 time=0，读回后也不能再施加一次。
+    this.talentsApplied = true;
     this.result.playerDead = state.playerDied;
     this.secondaryWeapon = state.secondaryWeapon;
     const p = state.player;

@@ -35,8 +35,10 @@ function sample(): SessionSnapshot {
   });
   const state: SessionSnapshot = {
     entry: {
-      version: 1,
+      version: 2,
       seed: 42,
+      runId: 'test-run',
+      talents: {},
       floor: 1,
       upgrades: [],
       secondary: null,

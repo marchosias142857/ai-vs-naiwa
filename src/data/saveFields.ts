@@ -7,6 +7,7 @@ import { ENEMIES } from './enemies';
 import { LOOT_RULES } from './loot';
 import { PLAYER_RULES, UPGRADES } from './player';
 import { ROOM_RULES } from './rooms';
+import { MAX_OFFER_BONUS } from './talents';
 import { WEAPONS } from './weapons';
 
 /** ADR 0019：同一份字段约束供 zod 与不含 zod 的运行时校验器使用。 */
@@ -314,7 +315,7 @@ export function simSaveFields(limits: SaveLimits): SaveField {
     rewards: object({
       rng,
       upgrades: array(upgrade, DUNGEON.floors),
-      offers: array(upgrade, LOOT_RULES.upgradeChoices),
+      offers: array(upgrade, LOOT_RULES.upgradeChoices + MAX_OFFER_BONUS),
     }),
   });
 }
