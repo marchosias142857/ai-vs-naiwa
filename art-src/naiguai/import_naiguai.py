@@ -141,8 +141,12 @@ def build(source: str, preview_dir: str | None) -> None:
 
 
 def write_data(coords, size, pivot) -> None:
-    def pts(ids):
-        return ", ".join(f"[{coords[i][0]}, {coords[i][1]}]" for i in ids)
+    def frames(action, ids):
+        # 与 Prettier 一致：多于一个元素的二维数组逐行展开。
+        ids = list(ids)
+        if len(ids) == 1:
+            return [f"    {action}: [[{coords[ids[0]][0]}, {coords[ids[0]][1]}]],"]
+        return [f"    {action}: [", *(f"      [{coords[i][0]}, {coords[i][1]}]," for i in ids), "    ],"]
 
     fmt = lambda v: str(int(v)) if float(v).is_integer() else f"{v:g}"  # noqa: E731
     lines = [
@@ -159,16 +163,14 @@ def write_data(coords, size, pivot) -> None:
         "  scale: 0.5,",
         "  facing: 'left',",
         "  frames: {",
-        f"    idle: [{pts([8, 11])}],",
-        f"    move: [{pts(range(8))}],",
-    ]
-    lines += [
-        f"    windup: [{pts([10])}],",
-        f"    attack: [{pts([9])}],",
-        f"    air: [{pts([9])}],",
-        f"    recover: [{pts([8])}],",
-        f"    spin: [{pts([9, 10])}],",
-        f"    death: [{pts([10])}],",
+        *frames("idle", [8, 11]),
+        *frames("move", range(8)),
+        *frames("windup", [10]),
+        *frames("attack", [9]),
+        *frames("air", [9]),
+        *frames("recover", [8]),
+        *frames("spin", [9, 10]),
+        *frames("death", [10]),
         "  },",
         "  seconds: {",
         "    idle: 0.45,",

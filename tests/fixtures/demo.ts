@@ -11,6 +11,7 @@ import { InputScene } from '../../src/game/ui/InputScene';
 import { EventBus } from '../../src/sim/core/EventBus';
 import type { GameEvents } from '../../src/sim/core/events';
 import { createInputFrame } from '../../src/sim/core/types';
+import { BALANCE } from '../../src/data/balance';
 import { DUNGEON } from '../../src/data/dungeon';
 
 class DemoHarness extends Scene {
@@ -261,7 +262,8 @@ class DemoHarness extends Scene {
       }
       next(1);
       clear();
-      tick(100);
+      // 通关结算要等 Boss 死亡演出播完（ADR 0030）。
+      tick(Math.ceil(BALANCE.victoryDelay * 60) + 1);
       return {
         phase: session.dungeon.phase,
         settled: session.settled,

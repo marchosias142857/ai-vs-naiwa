@@ -6,18 +6,8 @@ import { chaseVelocity } from './chase';
 
 /** 招式所处阶段。`time` 是本阶段剩余秒数，`span` 是本阶段总时长（ADR 0030）。 */
 export type BrainStage =
-  | 'ready'
-  | 'windup'
-  | 'dash'
-  | 'recover'
-  | 'air'
-  | 'active'
-  | 'buried'
-  | 'emerge'
-  | 'spin'
-  | 'stun';
-/** 当前阶段属于哪一招；`none` 表示常规移动与射击。 */
-/** 与 api 的 ActorMove 相同（ADR 0030）。 */
+  'ready' | 'windup' | 'dash' | 'recover' | 'air' | 'active' | 'buried' | 'emerge' | 'spin' | 'stun';
+/** 当前阶段属于哪一招，与 api 的 ActorMove 相同；`none` 表示常规移动与射击（ADR 0030）。 */
 export type BrainMove = ActorMove;
 
 export interface EnemyBrain {

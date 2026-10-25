@@ -33,16 +33,7 @@ export type ActorPhase = 'telegraph' | 'active' | 'dead';
 export type ActorPose = 'idle' | 'move' | 'windup' | 'attack' | 'air' | 'recover' | 'buried' | 'spin';
 /** 当前招式（ADR 0030），给表现层画对应的预警；`none` 表示常规移动与射击。 */
 export type ActorMove =
-  | 'none'
-  | 'dash'
-  | 'hop'
-  | 'lash'
-  | 'summon'
-  | 'fuse'
-  | 'burrow'
-  | 'spin'
-  | 'bump'
-  | 'rain';
+  'none' | 'dash' | 'hop' | 'lash' | 'summon' | 'fuse' | 'burrow' | 'spin' | 'bump' | 'rain';
 
 /**
  * 实体的只读视图。对象由 sim 持有并在实体存活期间复用；读取字段即可，不要修改。

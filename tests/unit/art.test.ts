@@ -175,7 +175,10 @@ describe('真实 PNG 图集与持握数据', () => {
       for (const action of Object.keys(art.frames))
         expect(art.seconds[action], `${kind} ${action}`).toBeGreaterThan(0);
       const file = MONSTER_TEXTURES[anim!.texture].source.replace(/\.png$/, '');
-      inImage(file, Object.values(art.frames).flatMap((corners) => corners.map(([x, y]) => [x, y, w, h])));
+      inImage(
+        file,
+        Object.values(art.frames).flatMap((corners) => corners.map(([x, y]) => [x, y, w, h])),
+      );
     }
   });
 });

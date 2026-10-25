@@ -827,7 +827,8 @@ def write_data(placed) -> None:
         for action, coords in actions.items():
             inner = ", ".join(f"[{cx}, {cy}]" for cx, cy in coords)
             one = f"      {action}: [{inner}],"
-            if len(one) <= 110:
+            # 与 Prettier 一致：多于一个元素的二维数组总是逐行展开。
+            if len(coords) == 1 and len(one) <= 110:
                 lines.append(one)
             else:
                 lines.append(f"      {action}: [")
