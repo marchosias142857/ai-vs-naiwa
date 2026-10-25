@@ -34,6 +34,20 @@ export const WeaponArtSchema = z.strictObject({
   muzzle: point,
   scale: z.number().positive(),
 });
+/**
+ * 怪物逐帧图集（ADR 0030）：同一怪物的帧尺寸相同，`frames` 记录每个动作的帧左上角；
+ * `pivot` 是身体圆心在帧内的位置，`scale` 是 1 个图集像素对应的游戏像素，`facing` 是未翻转时的朝向。
+ */
+const corner = z.tuple([z.int().nonnegative(), z.int().nonnegative()]).readonly();
+export const MonsterArtSchema = z.strictObject({
+  size: z.tuple([z.int().positive(), z.int().positive()]).readonly(),
+  pivot: point,
+  scale: z.number().positive(),
+  facing: z.enum(['left', 'right']),
+  frames: z.record(z.string(), z.array(corner).min(1).readonly()),
+  seconds: z.record(z.string(), z.number().positive()),
+});
+export type MonsterArt = z.infer<typeof MonsterArtSchema>;
 export type ArtFrame = z.infer<typeof ArtFrameSchema>;
 export type CharacterArt = z.infer<typeof CharacterArtSchema>;
 export type CharacterAction = 'idle' | 'run' | 'hurt' | 'death';

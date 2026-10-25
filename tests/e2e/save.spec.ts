@@ -76,12 +76,13 @@ test('完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复�
   await resume(page);
   expect(await page.evaluate(() => window.saveFixture.snapshot())).toEqual(before);
   expect((await page.evaluate(() => window.saveFixture.status())).events).toEqual([]);
-  await page.screenshot({ path: info.outputPath('save-countdown.png'), scale: 'css' });
   const frozen = await page.evaluate(() => window.saveFixture.status());
   await page.waitForTimeout(900);
   await page.evaluate(() => window.saveFixture.tick(6));
   expect(await page.evaluate(() => window.saveFixture.snapshot())).toEqual(before);
   expect((await page.evaluate(() => window.saveFixture.status())).steps).toBe(frozen.steps);
+  // 截图放在冻结断言之后：慢设备上截图可能要 2 秒，不能挤占三秒恢复倒计时。
+  await page.screenshot({ path: info.outputPath('save-countdown.png'), scale: 'css' });
   await thaw(page);
   expect(await page.evaluate(() => window.saveFixture.continueSteps())).toEqual(uninterrupted);
 });

@@ -1,4 +1,6 @@
+import { ENEMIES, type EnemyId } from '../../data/enemies';
 import { LOOT_RULES } from '../../data/loot';
+import type { EnemyDef } from '../../data/schema';
 import { WEAPONS, type WeaponId } from '../../data/weapons';
 import type { CombatWorld } from '../combat/api';
 import type { Random } from '../core/Random';
@@ -59,8 +61,13 @@ export class LootSystem {
     }
     return false;
   }
-  enemy(x: number, y: number): void {
+  /** 怪物掉落；`kind` 的 `loot` 倍率为 0 时（如分裂出的蝌蚪）不掉落也不消耗随机数（ADR 0030）。 */
+  enemy(x: number, y: number, kind?: string): void {
+    const rate =
+      kind && Object.hasOwn(ENEMIES, kind) ? ((ENEMIES[kind as EnemyId] as EnemyDef).loot ?? 1) : 1;
+    if (rate <= 0) return;
     if (this.rng.chance(LOOT_RULES.noDropChance)) return;
+    if (rate < 1 && !this.rng.chance(rate)) return;
     let total = 0;
     for (const d of LOOT_RULES.drops) total += d.weight;
     let roll = this.rng.range(0, total);

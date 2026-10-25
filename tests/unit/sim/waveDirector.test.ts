@@ -7,7 +7,19 @@ import { WaveDirector, type Rect } from '../../../src/sim/run/WaveDirector';
 
 type Actor = { -readonly [K in keyof ActorView]: ActorView[K] };
 
-const ACTOR_DEFAULTS = { vx: 0, vy: 0, radius: 6, hp: 1, maxHp: 1, invulnerable: false, facing: 0 };
+const ACTOR_DEFAULTS = {
+  vx: 0,
+  vy: 0,
+  radius: 6,
+  hp: 1,
+  maxHp: 1,
+  invulnerable: false,
+  facing: 0,
+  pose: 'idle' as const,
+  lift: 0,
+  aim: 0,
+  move: 'none' as const,
+};
 
 /** 只实现导演用到的部分：生成、查询、阶段。 */
 function fakeWorld() {

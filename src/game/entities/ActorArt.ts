@@ -12,6 +12,7 @@ import type { CombatActors } from './CombatActors';
 import { frameAt } from './artPose';
 import { settings } from '../../services/settings';
 import { CharacterFace } from './CharacterFace';
+import { EnemyArt } from './EnemyArt';
 
 interface ArtSlot {
   image: GameObjects.Image;
@@ -31,6 +32,7 @@ export class ActorArt {
   showWeapon = true;
   private readonly arc: GameObjects.Graphics;
   private readonly face: CharacterFace;
+  private readonly enemyArt: EnemyArt;
   constructor(
     private readonly scene: Scene,
     private readonly sim: CombatWorld,
@@ -54,6 +56,7 @@ export class ActorArt {
         poseAt: 0,
       });
     this.face = new CharacterFace(scene);
+    this.enemyArt = new EnemyArt(this.slots.length);
     this.weapon = scene.add.image(0, 0, ART.weapons, 'pistol_basic').setVisible(false);
     this.arc = scene.add.graphics().setDepth(DEPTH.fx);
     scene.events.on('postupdate', this.update);
@@ -106,10 +109,23 @@ export class ActorArt {
       slot.shadow
         .setPosition(a.x, a.y + a.radius)
         .setDisplaySize(a.radius * P.shadowWidth, a.radius * P.shadowHeight);
+      const zoom = this.scene.cameras.main.zoom;
+      if (
+        a.team === 'enemy' &&
+        this.enemyArt.draw(i, image, a, this.sim.time, slot.death, slot.flash, zoom)
+      ) {
+        // 腾空时影子留在地上并缩小；钻进地下时不画影子（ADR 0030）。
+        const k = 1 / (1 + a.lift / (a.radius * 4));
+        slot.shadow.setScale(slot.shadow.scaleX * k, slot.shadow.scaleY * k).setVisible(a.pose !== 'buried');
+        continue;
+      }
       if (a.team === 'enemy') {
-        const rect = ENEMY_ART[a.kind as keyof typeof ENEMY_ART];
+        // 没有静态图的新怪物（ADR 0030）先借用基础怪的图，避免缺帧报错。
+        const known = Object.hasOwn(ENEMY_ART, a.kind),
+          name = known ? a.kind : 'naiwa_chaser';
+        const rect = ENEMY_ART[name as keyof typeof ENEMY_ART];
         image
-          .setTexture(ART.enemies, a.kind)
+          .setTexture(ART.enemies, name)
           .setOrigin(0.5, 0.5)
           .setScale((a.radius * P.enemySize) / rect[3]);
         if (a.phase === 'dead')

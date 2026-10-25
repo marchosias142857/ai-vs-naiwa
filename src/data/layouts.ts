@@ -18,3 +18,11 @@ export const ROOM_LAYOUTS = [
     { x: 70, y: 40, width: 20, height: 20 },
   ],
 ] as const satisfies RoomLayouts;
+
+/** Boss 房的四根石柱（ADR 0030）：引 Boss 冲撞撞柱会让它眩晕；离门口和墙边都留出通道。 */
+export const BOSS_ROOM_LAYOUT = [
+  { x: -76, y: -42, width: 22, height: 22 },
+  { x: 76, y: -42, width: 22, height: 22 },
+  { x: -76, y: 42, width: 22, height: 22 },
+  { x: 76, y: 42, width: 22, height: 22 },
+] as const satisfies RoomLayouts[number];

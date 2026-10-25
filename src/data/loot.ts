@@ -23,8 +23,29 @@ export const LOOT_RULES = {
 export const ENCOUNTERS = {
   attempts: 24,
   floors: [
-    ['naiwa_chaser', 'naiwa_scout', 'naiwa_spitter'],
-    ['naiwa_chaser', 'naiwa_tank', 'naiwa_turret', 'naiwa_charger'],
-    ['naiwa_scout', 'naiwa_tank', 'naiwa_spitter', 'naiwa_turret', 'naiwa_charger'],
+    ['naiwa_chaser', 'naiwa_scout', 'naiwa_spitter', 'naiwa_hopper', 'naiwa_gasser'],
+    [
+      'naiwa_chaser',
+      'naiwa_tank',
+      'naiwa_turret',
+      'naiwa_charger',
+      'naiwa_splitter',
+      'naiwa_tongue',
+      'naiwa_bomber',
+      'naiwa_hopper',
+    ],
+    [
+      'naiwa_scout',
+      'naiwa_tank',
+      'naiwa_spitter',
+      'naiwa_turret',
+      'naiwa_charger',
+      'naiwa_brood',
+      'naiwa_burrower',
+      'naiwa_dancer',
+      'naiwa_bomber',
+      'naiwa_tongue',
+      'naiwa_gasser',
+    ],
   ],
 } as const satisfies EncounterRules;

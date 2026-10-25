@@ -8,12 +8,35 @@ import { EventBus } from '../../../src/sim/core/EventBus';
 import type { GameEvents } from '../../../src/sim/core/events';
 import { createInputFrame } from '../../../src/sim/core/types';
 
-it('六种普通敌人 + Boss 的攻击引用完整、攻击符合武器 schema', () => {
-  expect(Object.keys(ENEMIES)).toHaveLength(7);
+it('全部敌人的攻击与子嗣引用完整、攻击符合武器 schema', () => {
+  expect(Object.keys(ENEMIES)).toHaveLength(16);
   for (const def of Object.values(ATTACKS)) expect(WeaponDefSchema.safeParse(def).success).toBe(true);
   for (const def of Object.values(ENEMIES) as EnemyDef[]) {
-    if (def.attack) expect(def.attack in ATTACKS).toBe(true);
+    const attacks = [def.attack, def.hop?.landAttack, def.fuse?.attack, def.burrow?.attack, def.spin?.attack];
+    for (const id of attacks) if (id) expect(id in ATTACKS).toBe(true);
     for (const p of def.phases ?? []) expect(p.attack in ATTACKS).toBe(true);
+    for (const kind of [def.summon?.kind, def.split?.kind]) if (kind) expect(kind in ENEMIES).toBe(true);
+    // 招式参数与行为、轮换列表配套。
+    const needs: Record<string, unknown> = {
+      hop: def.hop,
+      lash: def.lash,
+      summoner: def.summon,
+      suicide: def.fuse,
+      burrow: def.burrow,
+      strafe: def.strafe && def.spin,
+    };
+    if (def.behavior in needs) expect(needs[def.behavior]).toBeTruthy();
+    const specials = [...(def.specials ?? []), ...(def.phases ?? []).flatMap((p) => p.specials ?? [])];
+    const params: Record<string, unknown> = {
+      hop: def.hop,
+      lash: def.lash,
+      summon: def.summon,
+      bump: def.bump,
+      spin: def.spin,
+      rain: def.rain && def.rock,
+    };
+    for (const s of specials) expect(params[s]).toBeTruthy();
+    if (specials.length) expect(def.specialEvery).toBeDefined();
   }
 });
 it('godMode：真实敌方生成的子弹只发非暴击 hit、回收，不扣血或触发无敌帧', () => {

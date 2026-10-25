@@ -133,6 +133,10 @@ describe('保持距离与炮台的移动', () => {
     maxHp: 1,
     invulnerable: false,
     facing: 0,
+    pose: 'idle',
+    lift: 0,
+    aim: 0,
+    move: 'none',
   });
   const target: ActorView = { ...view('naiwa_chaser', 0, 0), id: 1, team: 'player', kind: 'ai_proto' };
   const velocity = (kind: EnemyId, x: number) => {
@@ -162,10 +166,13 @@ describe('保持距离与炮台的移动', () => {
 });
 
 it('会绕墙导航的敌人半径种类不超过导航缓存数', () => {
-  // 炮台不移动、冲锋锁定方向，二者不走导航（CombatWorld.updateEnemies）。
+  // 炮台不移动、跳跃与横移保持原方向、无 trigger 的冲锋锁定方向，这些不走导航（EnemyAi.navigable）。
   const radii = new Set<number>();
   for (const def of Object.values(ENEMIES) as EnemyDef[])
-    if (def.behavior !== 'turret' && def.behavior !== 'charge_dash')
+    if (
+      !['turret', 'hop', 'strafe'].includes(def.behavior) &&
+      (def.behavior !== 'charge_dash' || def.dash?.trigger !== undefined)
+    )
       radii.add(def.radius + NAVIGATION.clearance);
   expect(radii.size).toBeLessThanOrEqual(NAVIGATION.radiusCaches);
 });

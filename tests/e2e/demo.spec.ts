@@ -227,7 +227,7 @@ test('demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过�
   });
   await padButton(page, 7, true);
   await page.waitForFunction(() => window.__AVN__!.demo!.alive > 0);
-  await expect(page.locator('.demo-status')).toContainText('奶蛙首领');
+  await expect(page.locator('.demo-status')).toContainText('奶怪');
   await page.waitForFunction(() => window.__AVN__!.demo!.enemies.length > 0);
   await page.screenshot({ path: info.outputPath('demo-boss.png'), scale: 'css' });
   await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, { timeout: 35_000 });

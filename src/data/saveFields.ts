@@ -1,4 +1,5 @@
 import { ATTACKS } from './attacks';
+import { BALANCE } from './balance';
 import { CHARACTERS } from './characters';
 import { DUNGEON } from './dungeon';
 import { ENEMIES } from './enemies';
@@ -88,7 +89,7 @@ export function simSaveFields(limits: SaveLimits): SaveField {
         safeTime: nonnegative,
         regenTime: number(0, PLAYER_RULES.armorInterval),
       }),
-      rng: object({ spread: rng, crit: rng }),
+      rng: object({ spread: rng, crit: rng, ai: rng }),
       actors: array(
         object({
           id,
@@ -122,12 +123,40 @@ export function simSaveFields(limits: SaveLimits): SaveField {
           }),
           brain: object({
             cooldown: signed,
-            stage: oneOf('ready', 'windup', 'dash', 'recover'),
+            stage: oneOf(
+              'ready',
+              'windup',
+              'dash',
+              'recover',
+              'air',
+              'active',
+              'buried',
+              'emerge',
+              'spin',
+              'stun',
+            ),
             time: signed,
             dirX: signed,
             dirY: signed,
+            move: oneOf('none', 'dash', 'hop', 'lash', 'summon', 'fuse', 'burrow', 'spin', 'bump', 'rain'),
+            span: nonnegative,
+            speed: nonnegative,
+            special: signed,
+            next: count,
+            angle: signed,
+            side: number(-1, 1),
+            flip: signed,
+            gas: signed,
+            shot: nonnegative,
+            px: signed,
+            py: signed,
           }),
           warning: bool,
+          pose: oneOf('idle', 'move', 'windup', 'attack', 'air', 'recover', 'buried', 'spin'),
+          lift: nonnegative,
+          aim: signed,
+          move: oneOf('none', 'dash', 'hop', 'lash', 'summon', 'fuse', 'burrow', 'spin', 'bump', 'rain'),
+          parentId: count,
         }),
         limits.actors,
       ),
@@ -148,6 +177,34 @@ export function simSaveFields(limits: SaveLimits): SaveField {
           ),
         }),
         limits.bullets,
+      ),
+      zones: array(
+        object({
+          team: oneOf('player', 'enemy'),
+          kind: oneOf('poison', 'milk'),
+          x: signed,
+          y: signed,
+          radius: positive,
+          remaining: positive,
+          duration: positive,
+          damage: nonnegative,
+          tick: nonnegative,
+          wait: signed,
+        }),
+        BALANCE.zoneCapacity,
+      ),
+      rocks: array(
+        object({
+          landed: bool,
+          x: signed,
+          y: signed,
+          radius: positive,
+          time: positive,
+          fall: positive,
+          life: positive,
+          damage: nonnegative,
+        }),
+        BALANCE.rockCapacity,
       ),
     }),
     run: object({
