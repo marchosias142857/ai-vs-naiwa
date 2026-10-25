@@ -57,8 +57,12 @@ it('检查点 schema 与轻量解析一致；拒绝损坏/未来版本/未知 ID
   expect(restored).toEqual(save);
   expect(restored.upgrades).not.toBe(save.upgrades);
 });
-function withoutStart(c: FloorCheckpoint) {
-  const { version: _version, runId: _runId, talents: _talents, ...rest } = c;
+/** 去掉 v2 新增字段与版本号，得到 v1 时代的入口存档主体。 */
+function withoutStart(c: FloorCheckpoint): Record<string, unknown> {
+  const rest: Record<string, unknown> = { ...c };
+  delete rest.version;
+  delete rest.runId;
+  delete rest.talents;
   return rest;
 }
 it('v1 入口迁移为零天赋 v2，冒险 ID 由种子派生且稳定；未知天赋丢弃、等级夹到上限', () => {
