@@ -1,28 +1,37 @@
+import { ART } from './assets/demoArt';
+import { ENVIRONMENT_ART } from '../data/art';
 import type { Scene, GameObjects } from 'phaser';
 import { DEPTH, GAME_WIDTH, GAME_HEIGHT, RENDER_SCALE } from '../config';
 import type { InputScene } from './ui/InputScene';
 import { GRAYBOX_BOUNDS as B } from './world/graybox';
 
-/** CSS 像素留给控件；相机只绘制中间的可玩视口。 */
-export const ROOM_VIEW = { zoom: 1.5, top: 56, bottom: 56, rail: 160, mapRail: 96, padding: 24 } as const;
+/** 地图占满画布，控件半透明覆盖；世界与物理尺度保持不变。 */
+export const ROOM_VIEW = { zoom: 1.5, padding: 24 } as const;
 
 const constrain = (value: number, start: number, length: number, view: number) =>
   view >= length ? start + (length - view) / 2 : Math.max(start, Math.min(start + length - view, value));
 
 /** 世界尺寸与存档不变；相机、角色取样都对齐最终渲染像素。 */
 export class RoomCamera {
-  private touch = false;
   private width = 0;
   private height = 0;
   private room = -1;
   private x = 0;
   private y = 0;
   private snap = true;
+  private readonly backdrop: GameObjects.TileSprite;
   private readonly markers: GameObjects.Graphics;
   constructor(
     private readonly scene: Scene,
     private readonly ui: InputScene,
   ) {
+    this.backdrop = scene.add
+      .tileSprite(0, 0, 1, 1, ART.environment, 'wall')
+      .setOrigin(0)
+      .setScrollFactor(0)
+      .setDepth(DEPTH.floor - 1)
+      .setTileScale(16 / ENVIRONMENT_ART.wall[2], 16 / ENVIRONMENT_ART.wall[3])
+      .setTint(0x607084);
     this.markers = scene.add
       .graphics()
       .setDepth(DEPTH.wallTops + 1)
@@ -46,24 +55,18 @@ export class RoomCamera {
     this.markers.clear();
     const r = this.ui.controls.rect;
     if (r.width <= 0 || r.height <= 0) return;
-    const touch = this.ui.controls.touchVisible;
-    if (r.width !== this.width || r.height !== this.height || touch !== this.touch) {
+    if (r.width !== this.width || r.height !== this.height) {
       this.width = r.width;
       this.height = r.height;
-      this.touch = touch;
-      const scale = this.scene.scale.width / r.width;
-      const left = touch ? ROOM_VIEW.rail : ROOM_VIEW.mapRail;
-      const right = touch ? ROOM_VIEW.rail : 0;
-      c.setViewport(
-        Math.round(left * scale),
-        Math.round(ROOM_VIEW.top * scale),
-        Math.max(1, Math.round((r.width - left - right) * scale)),
-        Math.max(1, Math.round((r.height - ROOM_VIEW.top - ROOM_VIEW.bottom) * scale)),
-      ).setZoom(RENDER_SCALE * ROOM_VIEW.zoom);
+      // 超宽横屏至少让房间及门口外沿覆盖视野宽度，避免控件落在大块墙外空地上。
+      const zoom = Math.max(
+        RENDER_SCALE * ROOM_VIEW.zoom,
+        Math.ceil((this.scene.scale.width / (B.width + ROOM_VIEW.padding * 2)) * 2) / 2,
+      );
+      c.setViewport(0, 0, this.scene.scale.width, this.scene.scale.height).setZoom(zoom);
+      this.backdrop.setSize(c.width / c.zoom, c.height / c.zoom);
       this.snap = true;
     }
-    // InputUI 重启会更换控制器；即使画布尺寸没变，也必须给新摇杆应用侧栏。
-    this.ui.controls.touch.moveWidth = touch ? ROOM_VIEW.rail : null;
     const w = c.width / c.zoom,
       h = c.height / c.zoom;
     const tx = constrain(x - w / 2, B.x - ROOM_VIEW.padding, B.width + ROOM_VIEW.padding * 2, w);

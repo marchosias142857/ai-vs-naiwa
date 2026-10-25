@@ -1,3 +1,5 @@
+import { addLayoutSettings } from './LayoutEditor';
+import { uiEditor } from '../../services/uiLayout';
 import { guardGameUi } from './guardGameUi';
 import { settings } from '../../services/settings';
 import { t } from '../../i18n/t';
@@ -57,6 +59,7 @@ export class MenuPanel {
     const settingsRow = document.createElement('div');
     settingsRow.className = 'menu-settings';
     addSettings(settingsRow, this.abort.signal, () => scene.scene.restart());
+    addLayoutSettings(settingsRow, scene, this.abort.signal);
     options.append(summary, settingsRow);
     actions.append(start, resume, status, saveNotice, options);
     this.root.append(title, actions);
@@ -98,6 +101,6 @@ export class MenuPanel {
     });
   };
   update(): void {
-    this.navigation.update(true);
+    this.navigation.update(!uiEditor.open);
   }
 }

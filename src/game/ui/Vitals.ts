@@ -1,8 +1,9 @@
+import { placeUi } from '../../services/uiLayout';
 import { t } from '../../i18n/t';
 /** 固定 DOM 状态条，4 Hz 只写文本与比例，不创建元素。 */
 export class Vitals {
   readonly root = document.createElement('div');
-  private readonly bars = ['health', 'armor', 'energy'].map((kind) => {
+  private readonly bars = (['health', 'armor', 'energy'] as const).map((kind) => {
     const row = document.createElement('div'),
       fill = document.createElement('i'),
       label = document.createElement('span');
@@ -10,10 +11,13 @@ export class Vitals {
     row.setAttribute('role', 'meter');
     row.append(fill, label);
     this.root.append(row);
-    return { row, fill, label };
+    return { row, fill, label, kind };
   });
   constructor() {
     this.root.className = 'demo-vitals';
+  }
+  layout(width: number, height: number): void {
+    for (const b of this.bars) placeUi(b.row, b.kind, width, height);
   }
   update(
     hp: number,

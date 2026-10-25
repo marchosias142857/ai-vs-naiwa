@@ -156,7 +156,7 @@ test('demo：语言与反馈设置持久保存，英文游戏与暂停菜单可�
   await expect(page.locator('#settings-sound')).toHaveText('Sound: Off');
   await page.locator('#demo-menu-panel summary').click();
   await startAdventure(page);
-  await expect(page.locator('.demo-status')).toContainText('HP 6/6');
+  await expect(page.locator('.vital-health')).toContainText('HP 6/6');
   await page.keyboard.press('Escape');
   await expect(page.locator('#pause-menu')).toHaveText('Menu (save adventure)');
   await page.screenshot({ path: info.outputPath('demo-english.png'), scale: 'css' });

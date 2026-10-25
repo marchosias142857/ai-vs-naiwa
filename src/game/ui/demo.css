@@ -144,7 +144,7 @@
 }
 #demo-menu-panel .menu-settings {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 5px;
 }
 #demo-menu-panel .menu-settings button {
@@ -313,55 +313,35 @@
   }
 }
 
-/* 战斗视口留出顶栏、底栏与左右触控区；HUD 不覆盖房间。 */
+/* 地图铺满画布，紧凑信息与可编辑控件半透明覆盖。 */
 .demo-status {
-  top: 4px;
-  left: 8px;
-  right: 60px;
+  top: 8px;
+  left: 164px;
+  right: 126px;
   width: auto;
   max-width: none;
-  height: 44px;
-  box-sizing: border-box;
-  padding: 2px 4px;
+  padding: 2px 5px;
   border: 0;
-  background: none;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 11px;
-}
-.demo-vitals {
-  flex: 0 0 42%;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 5px;
-}
-.vital {
-  height: 22px;
-}
-.vital span {
+  background: #07111e88;
   font-size: 10px;
-  line-height: 22px;
-  padding: 0 3px;
+  text-shadow: 0 1px 2px #000;
 }
 .demo-status > div:last-child {
-  min-width: 0;
   margin: 0;
-  line-height: 17px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: pre;
+  line-height: 15px;
+  white-space: pre-line;
 }
 .demo-map-toggle {
   position: absolute;
-  top: 56px;
-  left: 8px;
-  width: 80px;
-  min-height: 44px;
+  top: 8px;
+  right: 56px;
+  min-width: 60px;
+  height: 40px;
   pointer-events: auto;
   border: 1px solid #779e9c7a;
   border-radius: 4px;
-  color: #c2d4dc;
-  background: #102535;
+  color: #e8ecff;
+  background: #102535aa;
   font: inherit;
   cursor: pointer;
 }
@@ -369,36 +349,38 @@
   outline: 2px solid #e8ecff;
 }
 .demo-map {
-  top: 104px;
-  left: 8px;
+  top: 54px;
+  right: 12px;
+  left: auto;
   width: 64px;
   height: 64px;
+  background: #07111e99;
 }
-.demo-hint {
-  bottom: 12px;
-  font-size: 12px;
-}
+.demo-hint,
 .touch-layout .demo-hint {
-  top: 62px;
-  bottom: auto;
-  left: auto;
-  right: 12px;
-  width: 136px;
-  text-align: left;
+  top: auto;
+  bottom: 8px;
+  left: 170px;
+  right: 230px;
+  width: auto;
+  padding: 2px 4px;
+  text-align: center;
   font-size: 11px;
-}
-@media (max-height: 340px) {
-  .demo-map {
-    width: 48px;
-    height: 48px;
-  }
+  background: #07111e99;
+  text-shadow: 0 1px 2px #000;
 }
 @media (max-width: 600px) {
-  .demo-vitals {
-    flex-basis: 52%;
-  }
   .demo-status {
-    gap: 8px;
+    right: 112px;
+    font-size: 9px;
+  }
+  .demo-hint,
+  .touch-layout .demo-hint {
+    left: 154px;
+    right: 168px;
     font-size: 10px;
+  }
+  .menu-settings {
+    flex-wrap: wrap;
   }
 }

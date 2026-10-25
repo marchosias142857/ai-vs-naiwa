@@ -1,3 +1,4 @@
+import { uiLayout, uiEditor } from '../../services/uiLayout';
 import { configureCamera } from '../configureCamera';
 import { t } from '../../i18n/t';
 import { PausePanel } from './PausePanel';
@@ -55,6 +56,7 @@ export class InputScene extends Scene {
       .setVisible(false);
     this.countdownHint = new ResumeCaption(this);
     const togglePause = () => {
+      if (uiEditor.open) return;
       const pause = combatPause(battle);
       if (pause) {
         if (!pause.has('finished')) pause.set('manual', !pause.has('manual'));
@@ -70,7 +72,7 @@ export class InputScene extends Scene {
         battle.scene.resume();
       } else battle.scene.pause();
     };
-    this.controls = new InputController(this, battle, togglePause);
+    this.controls = new InputController(this, battle, togglePause, !!data?.demo || this.hub);
     this.pausePanel = data?.demo || this.hub ? new PausePanel(this, battle, togglePause) : undefined;
     this.actions = data?.demo ? new ActionButtons(this, this.controls) : undefined;
     setInputProbe(() => ({
@@ -78,6 +80,14 @@ export class InputScene extends Scene {
       move: { ...this.controls.frame.move },
       aim: this.controls.frame.aim ? { ...this.controls.frame.aim } : null,
       manualPaused: this.controls.manualPaused,
+      touch: {
+        moveX: this.controls.touch.homeX,
+        moveY: this.controls.touch.homeY,
+        moveRadius: this.controls.touch.moveRadius,
+        fireX: this.controls.touch.fireX,
+        fireY: this.controls.touch.fireY,
+        fireRadius: this.controls.touch.fireRadius,
+      },
     }));
     this.events.once('shutdown', () => {
       battle.input.enabled = battleInputEnabled;
@@ -135,34 +145,34 @@ export class InputScene extends Scene {
         .setPosition(width - UI.pause.inset / s, UI.pause.inset / s)
         .setFontSize(UI.pause.fontSize / s);
     }
-    if (paused) {
+    if (paused && !uiEditor.open) {
       g.fillStyle(UI.look.pauseColor, UI.look.pauseAlpha).fillRect(0, 0, width, GAME_HEIGHT);
       this.circle(width / 2, GAME_HEIGHT / 2, UI.resume.radius / s, false, 1);
     }
     if (canPause) this.circle(width - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
     if (c.touchVisible && !paused && !locked) {
       const t = c.touch;
-      this.circle(
-        t.x / s,
-        t.y / s,
-        UI.joystick.radius / s,
-        false,
-        t.moveId !== null ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
-      );
+      this.circle(t.x / s, t.y / s, t.moveRadius / s, false, uiLayout.move.opacity);
       this.circle(
         (t.x + t.dx) / s,
         (t.y + t.dy) / s,
-        UI.joystick.knobRadius / s,
+        (UI.joystick.knobRadius * t.moveRadius) / UI.joystick.radius / s,
         t.moveId !== null,
-        t.moveId !== null ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
+        uiLayout.move.opacity,
       );
       if (!this.hub) {
-        const x = width - UI.aimWheel.inset / s,
-          y = GAME_HEIGHT - UI.aimWheel.inset / s,
+        const x = t.fireX / s,
+          y = t.fireY / s,
           held = t.fireId !== null,
-          alpha = held ? 1 : UI.joystick.idleAlpha;
-        this.circle(x, y, UI.aimWheel.radius / s, held, alpha);
-        this.circle(x + t.fireDx / s, y + t.fireDy / s, UI.aimWheel.knobRadius / s, held, alpha);
+          alpha = uiLayout.fire.opacity;
+        this.circle(x, y, t.fireRadius / s, held, alpha);
+        this.circle(
+          x + t.fireDx / s,
+          y + t.fireDy / s,
+          (UI.aimWheel.knobRadius * t.fireRadius) / UI.aimWheel.radius / s,
+          held,
+          alpha,
+        );
         const r = UI.aimWheel.iconRadius / s;
         g.lineStyle(UI.outline / s, UI.look.pressedColor, alpha)
           .lineBetween(x - r, y, x + r, y)

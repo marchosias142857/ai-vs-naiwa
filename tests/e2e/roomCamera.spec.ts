@@ -1,13 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
 import { GRAYBOX_BOUNDS as B } from '../../src/game/world/graybox';
-import { INPUT_UI } from '../../src/game/fx/params';
 import { worldToScreen } from './helpers/camera';
 import { startAdventure } from './helpers/town';
 
-test('不同横屏尺寸下状态条、地图和触控均位于战斗视口外', async ({ page, isMobile }, info) => {
+test('不同横屏尺寸下地图铺满画布，状态条与触控覆盖在画面内', async ({ page, isMobile }, info) => {
   await page.goto('/?scene=Game&seed=42&god=1');
-  await page.waitForFunction(() => window.__AVN__?.demo?.camera.zoom === 6);
+  await page.waitForFunction(() => (window.__AVN__?.demo?.camera.zoom ?? 0) >= 6);
   await page.locator('.demo-map-toggle').click();
   await expect(page.locator('.demo-map')).toBeVisible();
   for (const size of [
@@ -28,7 +27,7 @@ test('不同横屏尺寸下状态条、地图和触控均位于战斗视口外',
         const c = await page.evaluate(() => window.__AVN__!.demo!.camera);
         const box = (await page.locator('#game canvas').boundingBox())!;
         const scale = box.height / (GAME_HEIGHT * RENDER_SCALE);
-        return Math.abs(c.x * scale - (isMobile ? 160 : 96));
+        return Math.abs(c.width * scale - box.width);
       })
       .toBeLessThan(1);
     const c = await page.evaluate(() => window.__AVN__!.demo!.camera);
@@ -40,23 +39,24 @@ test('不同横屏尺寸下状态条、地图和触控均位于战斗视口外',
       right: box.x + (c.x + c.width) * s,
       bottom: box.y + (c.y + c.height) * s,
     };
+    expect(view.left).toBeCloseTo(box.x);
+    expect(view.top).toBeCloseTo(box.y);
+    // 整数渲染缓冲与 CSS 缩放比例可有小于半像素的取整差。
+    expect(Math.abs(view.right - box.x - box.width)).toBeLessThan(0.5);
+    expect(Math.abs(view.bottom - box.y - box.height)).toBeLessThan(0.5);
     for (const selector of [
-      '.demo-status',
+      '.vital-health',
+      '.vital-armor',
+      '.vital-energy',
       '.demo-map',
       '.demo-map-toggle',
-      '.demo-hint',
-      ...(isMobile ? ['#demo-actions'] : []),
+      ...(isMobile ? ['[data-action="Space"]', '[data-action="KeyQ"]', '[data-action="KeyE"]'] : []),
     ]) {
       const element = (await page.locator(selector).boundingBox())!;
-      const overlapX = Math.min(view.right, element.x + element.width) - Math.max(view.left, element.x);
-      const overlapY = Math.min(view.bottom, element.y + element.height) - Math.max(view.top, element.y);
-      expect(overlapX <= 1 || overlapY <= 1, selector).toBe(true);
-    }
-    if (isMobile) {
-      expect(view.left - box.x).toBeGreaterThan(INPUT_UI.joystick.homeInset + INPUT_UI.joystick.radius);
-      expect(box.x + box.width - view.right).toBeGreaterThan(
-        INPUT_UI.aimWheel.inset + INPUT_UI.aimWheel.radius + INPUT_UI.aimWheel.hitPadding,
-      );
+      expect(element.x, selector).toBeGreaterThanOrEqual(view.left);
+      expect(element.y, selector).toBeGreaterThanOrEqual(view.top);
+      expect(element.x + element.width, selector).toBeLessThanOrEqual(view.right);
+      expect(element.y + element.height, selector).toBeLessThanOrEqual(view.bottom);
     }
     await page.screenshot({ path: info.outputPath(`room-${size.width}.png`), scale: 'css' });
   }
@@ -72,7 +72,7 @@ test('跟随真实移动，接近门时完整显示门口，切房后玩家仍�
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/?scene=Game&seed=42&god=1');
-  await page.waitForFunction(() => window.__AVN__?.demo?.camera.zoom === 6);
+  await page.waitForFunction(() => (window.__AVN__?.demo?.camera.zoom ?? 0) >= 6);
   const initial = await page.evaluate(() => window.__AVN__!.demo!);
   const door = initial.links[0]!;
   const x = B.x + B.width / 2 + (door.dx * B.width) / 2;
@@ -128,24 +128,35 @@ test('跟随真实移动，接近门时完整显示门口，切房后玩家仍�
   expect(errors).toEqual([]);
 });
 
-test('移动镜头后的鼠标瞄准仍指向实际目标，侧栏点击不射击', async ({ page, isMobile }) => {
+test('移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击', async ({ page, isMobile }) => {
   test.skip(isMobile, '触控轮盘有独立多指实弹测试');
   await page.goto('/?scene=Game&seed=42&god=1');
-  await page.waitForFunction(() => window.__AVN__?.demo?.camera.zoom === 6);
+  await page.waitForFunction(() => (window.__AVN__?.demo?.camera.zoom ?? 0) >= 6);
   await page.keyboard.down('s');
   await page.waitForFunction(() => window.__AVN__!.demo!.y > 175);
   await page.keyboard.up('s');
   await expect.poll(() => page.evaluate(() => Math.abs(window.__AVN__!.input!.move.y))).toBe(0);
-  // 等相机平滑停止；靠墙时角色不必保持在视口正中心。
-  let previous = Infinity;
-  await expect
-    .poll(async () => {
-      const current = await page.evaluate(() => window.__AVN__!.demo!.camera.scrollY);
-      const difference = Math.abs(current - previous);
-      previous = current;
-      return difference;
-    })
-    .toBeLessThan(0.1);
+  // 必须在多个已推进的模拟帧中稳定，避免低帧率时两次协议读取落在同一帧。
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve, reject) => {
+        let previous = '',
+          stableSince = window.__AVN__!.demo!.time;
+        const deadline = performance.now() + 10_000;
+        const sample = () => {
+          const d = window.__AVN__!.demo!;
+          const current = `${d.x},${d.y},${d.camera.scrollX},${d.camera.scrollY}`;
+          if (current !== previous) {
+            previous = current;
+            stableSince = d.time;
+          }
+          if (d.time - stableSince > 0.2) resolve();
+          else if (performance.now() > deadline) reject(new Error('镜头未稳定'));
+          else requestAnimationFrame(sample);
+        };
+        sample();
+      }),
+  );
   const p = await page.evaluate(() => window.__AVN__!.demo!);
   const point = await worldToScreen(page, p.x + 40, p.y - 25);
   await page.mouse.move(point.x, point.y);
@@ -154,20 +165,17 @@ test('移动镜头后的鼠标瞄准仍指向实际目标，侧栏点击不射�
   const aim = await page.evaluate(() => window.__AVN__!.input!.aim!);
   expect(Math.abs(aim.x * -25 - aim.y * 40)).toBeLessThan(0.5);
   await page.mouse.up();
-  const box = (await page.locator('#game canvas').boundingBox())!;
-  await page.mouse.move(box.x + 30, box.y + box.height / 2);
   const before = await page.evaluate(() => window.__AVN__!.demo!.time);
-  await page.mouse.down();
+  await page.locator('.demo-map-toggle').click();
   await page.waitForFunction((time) => window.__AVN__!.demo!.time > time + 0.2, before);
   expect(await page.evaluate(() => window.__AVN__!.input!.fire)).toBe(false);
-  await page.mouse.up();
 });
 
-test('主城切换地牢后，新触控器仍限制在侧栏，远拖保持移动', async ({ page, isMobile }, info) => {
+test('主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动', async ({ page, isMobile }, info) => {
   test.skip(!isMobile);
   await page.goto('/?seed=42&god=1');
   await startAdventure(page);
-  await page.waitForFunction(() => window.__AVN__?.demo?.camera.zoom === 6);
+  await page.waitForFunction(() => (window.__AVN__?.demo?.camera.zoom ?? 0) >= 6);
   const box = (await page.locator('#game canvas').boundingBox())!;
   const touch = async (type: string, x: number, y: number) =>
     page.locator('#game canvas').evaluate(
@@ -197,7 +205,7 @@ test('主城切换地牢后，新触控器仍限制在侧栏，远拖保持移�
   await touch('touchstart', box.x + 100, y);
   await touch('touchmove', box.x + 300, y);
   await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.move.x)).toBeGreaterThan(0.9);
-  await page.screenshot({ path: info.outputPath('active-left-rail.png'), scale: 'css' });
+  await page.screenshot({ path: info.outputPath('active-move-stick.png'), scale: 'css' });
   await touch('touchend', box.x + 300, y);
   await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.move.x)).toBe(0);
 });
