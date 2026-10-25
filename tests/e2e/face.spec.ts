@@ -1,6 +1,5 @@
 import { expect, test } from '@playwright/test';
 import { HERO_ART } from '../../src/data/art';
-import { RENDER_SCALE } from '../../src/config';
 import { writeFile } from 'node:fs/promises';
 
 test('待机与行走的全部帧使用相同眼睛像素，左右移动时不改变形状', async ({ page }, info) => {
@@ -29,7 +28,7 @@ test('待机与行走的全部帧使用相同眼睛像素，左右移动时不�
     for (const action of ['run', 'idle'] as const) {
       if (action === 'idle') await page.keyboard.up(key);
       const frames = await page.evaluate(
-        ({ names, scale }) =>
+        ({ names }) =>
           new Promise<Record<string, string>>((resolve, reject) => {
             const source = document.querySelector<HTMLCanvasElement>('#game canvas')!;
             const canvas = document.createElement('canvas');
@@ -40,12 +39,14 @@ test('待机与行走的全部帧使用相同眼睛像素，左右移动时不�
               const v = window.__AVN__?.demo?.visual;
               if (v?.face.visible && (names as readonly string[]).includes(String(v.frame))) {
                 const { x, y, width, height } = v.face;
+                const camera = window.__AVN__!.demo!.camera;
+                const scale = camera.zoom;
                 canvas.width = Math.round(width * scale);
                 canvas.height = Math.round(height * scale);
                 ctx.drawImage(
                   source,
-                  Math.round(x * scale),
-                  Math.round(y * scale),
+                  Math.round(camera.x + (x - camera.scrollX) * scale),
+                  Math.round(camera.y + (y - camera.scrollY) * scale),
                   canvas.width,
                   canvas.height,
                   0,
@@ -67,7 +68,7 @@ test('待机与行走的全部帧使用相同眼睛像素，左右移动时不�
             };
             sample();
           }),
-        { names: [...HERO_ART[action]], scale: RENDER_SCALE },
+        { names: [...HERO_ART[action]] },
       );
       expect(Object.keys(frames).sort()).toEqual([...HERO_ART[action]].sort());
       masks.push(...Object.values(frames));
@@ -79,7 +80,8 @@ test('待机与行走的全部帧使用相同眼睛像素，左右移动时不�
     directions.push(masks[0]!);
     await page.screenshot({ path: info.outputPath(`stable-face-${key}.png`) });
   }
-  const width = Math.round(HERO_ART.face.rect[2] * HERO_ART.scale * RENDER_SCALE);
+  const zoom = await page.evaluate(() => window.__AVN__!.demo!.camera.zoom);
+  const width = Math.round(HERO_ART.face.rect[2] * HERO_ART.scale * zoom);
   const mirrored = directions[0]!
     .match(new RegExp(`.{${width}}`, 'g'))!
     .map((row) => [...row].reverse().join(''))

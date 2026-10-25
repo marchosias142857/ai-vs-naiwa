@@ -20,6 +20,7 @@ export class DemoHud {
   private readonly status = document.createElement('div');
   private readonly hint = document.createElement('div');
   private readonly map = document.createElement('canvas');
+  private readonly mapToggle = document.createElement('button');
   private readonly modal = document.createElement('section');
   private readonly title = document.createElement('h2');
   private readonly detail = document.createElement('p');
@@ -41,7 +42,23 @@ export class DemoHud {
     this.status.append(this.vitals.root, this.statusText);
     this.hint.className = 'demo-hint';
     this.map.className = 'demo-map';
+    this.map.id = 'room-map';
     this.map.width = this.map.height = 80;
+    this.map.hidden = true;
+    this.mapToggle.className = 'demo-map-toggle';
+    this.mapToggle.type = 'button';
+    this.mapToggle.textContent = t('hud.map');
+    this.mapToggle.setAttribute('aria-controls', this.map.id);
+    this.mapToggle.setAttribute('aria-expanded', 'false');
+    this.mapToggle.addEventListener(
+      'click',
+      () => {
+        this.map.hidden = !this.map.hidden;
+        this.mapToggle.setAttribute('aria-expanded', String(!this.map.hidden));
+        this.mapToggle.blur();
+      },
+      { signal: this.abort.signal },
+    );
     this.modal.className = 'demo-dialog';
     this.modal.setAttribute('aria-label', t('hud.dialog'));
     this.modal.append(this.title, this.detail);
@@ -71,7 +88,7 @@ export class DemoHud {
       { signal: this.abort.signal },
     );
     this.modal.append(this.shop, this.restart, this.menu);
-    this.root.append(this.status, this.map, this.hint, this.modal);
+    this.root.append(this.status, this.mapToggle, this.map, this.hint, this.modal);
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
     this.layout();
@@ -114,6 +131,7 @@ export class DemoHud {
       d = s.dungeon,
       p = s.player,
       r = s.sim.resources;
+    this.root.classList.toggle('touch-layout', s.inputScene.controls.touchVisible);
     const mode = s.offers.length ? 'offer' : s.settled ? 'result' : 'none';
     if (mode !== this.mode) {
       this.navigation.update(false);
@@ -159,20 +177,18 @@ export class DemoHud {
     this.vitals.update(p?.hp ?? 0, p?.maxHp ?? 0, r.armor, r.maxArmor, r.energy, r.maxEnergy);
     this.statusText.textContent =
       t('hud.coins', { coins: r.coins }) +
-      '\n' +
-      t('hud.progress', {
+      ' · ' +
+      t('hud.compactProgress', {
         floor: d.floor,
         floors: DUNGEON.floors + 1,
         state: d.locked ? t('hud.fighting', { wave: d.wave, alive: d.alive }) : t('hud.explore'),
-        weapon: weaponLabel(s.sim.weaponId),
         skill: r.skillRemaining > 0 ? `${Math.ceil(r.skillRemaining)}s` : t('hud.ready'),
       });
-    this.statusText.textContent +=
-      '\n' +
-      t('hud.slots', {
-        primary: weaponLabel('pistol_basic'),
-        secondary: s.sim.secondaryWeapon ? weaponLabel(s.sim.secondaryWeapon) : t('hud.empty'),
-      });
+    this.statusText.textContent += '\n' + weaponLabel(s.sim.weaponId);
+    this.statusText.title = t('hud.slots', {
+      primary: weaponLabel('pistol_basic'),
+      secondary: s.sim.secondaryWeapon ? weaponLabel(s.sim.secondaryWeapon) : t('hud.empty'),
+    });
     const controls = s.inputScene.controls;
     const device =
       controls?.frame.source === 'gamepad' ? 'gamepad' : controls?.touchVisible ? 'touch' : 'keyboard';

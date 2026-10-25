@@ -130,9 +130,16 @@ export class InputController {
       if (this.touch.moveId !== null || this.touch.fireId !== null) return;
       this.mouse.x = x;
       this.mouse.y = y;
-      this.mouseInside = true;
+      const camera = this.battle.cameras.main;
+      const scale = this.rect.width / this.ui.scale.width;
+      this.mouseInside =
+        x >= camera.x * scale &&
+        x < (camera.x + camera.width) * scale &&
+        y >= camera.y * scale &&
+        y < (camera.y + camera.height) * scale;
       this.state.frame.source = 'keyboard';
-      if (down && e.button === 0) this.state.mouseFire = true;
+      if (!this.mouseInside) this.state.mouseFire = false;
+      else if (down && e.button === 0) this.state.mouseFire = true;
     } else {
       this.state.frame.source = 'touch';
       if (down) {

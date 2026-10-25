@@ -113,5 +113,7 @@
   "quality.purple": "紫色",
   "quality.orange": "橙色",
   "quality.red": "红色",
-  "hub.cancel": "留在主城"
+  "hub.cancel": "留在主城",
+  "hud.map": "地图",
+  "hud.compactProgress": "第 {floor}/{floors} 层 · {state} · 冲刺 {skill}"
 }

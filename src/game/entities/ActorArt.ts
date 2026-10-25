@@ -1,6 +1,6 @@
 import { TintModes } from 'phaser';
 import type { GameObjects, Scene } from 'phaser';
-import { DEPTH, DEPTH_Y_SORT, RENDER_SCALE } from '../../config';
+import { DEPTH, DEPTH_Y_SORT } from '../../config';
 import { ENEMY_ART, WEAPON_ART } from '../../data/art';
 import { DEFAULT_CHARACTER_ART, characterArtFor, characterTexture } from '../../data/characterArt';
 import { PRESENTATION as P } from '../../data/presentation';
@@ -146,9 +146,10 @@ export class ActorArt {
       const anchor = face ?? f;
       const originX = (flipBody ? -anchor.pivot.x : anchor.pivot.x) * scale;
       const originY = anchor.pivot.y * scale;
+      const renderZoom = this.scene.cameras.main.zoom;
       image.setPosition(
-        Math.round((a.x - originX) * RENDER_SCALE) / RENDER_SCALE + originX,
-        Math.round((a.y - originY) * RENDER_SCALE) / RENDER_SCALE + originY,
+        Math.round((a.x - originX) * renderZoom) / renderZoom + originX,
+        Math.round((a.y - originY) * renderZoom) / renderZoom + originY,
       );
       if (face) this.face.apply(image, f, character);
       if (a.phase !== 'active' || !this.showWeapon) continue;

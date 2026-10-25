@@ -22,7 +22,7 @@ test('1080p 直接绘制像素贴图，菜单、战斗与重启保持同一坐�
   await page.reload();
   await page.locator('#continue-run').click();
   await page.waitForFunction(() => !!window.__AVN__?.demo?.visual);
-  await expect(canvas).toHaveAttribute('width', '1920');
+  expect(Number(await canvas.getAttribute('width'))).toBeGreaterThanOrEqual(1920);
   expect(await page.evaluate(() => window.__AVN__!.demo!.x)).toBe(body.x);
   expect(Math.abs((await page.evaluate(() => window.__AVN__!.demo!.visual))!.x - body.x)).toBeLessThan(0.25);
 });

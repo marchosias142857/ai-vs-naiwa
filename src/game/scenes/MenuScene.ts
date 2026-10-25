@@ -1,6 +1,6 @@
 import { configureCamera } from '../configureCamera';
 import { ART } from '../assets/demoArt';
-import { GAME_WIDTH, GAME_HEIGHT } from '../../config';
+import { GAME_WIDTH, GAME_HEIGHT, RENDER_SCALE } from '../../config';
 import { Scene } from 'phaser';
 import { SCENES } from '../../config';
 import { setTestHooks } from '../testHooks';
@@ -12,6 +12,7 @@ export class MenuScene extends Scene {
     super(SCENES.menu);
   }
   create(): void {
+    this.scale.setGameSize(GAME_WIDTH * RENDER_SCALE, GAME_HEIGHT * RENDER_SCALE);
     configureCamera(this);
     if (this.textures.exists(ART.title))
       this.add

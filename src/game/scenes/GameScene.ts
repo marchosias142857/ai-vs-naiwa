@@ -1,4 +1,6 @@
 import { configureCamera } from '../configureCamera';
+import { RoomCamera } from '../RoomCamera';
+import { GRAYBOX_BOUNDS as B } from '../world/graybox';
 import { StressRun } from '../../debug/StressRun';
 import { CombatAudio } from '../fx/CombatAudio';
 import { parseCheckpoint, type FloorCheckpoint } from '../../sim/run/checkpoint';
@@ -28,9 +30,11 @@ export class GameScene extends M1Scene {
   private objects?: DemoObjects;
   private tools?: DebugTools;
   private persistence?: RunPersistence;
+  private roomCamera?: RoomCamera;
   override create(data?: GameStart): void {
     configureCamera(this);
     this.demo = undefined;
+    this.roomCamera = undefined;
     this.stress = undefined;
     const params = debugParams();
     if (params.stress) {
@@ -57,12 +61,14 @@ export class GameScene extends M1Scene {
       snapshot,
     ));
     new CombatAudio(this, this.bus);
+    this.roomCamera = new RoomCamera(this, ui);
     this.persistence = new RunPersistence(this, demo);
     this.persistence.update();
     this.hud = new DemoHud(this, demo);
     this.objects = new DemoObjects(this, demo);
     this.tools = params.debug ? new DebugTools(this, demo, { seed, godMode: params.god }) : undefined;
     setDemoProbe(() => ({
+      camera: this.roomCamera!.inspect(),
       meleeActive: demo.sim.melee.active,
       visual: demo.bridge.actors.art?.inspect() ?? null,
       floor: demo.dungeon.floor,
@@ -114,6 +120,19 @@ export class GameScene extends M1Scene {
       return;
     }
     this.demo.update();
+    const p = this.demo.player;
+    if (p) this.roomCamera?.update(p.x, p.y, this.demo.dungeon.floor * 100 + this.demo.dungeon.roomId, delta);
+    const d = this.demo.dungeon;
+    for (const id of d.room.links) {
+      const to = d.map.rooms[id]!;
+      this.roomCamera?.hint(
+        B.x + B.width / 2 + ((to.x - d.room.x) * B.width) / 2,
+        B.y + B.height / 2 + ((to.y - d.room.y) * B.height) / 2,
+        d.locked ? 0x8a93b8 : 0x7ee8ff,
+      );
+    }
+    for (const a of this.demo.sim.actors)
+      if (a.team === 'enemy' && a.phase !== 'dead') this.roomCamera?.hint(a.x, a.y, 0xff8d9d);
     this.persistence?.update();
     if (this.hud) this.hud.saveAvailable = this.persistence?.saved ?? true;
     this.objects?.update();

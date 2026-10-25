@@ -7,6 +7,7 @@ import type { GameEvents } from '../../sim/core/events';
 import { createInputFrame } from '../../sim/core/types';
 import { ART } from '../assets/demoArt';
 import { configureCamera } from '../configureCamera';
+import { RoomCamera } from '../RoomCamera';
 import { setTestHooks } from '../testHooks';
 import { InputScene } from '../ui/InputScene';
 import { HubPanel } from '../ui/HubPanel';
@@ -24,6 +25,7 @@ export class HubScene extends Scene {
   private ui!: InputScene;
   private panel!: HubPanel;
   private pause!: PauseState;
+  private roomCamera!: RoomCamera;
   constructor() {
     super(SCENES.hub);
   }
@@ -41,6 +43,7 @@ export class HubScene extends Scene {
     if (this.bridge.actors.art) this.bridge.actors.art.showWeapon = false;
     this.scene.launch(InputScene.KEY, { hub: true });
     this.ui = this.scene.get(InputScene.KEY) as InputScene;
+    this.roomCamera = new RoomCamera(this, this.ui);
     this.pause = bindCombatPause(this, () => {
       this.ui.controls?.reset();
       this.bridge.clearInput();
@@ -69,11 +72,13 @@ export class HubScene extends Scene {
     this.bridge.setInput(this.movement);
     if (input.interactPressed) this.panel.open();
   };
-  override update(): void {
+  override update(_time: number, delta: number): void {
     const p = this.sim.getActor(this.sim.playerId!);
     if (p) {
       this.ui.playerX = p.x;
       this.ui.playerY = p.y;
+      this.roomCamera.update(p.x, p.y, 0, delta);
+      this.roomCamera.hint(HUB.door.x, HUB.door.y, 0x7ee8ff);
     }
     this.panel.update();
   }

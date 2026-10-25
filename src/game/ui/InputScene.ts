@@ -5,7 +5,7 @@ import { ActionButtons } from './ActionButtons';
 import { INPUT_UI as UI } from '../fx/params';
 import { Scene } from 'phaser';
 import type { GameObjects } from 'phaser';
-import { DEPTH, GAME_HEIGHT, GAME_WIDTH, SCENES } from '../../config';
+import { DEPTH, GAME_HEIGHT, GAME_WIDTH, RENDER_SCALE, SCENES } from '../../config';
 import { InputController } from '../input/InputController';
 import { setInputProbe } from '../testHooks';
 import { textStyle } from './text';
@@ -23,6 +23,7 @@ export class InputScene extends Scene {
   private graphics!: GameObjects.Graphics;
   private resumeLabel!: GameObjects.Text;
   private layoutScale = 0;
+  private layoutWidth = 0;
   private pauseLabel!: GameObjects.Text;
   private countdownHint!: ResumeCaption;
   private countdown!: GameObjects.Text;
@@ -91,7 +92,8 @@ export class InputScene extends Scene {
   }
   override update(): void {
     const c = this.controls,
-      s = c.rect.width / GAME_WIDTH;
+      s = c.rect.height / GAME_HEIGHT,
+      width = this.scale.width / RENDER_SCALE;
     c.sample(this.playerX, this.playerY);
     if (!s) return;
     const g = this.graphics;
@@ -106,11 +108,11 @@ export class InputScene extends Scene {
       .setVisible(!!pause?.has('restore') && !paused && !pause.has('lifecycle'));
     this.countdownHint.setVisible(this.countdown.visible);
     if (this.countdown.visible) {
-      g.fillStyle(RESUME_UI.fill, 0.94).fillCircle(GAME_WIDTH / 2, GAME_HEIGHT / 2, RESUME_UI.radius);
+      g.fillStyle(RESUME_UI.fill, 0.94).fillCircle(width / 2, GAME_HEIGHT / 2, RESUME_UI.radius);
       g.lineStyle(2, RESUME_UI.ring, 0.9)
         .beginPath()
         .arc(
-          GAME_WIDTH / 2,
+          width / 2,
           GAME_HEIGHT / 2,
           RESUME_UI.radius,
           -Math.PI / 2,
@@ -122,19 +124,22 @@ export class InputScene extends Scene {
     this.pausePanel?.update(paused);
     this.resumeLabel.setVisible(paused && !this.pausePanel);
     this.actions?.setVisible(c.touchVisible && !paused && !locked);
-    if (s !== this.layoutScale) {
+    if (s !== this.layoutScale || width !== this.layoutWidth) {
+      this.layoutWidth = width;
+      this.cameras.main.setViewport(0, 0, this.scale.width, this.scale.height);
+      this.resumeLabel.setPosition(width / 2, GAME_HEIGHT / 2);
+      this.countdown.setPosition(width / 2, GAME_HEIGHT / 2);
       this.layoutScale = s;
       this.resumeLabel.setFontSize(UI.resume.fontSize / s);
       this.pauseLabel
-        .setPosition(GAME_WIDTH - UI.pause.inset / s, UI.pause.inset / s)
+        .setPosition(width - UI.pause.inset / s, UI.pause.inset / s)
         .setFontSize(UI.pause.fontSize / s);
     }
     if (paused) {
-      g.fillStyle(UI.look.pauseColor, UI.look.pauseAlpha).fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-      this.circle(GAME_WIDTH / 2, GAME_HEIGHT / 2, UI.resume.radius / s, false, 1);
+      g.fillStyle(UI.look.pauseColor, UI.look.pauseAlpha).fillRect(0, 0, width, GAME_HEIGHT);
+      this.circle(width / 2, GAME_HEIGHT / 2, UI.resume.radius / s, false, 1);
     }
-    if (canPause)
-      this.circle(GAME_WIDTH - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
+    if (canPause) this.circle(width - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
     if (c.touchVisible && !paused && !locked) {
       const t = c.touch;
       this.circle(
@@ -152,7 +157,7 @@ export class InputScene extends Scene {
         t.moveId !== null ? UI.joystick.activeAlpha : UI.joystick.idleAlpha,
       );
       if (!this.hub) {
-        const x = GAME_WIDTH - UI.aimWheel.inset / s,
+        const x = width - UI.aimWheel.inset / s,
           y = GAME_HEIGHT - UI.aimWheel.inset / s,
           held = t.fireId !== null,
           alpha = held ? 1 : UI.joystick.idleAlpha;
@@ -185,7 +190,7 @@ export class InputScene extends Scene {
       )
       .fillCircle(x, y, r);
     this.graphics
-      .lineStyle(UI.outline / (this.controls.rect.width / GAME_WIDTH), 0xffffff, alpha)
+      .lineStyle(UI.outline / (this.controls.rect.height / GAME_HEIGHT), 0xffffff, alpha)
       .strokeCircle(x, y, r);
   }
 }
