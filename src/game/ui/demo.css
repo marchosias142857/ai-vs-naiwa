@@ -384,3 +384,14 @@
     flex-wrap: wrap;
   }
 }
+
+#talent-rewards {
+  text-align: left;
+  padding: 8px 12px;
+  background: #152d39;
+}
+#talent-rewards strong {
+  display: block;
+  color: #d9eeb3;
+  margin-top: 5px;
+}

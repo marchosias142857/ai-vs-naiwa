@@ -1,3 +1,4 @@
+import { HubScene } from '../../src/game/scenes/HubScene';
 import { AUTO, Game, Scene, Scale } from 'phaser';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import { bindLifecycle } from '../../src/game/bindLifecycle';
@@ -68,7 +69,7 @@ const game = new Game({
   scale: { mode: Scale.FIT, autoCenter: Scale.CENTER_BOTH },
   physics: { default: 'arcade', arcade: { fixedStep: true } },
   input: { activePointers: 3, gamepad: true },
-  scene: [Bootstrap, SaveMenu, SaveGame, InputScene],
+  scene: [Bootstrap, SaveMenu, SaveGame, HubScene, InputScene],
 });
 bindLifecycle(game);
 const battle = () => game.scene.getScene('Game') as SaveGame;

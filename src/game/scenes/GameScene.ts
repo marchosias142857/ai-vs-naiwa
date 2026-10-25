@@ -1,3 +1,5 @@
+import { readProfile, retryPendingRewards } from '../save/metaProfile';
+import { newRunId } from '../../sim/meta/profile';
 import { configureCamera } from '../configureCamera';
 import { RoomCamera } from '../RoomCamera';
 import { GRAYBOX_BOUNDS as B } from '../world/graybox';
@@ -46,6 +48,7 @@ export class GameScene extends M1Scene {
       super.create();
       return;
     }
+    retryPendingRewards();
     const snapshot = data?.snapshot;
     const checkpoint =
       parseCheckpoint(data?.checkpoint) ??
@@ -62,12 +65,18 @@ export class GameScene extends M1Scene {
       params.weapon,
       checkpoint,
       snapshot,
+      {
+        talents: readProfile().profile.talents,
+        ...(params.god || params.floor || params.weapon
+          ? { runId: `debug-${newRunId(seed, Date.now())}` }
+          : {}),
+      },
     ));
     new CombatAudio(this, this.bus);
     this.roomCamera = new RoomCamera(this, ui);
     this.persistence = new RunPersistence(this, demo);
     this.persistence.update();
-    this.hud = new DemoHud(this, demo);
+    this.hud = new DemoHud(this, demo, () => this.persistence?.settlement);
     this.objects = new DemoObjects(this, demo);
     this.tools = params.debug ? new DebugTools(this, demo, { seed, godMode: params.god }) : undefined;
     setDemoProbe(() => ({

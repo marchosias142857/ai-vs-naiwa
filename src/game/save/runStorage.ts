@@ -1,3 +1,5 @@
+import { isSettled } from '../../sim/meta/profile';
+import { readProfile } from './metaProfile';
 import { CHECKPOINT_KEY } from '../../services/profile';
 import { inspectValue, loadValue, removeValue, saveValue } from '../../services/storage';
 import { parseCheckpoint, type FloorCheckpoint } from '../../sim/run/checkpoint';
@@ -69,9 +71,19 @@ export function decodeRun(value: unknown, decodeSim: SimDecoder = decodeSimSnaps
 }
 export function readSavedRun(decodeSim: SimDecoder = decodeSimSnapshot): ResumeChoice {
   const stored = inspectValue(RUN_KEY);
-  if (stored.found) return decodeRun(stored.value, decodeSim);
-  const checkpoint = parseCheckpoint(loadValue(CHECKPOINT_KEY));
-  return checkpoint ? { kind: 'entry', checkpoint } : { kind: 'none' };
+  const checkpoint = stored.found ? null : parseCheckpoint(loadValue(CHECKPOINT_KEY));
+  const result: ResumeChoice = stored.found
+    ? decodeRun(stored.value, decodeSim)
+    : checkpoint
+      ? { kind: 'entry', checkpoint }
+      : { kind: 'none' };
+  const entry =
+    result.kind === 'full' ? result.snapshot.entry : result.kind === 'entry' ? result.checkpoint : null;
+  if (entry && isSettled(readProfile().profile, entry.runId)) {
+    clearSavedRun();
+    return { kind: 'none' };
+  }
+  return result;
 }
 /** 同步收齐后只 setItem 一次；失败保留旧档，成功后才移除 v1。 */
 export function writeSavedRun(state: SessionSnapshot): boolean {

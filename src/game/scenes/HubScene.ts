@@ -1,3 +1,4 @@
+import { retryPendingRewards } from '../save/metaProfile';
 import { Scene, Scenes } from 'phaser';
 import { DEPTH, SCENES } from '../../config';
 import { HUB } from '../../data/hub';
@@ -30,6 +31,7 @@ export class HubScene extends Scene {
     super(SCENES.hub);
   }
   create(): void {
+    retryPendingRewards();
     configureCamera(this);
     createRoomArt(this);
     this.add

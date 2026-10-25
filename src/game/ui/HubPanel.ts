@@ -1,4 +1,5 @@
 import type { Scene } from 'phaser';
+import { readProfile, takeProfileNotice } from '../save/metaProfile';
 import { SCENES } from '../../config';
 import { t } from '../../i18n/t';
 import { readSavedRun } from '../save/runStorage';
@@ -20,6 +21,7 @@ export class HubPanel {
     private readonly pause: PauseState,
     private readonly near: () => boolean,
   ) {
+    readProfile();
     this.root.id = 'hub-panel';
     const title = document.createElement('h2'),
       hint = document.createElement('p');
@@ -75,6 +77,14 @@ export class HubPanel {
     );
     this.modal.append(question, detail, cancel, enter);
     this.modal.hidden = true;
+    const notice = takeProfileNotice();
+    if (notice) {
+      const status = document.createElement('p');
+      status.id = 'profile-notice';
+      status.setAttribute('role', 'status');
+      status.textContent = t(`talent.notice.${notice}`);
+      this.root.append(status);
+    }
     this.root.append(title, hint, this.door, this.modal);
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);

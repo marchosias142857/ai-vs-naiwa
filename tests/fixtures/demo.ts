@@ -1,3 +1,4 @@
+import { offerCount } from '../../src/sim/meta/talents';
 import type { PhysicsSnapshot } from '../../src/game/world/CombatBridge';
 import { parseCheckpoint, type FloorCheckpoint } from '../../src/sim/run/checkpoint';
 import type { CombatWorldState, ActorView } from '../../src/sim/combat/api';
@@ -287,7 +288,7 @@ class DemoHarness extends Scene {
         input.interactPressed = true;
         tick(1);
         input.interactPressed = false;
-        if (session.offers.length !== 3) throw Error('缺少升级选择');
+        if (session.offers.length !== offerCount(session.talents)) throw Error('缺少升级选择');
         if (stopAtOffer) {
           this.hud!.update(300);
           return {

@@ -53,9 +53,10 @@ interface MetaProfile {
 - `SAVE_VERSION.dataHash` 纳入 `TALENTS` 与 `TALENT_RULES`：天赋数据变化时，完整存档改走入口兜底，按新数据重放。
 - game 层接线（GPT）：
   1. 新开冒险把档案里的 `talents` 传给 `DemoSession` 的 `start` 参数；`DemoSession` 生成冒险 ID 并冻结天赋。
-  2. 冒险结束时调用 `summarizeRun(session.runId, session.dungeon)` 和 `settleRun`。**先写档案，成功后再清冒险存档**；写盘失败时提示玩家，回主城时重试一次，仍失败就放弃这次奖励，不阻塞游戏。
+  2. 冒险结束时调用 `summarizeRun(session.runId, session.dungeon)` 和 `settleRun`。**先写档案，成功后再清冒险存档**；写盘失败时提示玩家，回主城时重试一次，仍失败就放弃这次奖励，不阻塞游戏。接线同时覆盖结算页直接重开：进入新局前完成同样的一次重试。失败期间按设计稿清除终局冒险，内存中仅保留奖励摘要；页面关闭会丢失尚未保存的奖励，但不能从终局冒险复活。
   3. 启动读冒险存档时，如果 `isSettled(profile, entry.runId)`，就丢弃该存档，视为已结束。这样即使「写档案」和「清存档」之间页面被关掉，也不会重复发奖或复活。
-  4. 档案损坏时先把原文备份到另一个键，再覆盖。
+  4. 档案损坏或逐项修复时先把原文备份到 `avn.profile.v2.backup`，备份失败不得覆盖。v1 原文保留。读取被禁用不视为空档案写回。
+  5. `?god=1`、`?floor=`、`?weapon=` 的新开调试冒险统一使用 debug- ID，不发奖；存档恢复仍使用其原 runId。
 
 ## 取舍
 

@@ -1,3 +1,6 @@
+import { offerCount } from '../../sim/meta/talents';
+import { TALENT_RULES } from '../../data/talents';
+import type { Settlement } from '../save/metaProfile';
 import { UI_LAYOUT_CHANGED } from '../../services/uiLayout';
 import { Vitals } from './Vitals';
 import { guardGameUi } from './guardGameUi';
@@ -26,6 +29,7 @@ export class DemoHud {
   private readonly modal = document.createElement('section');
   private readonly title = document.createElement('h2');
   private readonly detail = document.createElement('p');
+  private readonly rewards = document.createElement('div');
   private readonly choices: HTMLButtonElement[] = [];
   private readonly restart = document.createElement('button');
   private readonly menu = document.createElement('button');
@@ -38,6 +42,7 @@ export class DemoHud {
   constructor(
     private readonly scene: Scene,
     private readonly session: DemoSession,
+    private readonly settlement: () => Settlement | undefined = () => undefined,
   ) {
     this.root.id = 'demo-hud';
     this.status.className = 'demo-status';
@@ -63,8 +68,9 @@ export class DemoHud {
     );
     this.modal.className = 'demo-dialog';
     this.modal.setAttribute('aria-label', t('hud.dialog'));
-    this.modal.append(this.title, this.detail);
-    for (let i = 0; i < LOOT_RULES.upgradeChoices; i++) {
+    this.rewards.id = 'talent-rewards';
+    this.modal.append(this.title, this.detail, this.rewards);
+    for (let i = 0; i < offerCount(session.talents); i++) {
       const button = document.createElement('button');
       button.type = 'button';
       button.dataset.choice = String(i);
@@ -74,11 +80,11 @@ export class DemoHud {
     }
     this.restart.type = this.menu.type = 'button';
     this.restart.textContent = t('hud.restart');
-    this.menu.textContent = t('hud.menu');
+    this.menu.textContent = t('talent.returnHub');
     this.restart.id = 'demo-restart';
     this.menu.id = 'demo-menu';
     this.restart.addEventListener('click', () => scene.scene.restart({}), { signal: this.abort.signal });
-    this.menu.addEventListener('click', () => scene.scene.start('Menu'), { signal: this.abort.signal });
+    this.menu.addEventListener('click', () => scene.scene.start('Hub'), { signal: this.abort.signal });
     this.shop.id = 'buy-supplies';
     this.shop.type = 'button';
     this.shop.addEventListener(
@@ -162,6 +168,22 @@ export class DemoHud {
             percent = upgrade.display === 'percent';
           button.textContent = `${i + 1}. ${t(upgrade.name as TextKey)} +${percent ? Math.round(upgrade.amount * 100) : upgrade.amount}${percent ? '%' : ''}`;
         }
+      }
+      this.rewards.hidden = mode !== 'result';
+      if (mode === 'result') {
+        const result = this.settlement();
+        this.rewards.replaceChildren();
+        for (const line of result?.reward?.lines ?? []) {
+          const row = document.createElement('div');
+          row.textContent = `${t(`talent.reward.${line.kind}`, { cap: TALENT_RULES.killCap })} · ${line.count} → +${line.points}`;
+          this.rewards.append(row);
+        }
+        const total = document.createElement('strong');
+        total.textContent = t('talent.rewardTotal', { points: result?.reward?.total ?? 0 });
+        const status = document.createElement('p');
+        status.id = 'talent-reward-status';
+        status.textContent = t(`talent.settlement.${result?.status ?? 'invalid'}`);
+        this.rewards.append(total, status);
       }
       this.restart.hidden = this.menu.hidden = mode !== 'result';
       this.shop.hidden = mode !== 'offer';
