@@ -113,12 +113,19 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
         'naiguai-v1',
         'arsenal-v1',
         'rooms-v1',
+        'talent-altar-v1',
       ].map(async (name) => {
         const response = await fetch(`assets/demo/${name}.png`);
+        const blob = await response.blob();
+        const bitmap = name === 'talent-altar-v1' ? await createImageBitmap(blob) : undefined;
+        const dimensions = bitmap ? [bitmap.width, bitmap.height] : undefined;
+        bitmap?.close();
         return {
+          name,
           ok: response.ok,
           type: response.headers.get('content-type'),
-          size: (await response.blob()).size,
+          size: blob.size,
+          dimensions,
         };
       }),
     ),
@@ -127,6 +134,10 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
     expect(file.ok).toBe(true);
     expect(file.type).toBe('image/png');
     expect(file.size).toBeGreaterThan(1000);
+    if (file.name === 'talent-altar-v1') {
+      expect(file.dimensions).toEqual([528, 528]);
+      expect(file.size).toBeLessThan(300 * 1024);
+    }
   }
   expect(await reopened.evaluate(() => window.__AVN__?.seed)).toBe(7);
   await expect(reopened.locator('#game canvas')).toBeVisible();

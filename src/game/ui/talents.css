@@ -1,0 +1,140 @@
+#hub-altar {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 140px;
+  min-height: 44px;
+  pointer-events: auto;
+  color: #e8ecff;
+  background: #173342;
+  border: 1px solid #a1e2d5;
+  font: inherit;
+  touch-action: manipulation;
+}
+#talent-panel {
+  width: min(960px, calc(100% - 24px));
+  height: min(570px, calc(100% - 16px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: #091e2bf7;
+  text-align: left;
+  overflow: hidden;
+}
+#talent-panel header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+#talent-panel h2 {
+  margin: 0;
+  white-space: nowrap;
+}
+#talent-panel header button {
+  width: auto;
+  padding: 4px 12px;
+  margin: 0;
+}
+#talent-balance {
+  margin-right: auto;
+  color: #c6edb6;
+}
+.talent-tree {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  gap: 12px;
+  min-height: 0;
+  overflow: auto;
+  flex: 1;
+}
+.talent-tree > section {
+  background: #142e3b;
+  border: 1px solid #669d9c55;
+  border-radius: 4px;
+}
+.talent-tree h3 {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #142e3b;
+  padding: 4px 0;
+  margin: 6px;
+  text-align: center;
+  color: #a1e2d5;
+  font-size: 13px;
+}
+.talent-branch {
+  position: relative;
+  min-height: 220px;
+  height: calc(100% - 34px);
+}
+.talent-branch svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  stroke: #6fa9ab88;
+  stroke-width: 1;
+}
+#talent-panel .talent-branch button {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 46%;
+  margin: 0;
+  min-height: 48px;
+  font-size: 11px;
+  white-space: pre-line;
+  padding: 4px 2px;
+}
+#talent-panel button[data-state='available'] {
+  border-color: #99dbb8;
+}
+#talent-panel button[data-state='locked'] {
+  color: #a1aeb7;
+  border-style: dashed;
+  background: #142732;
+}
+#talent-panel button[data-state='points'] {
+  border-color: #bc9573;
+}
+#talent-panel button[data-state='maxed'] {
+  color: #e9dca4;
+  border-color: #b8ad7c;
+}
+#talent-panel button[aria-pressed='true'] {
+  outline: 2px solid #e9dca4;
+  outline-offset: 2px;
+}
+#talent-panel button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+#talent-panel footer {
+  display: grid;
+  grid-template-columns: 1fr minmax(150px, 30%);
+  gap: 16px;
+  flex-shrink: 0;
+  border-top: 1px solid #669d9c55;
+  padding-top: 6px;
+}
+#talent-panel footer p {
+  margin: 4px 0;
+}
+#talent-message {
+  font-size: 11px;
+  color: #b2cbc9;
+}
+@media (max-height: 480px) {
+  #talent-panel {
+    padding: 8px;
+    gap: 6px;
+  }
+  #talent-panel header {
+    gap: 6px;
+  }
+  #talent-panel footer {
+    font-size: 11px;
+  }
+}
