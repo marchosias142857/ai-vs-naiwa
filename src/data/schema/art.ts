@@ -35,7 +35,7 @@ export const WeaponArtSchema = z.strictObject({
   scale: z.number().positive(),
 });
 /**
- * 怪物逐帧图集（ADR 0029）：同一怪物的帧尺寸相同，`frames` 记录每个动作的帧左上角；
+ * 怪物逐帧图集（ADR 0030）：同一怪物的帧尺寸相同，`frames` 记录每个动作的帧左上角；
  * `pivot` 是身体圆心在帧内的位置，`scale` 是 1 个图集像素对应的游戏像素，`facing` 是未翻转时的朝向。
  */
 const corner = z.tuple([z.int().nonnegative(), z.int().nonnegative()]).readonly();

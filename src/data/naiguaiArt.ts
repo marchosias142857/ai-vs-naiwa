@@ -2,7 +2,7 @@
 import type { MonsterArt } from './schema/art';
 
 /**
- * 最终 Boss 奶怪的逐帧动画（ADR 0029）。只用负责人画的 12 帧：行走 8 帧、待机、捧腹、弯腰捧腹。
+ * 最终 Boss 奶怪的逐帧动画（ADR 0030）。只用负责人画的 12 帧：行走 8 帧、待机、捧腹、弯腰捧腹。
  * 受击闪白、眩晕星星与死亡演出由表现层的特效补足，不另画奶怪帧。
  */
 export const NAIGUAI_ART = {

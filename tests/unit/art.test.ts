@@ -155,11 +155,11 @@ describe('真实 PNG 图集与持握数据', () => {
     }
     for (const f of Object.values(WEAPON_ART)) expect(WeaponArtSchema.safeParse(f).success).toBe(true);
     for (const key of Object.keys(WEAPONS)) expect(Object.hasOwn(WEAPON_ART, key)).toBe(true);
-    // 旧的单张静态图只是逐帧动画缺失时的替补（ADR 0029）。
+    // 旧的单张静态图只是逐帧动画缺失时的替补（ADR 0030）。
     for (const key of Object.keys(ENEMIES))
       expect(Object.hasOwn(ENEMY_ART, key) || enemyAnimation(key) !== undefined).toBe(true);
   });
-  it('每种怪物都有逐帧动画，帧在图集内，pivot 在帧内，必备动作齐全（ADR 0029）', () => {
+  it('每种怪物都有逐帧动画，帧在图集内，pivot 在帧内，必备动作齐全（ADR 0030）', () => {
     for (const kind of Object.keys(ENEMIES)) {
       const anim = enemyAnimation(kind);
       expect(anim, kind).toBeDefined();

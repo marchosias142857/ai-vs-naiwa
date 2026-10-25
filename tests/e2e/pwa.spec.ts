@@ -109,6 +109,8 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
         'enemies',
         'environment',
         'doors',
+        'monsters-v1',
+        'naiguai-v1',
       ].map(async (name) => {
         const response = await fetch(`assets/demo/${name}.png`);
         return {

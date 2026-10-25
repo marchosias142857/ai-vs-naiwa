@@ -45,7 +45,7 @@ function sample(): SimSnapshot {
 }
 
 describe('完整 sim 存档字段与业务校验', () => {
-  it('ADR 0029 新字段：招式阶段、区域与石块通过两套规则；子嗣编号不能超前或指向自己', () => {
+  it('ADR 0030 新字段：招式阶段、区域与石块通过两套规则；子嗣编号不能超前或指向自己', () => {
     const s = JSON.parse(JSON.stringify(sample())) as SimSnapshot;
     expect(schema.safeParse(s).success).toBe(true);
     s.world.zones.push({

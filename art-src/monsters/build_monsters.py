@@ -4,7 +4,7 @@
 
 全部为本项目原创的抽象搞怪蛙类怪，整体参考元气骑士：粗颗粒、1 像素黑描边、两到三档硬边明暗、亮色。
 1 个图集像素 = 0.5 个游戏像素（与大肥鱼同一颗粒密度）。默认朝右，游戏里按朝向翻面。
-每只怪的长相直接对应它的招式，动作名与 sim 的 pose 一一对应（ADR 0029）：
+每只怪的长相直接对应它的招式，动作名与 sim 的 pose 一一对应（ADR 0030）：
 idle 待机、move 移动、windup 蓄力、attack 出招、air 腾空、recover 后摇/眩晕、buried 地下、spin 旋转、death 死亡。
 """
 
@@ -807,7 +807,7 @@ def write_data(placed) -> None:
         "// 由 art-src/monsters/build_monsters.py 生成，不要手改；改画法后重新运行脚本。",
         "import type { MonsterArt } from './schema/art';",
         "",
-        "/** 普通怪物的逐帧图集（ADR 0029）：同一怪物帧尺寸相同，pivot 是身体圆心在帧内的位置。 */",
+        "/** 普通怪物的逐帧图集（ADR 0030）：同一怪物帧尺寸相同，pivot 是身体圆心在帧内的位置。 */",
         "export const MONSTER_ART = {",
     ]
     for kind, actions in placed.items():

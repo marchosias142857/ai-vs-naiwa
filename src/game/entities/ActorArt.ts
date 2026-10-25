@@ -114,13 +114,13 @@ export class ActorArt {
         a.team === 'enemy' &&
         this.enemyArt.draw(i, image, a, this.sim.time, slot.death, slot.flash, zoom)
       ) {
-        // 腾空时影子留在地上并缩小；钻进地下时不画影子（ADR 0029）。
+        // 腾空时影子留在地上并缩小；钻进地下时不画影子（ADR 0030）。
         const k = 1 / (1 + a.lift / (a.radius * 4));
         slot.shadow.setScale(slot.shadow.scaleX * k, slot.shadow.scaleY * k).setVisible(a.pose !== 'buried');
         continue;
       }
       if (a.team === 'enemy') {
-        // 没有静态图的新怪物（ADR 0029）先借用基础怪的图，避免缺帧报错。
+        // 没有静态图的新怪物（ADR 0030）先借用基础怪的图，避免缺帧报错。
         const known = Object.hasOwn(ENEMY_ART, a.kind),
           name = known ? a.kind : 'naiwa_chaser';
         const rect = ENEMY_ART[name as keyof typeof ENEMY_ART];

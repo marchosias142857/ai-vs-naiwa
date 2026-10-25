@@ -18,7 +18,7 @@ interface PoseClock {
 }
 
 /**
- * 怪物逐帧动画（ADR 0029）：按 sim 给的 pose 选动作，腾空时整张图抬高 `lift`。
+ * 怪物逐帧动画（ADR 0030）：按 sim 给的 pose 选动作，腾空时整张图抬高 `lift`。
  * 只换贴图帧与位置，物理代理不受影响；没有逐帧图的怪物交还给 ActorArt 的旧静态画法。
  */
 export class EnemyArt {

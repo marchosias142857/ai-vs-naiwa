@@ -1,7 +1,7 @@
 // 由 art-src/monsters/build_monsters.py 生成，不要手改；改画法后重新运行脚本。
 import type { MonsterArt } from './schema/art';
 
-/** 普通怪物的逐帧图集（ADR 0029）：同一怪物帧尺寸相同，pivot 是身体圆心在帧内的位置。 */
+/** 普通怪物的逐帧图集（ADR 0030）：同一怪物帧尺寸相同，pivot 是身体圆心在帧内的位置。 */
 export const MONSTER_ART = {
   naiwa_chaser: {
     size: [32, 31],

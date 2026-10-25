@@ -698,7 +698,7 @@ class CombatWorldImpl implements CombatWorld {
       if (!bullet) return true;
       const target = this.byId.get(targetId);
       if (!target || target.phase !== 'active' || target.team === bullet.team) return false;
-      // 钻在地下的怪物让子弹穿过去（ADR 0029）。
+      // 钻在地下的怪物让子弹穿过去（ADR 0030）。
       if (EnemyAi.hidden(target.brain) && target.team === 'enemy') return false;
       // 每颗子弹对每个目标最多命中一次：重叠的几帧里、或 A → B → A 的回调顺序都不会重复伤害。
       if (this.alreadyHit(bullet, target.id)) return false;
@@ -1348,7 +1348,7 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   /**
-   * 范围爆炸（ADR 0029）：先发 `combat:exploded`，再对范围内、视线可达的另一阵营逐个结算伤害并推开。
+   * 范围爆炸（ADR 0030）：先发 `combat:exploded`，再对范围内、视线可达的另一阵营逐个结算伤害并推开。
    * 倒序遍历，容忍死亡监听器立即回收实体。
    */
   private explodeAt(
@@ -1569,7 +1569,7 @@ class CombatWorldImpl implements CombatWorld {
     slot.wait = 0;
   }
 
-  /** 视线：地图墙体之外，落地的石块也挡视线（ADR 0029）。 */
+  /** 视线：地图墙体之外，落地的石块也挡视线（ADR 0030）。 */
   private los(x1: number, y1: number, x2: number, y2: number): boolean {
     if (!this.lineOfSight(x1, y1, x2, y2)) return false;
     for (const r of this.rocks)
@@ -1597,7 +1597,7 @@ class CombatWorldImpl implements CombatWorld {
     dirY: number,
     sourceId: EntityId | null,
   ): void {
-    // 冲撞撞晕的 Boss 受到额外伤害（ADR 0029）。
+    // 冲撞撞晕的 Boss 受到额外伤害（ADR 0030）。
     if (target.team === 'enemy' && target.brain.stage === 'stun')
       amount *= (ENEMIES[target.kind as EnemyId] as Readonly<EnemyDef>).bump?.bonus ?? 1;
     const healthDamage = target.id === this.playerId ? this.resources.absorb(amount) : amount;

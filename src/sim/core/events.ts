@@ -73,18 +73,18 @@ export interface GameEvents {
     critical: boolean;
   };
   /**
-   * 范围爆炸（ADR 0029）：先发本事件，再按距离对范围内的另一阵营逐个结算 `entity:damaged`。
+   * 范围爆炸（ADR 0030）：先发本事件，再按距离对范围内的另一阵营逐个结算 `entity:damaged`。
    * `team` 是引爆者阵营；爆炸不伤同阵营。
    */
   'combat:exploded': { team: Team; x: number; y: number; radius: number };
   /**
-   * 怪物招式的关键时刻（ADR 0029），如起跳、落地、出舌、召唤、钻地、出土。
+   * 怪物招式的关键时刻（ADR 0030），如起跳、落地、出舌、召唤、钻地、出土。
    * `angle` 是招式方向（弧度），没有方向的招式为当前朝向。规则结果另由伤害等事件表达。
    */
   'enemy:acted': { id: EntityId; kind: string; action: EnemyAction; x: number; y: number; angle: number };
 }
 
-/** 怪物招式的关键时刻，只给特效与音效用（ADR 0029）。 */
+/** 怪物招式的关键时刻，只给特效与音效用（ADR 0030）。 */
 export type EnemyAction =
   | 'hop'
   | 'land'

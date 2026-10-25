@@ -24,11 +24,11 @@ export const BalanceDefSchema = z.strictObject({
   knockbackTime: Seconds,
   /** 暴击伤害倍率；暴击概率由武器的 `critChance` 决定。 */
   critMultiplier: z.number().min(1),
-  /** 奶潭里的玩家移动速度倍率（ADR 0029）。 */
+  /** 奶潭里的玩家移动速度倍率（ADR 0030）。 */
   milkSlow: z.number().positive().max(1),
-  /** 打倒最终 Boss 后弹出通关结算的延迟，秒（ADR 0029）。 */
+  /** 打倒最终 Boss 后弹出通关结算的延迟，秒（ADR 0030）。 */
   victoryDelay: z.number().positive(),
-  /** 区域与石块的预热槽位数（ADR 0029）。 */
+  /** 区域与石块的预热槽位数（ADR 0030）。 */
   zoneCapacity: z.int().positive(),
   rockCapacity: z.int().positive(),
 });
