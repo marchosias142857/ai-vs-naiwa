@@ -5,11 +5,13 @@ import { createCombatWorld } from '../../../src/sim/combat/api';
 import { EventBus } from '../../../src/sim/core/EventBus';
 import type { GameEvents } from '../../../src/sim/core/events';
 import { createInputFrame } from '../../../src/sim/core/types';
-import { parseCheckpoint, type FloorCheckpoint } from '../../../src/sim/run/checkpoint';
+import { legacyRunId, parseCheckpoint, type FloorCheckpoint } from '../../../src/sim/run/checkpoint';
 import { DungeonRun } from '../../../src/sim/run/DungeonRun';
 const save: FloorCheckpoint = {
-  version: 1,
+  version: 2,
   seed: 42,
+  runId: '16-lzk3x9',
+  talents: { thick_scales: 1 },
   floor: 2,
   upgrades: ['vitality'],
   secondary: 'shotgun_fan',
@@ -30,7 +32,16 @@ it('检查点 schema 与轻量解析一致；拒绝损坏/未来版本/未知 ID
     { ...save, secondary: null, equipped: null },
     null,
     {},
-    { ...save, version: 2 },
+    { ...save, version: 3 },
+    { ...save, runId: '' },
+    { ...save, runId: 'Bad ID' },
+    { ...save, talents: null },
+    { ...save, talents: [] },
+    { ...save, talents: { thick_scales: 1.5 } },
+    { ...save, talents: { thick_scales: -1 } },
+    { ...save, talents: { removed_talent: 2 } },
+    { version: 1, ...withoutStart(save) },
+    { version: 1, ...withoutStart(save), floor: 5 },
     { ...save, seed: -1 },
     { ...save, floor: 5 },
     { ...save, upgrades: [] },
@@ -45,6 +56,25 @@ it('检查点 schema 与轻量解析一致；拒绝损坏/未来版本/未知 ID
   const restored = parseCheckpoint(JSON.parse(JSON.stringify(save)))!;
   expect(restored).toEqual(save);
   expect(restored.upgrades).not.toBe(save.upgrades);
+});
+/** 去掉 v2 新增字段与版本号，得到 v1 时代的入口存档主体。 */
+function withoutStart(c: FloorCheckpoint): Record<string, unknown> {
+  const rest: Record<string, unknown> = { ...c };
+  delete rest.version;
+  delete rest.runId;
+  delete rest.talents;
+  return rest;
+}
+it('v1 入口迁移为零天赋 v2，冒险 ID 由种子派生且稳定；未知天赋丢弃、等级夹到上限', () => {
+  const v1 = { version: 1, ...withoutStart(save) };
+  const migrated = parseCheckpoint(v1)!;
+  expect(migrated).toEqual({ ...save, runId: legacyRunId(42), talents: {} });
+  expect(parseCheckpoint(v1)!.runId).toBe(migrated.runId);
+  expect(parseCheckpoint({ ...save, talents: { removed_talent: 2, thick_scales: 9 } })!.talents).toEqual({
+    thick_scales: 2,
+  });
+  // 前置不满足的节点按当前数据清零。
+  expect(parseCheckpoint({ ...save, talents: { coral_plates: 1 } })!.talents).toEqual({});
 });
 it('恢复升级和资源，拒绝运行中恢复；非法值不产生部分写入', () => {
   const world = createCombatWorld({

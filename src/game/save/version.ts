@@ -11,6 +11,7 @@ import { NAVIGATION } from '../../data/navigation';
 import { PLAYER_RULES, UPGRADES } from '../../data/player';
 import { RESUME_RULES } from '../../data/resume';
 import { ROOM_RULES } from '../../data/rooms';
+import { TALENT_RULES, TALENTS } from '../../data/talents';
 import { WEAPONS } from '../../data/weapons';
 import { hashString } from '../../sim/core/Random';
 
@@ -34,6 +35,8 @@ export const SAVE_VERSION = {
       UPGRADES,
       RESUME_RULES,
       ROOM_RULES,
+      TALENTS,
+      TALENT_RULES,
       WEAPONS,
     }),
   ).toString(16),

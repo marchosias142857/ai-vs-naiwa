@@ -1,4 +1,5 @@
 import type { PlayerRules } from '../../data/schema/player';
+import type { TalentModifiers } from '../meta/talents';
 import type { UpgradeId } from '../../data/player';
 import type { PlayerResources, PlayerResourcesState } from '../stats/PlayerResources';
 import type { EnemyBrain } from '../ai/brain';
@@ -303,6 +304,12 @@ export interface CombatWorld {
   buySupplies(): boolean;
   grantPickup(kind: 'health' | 'energy' | 'coin', amount: number): boolean;
   upgrade(id: UpgradeId): boolean;
+  /**
+   * 施加开局天赋（ADR 0035）：仅 time=0、玩家存活、本局未施加过时生效，与局内升级使用同一加法规则。
+   * `coins` 加到开局金币，`offers` 由调用方用于出口候选数，这里忽略。非法值整体拒绝，不产生部分写入。
+   * 新开冒险与入口兜底都要在重放升级、`restorePlayer` 之前调用；完整读档不调用。
+   */
+  applyTalents(mods: Readonly<TalentModifiers>): boolean;
   /** 仅允许 time=0 的新世界恢复入口资源，先由调用方重放升级；有限值会夹到上限。 */
   restorePlayer(progress: { hp: number; armor: number; energy: number; coins: number }): boolean;
   /** 装备武器；保留开火冷却并取消旧武器待发连射，死亡时拒绝。 */

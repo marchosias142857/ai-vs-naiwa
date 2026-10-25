@@ -1,6 +1,7 @@
 import { CHECKPOINT_KEY } from '../../services/profile';
 import { inspectValue, loadValue, removeValue, saveValue } from '../../services/storage';
 import { parseCheckpoint, type FloorCheckpoint } from '../../sim/run/checkpoint';
+import { offerCount } from '../../sim/meta/talents';
 import { object, parseGameSnapshot } from './parseGameSnapshot';
 import { decodeSimSnapshot, type RunSnapshot, type SessionSnapshot, type SimDecoder } from './RunSnapshot';
 import { SAVE_VERSION } from './version';
@@ -44,7 +45,13 @@ export function decodeRun(value: unknown, decodeSim: SimDecoder = decodeSimSnaps
     if (sim.run.phase === 'won' || sim.run.phase === 'lost' || sim.world.playerDied)
       return { kind: 'none', notice: 'corrupt' };
     const game = parseGameSnapshot(value.game, sim);
-    if (!game || sim.run.floor !== entry.floor || sim.rewards.upgrades.join('|') !== entry.upgrades.join('|'))
+    if (
+      !game ||
+      sim.run.floor !== entry.floor ||
+      sim.rewards.upgrades.join('|') !== entry.upgrades.join('|') ||
+      // 候选数由开局天赋决定（ADR 0035）；sim 层只校验上下限。
+      (sim.rewards.offers.length > 0 && sim.rewards.offers.length !== offerCount(entry.talents))
+    )
       return invalid;
     return {
       kind: 'full',

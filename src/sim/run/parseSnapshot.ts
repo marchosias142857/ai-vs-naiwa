@@ -6,6 +6,7 @@ import { CHARACTERS } from '../../data/characters';
 import { DUNGEON } from '../../data/dungeon';
 import { ENEMIES } from '../../data/enemies';
 import { LOOT_RULES } from '../../data/loot';
+import { MAX_OFFER_BONUS } from '../../data/talents';
 import { simSaveFields, type SaveField, type SaveLimits } from '../../data/saveFields';
 import { WEAPONS } from '../../data/weapons';
 import { Random } from '../core/Random';
@@ -71,7 +72,9 @@ export function createSimDecoder(limits: SaveLimits): (value: unknown, seed: num
     if (
       new Set(offers).size !== offers.length ||
       (offers.length &&
-        (offers.length !== LOOT_RULES.upgradeChoices ||
+        // 具体数量由开局天赋决定，与入口存档的交叉检查在 game 层（ADR 0035）。
+        (offers.length < LOOT_RULES.upgradeChoices ||
+          offers.length > LOOT_RULES.upgradeChoices + MAX_OFFER_BONUS ||
           map.rooms[r.roomId]!.kind !== 'exit' ||
           r.phase !== 'exploring'))
     )

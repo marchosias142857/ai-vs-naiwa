@@ -62,6 +62,9 @@ class FakeWorld implements CombatWorld {
   upgrade() {
     return true;
   }
+  applyTalents() {
+    return true;
+  }
   equipWeapon() {
     return true;
   }
