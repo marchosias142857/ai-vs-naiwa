@@ -102,7 +102,7 @@ test('demo：有存档按 Enter 继续且保留检查点，死亡结算与重来
   expect(await page.evaluate(() => window.__AVN__!.demo!.children)).toBe(children);
   await expect(page.locator('#demo-hud')).toHaveCount(1);
   await expect(page.locator('#demo-actions')).toHaveCount(1);
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('avn.profile.v1')!).runs)).toBe(1);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('avn.profile.v2')!).runs)).toBe(1);
   expect(errors).toEqual([]);
 });
 
@@ -238,6 +238,10 @@ test('demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过�
   expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBeNull();
   await padButton(page, 7, false);
   await page.locator('#demo-menu').click();
+  await page.waitForFunction(() => window.__AVN__?.scene === 'Hub');
+  await expect(page.locator('#demo-hud')).toHaveCount(0);
+  await page.keyboard.press('Escape');
+  await page.locator('#pause-menu').click();
   await expect(page.locator('#continue-run')).toBeDisabled();
   await expect(page.locator('#demo-actions')).toHaveCount(0);
   expect(errors).toEqual([]);

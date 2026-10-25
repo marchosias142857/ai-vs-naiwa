@@ -1,3 +1,4 @@
+import { TALENTS } from '../../src/data/talents';
 import { POOL_SIZES } from '../../src/config';
 import { LOOT_RULES } from '../../src/data/loot';
 import { expect, test } from '@playwright/test';
@@ -386,4 +387,45 @@ test('恢复冻结：真实物理和子弹寿命停住；暂停中断重新计�
   expect(after.world.time).toBeGreaterThan(before.world.time);
   expect(after.world.resources.skillRemaining).toBe(0);
   expect(after.world.player!.weaponId).toBe('shotgun_fan');
+});
+
+test('满级天赋四个出口按钮均可选；换层保留 runId 和天赋并完整通关', async ({ page }) => {
+  const talents = Object.fromEntries(Object.entries(TALENTS).map(([id, n]) => [id, n.costs.length]));
+  await page.evaluate(
+    (talents) =>
+      sessionStorage.setItem(
+        'fixture.checkpoint',
+        JSON.stringify({
+          version: 2,
+          seed: 42,
+          runId: 'full-talent-test',
+          talents,
+          floor: 1,
+          upgrades: [],
+          secondary: null,
+          equipped: 'pistol_basic',
+          hp: 9,
+          armor: 7,
+          energy: 250,
+          coins: 3,
+          kills: 0,
+          roomsCleared: 0,
+          elapsed: 0,
+        }),
+      ),
+    talents,
+  );
+  await page.goto(`${url}/demo.html`);
+  await page.waitForFunction(() => window.demoScenario);
+  await page.evaluate(() => window.demoScenario(true));
+  await expect(page.locator('[data-choice]:visible')).toHaveCount(4);
+  await page.locator('[data-choice="3"]').click();
+  expect(await page.evaluate(() => window.floorCheckpoint())).toMatchObject({
+    floor: 2,
+    runId: 'full-talent-test',
+    talents,
+  });
+  const result = await page.evaluate(() => window.demoScenario());
+  expect(result.phase).toBe('won');
+  expect(result.childrenStable).toBe(true);
 });

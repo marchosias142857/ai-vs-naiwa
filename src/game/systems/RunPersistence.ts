@@ -1,5 +1,6 @@
 import type { Scene } from 'phaser';
-import { recordResult } from '../../services/profile';
+import { summarizeRun } from '../../sim/meta/profile';
+import { settleProfile, type Settlement } from '../save/metaProfile';
 import { clearSavedRun, writeSavedRun } from '../save/runStorage';
 import { SAVE_REQUEST } from '../world/combatPause';
 import type { DemoSession } from './DemoSession';
@@ -9,6 +10,7 @@ export class RunPersistence {
   private floor = 0;
   private ended = false;
   saved = true;
+  settlement?: Settlement;
   constructor(
     scene: Scene,
     private readonly session: DemoSession,
@@ -17,11 +19,12 @@ export class RunPersistence {
     scene.events.once('shutdown', () => scene.game.events.off(SAVE_REQUEST, this.save));
   }
   private finish(): void {
-    clearSavedRun();
     if (this.ended) return;
     this.ended = true;
-    const d = this.session.dungeon;
-    recordResult(d.phase === 'won', d.floor, d.kills);
+    const summary = summarizeRun(this.session.runId, this.session.dungeon);
+    if (summary) this.settlement = settleProfile(summary);
+    // 成功先落档案再删冒险；失败保留内存奖励供离开结算后重试，终局仍不可复活。
+    clearSavedRun();
   }
   readonly save = (): void => {
     if (this.session.dungeon.finished || this.ended) {

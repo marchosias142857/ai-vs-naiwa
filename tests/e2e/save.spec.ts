@@ -257,7 +257,9 @@ for (const kind of ['updated', 'invalid', 'corrupt'] as const) {
 }
 
 test('写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次', async ({ page }) => {
-  await start(page, 'plain');
+  await page.goto(`${url}/save.html?scene=Game&seed=42`);
+  await page.waitForFunction(() => !!window.__AVN__?.demo);
+  await page.evaluate(() => history.replaceState(null, '', 'save.html?seed=42'));
   const result = await page.evaluate(() => {
     const previous = localStorage.getItem('avn.run.v2'),
       set = Storage.prototype.setItem;
@@ -281,7 +283,60 @@ test('写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复
     window.saveFixture.save();
   });
   expect(await page.evaluate(() => localStorage.getItem('avn.run.v2'))).toBeNull();
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('avn.profile.v1')!).runs)).toBe(1);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('avn.profile.v2')!).runs)).toBe(1);
   await page.reload();
   await expect(page.locator('#continue-run')).toBeDisabled();
+});
+
+test('结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖', async ({ page }) => {
+  await page.goto(`${url}/save.html?scene=Game&seed=42`);
+  await page.waitForFunction(() => !!window.__AVN__?.demo);
+  await page.evaluate(() => {
+    const set = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (k, v) {
+      if (k === 'avn.profile.v2') {
+        Storage.prototype.setItem = set;
+        throw Error('quota once');
+      }
+      set.call(this, k, v);
+    };
+    window.saveFixture.finish();
+    window.saveFixture.tick(120);
+    window.saveFixture.save();
+  });
+  await expect(page.locator('#talent-reward-status')).toContainText('未保存');
+  await expect(page.locator('#talent-rewards')).toContainText('首次到达新楼层');
+  await expect(page.locator('#talent-rewards')).toContainText('击杀（上限 5 点）');
+  expect(await page.evaluate(() => localStorage.getItem('avn.run.v2'))).toBeNull();
+  expect(await page.evaluate(() => localStorage.getItem('avn.profile.v2'))).toBeNull();
+  await page.locator('#demo-menu').click();
+  await expect(page.locator('#profile-notice')).toContainText('重试成功');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('avn.profile.v2')!))).toMatchObject({
+    runs: 1,
+    earned: 3,
+  });
+  await page.keyboard.press('Escape');
+  await page.locator('#pause-menu').click();
+  await expect(page.locator('#continue-run')).toBeDisabled();
+});
+
+test('指定武器的新局不结算天赋点，续玩保留原冒险 ID', async ({ page }) => {
+  await page.goto(`${url}/save.html?scene=Game&seed=42&weapon=shotgun_fan`);
+  await page.waitForFunction(() => !!window.__AVN__?.demo);
+  expect(await page.evaluate(() => window.__AVN__!.demo!.weapon)).toBe('shotgun_fan');
+  const runId = await page.evaluate(() => window.saveFixture.snapshot().entry.runId);
+  expect(runId).toMatch(/^debug-/);
+  await page.evaluate(() => window.saveFixture.save());
+  await page.goto(`${url}/save.html?seed=42`);
+  await page.locator('#continue-run').click();
+  await page.waitForFunction(() => !!window.__AVN__?.demo);
+  expect(await page.evaluate(() => window.saveFixture.snapshot().entry.runId)).toBe(runId);
+  await page.evaluate(() => {
+    window.saveFixture.finish();
+    window.saveFixture.tick(120);
+    window.saveFixture.save();
+  });
+  await expect(page.locator('#talent-reward-status')).toContainText('调试');
+  expect(await page.evaluate(() => localStorage.getItem('avn.profile.v2'))).toBeNull();
+  expect(await page.evaluate(() => localStorage.getItem('avn.run.v2'))).toBeNull();
 });
