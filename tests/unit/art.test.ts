@@ -8,11 +8,14 @@ import { DOOR_ART, ENEMY_ART, ENVIRONMENT_ART, HERO_ART, HERO_FRAMES, WEAPON_ART
 import { ENEMIES } from '../../src/data/enemies';
 import { MONSTER_TEXTURES, enemyAnimation } from '../../src/data/enemyArt';
 import { WEAPONS } from '../../src/data/weapons';
+import { ARSENAL_SHOT_ART } from '../../src/data/arsenalArt';
+import type { WeaponDef } from '../../src/data/schema';
 import {
   ArtFrameSchema,
   CharacterArtSchema,
   MonsterArtSchema,
   WeaponArtSchema,
+  type WeaponArt,
 } from '../../src/data/schema/art';
 import { CHARACTER_ART, characterTexture } from '../../src/data/characterArt';
 import { CHARACTERS } from '../../src/data/characters';
@@ -26,6 +29,7 @@ const files = [
   'doors',
   'monsters-v1',
   'naiguai-v1',
+  'arsenal-v1',
 ];
 function dimensions(name: string) {
   const file = `public/assets/demo/${name}.png`,
@@ -101,10 +105,16 @@ describe('真实 PNG 图集与持握数据', () => {
       'da-fei-yu-pixel-reactions-v1',
       [...HERO_ART.hurt, ...HERO_ART.death].map((key) => HERO_FRAMES[key].rect),
     );
+    const weaponArt: readonly WeaponArt[] = Object.values(WEAPON_ART);
     inImage(
       'weapons',
-      Object.values(WEAPON_ART).map((f) => f.rect),
+      weaponArt.filter((f) => !f.texture).map((f) => f.rect),
     );
+    // ADR 0031：新武器与弹体在独立图集里。
+    inImage('arsenal-v1', [
+      ...weaponArt.filter((f) => f.texture === 'demo_arsenal').map((f) => f.rect),
+      ...Object.values(ARSENAL_SHOT_ART),
+    ]);
     inImage('enemies', Object.values(ENEMY_ART));
     inImage('environment', Object.values(ENVIRONMENT_ART));
     inImage('doors', Object.values(DOOR_ART));
@@ -155,6 +165,10 @@ describe('真实 PNG 图集与持握数据', () => {
     }
     for (const f of Object.values(WEAPON_ART)) expect(WeaponArtSchema.safeParse(f).success).toBe(true);
     for (const key of Object.keys(WEAPONS)) expect(Object.hasOwn(WEAPON_ART, key)).toBe(true);
+    // 特殊弹体与分裂小弹的贴图都在新武器图集里（ADR 0031）。
+    for (const w of Object.values(WEAPONS) as readonly WeaponDef[])
+      for (const sprite of [w.shot?.sprite, w.shot?.split?.sprite])
+        if (sprite) expect(Object.hasOwn(ARSENAL_SHOT_ART, sprite), sprite).toBe(true);
     // 旧的单张静态图只是逐帧动画缺失时的替补（ADR 0030）。
     for (const key of Object.keys(ENEMIES))
       expect(Object.hasOwn(ENEMY_ART, key) || enemyAnimation(key) !== undefined).toBe(true);

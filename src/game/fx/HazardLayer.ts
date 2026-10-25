@@ -219,7 +219,8 @@ export class HazardLayer {
   private drawTells(m: GameObjects.Graphics): void {
     const pulse = 0.5 + 0.5 * Math.sin(this.time * H.pulseSpeed);
     for (const a of this.sim.actors) {
-      if (a.team !== 'enemy' || a.phase !== 'active') continue;
+      // 冻住的怪物招式暂停，不画预警（ADR 0031）。
+      if (a.team !== 'enemy' || a.phase !== 'active' || a.frozen) continue;
       const def = ENEMIES[a.kind as EnemyId] as Readonly<EnemyDef>;
       const cx = Math.cos(a.aim),
         cy = Math.sin(a.aim);

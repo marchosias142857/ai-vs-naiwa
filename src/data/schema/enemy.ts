@@ -39,6 +39,8 @@ export const EnemyDefSchema = z.strictObject({
   desiredRange: PositiveNumber.optional(),
   /** 掉落倍率：乘在怪物掉落的「有掉落」概率上；分裂出的小怪设 0。默认 1。 */
   loot: Probability.optional(),
+  /** 冰冻叠满时不会被冻住，只保持最大减速（ADR 0031）；Boss 用。 */
+  freezeImmune: z.boolean().optional(),
   /** 冲锋：锁定方向后高速移动。有 trigger 时先追击，距离进入 trigger 才开始蓄力（奶怪的挺肚冲撞）。 */
   dash: z
     .strictObject({

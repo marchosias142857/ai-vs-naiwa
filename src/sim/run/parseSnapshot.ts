@@ -153,9 +153,11 @@ export function createSimDecoder(limits: SaveLimits): (value: unknown, seed: num
         return null;
       const def = defs[b.source]!;
       if ('attack' in def && def.attack !== 'projectile') return null;
+      // 蓄满的子弹带额外穿透（ADR 0031）。
+      const pierce = def.pierce + ((def as WeaponDef).charge?.fullPierce ?? 0);
       if (
-        b.pierceLeft > def.pierce ||
-        b.hitIds.length > def.pierce ||
+        b.pierceLeft > pierce ||
+        b.hitIds.length > pierce ||
         new Set(b.hitIds).size !== b.hitIds.length ||
         b.hitIds.some((id) => id >= w.nextId || id === b.id || id === b.ownerId)
       )
@@ -168,6 +170,7 @@ export function createSimDecoder(limits: SaveLimits): (value: unknown, seed: num
     const bulletIds = new Set(w.bullets.map((b) => b.id));
     if (w.bullets.some((b) => bulletIds.has(b.ownerId) || b.hitIds.some((id) => bulletIds.has(id))))
       return null;
+    if (!validWeaponState(w, ids)) return null;
     if (
       s.loot.slots.some(
         (slot) =>
@@ -180,4 +183,47 @@ export function createSimDecoder(limits: SaveLimits): (value: unknown, seed: num
       return null;
     return s;
   };
+}
+
+/**
+ * 特殊弹体、光束、蓄力、预热、突进与冰冻（ADR 0031）的交叉检查。
+ * `ids` 是已登记的实体与子弹编号，弹体编号不能与它们重复。
+ */
+function validWeaponState(w: Readonly<SimSnapshot['world']>, ids: Set<number>): boolean {
+  const player = w.player!,
+    held = WEAPONS[player.weaponId] as WeaponDef;
+  for (const shot of w.shots) {
+    const def = WEAPONS[shot.source] as WeaponDef;
+    const motion = def.shot?.motion;
+    if (
+      !motion ||
+      ids.has(shot.id) ||
+      shot.id >= w.nextId ||
+      shot.ownerId >= w.nextId ||
+      shot.ownerId === shot.id ||
+      shot.targetId >= w.nextId ||
+      shot.time > shot.life ||
+      shot.pierceLeft > def.pierce + (def.charge?.fullPierce ?? 0) ||
+      shot.bounces > (def.shot?.bounces ?? 0) ||
+      (shot.back && motion !== 'boomerang') ||
+      shot.hitIds.length !== shot.hitTimes.length ||
+      new Set(shot.hitIds).size !== shot.hitIds.length ||
+      shot.hitIds.some((id) => id >= w.nextId || id === shot.ownerId || id === shot.id) ||
+      shot.hitTimes.some((t) => t > shot.time)
+    )
+      return false;
+    ids.add(shot.id);
+    const owner = w.actors.find((a) => a.id === shot.ownerId);
+    if (owner && owner.team !== shot.team) return false;
+  }
+  const beam = w.beam;
+  if (
+    beam.active &&
+    (!(WEAPONS[beam.source] as WeaponDef).beam || player.weaponId !== beam.source || w.playerDied)
+  )
+    return false;
+  if (player.charge > (held.charge?.time ?? 0) || player.spin > (held.spinup?.time ?? 0)) return false;
+  if (w.melee.lunge > 0 && !(WEAPONS[w.melee.weaponId] as WeaponDef).melee?.lunge) return false;
+  const stacks = Math.max(0, ...Object.values(WEAPONS).map((d) => (d as WeaponDef).chill?.stacks ?? 0));
+  return w.actors.every((a) => a.status.stacks <= stacks && (a.status.freeze === 0 || a.status.stacks === 0));
 }

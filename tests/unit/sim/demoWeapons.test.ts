@@ -8,7 +8,7 @@ import { createInputFrame } from '../../../src/sim/core/types';
 it('全部十把武器均可装备和发射，超过池上限不生成或发事件', () => {
   expect(Object.values(WEAPONS).filter((w) => w.attack === 'projectile')).toHaveLength(10);
   for (const id of Object.keys(WEAPONS) as WeaponId[]) {
-    if (WEAPONS[id].attack === 'melee') continue;
+    if (WEAPONS[id].attack !== 'projectile') continue;
     const bus = new EventBus<GameEvents>(),
       world = createCombatWorld({ seed: 1, bus, maxBullets: 1 });
     world.spawnPlayer('ai_proto', 0, 0);

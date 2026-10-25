@@ -1,3 +1,4 @@
+import { ARSENAL_WEAPON_ART } from './arsenalArt';
 import type { ArtFrame, WeaponArt } from './schema/art';
 
 /** 负责人动作参考的临时可调标注；像素坐标相对各帧左上角，不依赖动画帧率。 */
@@ -111,6 +112,8 @@ export const WEAPON_ART = {
     muzzle: { x: 233, y: -18.5 },
     scale: 0.065,
   },
+  // 新武器图集（ADR 0031）。
+  ...ARSENAL_WEAPON_ART,
 } as const satisfies Record<string, WeaponArt>;
 
 export const ENEMY_ART = {

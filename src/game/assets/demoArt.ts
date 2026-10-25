@@ -1,6 +1,9 @@
 import type { Scene } from 'phaser';
 import { Textures } from 'phaser';
 import { DOOR_ART, ENEMY_ART, ENVIRONMENT_ART, WEAPON_ART } from '../../data/art';
+import { ARSENAL_SHOT_ART } from '../../data/arsenalArt';
+import type { WeaponArt } from '../../data/schema/art';
+import type { WeaponId } from '../../data/weapons';
 import { CHARACTER_ART, DEFAULT_CHARACTER_ART, characterTexture } from '../../data/characterArt';
 import { ENEMIES } from '../../data/enemies';
 import { MONSTER_TEXTURES, enemyAnimation, monsterFrame } from '../../data/enemyArt';
@@ -8,11 +11,16 @@ import { MONSTER_TEXTURES, enemyAnimation, monsterFrame } from '../../data/enemy
 export const ART = {
   hero: DEFAULT_CHARACTER_ART.texture,
   weapons: 'demo_weapons',
+  arsenal: 'demo_arsenal',
   enemies: 'demo_enemies',
   environment: 'demo_environment',
   title: 'demo_title',
   doors: 'demo_doors',
 } as const;
+/** 武器所在的图集：原武器在 `demo_weapons`，ADR 0031 的新武器在 `demo_arsenal`。 */
+export function weaponTexture(id: WeaponId): string {
+  return (WEAPON_ART[id] as WeaponArt).texture ?? ART.weapons;
+}
 /** 命名帧只切 Texture 坐标，不复制图片像素；全部图集进入 PWA 预缓存。 */
 export function preloadDemoArt(scene: Scene): void {
   const base = `${import.meta.env.BASE_URL}assets/demo/`;
@@ -22,6 +30,7 @@ export function preloadDemoArt(scene: Scene): void {
       scene.load.image(art.reactionTexture, `${base}${art.reactionSource}`);
   }
   scene.load.image(ART.weapons, `${base}weapons.png`);
+  scene.load.image(ART.arsenal, `${base}arsenal-v1.png`);
   scene.load.image(ART.enemies, `${base}enemies.png`);
   scene.load.image(ART.environment, `${base}environment.png`);
   scene.load.image(ART.title, `${base}title-confrontation-v1.webp`);
@@ -33,7 +42,7 @@ export function preloadDemoArt(scene: Scene): void {
 }
 export function installDemoArt(scene: Scene): void {
   // 仅游戏图集保留像素边缘；画布与文字仍按完整渲染分辨率绘制。
-  for (const key of [ART.weapons, ART.enemies, ART.environment, ART.doors, ART.title])
+  for (const key of [ART.weapons, ART.arsenal, ART.enemies, ART.environment, ART.doors, ART.title])
     if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Textures.FilterMode.NEAREST);
   const add = (atlas: string, name: string, rect: readonly [number, number, number, number]) => {
     if (scene.textures.exists(atlas) && !scene.textures.get(atlas).has(name))
@@ -46,7 +55,8 @@ export function installDemoArt(scene: Scene): void {
       for (const name of art[action]) add(characterTexture(art, action), name, art.frames[name]!.rect);
     if (art.face) add(art.texture, art.face.frame, art.face.rect);
   }
-  for (const [name, f] of Object.entries(WEAPON_ART)) add(ART.weapons, name, f.rect);
+  for (const [name, f] of Object.entries(WEAPON_ART)) add(weaponTexture(name as WeaponId), name, f.rect);
+  for (const [name, rect] of Object.entries(ARSENAL_SHOT_ART)) add(ART.arsenal, name, rect);
   for (const [name, rect] of Object.entries(ENEMY_ART)) add(ART.enemies, name, rect);
   for (const [name, rect] of Object.entries(ENVIRONMENT_ART)) add(ART.environment, name, rect);
   for (const [name, rect] of Object.entries(DOOR_ART)) add(ART.doors, name, rect);

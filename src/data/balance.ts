@@ -18,4 +18,6 @@ export const BALANCE = {
   /** 同时存在的区域（毒气、奶潭）与天降石块上限（ADR 0030）。 */
   zoneCapacity: 24,
   rockCapacity: 12,
+  /** 同时存在的特殊弹体上限（ADR 0031）；加特林满速约 12 发同时在飞。 */
+  shotCapacity: 64,
 } as const satisfies BalanceDef;

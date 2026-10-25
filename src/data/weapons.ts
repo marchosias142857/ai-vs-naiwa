@@ -1,3 +1,4 @@
+import { ARSENAL_WEAPONS } from './arsenal';
 import type { WeaponDef } from './schema';
 
 /** 武器。手感参照「元气骑士」的初始手枪（负责人确认的 M1 参照对象）。 */
@@ -155,6 +156,8 @@ export const WEAPONS = {
     knockback: 22,
     melee: { range: 25, arcDegrees: 150, duration: 0.3, cooldown: 0.8 },
   },
+  // 特殊弹体、光束、蓄力、预热与突进近战（ADR 0031）。
+  ...ARSENAL_WEAPONS,
 } as const satisfies Record<string, WeaponDef>;
 
 export type WeaponId = keyof typeof WEAPONS;

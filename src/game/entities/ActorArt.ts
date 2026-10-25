@@ -7,7 +7,7 @@ import { PRESENTATION as P } from '../../data/presentation';
 import { WEAPONS } from '../../data/weapons';
 import type { WeaponDef } from '../../data/schema';
 import type { CombatWorld } from '../../sim/combat/api';
-import { ART } from '../assets/demoArt';
+import { ART, weaponTexture } from '../assets/demoArt';
 import type { CombatActors } from './CombatActors';
 import { frameAt } from './artPose';
 import { settings } from '../../services/settings';
@@ -185,7 +185,7 @@ export class ActorArt {
       }
       const up = Math.sin(angle) < -Math.cos((character.behindUpDegrees * Math.PI) / 180);
       this.weapon
-        .setTexture(ART.weapons, id)
+        .setTexture(weaponTexture(id), id)
         .setVisible(true)
         .setPosition(
           // 先将源图握持点归一到朝右，再按武器朝向镜像；身体可独立朝走路方向。

@@ -19,6 +19,8 @@ const ACTOR_DEFAULTS = {
   lift: 0,
   aim: 0,
   move: 'none' as const,
+  chill: 0,
+  frozen: false,
 };
 
 /** 只实现导演用到的部分：生成、查询、阶段。 */

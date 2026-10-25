@@ -137,6 +137,8 @@ describe('保持距离与炮台的移动', () => {
     lift: 0,
     aim: 0,
     move: 'none',
+    chill: 0,
+    frozen: false,
   });
   const target: ActorView = { ...view('naiwa_chaser', 0, 0), id: 1, team: 'player', kind: 'ai_proto' };
   const velocity = (kind: EnemyId, x: number) => {

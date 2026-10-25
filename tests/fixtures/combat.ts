@@ -15,6 +15,17 @@ class FakeWorld implements CombatWorld {
   playerBodyFacing = 0;
   readonly zones = [];
   readonly rocks = [];
+  readonly shots = [];
+  readonly beam = {
+    active: false,
+    source: 'pistol_basic' as const,
+    x: 0,
+    y: 0,
+    angle: 0,
+    length: 0,
+    width: 0,
+  };
+  readonly charge = 0;
   clearHazards() {}
   readonly melee = {
     active: false,
@@ -24,6 +35,7 @@ class FakeWorld implements CombatWorld {
     duration: 0,
     damage: 0,
     hitIds: [],
+    lunge: 0,
   };
 
   weaponId = 'pistol_basic' as const;
@@ -92,6 +104,8 @@ class FakeWorld implements CombatWorld {
       lift: 0,
       aim: 0,
       move: 'none',
+      chill: 0,
+      frozen: false,
     });
     return id;
   }

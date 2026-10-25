@@ -1,3 +1,4 @@
+import { SHOT_HIT_SLOTS } from './arsenal';
 import { ATTACKS } from './attacks';
 import { BALANCE } from './balance';
 import { CHARACTERS } from './characters';
@@ -32,6 +33,8 @@ const signed = number(),
   bool = oneOf(true, false);
 const weapon = oneOf(...Object.keys(WEAPONS)),
   upgrade = oneOf(...Object.keys(UPGRADES));
+/** 带特殊弹体的武器（ADR 0031）。 */
+const shotWeapon = oneOf(...Object.entries(WEAPONS).flatMap(([id, w]) => ('shot' in w ? [id] : [])));
 const floor = number(1, DUNGEON.floors + 1, true),
   room = number(0, DUNGEON.gridSize ** 2 - 1, true);
 const vec = object({ x: signed, y: signed });
@@ -54,6 +57,7 @@ export function simSaveFields(limits: SaveLimits): SaveField {
         duration: nonnegative,
         damage: nonnegative,
         hitIds: array(id, limits.actors),
+        lunge: nonnegative,
       }),
       time: nonnegative,
       nextId: id,
@@ -66,6 +70,8 @@ export function simSaveFields(limits: SaveLimits): SaveField {
           cooldown: nonnegative,
           burstLeft: number(0, Math.max(...Object.values(WEAPONS).map((w) => w.pellets)), true),
           burstWait: nonnegative,
+          charge: nonnegative,
+          spin: nonnegative,
           maxSpeed: positive,
           accelTime: positive,
           decelTime: positive,
@@ -89,7 +95,7 @@ export function simSaveFields(limits: SaveLimits): SaveField {
         safeTime: nonnegative,
         regenTime: number(0, PLAYER_RULES.armorInterval),
       }),
-      rng: object({ spread: rng, crit: rng, ai: rng }),
+      rng: object({ spread: rng, crit: rng, ai: rng, shot: rng }),
       actors: array(
         object({
           id,
@@ -157,6 +163,7 @@ export function simSaveFields(limits: SaveLimits): SaveField {
           aim: signed,
           move: oneOf('none', 'dash', 'hop', 'lash', 'summon', 'fuse', 'burrow', 'spin', 'bump', 'rain'),
           parentId: count,
+          status: object({ stacks: count, per: number(0, 1), time: nonnegative, freeze: nonnegative }),
         }),
         limits.actors,
       ),
@@ -206,6 +213,44 @@ export function simSaveFields(limits: SaveLimits): SaveField {
         }),
         BALANCE.rockCapacity,
       ),
+      shots: array(
+        object({
+          id,
+          team: oneOf('player', 'enemy'),
+          ownerId: id,
+          source: shotWeapon,
+          child: bool,
+          x: signed,
+          y: signed,
+          vx: signed,
+          vy: signed,
+          speed: nonnegative,
+          radius: positive,
+          angle: signed,
+          time: nonnegative,
+          life: positive,
+          damage: nonnegative,
+          pierceLeft: count,
+          bounces: count,
+          back: bool,
+          targetId: count,
+          seek: signed,
+          hitIds: array(id, SHOT_HIT_SLOTS),
+          hitTimes: array(nonnegative, SHOT_HIT_SLOTS),
+        }),
+        BALANCE.shotCapacity,
+      ),
+      beam: object({
+        active: bool,
+        source: weapon,
+        x: signed,
+        y: signed,
+        angle: signed,
+        length: nonnegative,
+        width: nonnegative,
+        wait: signed,
+        cost: signed,
+      }),
     }),
     run: object({
       floor,

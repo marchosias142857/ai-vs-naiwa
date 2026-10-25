@@ -10,11 +10,14 @@ import {
 } from '../../data/enemyArt';
 import type { ActorView } from '../../sim/combat/api';
 import { settings } from '../../services/settings';
+import { WEAPON_FX } from '../fx/weaponParams';
 
 interface PoseClock {
   id: number;
   action: string;
   since: number;
+  /** 上一次绘制时的 sim 时间；冻住期间动画时钟跟着平移，画面停在当前帧（ADR 0031）。 */
+  last: number;
 }
 
 /**
@@ -26,7 +29,7 @@ export class EnemyArt {
   private zoom = 1;
 
   constructor(slots: number) {
-    for (let i = 0; i < slots; i++) this.clocks.push({ id: 0, action: '', since: 0 });
+    for (let i = 0; i < slots; i++) this.clocks.push({ id: 0, action: '', since: 0, last: 0 });
   }
 
   /**
@@ -52,7 +55,8 @@ export class EnemyArt {
       clock.id = a.id;
       clock.action = action;
       clock.since = time;
-    }
+    } else if (a.frozen) clock.since += time - clock.last;
+    clock.last = time;
     const frames = anim.art.frames[action]!;
     const seconds = anim.art.seconds[action] ?? 0.1;
     let frame: number;
@@ -118,6 +122,8 @@ export class EnemyArt {
       .setScale(art.scale * sx, art.scale * sy)
       .setAlpha(alpha * (a.invulnerable ? 0.65 : 1));
     if (white && settings.flashes) image.setTint(0xffffff).setTintMode(TintModes.FILL);
+    else if (a.frozen) image.setTint(WEAPON_FX.frozenTint).setTintMode(TintModes.MULTIPLY);
+    else if (a.chill > 0) image.setTint(chillTint(a.chill)).setTintMode(TintModes.MULTIPLY);
     else image.clearTint().setTintMode(TintModes.MULTIPLY);
     // 帧左上角对齐渲染像素，像素块不抖。
     const left = ox * art.scale * sx,
@@ -130,6 +136,14 @@ export class EnemyArt {
     );
     return true;
   }
+}
+
+/** 减速越多越蓝：白色按减速比例混向冰蓝。 */
+function chillTint(chill: number): number {
+  const c = WEAPON_FX.chillTint,
+    k = Math.min(1, chill / WEAPON_FX.chillFull);
+  const mixChannel = (shift: number) => Math.round(255 + (((c >> shift) & 0xff) - 255) * k) << shift;
+  return mixChannel(16) | mixChannel(8) | mixChannel(0);
 }
 
 function pick(anim: EnemyAnimation, wanted: string): string {

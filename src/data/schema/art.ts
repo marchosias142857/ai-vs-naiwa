@@ -28,6 +28,8 @@ export const CharacterArtSchema = z.strictObject({
   death: z.array(z.string()).min(1).readonly(),
 });
 export const WeaponArtSchema = z.strictObject({
+  /** 所在图集；不填为原武器图集 `demo_weapons`，新武器在 `demo_arsenal`（ADR 0031）。 */
+  texture: z.enum(['demo_weapons', 'demo_arsenal']).optional(),
   rect: ArtFrameSchema.shape.rect,
   grip: point,
   /** 相对握把的源图像素偏移；乘 scale 才是 sim 的游戏像素。 */

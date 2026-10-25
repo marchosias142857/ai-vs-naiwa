@@ -60,6 +60,8 @@ const registry = new Map<FirePatternId, FirePattern>([
   ['burst', single],
   // 近战由 CombatWorld 锁步结算，绝不向子弹池写入。
   ['melee_arc', () => {}],
+  // 光束由 Arsenal 每步结算（ADR 0031），同样不生成子弹。
+  ['beam', () => {}],
 ]);
 
 /** 注册弹道（M3 起加入其余模式）。重复注册会报错，防止两处代码互相覆盖。 */

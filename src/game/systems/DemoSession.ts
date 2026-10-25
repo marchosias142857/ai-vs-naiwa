@@ -1,6 +1,7 @@
 import type { FloorCheckpoint } from '../../sim/run/checkpoint';
 import { CombatFeedback } from '../fx/CombatFeedback';
 import { HazardLayer } from '../fx/HazardLayer';
+import { WeaponFx } from '../fx/WeaponFx';
 import { Physics, Scenes } from 'phaser';
 import type { Scene } from 'phaser';
 import { POOL_SIZES } from '../../config';
@@ -36,6 +37,7 @@ export class DemoSession {
   readonly arena: RoomArena;
   readonly fx: CombatFeedback;
   readonly hazards: HazardLayer;
+  private readonly weaponFx: WeaponFx;
   readonly pause: PauseState;
   readonly rewards: RunRewards;
   private entry!: FloorCheckpoint;
@@ -90,6 +92,7 @@ export class DemoSession {
     this.arena = new RoomArena(scene, this.bridge);
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, bus);
     this.hazards = new HazardLayer(scene, this.sim, this.bridge, bus);
+    this.weaponFx = new WeaponFx(scene, this.sim, bus);
     this.dungeon = restored
       ? DungeonRun.restore(seed, bus, restored.sim.run)
       : new DungeonRun(seed, bus, checkpoint?.floor);
@@ -303,6 +306,7 @@ export class DemoSession {
     this.publishPosition();
     this.fx.update();
     this.hazards.update();
+    this.weaponFx.update();
     if (this.drawnRevision !== this.dungeon.revision) {
       this.arena.draw(this.dungeon);
       this.drawnRevision = this.dungeon.revision;
