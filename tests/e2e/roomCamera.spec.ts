@@ -1,10 +1,17 @@
 import { expect, test } from '@playwright/test';
 import { GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
 import { GRAYBOX_BOUNDS as B } from '../../src/game/world/graybox';
+import type { DemoProbe } from '../../src/game/testHooks';
 import { worldToScreen } from './helpers/camera';
 import { startAdventure } from './helpers/town';
 
-test('不同横屏尺寸下地图铺满画布，状态条与触控覆盖在画面内', async ({ page, isMobile }, info) => {
+function expectCentered(p: DemoProbe): void {
+  const c = p.camera;
+  expect(Math.abs((p.x - c.scrollX) * c.zoom - c.width / 2)).toBeLessThanOrEqual(0.51);
+  expect(Math.abs((p.y - c.scrollY) * c.zoom - c.height / 2)).toBeLessThanOrEqual(0.51);
+}
+
+test('不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内', async ({ page, isMobile }, info) => {
   await page.goto('/?scene=Game&seed=42&god=1');
   await page.waitForFunction(() => (window.__AVN__?.demo?.camera.zoom ?? 0) >= 6);
   await page.locator('.demo-map-toggle').click();
@@ -31,6 +38,7 @@ test('不同横屏尺寸下地图铺满画布，状态条与触控覆盖在画�
       })
       .toBeLessThan(1);
     const c = await page.evaluate(() => window.__AVN__!.demo!.camera);
+    expectCentered(await page.evaluate(() => window.__AVN__!.demo!));
     const box = (await page.locator('#game canvas').boundingBox())!;
     const s = box.height / (GAME_HEIGHT * RENDER_SCALE);
     const view = {
@@ -66,6 +74,76 @@ test('不同横屏尺寸下地图铺满画布，状态条与触控覆盖在画�
   await page.locator('#pause-menu').click();
   await expect(page.locator('#start-run')).toBeVisible();
   await expect(page.locator('#game canvas')).toHaveAttribute('width', '1920');
+});
+
+test('真实移动到四个墙角时人物持续居中，房间外露出黑色背景', async ({ page }, info) => {
+  test.setTimeout(120_000);
+  const measurements = [];
+  for (const [name, dx, dy] of [
+    ['north-west', -1, -1],
+    ['north-east', 1, -1],
+    ['south-west', -1, 1],
+    ['south-east', 1, 1],
+  ] as const) {
+    await page.goto('/?scene=Game&seed=42&god=1');
+    await page.waitForFunction(() => (window.__AVN__?.demo?.camera.zoom ?? 0) >= 6);
+    // 对角走向墙角，不穿过四边中央的门；只发送真实移动输入，不写 sim 坐标。
+    const result = await page.evaluate(
+      ({ dx, dy, bounds }) =>
+        new Promise<{ maxError: number; samples: number; state: DemoProbe }>((resolve, reject) => {
+          const keys = [dx < 0 ? 'KeyA' : 'KeyD', dy < 0 ? 'KeyW' : 'KeyS'];
+          const start = window.__AVN__!.demo!;
+          let lastX = start.x,
+            lastY = start.y,
+            stableSince = start.time,
+            maxError = 0,
+            samples = 0;
+          const deadline = performance.now() + 25_000;
+          const release = () =>
+            keys.forEach((code) => window.dispatchEvent(new KeyboardEvent('keyup', { code })));
+          keys.forEach((code) => window.dispatchEvent(new KeyboardEvent('keydown', { code })));
+          const sample = () => {
+            const d = window.__AVN__!.demo!,
+              c = d.camera;
+            maxError = Math.max(
+              maxError,
+              Math.abs((d.x - c.scrollX) * c.zoom - c.width / 2),
+              Math.abs((d.y - c.scrollY) * c.zoom - c.height / 2),
+            );
+            samples++;
+            if (d.x !== lastX || d.y !== lastY) stableSince = d.time;
+            lastX = d.x;
+            lastY = d.y;
+            const atCorner =
+              (dx < 0 ? d.x <= bounds.x + 16 : d.x >= bounds.x + bounds.width - 16) &&
+              (dy < 0 ? d.y <= bounds.y + 16 : d.y >= bounds.y + bounds.height - 16);
+            if (d.room !== start.room || performance.now() > deadline) {
+              release();
+              reject(new Error(`未在原房间走到墙角：${d.room}, ${d.x}, ${d.y}`));
+            } else if (atCorner && d.time - stableSince >= 0.2) {
+              release();
+              resolve({ maxError, samples, state: d });
+            } else requestAnimationFrame(sample);
+          };
+          requestAnimationFrame(sample);
+        }),
+      { dx, dy, bounds: B },
+    );
+    expect(result.samples).toBeGreaterThan(10);
+    expect(result.maxError).toBeLessThanOrEqual(0.51);
+    expectCentered(result.state);
+    const box = (await page.locator('#game canvas').boundingBox())!;
+    const backgroundPoint = {
+      x: Math.round(box.x + box.width * (dx < 0 ? 0.28 : 0.72)),
+      y: Math.round(box.y + box.height * (dy < 0 ? 0.4 : 0.6)),
+    };
+    measurements.push({ name, ...result, backgroundPoint });
+    await page.screenshot({ path: info.outputPath(`edge-${name}.png`), scale: 'css' });
+  }
+  await info.attach('centered-camera-edges', {
+    body: JSON.stringify(measurements, null, 2),
+    contentType: 'application/json',
+  });
 });
 
 test('跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围', async ({ page }, info) => {
@@ -113,6 +191,7 @@ test('跟随真实移动，接近门时完整显示门口，切房后玩家仍�
     )
     .toBe(true);
   const near = await page.evaluate(() => window.__AVN__!.demo!);
+  expectCentered(near);
   expect(
     Math.hypot(near.camera.scrollX - initial.camera.scrollX, near.camera.scrollY - initial.camera.scrollY),
   ).toBeGreaterThan(1);
@@ -121,6 +200,7 @@ test('跟随真实移动，接近门时完整显示门口，切房后玩家仍�
   await page.waitForFunction((room) => window.__AVN__!.demo!.room !== room, initial.room);
   await page.keyboard.up(key);
   const next = await page.evaluate(() => window.__AVN__!.demo!);
+  expectCentered(next);
   expect(next.x).toBeGreaterThan(next.camera.scrollX);
   expect(next.x).toBeLessThan(next.camera.scrollX + next.camera.width / next.camera.zoom);
   expect(next.y).toBeGreaterThan(next.camera.scrollY);
