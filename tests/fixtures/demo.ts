@@ -14,7 +14,8 @@ import { createInputFrame } from '../../src/sim/core/types';
 import { BALANCE } from '../../src/data/balance';
 import { DUNGEON } from '../../src/data/dungeon';
 import { doorStage, ROOM_CENTER, walkTo } from './route';
-import { fxBudget, FX_LIMITS } from '../../src/game/fx/FxBudget';
+import { fxBudget } from '../../src/game/fx/FxBudget';
+import { FX_LIMITS } from '../../src/game/fx/params';
 import { IMPACT_TEXTURE } from '../../src/game/fx/impactTexture';
 
 class DemoHarness extends Scene {

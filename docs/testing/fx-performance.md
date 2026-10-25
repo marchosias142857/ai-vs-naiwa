@@ -41,6 +41,17 @@
 
 环境：Node 24.22.1（仓库 `.nvmrc` 仍为 22，未修改）、项目锁文件依赖、Chromium 软件渲染（复用的运行目录名为 Chromium 153，实际自动化浏览器 UA 为 Chrome 156）。测试运行器使用外部配置指定可用 Chromium，项目未新增依赖。远端 CI 通过只读接口核实为 `disabled_manually`，未启用或触发；GitHub Pages 工作流保留。
 
+## PR #96 交叉评审跟进
+
+Claude 已评审 `ccba1b6`，确认无阻塞问题。随后处理三条非阻塞建议：调试面板从屏外的 x=380 移到固定左侧 x=6；将 `FX_LIMITS` 与 32 世界像素的 `FX_CULL_MARGIN` 集中到 `game/fx/params.ts`，数值不变；ADR 0033 说明换房瞬移当步可能省略一帧装饰，保持原时序。另外将 AGENTS.md 的分支保护措辞改为「对方的分支」，删除多余空格。
+
+- `npm run check` 再次全通过：49 个测试文件、359 项单测，以及格式、ESLint、类型、生产构建。
+- 定向 e2e：桌面与 Pixel 7 横屏，2 workers、0 retries，**14 项通过、0 失败、0 跳过**。`debug.spec.ts` 全部 4 项 × 2（新增正式地牢面板文字、开火计数、镜头跟随与横屏扩宽后的可见范围检查）；`entities.spec.ts` 的瞬时反馈池及装饰事件风暴各 × 2；`fxRender.spec.ts` 的 ABAB 对照 × 2。
+- 新面板测试先在桌面缩窄窗口时错误等待内部画布宽度缩小；项目保留 1920 像素最小宽度，因此改为横屏扩宽后重新跑完上述 14 项。实际截图确认特效计数已出现在画面内。
+- 本轮恢复了独立的 Chromium 153.0.8010.0 软件渲染测试运行器，Node 24.22.1；项目依赖与锁文件未改。没有重跑完整 e2e 或 WebKit，前文完整回归的环境限制仍保留；没有启用或触发远端 CI。
+
+复现范围：`npm run test:e2e -- tests/e2e/debug.spec.ts tests/e2e/entities.spec.ts tests/e2e/fxRender.spec.ts --grep '调试|god=1|瞬时反馈池|装饰事件风暴|100 火花' --project=desktop --project=mobile-landscape --workers=2 --retries=0`。
+
 ## 后续扩展约束
 
 新增装饰粒子应复用纹理、固定容量槽位并接入分类预算；大面积透明效果与全屏后处理仍须检查填充率。新增玩法预警/弹体不可通过装饰预算省略。按相同设备、分辨率、怪物/弹体/特效负载比较帧时、draw call 和内存；这是本轮为扩展建立的约束，不承诺任意复杂度的未来特效都不会卡顿。

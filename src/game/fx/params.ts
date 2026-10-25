@@ -1,5 +1,10 @@
 import { COLORS } from '../../config';
 
+/** 每渲染帧的装饰生成额度，不影响危险预警、弹体、光束和碰撞。 */
+export const FX_LIMITS = { spark: 48, burst: 16, chain: 16 } as const;
+/** 世界像素；保留普通镜头跟随的余量，不保证覆盖换房瞬移。 */
+export const FX_CULL_MARGIN = 32;
+
 /** 输入控件的 CSS 像素尺寸；绘制与命中判定必须共用。 */
 export const INPUT_UI = {
   look: {

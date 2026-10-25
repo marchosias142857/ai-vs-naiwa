@@ -27,11 +27,49 @@ async function aroundPlayer(page: Page) {
   return page.screenshot({ clip: { x, y, width: size, height: size } });
 }
 
+test('正式地牢调试面板：特效计数可见，跟随与横屏缩放后仍完整留在画布内', async ({ page }, info) => {
+  await page.goto('/?scene=Game&seed=42&god=1&debug=1');
+  await until(page, () => !!window.__AVN__?.demo && !!window.__AVN__?.debug?.panel.text);
+  const assertPanel = async () => {
+    const state = await page.evaluate(() => ({
+      panel: window.__AVN__!.debug!.panel,
+      camera: window.__AVN__!.demo!.camera,
+    }));
+    const { panel, camera } = state;
+    expect(panel.text).toMatch(/fx admitted \d+ · limited \d+ · offscreen \d+/);
+    expect(panel.x).toBeGreaterThanOrEqual(0);
+    expect(panel.y).toBeGreaterThanOrEqual(0);
+    expect(panel.x + panel.width).toBeLessThanOrEqual(camera.width / camera.zoom);
+    expect(panel.y + panel.height).toBeLessThanOrEqual(camera.height / camera.zoom);
+    return state;
+  };
+  const initial = await assertPanel();
+  const canvas = (await page.locator('#game canvas').boundingBox())!;
+  await page.mouse.move(canvas.x + canvas.width * 0.7, canvas.y + canvas.height * 0.5);
+  await page.mouse.down();
+  await until(page, () => /fx admitted [1-9]\d*/.test(window.__AVN__!.debug!.panel.text));
+  await page.mouse.up();
+  const x = await page.evaluate(() => window.__AVN__!.demo!.x);
+  await page.keyboard.down('d');
+  await page.waitForFunction((before) => window.__AVN__!.demo!.x > before + 20, x);
+  await page.keyboard.up('d');
+  const moved = await assertPanel();
+  expect(moved.panel.x).toBe(initial.panel.x);
+  expect(moved.panel.y).toBe(initial.panel.y);
+  await page.screenshot({ path: info.outputPath('debug-fx-panel.png') });
+  const viewport = page.viewportSize()!;
+  // 世界画布至少 1920 像素；扩大横屏宽度才能在桌面也触发相机尺寸变化。
+  await page.setViewportSize({ width: viewport.width + 120, height: viewport.height });
+  await page.waitForFunction((width) => window.__AVN__!.demo!.camera.width !== width, moved.camera.width);
+  await assertPanel();
+  await page.screenshot({ path: info.outputPath('debug-fx-panel-resized.png') });
+});
+
 test('调试模式：F1 切换碰撞框，F2 清房', async ({ page }) => {
   const errors = collectErrors(page);
   await page.goto('/?scene=Game&room=arena&seed=42&debug=1');
   await until(page, () => !!window.__AVN__?.combat && !!window.__AVN__.debug);
-  expect(await page.evaluate(() => window.__AVN__!.debug)).toEqual({ hitboxes: false, godMode: false });
+  expect(await page.evaluate(() => window.__AVN__!.debug)).toMatchObject({ hitboxes: false, godMode: false });
 
   // 开局还没刷怪、玩家不动：开关碰撞框前后的画面只差碰撞框本身。
   await nextFrames(page);

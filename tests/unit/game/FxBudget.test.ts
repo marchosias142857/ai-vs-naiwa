@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { FX_LIMITS, FxBudget } from '../../../src/game/fx/FxBudget';
+import { FxBudget } from '../../../src/game/fx/FxBudget';
+import { FX_LIMITS } from '../../../src/game/fx/params';
 
 const view = {
   scrollX: 100,

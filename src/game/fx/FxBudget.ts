@@ -1,7 +1,6 @@
 import type { Scene } from 'phaser';
+import { FX_CULL_MARGIN, FX_LIMITS } from './params';
 
-/** 每个渲染帧的装饰性生成预算；危险预警、弹体、光束和碰撞不经过这里。 */
-export const FX_LIMITS = { spark: 48, burst: 16, chain: 16 } as const;
 type Kind = keyof typeof FX_LIMITS;
 interface View {
   scrollX: number;
@@ -24,7 +23,7 @@ export class FxBudget {
   readonly beginFrame = (): void => {
     this.used.spark = this.used.burst = this.used.chain = 0;
   };
-  /** 只判定装饰范围；额外保留 32 世界像素，覆盖镜头跟随的一帧延迟。 */
+  /** 只判定装饰范围；留量覆盖普通跟随延迟，换房瞬移的边界见 ADR 0033。 */
   visible(view: View, x: number, y: number, radius: number): boolean {
     // Phaser 4.1 的 worldView 按中心原点计算；项目相机原点为 (0,0)，不能直接复用它。
     // 旋转相机不做装饰剔除，避免错误的轴对齐范围隐藏可见反馈。
@@ -33,7 +32,7 @@ export class FxBudget {
       height = view.height / view.zoomY;
     const left = view.scrollX + (view.width - width) * view.originX;
     const top = view.scrollY + (view.height - height) * view.originY;
-    const r = radius + 32;
+    const r = radius + FX_CULL_MARGIN;
     return x + r >= left && x - r <= left + width && y + r >= top && y - r <= top + height;
   }
 

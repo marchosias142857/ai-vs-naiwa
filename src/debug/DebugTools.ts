@@ -46,7 +46,7 @@ export class DebugTools {
     this.effects = fxBudget(scene);
     // 放在左上角标题下方：右上角是暂停键，左下和右下是触屏摇杆与射击键。
     this.panel = scene.add
-      .text(run.fx ? 380 : PANEL_X, run.fx ? 50 : PANEL_Y, '', textStyle(run.fx ? 5 : 8, COLORS.accent))
+      .text(PANEL_X, run.fx ? 50 : PANEL_Y, '', textStyle(run.fx ? 5 : 8, COLORS.accent))
       .setScrollFactor(0)
       .setDepth(DEPTH.hud);
     this.applyHitboxes();
@@ -55,7 +55,17 @@ export class DebugTools {
       this.abort.abort();
       setDebugProbe(undefined);
     });
-    setDebugProbe(() => ({ hitboxes: showHitboxes, godMode: this.info.godMode }));
+    setDebugProbe(() => ({
+      hitboxes: showHitboxes,
+      godMode: this.info.godMode,
+      panel: {
+        x: this.panel.x,
+        y: this.panel.y,
+        width: this.panel.width,
+        height: this.panel.height,
+        text: this.panel.text,
+      },
+    }));
   }
 
   /** 由战斗场景 update 调用（早于 Arcade 在 POST_UPDATE 画碰撞框）；`deltaMs` 为毫秒。 */
