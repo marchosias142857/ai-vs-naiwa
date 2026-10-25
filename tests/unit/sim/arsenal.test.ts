@@ -407,4 +407,57 @@ describe('存档', () => {
     }
     expect(copy.world.save()).toEqual(t.world.save());
   });
+
+  it('弹体池前面有空槽时存档，分裂出的小弹落在原来的槽位，恢复后继续一致（GPT 复现的场景）', () => {
+    const bus = new EventBus<GameEvents>();
+    const world = createCombatWorld({ seed: 17, bus });
+    world.spawnPlayer('ai_proto', 50, 100);
+    const input = createInputFrame();
+    input.aim = { x: 1, y: 0 };
+    const run = (w: CombatWorld, n: number) => {
+      for (let i = 0; i < n; i++) for (const b of w.step(DT, input).bulletSpawns) w.releaseBullet(b.id);
+    };
+    world.takeWeapon('octo_bazooka');
+    input.fire = true;
+    run(world, 1);
+    input.fire = false;
+    run(world, 68);
+    world.takeWeapon('urchin_mortar');
+    input.fire = true;
+    run(world, 1);
+    input.fire = false;
+    run(world, 29);
+    // 火箭已经到期，槽位 0 空着，榴弹还在槽位 1。
+    expect(world.shots[0]!.active).toBe(false);
+    expect(world.shots[1]!.active).toBe(true);
+    const copy = createCombatWorld({ seed: 17, bus: new EventBus<GameEvents>() });
+    copy.load(JSON.parse(JSON.stringify(world.save())) as ReturnType<CombatWorld['save']>);
+    expect(copy.shots.map((s) => s.active)).toEqual(world.shots.map((s) => s.active));
+    expect(copy.save()).toEqual(world.save());
+    run(world, 8);
+    run(copy, 8);
+    expect(copy.save()).toEqual(world.save());
+  });
+
+  it('区域池前面有空槽时存档，恢复到原来的槽位（ADR 0030 的毒气同理）', () => {
+    const t = setup();
+    t.player(150, 100, 'pistol_basic');
+    t.enemy('naiwa_gasser', 60, 60, false);
+    // 放屁蛙每 1.4 秒放一团持续 3.5 秒的毒气：第一团消失时后面几团还在。
+    let gap = false;
+    for (let i = 0; i < 600 && !gap; i++) {
+      t.step(1);
+      const z = t.world.zones;
+      gap = !z[0]!.active && z.slice(1).some((x) => x.active);
+    }
+    expect(gap).toBe(true);
+    const copy = setup();
+    copy.world.load(JSON.parse(JSON.stringify(t.world.save())) as ReturnType<CombatWorld['save']>);
+    for (const [id, p] of t.pins) copy.pins.set(id, p);
+    copy.input.aim = { ...t.input.aim! };
+    expect(copy.world.zones.map((z) => z.active)).toEqual(t.world.zones.map((z) => z.active));
+    t.step(240);
+    copy.step(240);
+    expect(copy.world.save()).toEqual(t.world.save());
+  });
 });

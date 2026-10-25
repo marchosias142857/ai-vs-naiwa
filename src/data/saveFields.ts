@@ -187,6 +187,7 @@ export function simSaveFields(limits: SaveLimits): SaveField {
       ),
       zones: array(
         object({
+          slot: number(0, BALANCE.zoneCapacity - 1, true),
           team: oneOf('player', 'enemy'),
           kind: oneOf('poison', 'milk'),
           x: signed,
@@ -202,6 +203,7 @@ export function simSaveFields(limits: SaveLimits): SaveField {
       ),
       rocks: array(
         object({
+          slot: number(0, BALANCE.rockCapacity - 1, true),
           landed: bool,
           x: signed,
           y: signed,
@@ -215,6 +217,7 @@ export function simSaveFields(limits: SaveLimits): SaveField {
       ),
       shots: array(
         object({
+          slot: number(0, BALANCE.shotCapacity - 1, true),
           id,
           team: oneOf('player', 'enemy'),
           ownerId: id,

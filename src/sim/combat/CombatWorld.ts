@@ -238,22 +238,23 @@ function newActor(): Actor {
   };
 }
 
-function newRock(): Rock {
-  return { active: false, landed: false, x: 0, y: 0, radius: 0, time: 0, fall: 0, life: 0, damage: 0 };
+function newRock(slot: number): Rock {
+  return { slot, active: false, landed: false, x: 0, y: 0, radius: 0, time: 0, fall: 0, life: 0, damage: 0 };
 }
 
 function saveZone(z: Readonly<Zone>): ZoneState {
-  const { team, kind, x, y, radius, remaining, duration, damage, tick, wait } = z;
-  return { team, kind, x, y, radius, remaining, duration, damage, tick, wait };
+  const { slot, team, kind, x, y, radius, remaining, duration, damage, tick, wait } = z;
+  return { slot, team, kind, x, y, radius, remaining, duration, damage, tick, wait };
 }
 
 function saveRock(r: Readonly<Rock>): RockState {
-  const { landed, x, y, radius, time, fall, life, damage } = r;
-  return { landed, x, y, radius, time, fall, life, damage };
+  const { slot, landed, x, y, radius, time, fall, life, damage } = r;
+  return { slot, landed, x, y, radius, time, fall, life, damage };
 }
 
-function newZone(): Zone {
+function newZone(slot: number): Zone {
   return {
+    slot,
     active: false,
     team: 'enemy',
     kind: 'poison',
@@ -571,8 +572,8 @@ class CombatWorldImpl implements CombatWorld {
     this.aiRng = root.fork('ai');
     this.shotRng = root.fork('shot');
     this.bounds = options.bounds;
-    for (let i = 0; i < BALANCE.zoneCapacity; i++) this.zones.push(newZone());
-    for (let i = 0; i < BALANCE.rockCapacity; i++) this.rocks.push(newRock());
+    for (let i = 0; i < BALANCE.zoneCapacity; i++) this.zones.push(newZone(i));
+    for (let i = 0; i < BALANCE.rockCapacity; i++) this.rocks.push(newRock(i));
     this.ai = new EnemyAi(this.aiHost);
     this.arsenal = new Arsenal(this.arsenalHost, this.shotRng, BALANCE.shotCapacity);
     this.bus = options.bus;
@@ -982,10 +983,15 @@ class CombatWorldImpl implements CombatWorld {
     this.arsenal.load(state.shots, state.beam);
     if (state.zones.length > this.zones.length) throw new RangeError('存档超出区域容量');
     if (state.rocks.length > this.rocks.length) throw new RangeError('存档超出石块容量');
-    for (let i = 0; i < state.zones.length; i++)
-      Object.assign(this.zones[i]!, state.zones[i], { active: true });
-    for (let i = 0; i < state.rocks.length; i++)
-      Object.assign(this.rocks[i]!, state.rocks[i], { active: true });
+    // 回到原槽位：之后新区域、新石块占用的空槽与遍历顺序都与存档前一致。
+    for (const z of state.zones) {
+      if (this.zones[z.slot]?.active !== false) throw new RangeError('区域槽位无效或重复');
+      Object.assign(this.zones[z.slot]!, z, { active: true });
+    }
+    for (const r of state.rocks) {
+      if (this.rocks[r.slot]?.active !== false) throw new RangeError('石块槽位无效或重复');
+      Object.assign(this.rocks[r.slot]!, r, { active: true });
+    }
     for (const a of state.actors) {
       const actor = this.actorPool.pop()!;
       loadActor(actor, a);

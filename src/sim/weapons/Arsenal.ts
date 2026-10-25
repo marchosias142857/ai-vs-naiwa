@@ -78,8 +78,9 @@ interface Shot extends Omit<ShotState, 'hitIds' | 'hitTimes'> {
 /** 内部可写的光束状态；结构上满足只读的 `BeamView`。 */
 type Beam = BeamState;
 
-function newShot(): Shot {
+function newShot(slot: number): Shot {
   return {
+    slot,
     active: false,
     id: 0,
     team: 'player',
@@ -133,7 +134,7 @@ export class Arsenal {
     private readonly rng: Random,
     capacity: number,
   ) {
-    for (let i = 0; i < capacity; i++) this.shots.push(newShot());
+    for (let i = 0; i < capacity; i++) this.shots.push(newShot(i));
   }
 
   /**
@@ -245,6 +246,7 @@ export class Arsenal {
         hitTimes.push(s.hitTimes[j]!);
       }
       shots.push({
+        slot: s.slot,
         id: s.id,
         team: s.team,
         ownerId: s.ownerId,
@@ -275,9 +277,10 @@ export class Arsenal {
 
   load(shots: readonly ShotState[], beam: Readonly<BeamState>): void {
     if (shots.length > this.shots.length) throw new RangeError('存档超出特殊弹体容量');
-    for (let i = 0; i < shots.length; i++) {
-      const s = this.shots[i]!,
-        state = shots[i]!;
+    // 回到原槽位（ADR 0031）：弹体按槽位顺序移动，小弹占用第一个空槽，槽位一变后续结果就会不同。
+    for (const state of shots) {
+      const s = this.shots[state.slot];
+      if (!s || s.active) throw new RangeError('特殊弹体槽位无效或重复');
       const { hitIds, hitTimes, ...rest } = state;
       Object.assign(s, rest, { active: true });
       s.hitCount = s.hitNext = 0;

@@ -362,6 +362,8 @@ export interface ActorState {
 
 /** 区域的存档数据（ADR 0030）。只保存激活的区域。 */
 export interface ZoneState {
+  /** 区域槽位下标；恢复到原槽位，后续生成与遍历的顺序才与存档前一致。 */
+  slot: number;
   team: Team;
   kind: ZoneKind;
   x: number;
@@ -377,6 +379,8 @@ export interface ZoneState {
 
 /** 石块的存档数据（ADR 0030）。只保存激活的石块。 */
 export interface RockState {
+  /** 石块槽位下标，含义同 `ZoneState.slot`。 */
+  slot: number;
   landed: boolean;
   x: number;
   y: number;
@@ -389,6 +393,11 @@ export interface RockState {
 
 /** 特殊弹体的存档数据（ADR 0031），只保存激活的弹体。命中记录从旧到新排列。 */
 export interface ShotState {
+  /**
+   * 弹体槽位下标：弹体按槽位顺序移动，结束时分裂出的小弹占用第一个空槽。
+   * 恢复到原槽位，读档后的移动顺序与小弹位置才与存档前一致。
+   */
+  slot: number;
   id: EntityId;
   team: Team;
   ownerId: EntityId;

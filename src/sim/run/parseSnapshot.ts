@@ -170,7 +170,7 @@ export function createSimDecoder(limits: SaveLimits): (value: unknown, seed: num
     const bulletIds = new Set(w.bullets.map((b) => b.id));
     if (w.bullets.some((b) => bulletIds.has(b.ownerId) || b.hitIds.some((id) => bulletIds.has(id))))
       return null;
-    if (!validWeaponState(w, ids)) return null;
+    if (!validWeaponState(w, ids) || !uniqueSlots(w)) return null;
     if (
       s.loot.slots.some(
         (slot) =>
@@ -226,4 +226,9 @@ function validWeaponState(w: Readonly<SimSnapshot['world']>, ids: Set<number>): 
   if (w.melee.lunge > 0 && !(WEAPONS[w.melee.weaponId] as WeaponDef).melee?.lunge) return false;
   const stacks = Math.max(0, ...Object.values(WEAPONS).map((d) => (d as WeaponDef).chill?.stacks ?? 0));
   return w.actors.every((a) => a.status.stacks <= stacks && (a.status.freeze === 0 || a.status.stacks === 0));
+}
+
+/** 区域、石块与特殊弹体都恢复到原槽位（ADR 0030、0031），同一池里的槽位不能重复。 */
+function uniqueSlots(w: Readonly<SimSnapshot['world']>): boolean {
+  return [w.zones, w.rocks, w.shots].every((list) => new Set(list.map((x) => x.slot)).size === list.length);
 }

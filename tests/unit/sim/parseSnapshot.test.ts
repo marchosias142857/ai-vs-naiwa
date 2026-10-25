@@ -50,6 +50,7 @@ describe('完整 sim 存档字段与业务校验', () => {
     const s = JSON.parse(JSON.stringify(sample())) as SimSnapshot;
     expect(schema.safeParse(s).success).toBe(true);
     s.world.zones.push({
+      slot: 3,
       team: 'enemy',
       kind: 'milk',
       x: 10,
@@ -61,7 +62,17 @@ describe('完整 sim 存档字段与业务校验', () => {
       tick: 0,
       wait: 0,
     });
-    s.world.rocks.push({ landed: true, x: 30, y: 30, radius: 9, time: 3, fall: 0.9, life: 7, damage: 1 });
+    s.world.rocks.push({
+      slot: 2,
+      landed: true,
+      x: 30,
+      y: 30,
+      radius: 9,
+      time: 3,
+      fall: 0.9,
+      life: 7,
+      damage: 1,
+    });
     expect(validateSaveFields(s, fields)).toBe(true);
     expect(schema.safeParse(s).success).toBe(true);
     expect(decode(s, 42)).toBe(s);
@@ -71,6 +82,13 @@ describe('完整 sim 存档字段与业务校验', () => {
     const stage = JSON.parse(JSON.stringify(s)) as SimSnapshot;
     (stage.world.actors[0]!.brain as { stage: string }).stage = 'flying';
     expect(validateSaveFields(stage, fields)).toBe(false);
+    // 区域、石块恢复到原槽位：槽位超出容量或重复都拒绝。
+    const twin = JSON.parse(JSON.stringify(s)) as SimSnapshot;
+    twin.world.rocks.push({ ...twin.world.rocks[0]! });
+    expect(decode(twin, 42)).toBeNull();
+    const far = JSON.parse(JSON.stringify(s)) as SimSnapshot;
+    far.world.zones[0]!.slot = 999;
+    expect(validateSaveFields(far, fields)).toBe(false);
   });
   it('ADR 0031 新字段：飞行中的弹体通过两套规则；异常弹体、光束、蓄力与冰冻被拒绝', () => {
     const s = JSON.parse(
