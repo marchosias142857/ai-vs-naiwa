@@ -90,10 +90,10 @@ export class Traps {
 
   /**
    * 摆放房间 `room` 的机关。房间编号与当前相同时什么都不做（存档恢复后重建房间不会重置计时），
-   * 换到别的房间时全部重新开始。超出槽位的机关不摆放。
+   * 换到别的房间时全部重新开始。超出槽位的机关不摆放。返回是否换了房间重新摆放。
    */
-  place(room: number, layouts: readonly TrapLayout[]): void {
-    if (room === this.room) return;
+  place(room: number, layouts: readonly TrapLayout[]): boolean {
+    if (room === this.room) return false;
     this.room = room;
     for (let i = 0; i < this.traps.length; i++) {
       const t = this.traps[i]!,
@@ -113,6 +113,7 @@ export class Traps {
       t.hp = l.kind === 'barrel' ? TRAP_RULES.barrel.hp : 0;
       t.hitCount = 0;
     }
+    return true;
   }
 
   update(dt: number): void {

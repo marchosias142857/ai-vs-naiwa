@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { BALANCE } from '../../../src/data/balance';
+import { PLAYER_RULES } from '../../../src/data/player';
 import { ROOM_LAYOUTS } from '../../../src/data/layouts';
 import { ROOM_RULES } from '../../../src/data/rooms';
 import { RoomThemeSchema, TrapRulesSchema, type TrapPlacement } from '../../../src/data/schema/traps';
@@ -13,7 +14,13 @@ import {
 } from '../../../src/sim/combat/api';
 import { EventBus } from '../../../src/sim/core/EventBus';
 import type { GameEvents } from '../../../src/sim/core/events';
+import { Random } from '../../../src/sim/core/Random';
 import { createInputFrame } from '../../../src/sim/core/types';
+import { LootSystem } from '../../../src/sim/loot/LootSystem';
+import { DungeonRun } from '../../../src/sim/run/DungeonRun';
+import { RoomDirector } from '../../../src/sim/run/RoomDirector';
+import { createSimDecoder } from '../../../src/sim/run/parseSnapshot';
+import { saveSim, type SimSnapshot } from '../../../src/sim/run/snapshot';
 import { GRAYBOX_BOUNDS as B } from '../../../src/game/world/graybox';
 
 /** ADR 0032 房间机关。物理用最小的速度积分代替 Arcade。 */
@@ -178,6 +185,46 @@ describe('摆放与存档', () => {
     expect(t.world.traps[0]!.state).toBe(before);
     t.world.setTraps(4, layout);
     expect(t.world.traps[0]!.state).toBe('idle');
+  });
+
+  it('近战砍过桶后换到没有机关的房间，命中记录清零，存档能完整读回；重摆同一房间不清零（GPT 复现）', () => {
+    const bus = new EventBus<GameEvents>(),
+      rng = new Random(42);
+    const world = createCombatWorld({ seed: 42, bus, playerRules: PLAYER_RULES, godMode: true });
+    world.spawnPlayer('ai_proto', 150, 100);
+    world.takeWeapon('anchor_hammer');
+    const run = new DungeonRun(42, bus),
+      director = new RoomDirector(world, run, rng, { x: 0, y: 0, width: 300, height: 200 }, () => true),
+      loot = new LootSystem(rng.fork('loot:1'));
+    loot.enterRoom(run.roomId);
+    const decode = createSimDecoder({ actors: 31, bullets: 500 });
+    const decodes = () => {
+      const s = saveSim({
+        world,
+        run,
+        director,
+        loot,
+        rewards: { rng: rng.fork('upgrades:1'), upgrades: [], offers: [] },
+      });
+      return decode(JSON.parse(JSON.stringify(s)) as SimSnapshot, 42) !== null;
+    };
+    const layout = [trap('barrel', 166, 100)];
+    world.setTraps(1, layout);
+    const input = createInputFrame();
+    input.aim = { x: 1, y: 0 };
+    input.fire = true;
+    world.step(DT, input);
+    input.fire = false;
+    for (let i = 0; i < 90; i++) world.step(DT, input);
+    expect(world.melee.active).toBe(false);
+    expect(world.save().melee.traps).toBe(1);
+    world.setTraps(1, layout);
+    expect(world.save().melee.traps).toBe(1);
+    expect(decodes()).toBe(true);
+    world.setTraps(2, []);
+    world.clearHazards();
+    expect(world.save().melee.traps).toBe(0);
+    expect(decodes()).toBe(true);
   });
 
   it('地刺、地雷、鱼雷桶进行中存档，恢复后继续的结果逐项一致', () => {

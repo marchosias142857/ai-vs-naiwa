@@ -337,7 +337,8 @@ export interface CombatWorld {
   releaseBullet(bulletId: EntityId): void;
   /**
    * 摆放房间 `room` 的机关（ADR 0032），`room` 由调用方给出、每个房间唯一。
-   * 与当前房间编号相同时什么都不做，存档恢复后重建房间不会重置计时；换房时全部重新开始。
+   * 与当前房间编号相同时什么都不做，存档恢复后重建房间不会重置计时；换房时全部重新开始，
+   * 近战挥动对机关的命中记录（`melee.traps`）也一并清零。
    * 超出 `BALANCE.trapCapacity` 的机关不摆放。机关不随 `clearHazards` 清除。
    */
   setTraps(room: number, traps: readonly TrapLayoutInput[]): void;

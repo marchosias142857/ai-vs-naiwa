@@ -638,7 +638,8 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   setTraps(room: number, traps: readonly TrapLayoutInput[]): void {
-    this.trapSystem.place(room, traps);
+    // 近战的机关命中记录按槽位记，换房后槽位换成新机关，旧记录要清掉；恢复同一房间时保留。
+    if (this.trapSystem.place(room, traps)) this.melee.traps = 0;
   }
 
   hitTrap(bulletId: EntityId, index: number, x: number, y: number): boolean {
