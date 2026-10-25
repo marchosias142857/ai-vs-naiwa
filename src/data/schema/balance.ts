@@ -33,6 +33,8 @@ export const BalanceDefSchema = z.strictObject({
   rockCapacity: z.int().positive(),
   /** 特殊弹体的预热槽位数（ADR 0031）。 */
   shotCapacity: z.int().positive(),
+  /** 房间机关的槽位数（ADR 0032）；近战按位记录砍过的机关，不能超过 30。 */
+  trapCapacity: z.int().positive().max(30),
 });
 
 export type BalanceDef = z.infer<typeof BalanceDefSchema>;

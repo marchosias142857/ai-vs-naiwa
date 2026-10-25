@@ -76,9 +76,9 @@ export interface GameEvents {
   };
   /**
    * 范围爆炸（ADR 0030）：先发本事件，再按距离对范围内的另一阵营逐个结算 `entity:damaged`。
-   * `team` 是引爆者阵营；爆炸不伤同阵营。
+   * `team` 是引爆者阵营，爆炸不伤同阵营；机关爆炸（ADR 0032）为 null，伤害范围内所有角色。
    */
-  'combat:exploded': { team: Team; x: number; y: number; radius: number };
+  'combat:exploded': { team: Team | null; x: number; y: number; radius: number };
   /**
    * 怪物招式的关键时刻（ADR 0030），如起跳、落地、出舌、召唤、钻地、出土。
    * `angle` 是招式方向（弧度），没有方向的招式为当前朝向。规则结果另由伤害等事件表达。

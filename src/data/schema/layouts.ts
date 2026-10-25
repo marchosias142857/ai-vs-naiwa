@@ -11,7 +11,7 @@ export const RoomLayoutsSchema = z
           height: z.number().positive(),
         }),
       )
-      .max(8)
+      .max(16)
       .readonly(),
   )
   .min(1)

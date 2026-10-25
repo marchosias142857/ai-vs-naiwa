@@ -10,6 +10,7 @@ import { decodeSimSnapshot, type RunSnapshot, type SessionSnapshot } from '../..
 import type { DemoSession } from '../../src/game/systems/DemoSession';
 import { createInputFrame } from '../../src/sim/core/types';
 import { SAVE_REQUEST, LIFECYCLE_PAUSE } from '../../src/game/world/combatPause';
+import { doorStage, ROOM_CENTER, walkTo } from './route';
 
 class Bootstrap extends Scene {
   create(): void {
@@ -81,26 +82,19 @@ const tick = (n: number, frame = createInputFrame()) => {
     battle().update(0, 1000 / 60);
   }
 };
+/** 实际物理绕开内墙与鱼雷桶走到 (x, y)。 */
 function walk(x: number, y: number): void {
   const input = createInputFrame();
-  for (let i = 0; i < 400; i++) {
-    const p = session().player!,
-      dx = x - p.x,
-      dy = y - p.y,
-      d = Math.hypot(dx, dy);
-    if (d < 2) break;
-    input.move.x = dx / d;
-    input.move.y = dy / d;
-    tick(1, input);
-  }
+  if (!walkTo(session(), input, () => tick(1, input), x, y)) throw Error(`未能走到 (${x}, ${y})`);
   tick(12);
 }
 function next(id: number): void {
-  walk(240, 135);
   const s = session(),
     from = s.dungeon.room,
     to = s.dungeon.map.rooms[id]!,
-    input = createInputFrame();
+    stage = doorStage(to.x - from.x, to.y - from.y);
+  walk(stage.x, stage.y);
+  const input = createInputFrame();
   input.move.x = to.x - from.x;
   input.move.y = to.y - from.y;
   for (let i = 0; i < 400 && s.dungeon.roomId === from.id; i++) tick(1, input);
@@ -141,7 +135,7 @@ const api = {
         tick(1);
       }
     }
-    walk(240, 135);
+    walk(ROOM_CENTER.x, ROOM_CENTER.y);
     if (mode === 'exit') return;
     const input = createInputFrame();
     input.interactPressed = true;

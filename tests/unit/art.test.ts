@@ -9,6 +9,8 @@ import { ENEMIES } from '../../src/data/enemies';
 import { MONSTER_TEXTURES, enemyAnimation } from '../../src/data/enemyArt';
 import { WEAPONS } from '../../src/data/weapons';
 import { ARSENAL_SHOT_ART } from '../../src/data/arsenalArt';
+import { ROOM_ART } from '../../src/data/roomArt';
+import { ROOM_THEMES } from '../../src/data/traps';
 import type { WeaponDef } from '../../src/data/schema';
 import {
   ArtFrameSchema,
@@ -30,6 +32,7 @@ const files = [
   'monsters-v1',
   'naiguai-v1',
   'arsenal-v1',
+  'rooms-v1',
 ];
 function dimensions(name: string) {
   const file = `public/assets/demo/${name}.png`,
@@ -115,6 +118,8 @@ describe('真实 PNG 图集与持握数据', () => {
       ...weaponArt.filter((f) => f.texture === 'demo_arsenal').map((f) => f.rect),
       ...Object.values(ARSENAL_SHOT_ART),
     ]);
+    // ADR 0032：楼层主题与机关图集。
+    inImage('rooms-v1', Object.values(ROOM_ART));
     inImage('enemies', Object.values(ENEMY_ART));
     inImage('environment', Object.values(ENVIRONMENT_ART));
     inImage('doors', Object.values(DOOR_ART));
@@ -169,6 +174,11 @@ describe('真实 PNG 图集与持握数据', () => {
     for (const w of Object.values(WEAPONS) as readonly WeaponDef[])
       for (const sprite of [w.shot?.sprite, w.shot?.split?.sprite])
         if (sprite) expect(Object.hasOwn(ARSENAL_SHOT_ART, sprite), sprite).toBe(true);
+    // 每个新主题都有地砖、嵌花、墙砖与障碍块（ADR 0032）；第 1 层沿用原有石殿图。
+    for (const { art } of ROOM_THEMES)
+      if (art !== 'temple')
+        for (const part of ['floor', 'floor_alt', 'wall', 'block'])
+          expect(Object.hasOwn(ROOM_ART, `${art}_${part}`), `${art}_${part}`).toBe(true);
     // 旧的单张静态图只是逐帧动画缺失时的替补（ADR 0030）。
     for (const key of Object.keys(ENEMIES))
       expect(Object.hasOwn(ENEMY_ART, key) || enemyAnimation(key) !== undefined).toBe(true);

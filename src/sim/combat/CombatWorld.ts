@@ -20,6 +20,7 @@ import { Random } from '../core/Random';
 import type { EntityId, InputFrame, Team, Vec2 } from '../core/types';
 import { getPattern, type BulletSink, type FireContext, type FirePattern } from '../weapons/patterns';
 import { Arsenal, type ArsenalHost } from '../weapons/Arsenal';
+import { Traps, standingBarrel, type TrapHost } from '../room/Traps';
 import type {
   ActorMove,
   ActorPhase,
@@ -36,6 +37,8 @@ import type {
   RockView,
   ShotView,
   StepResult,
+  TrapLayoutInput,
+  TrapView,
   ZoneKind,
   ZoneState,
   ZoneView,
@@ -96,6 +99,10 @@ interface Actor extends ActorView {
   frozen: boolean;
   /** 冰冻层数、每层减速、清零倒计时、冻结剩余秒数（ADR 0031）。 */
   status: { stacks: number; per: number; time: number; freeze: number };
+  /** 本步机关给的移动倍率与推力（ADR 0032），每步重算，不存档。 */
+  trapSlow: number;
+  pushX: number;
+  pushY: number;
 }
 
 interface Zone extends ZoneView, ZoneState {
@@ -234,6 +241,9 @@ function newActor(): Actor {
     chill: 0,
     frozen: false,
     status: { stacks: 0, per: 0, time: 0, freeze: 0 },
+    trapSlow: 1,
+    pushX: 0,
+    pushY: 0,
     knock: { dirX: 0, dirY: 0, total: 0, left: 0, timeLeft: 0, speed: 0, fresh: false },
   };
 }
@@ -459,6 +469,7 @@ class CombatWorldImpl implements CombatWorld {
     damage: 0,
     hitIds: [],
     lunge: 0,
+    traps: 0,
   };
   private readonly muzzle = { x: 0, y: 0 };
   time = 0;
@@ -518,7 +529,10 @@ class CombatWorldImpl implements CombatWorld {
     actor: (id) => this.byId.get(id),
     strike: (weapon, team, ownerId, target, damage, knockback, dirX, dirY, x, y) =>
       this.strike(weapon, team, ownerId, target as Actor, damage, knockback, dirX, dirY, x, y),
-    wall: (team, x, y, angle) => this.emitHitAt(team, x, y, angle, null, false),
+    wall: (team, x, y, angle, damage) => {
+      this.emitHitAt(team, x, y, angle, null, false);
+      this.hitBarrelAt(x + Math.cos(angle) * 2, y + Math.sin(angle) * 2, damage);
+    },
     explode: (x, y, radius, damage, team, ownerId, knockback) =>
       this.explodeAt(x, y, radius, damage, team, ownerId, knockback),
     chained: (team, x1, y1, x2, y2) => this.emitChained(team, x1, y1, x2, y2),
@@ -531,6 +545,22 @@ class CombatWorldImpl implements CombatWorld {
     nextId: () => this.nextId++,
   };
   private readonly arsenal: Arsenal;
+  private readonly trapHost: TrapHost = {
+    actors: this.actors,
+    grounded: (a) => (a as Actor).team !== 'enemy' || EnemyAi.grounded((a as Actor).brain),
+    hurt: (a, damage) => {
+      const target = a as Actor;
+      if (!this.ignoresDamage(target)) this.damage(target, damage, false, 0, 0, null);
+    },
+    sway: (a, slow, pushX, pushY) => {
+      const target = a as Actor;
+      target.trapSlow = Math.min(target.trapSlow, slow);
+      target.pushX += pushX;
+      target.pushY += pushY;
+    },
+    explode: (x, y, radius, damage, knockback) => this.explodeAt(x, y, radius, damage, null, null, knockback),
+  };
+  private readonly trapSystem: Traps;
   /** 本步开火是否真的生成了子弹或弹体（ADR 0031：弹体到上限时不扣能量）。 */
   private fired = 0;
   /** 蓄力发射时本次开火的伤害、弹速倍率与额外穿透；其余时候为 1、1、0。 */
@@ -576,6 +606,7 @@ class CombatWorldImpl implements CombatWorld {
     for (let i = 0; i < BALANCE.rockCapacity; i++) this.rocks.push(newRock(i));
     this.ai = new EnemyAi(this.aiHost);
     this.arsenal = new Arsenal(this.arsenalHost, this.shotRng, BALANCE.shotCapacity);
+    this.trapSystem = new Traps(this.trapHost, BALANCE.trapCapacity);
     this.bus = options.bus;
     this.maxBullets = options.maxBullets ?? DEFAULT_MAX_BULLETS;
     this.godMode = options.godMode ?? false;
@@ -600,6 +631,32 @@ class CombatWorldImpl implements CombatWorld {
 
   get beam(): BeamView {
     return this.arsenal.beam;
+  }
+
+  get traps(): readonly TrapView[] {
+    return this.trapSystem.traps;
+  }
+
+  setTraps(room: number, traps: readonly TrapLayoutInput[]): void {
+    // 近战的机关命中记录按槽位记，换房后槽位换成新机关，旧记录要清掉；恢复同一房间时保留。
+    if (this.trapSystem.place(room, traps)) this.melee.traps = 0;
+  }
+
+  hitTrap(bulletId: EntityId, index: number, x: number, y: number): boolean {
+    this.callDepth++;
+    try {
+      const bullet = this.bullets.get(bulletId),
+        trap = this.trapSystem.traps[index];
+      if (!bullet) return true;
+      if (!trap || !standingBarrel(trap)) return false;
+      this.emitHit(bullet, x, y, null, false);
+      this.finishBullet(bullet);
+      this.trapSystem.damageBarrel(index, bullet.damage);
+      return true;
+    } finally {
+      this.callDepth--;
+      if (!this.callDepth) while (this.retired.length) this.actorPool.push(this.retired.pop()!);
+    }
   }
 
   get charge(): number {
@@ -755,6 +812,11 @@ class CombatWorldImpl implements CombatWorld {
         this.updateMelee(dt);
         this.updateEnemies(dt);
         this.updateZones(dt);
+        for (const actor of this.actors) {
+          actor.trapSlow = 1;
+          actor.pushX = actor.pushY = 0;
+        }
+        this.trapSystem.update(dt);
         for (const actor of this.actors) this.applyVelocity(actor);
       }
       this.result.playerDead = this.playerDied;
@@ -934,6 +996,8 @@ class CombatWorldImpl implements CombatWorld {
       zones: this.zones.filter((z) => z.active).map(saveZone),
       rocks: this.rocks.filter((r) => r.active).map(saveRock),
       ...this.arsenal.save(),
+      trapRoom: this.trapSystem.room,
+      traps: this.trapSystem.save(),
     };
   }
 
@@ -945,7 +1009,8 @@ class CombatWorldImpl implements CombatWorld {
       this.playerId !== null ||
       this.zones.some((z) => z.active) ||
       this.rocks.some((r) => r.active) ||
-      this.arsenal.shots.some((s) => s.active)
+      this.arsenal.shots.some((s) => s.active) ||
+      this.trapSystem.traps.some((t) => t.active)
     )
       throw new Error('只能把存档写入刚创建的世界');
     if (state.actors.length > this.actorPool.length || state.bullets.length > this.bulletPool.length)
@@ -981,6 +1046,7 @@ class CombatWorldImpl implements CombatWorld {
     this.aiRng.restore(state.rng.ai);
     this.shotRng.restore(state.rng.shot);
     this.arsenal.load(state.shots, state.beam);
+    this.trapSystem.load(state.trapRoom, state.traps);
     if (state.zones.length > this.zones.length) throw new RangeError('存档超出区域容量');
     if (state.rocks.length > this.rocks.length) throw new RangeError('存档超出石块容量');
     // 回到原槽位：之后新区域、新石块占用的空槽与遍历顺序都与存档前一致。
@@ -1053,6 +1119,8 @@ class CombatWorldImpl implements CombatWorld {
     const st = actor.status;
     st.stacks = st.per = st.time = st.freeze = 0;
     refreshChill(actor);
+    actor.trapSlow = 1;
+    actor.pushX = actor.pushY = 0;
     const k = actor.knock;
     k.dirX = k.dirY = k.total = k.left = k.timeLeft = k.speed = 0;
     k.fresh = false;
@@ -1312,6 +1380,7 @@ class CombatWorldImpl implements CombatWorld {
     m.remaining = m.duration = def.duration / this.resources.fireRateScale;
     m.damage = weapon.damage * this.resources.damageScale;
     m.hitIds.length = 0;
+    m.traps = 0;
     // 突进距离固定，攻速升级缩短挥动时就冲得更快。
     m.lunge = def.lunge ? def.lunge / m.duration : 0;
     this.resources.spend(weapon.energyCost);
@@ -1375,6 +1444,16 @@ class CombatWorldImpl implements CombatWorld {
       } finally {
         this.payloads.meleeHit.release();
       }
+    }
+    // 近战也能砍鱼雷桶，每次挥动每个桶最多一次（ADR 0032）。
+    const traps = this.trapSystem.traps;
+    for (let i = 0; i < traps.length; i++) {
+      const t = traps[i]!;
+      if (!standingBarrel(t) || m.traps & (1 << i)) continue;
+      if (!sectorHitsCircle(t.x - owner.x, t.y - owner.y, t.radius, m.angle, def.range, def.arcDegrees))
+        continue;
+      m.traps |= 1 << i;
+      this.trapSystem.damageBarrel(i, m.damage);
     }
     m.remaining = Math.max(0, m.remaining - dt);
     if (m.remaining === 0) {
@@ -1573,7 +1652,7 @@ class CombatWorldImpl implements CombatWorld {
     y: number,
     radius: number,
     damage: number,
-    team: Team,
+    team: Team | null,
     sourceId: EntityId | null,
     knockback: number,
   ): void {
@@ -1589,7 +1668,8 @@ class CombatWorldImpl implements CombatWorld {
     }
     for (let i = this.actors.length - 1; i >= 0; i--) {
       const a = this.actors[i];
-      if (!a || a.team === team || a.phase !== 'active' || !this.inside(a, x, y, radius)) continue;
+      if (!a || (team !== null && a.team === team) || a.phase !== 'active' || !this.inside(a, x, y, radius))
+        continue;
       if ((a.team === 'enemy' && EnemyAi.hidden(a.brain)) || !this.los(x, y, a.x, a.y)) continue;
       if (this.ignoresDamage(a)) continue;
       const d = Math.hypot(a.x - x, a.y - y);
@@ -1597,6 +1677,25 @@ class CombatWorldImpl implements CombatWorld {
         dy = d > 0 ? (a.y - y) / d : 1;
       this.damage(a, damage, false, dx, dy, sourceId);
       if (a.phase === 'active' && knockback > 0) this.knockBack(a, dx, dy, knockback);
+    }
+    // 爆炸波及范围内的鱼雷桶，可以连锁引爆（ADR 0032）。
+    const traps = this.trapSystem.traps;
+    for (let i = 0; i < traps.length; i++) {
+      const t = traps[i]!;
+      if (standingBarrel(t) && Math.hypot(t.x - x, t.y - y) <= radius + t.radius)
+        this.trapSystem.damageBarrel(i, damage);
+    }
+  }
+
+  /** 特殊弹体撞墙时如果撞的是鱼雷桶，按弹体伤害扣耐久（ADR 0032）。 */
+  private hitBarrelAt(x: number, y: number, damage: number): void {
+    const traps = this.trapSystem.traps;
+    for (let i = 0; i < traps.length; i++) {
+      const t = traps[i]!;
+      if (standingBarrel(t) && Math.hypot(t.x - x, t.y - y) <= t.radius + 2) {
+        this.trapSystem.damageBarrel(i, damage);
+        return;
+      }
     }
   }
 
@@ -1791,6 +1890,8 @@ class CombatWorldImpl implements CombatWorld {
     if (!this.lineOfSight(x1, y1, x2, y2)) return false;
     for (const r of this.rocks)
       if (r.active && r.landed && segmentDistance(r.x, r.y, x1, y1, x2, y2) < r.radius) return false;
+    for (const t of this.trapSystem.traps)
+      if (standingBarrel(t) && segmentDistance(t.x, t.y, x1, y1, x2, y2) < t.radius) return false;
     return true;
   }
 
@@ -1802,9 +1903,11 @@ class CombatWorldImpl implements CombatWorld {
     }
     const k = actor.knock;
     // 玩家：奶潭与预热武器开火减速；怪物：冰冻减速，冻住时只剩击退（ADR 0031）。
-    const slow = actor.id === this.playerId ? this.playerSlow * this.fireSlow : 1 - actor.chill;
-    actor.vx = actor.base.x * slow + k.dirX * k.speed;
-    actor.vy = actor.base.y * slow + k.dirY * k.speed;
+    const slow =
+      (actor.id === this.playerId ? this.playerSlow * this.fireSlow : 1 - actor.chill) * actor.trapSlow;
+    // 水流推力与击退一样叠加在自主移动之外（ADR 0032）；冻住的怪物也会被水冲走。
+    actor.vx = actor.base.x * slow + k.dirX * k.speed + actor.pushX;
+    actor.vy = actor.base.y * slow + k.dirY * k.speed + actor.pushY;
   }
 
   private damage(
