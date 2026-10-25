@@ -27,11 +27,11 @@ import { createCombatWorldImpl } from './CombatWorld';
 /** 实体阶段，与 ADR 0002「实体的三个阶段」对应。 */
 export type ActorPhase = 'telegraph' | 'active' | 'dead';
 /**
- * 表现用动作（ADR 0028）：由 sim 按 AI 阶段给出，表现层据此选动画，不参与规则判断。
+ * 表现用动作（ADR 0029）：由 sim 按 AI 阶段给出，表现层据此选动画，不参与规则判断。
  * `air` 腾空、`buried` 在地下（不可被命中、无接触伤害）、`recover` 招式后摇或眩晕、`spin` 原地旋转放弹。
  */
 export type ActorPose = 'idle' | 'move' | 'windup' | 'attack' | 'air' | 'recover' | 'buried' | 'spin';
-/** 当前招式（ADR 0028），给表现层画对应的预警；`none` 表示常规移动与射击。 */
+/** 当前招式（ADR 0029），给表现层画对应的预警；`none` 表示常规移动与射击。 */
 export type ActorMove =
   | 'none'
   | 'dash'
@@ -70,9 +70,9 @@ export interface ActorView {
   readonly facing: number;
   /** 敌方冲锋蓄力，灰盒可显示危险提示。 */
   readonly warning?: boolean;
-  /** 表现用动作（ADR 0028）。玩家恒为 idle，玩家动画仍由表现层按速度判断。 */
+  /** 表现用动作（ADR 0029）。玩家恒为 idle，玩家动画仍由表现层按速度判断。 */
   readonly pose: ActorPose;
-  /** 腾空的表现高度，像素；只用于把贴图抬高，位置与碰撞仍在地面（ADR 0028）。 */
+  /** 腾空的表现高度，像素；只用于把贴图抬高，位置与碰撞仍在地面（ADR 0029）。 */
   readonly lift: number;
   /** 招式锁定的方向，弧度（舌击预警线、冲锋方向）；没有招式时等于 facing。 */
   readonly aim: number;
@@ -80,10 +80,10 @@ export interface ActorView {
   readonly move: ActorMove;
 }
 
-/** 区域种类：毒气按间隔扣血，奶潭让另一阵营减速（ADR 0028）。 */
+/** 区域种类：毒气按间隔扣血，奶潭让另一阵营减速（ADR 0029）。 */
 export type ZoneKind = 'poison' | 'milk';
 
-/** 持续区域（毒气云、奶潭，ADR 0028）。对象由 sim 预热复用，`active` 为 false 的槽位不要绘制。 */
+/** 持续区域（毒气云、奶潭，ADR 0029）。对象由 sim 预热复用，`active` 为 false 的槽位不要绘制。 */
 export interface ZoneView {
   readonly active: boolean;
   /** 放置者阵营；区域只影响另一阵营。 */
@@ -98,7 +98,7 @@ export interface ZoneView {
 }
 
 /**
- * 天降石块（ADR 0028）：先预警 `fall` 秒，落地后成为挡路挡子弹的障碍，`time` 为当前阶段剩余秒数。
+ * 天降石块（ADR 0029）：先预警 `fall` 秒，落地后成为挡路挡子弹的障碍，`time` 为当前阶段剩余秒数。
  * game 为落地的石块开启静态碰撞体；sim 的视线判断也把它算作遮挡。
  */
 export interface RockView {
@@ -169,7 +169,7 @@ export interface CombatWorldOptions {
   godMode?: boolean;
   /** 传入时启用护甲、能量、冲刺；不传保留 M1 行为。 */
   playerRules?: Readonly<PlayerRules>;
-  /** 房间内边界（ADR 0028）：石块落点限制在其中，冲撞贴到边界算撞墙而不是撞柱。不传时以玩家为中心取点。 */
+  /** 房间内边界（ADR 0029）：石块落点限制在其中，冲撞贴到边界算撞墙而不是撞柱。不传时以玩家为中心取点。 */
   bounds?: { x: number; y: number; width: number; height: number };
 }
 
@@ -193,9 +193,9 @@ export interface CombatWorld {
   readonly time: number;
   /** 当前全部实体（含预警中与已死亡、尚未移除的）。数组由 sim 复用，不要修改或跨帧保存。 */
   readonly actors: readonly ActorView[];
-  /** 全部区域槽位（含未激活的），长度固定；按 `active` 过滤后绘制（ADR 0028）。 */
+  /** 全部区域槽位（含未激活的），长度固定；按 `active` 过滤后绘制（ADR 0029）。 */
   readonly zones: readonly ZoneView[];
-  /** 全部石块槽位（含未激活的），长度固定（ADR 0028）。 */
+  /** 全部石块槽位（含未激活的），长度固定（ADR 0029）。 */
   readonly rocks: readonly RockView[];
   /** 玩家实体的编号；尚未生成玩家时为 null。 */
   readonly playerId: EntityId | null;
@@ -257,7 +257,7 @@ export interface CombatWorld {
   hitWall(bulletId: EntityId, x: number, y: number): void;
   /** 子弹寿命到期或飞出地图，静默回收，不发事件。 */
   releaseBullet(bulletId: EntityId): void;
-  /** 换房时清掉全部区域与石块（ADR 0028），不发事件。 */
+  /** 换房时清掉全部区域与石块（ADR 0029），不发事件。 */
   clearHazards(): void;
   /** 怪物与玩家重叠。每帧重叠都可以调用，sim 自己处理无敌帧，不会重复扣血。 */
   contact(enemyId: EntityId, playerId: EntityId): void;
@@ -317,11 +317,11 @@ export interface ActorState {
   lift: number;
   aim: number;
   move: ActorMove;
-  /** 召唤者编号；不是召唤出来的为 0（ADR 0028）。 */
+  /** 召唤者编号；不是召唤出来的为 0（ADR 0029）。 */
   parentId: number;
 }
 
-/** 区域的存档数据（ADR 0028）。只保存激活的区域。 */
+/** 区域的存档数据（ADR 0029）。只保存激活的区域。 */
 export interface ZoneState {
   team: Team;
   kind: ZoneKind;
@@ -336,7 +336,7 @@ export interface ZoneState {
   wait: number;
 }
 
-/** 石块的存档数据（ADR 0028）。只保存激活的石块。 */
+/** 石块的存档数据（ADR 0029）。只保存激活的石块。 */
 export interface RockState {
   landed: boolean;
   x: number;

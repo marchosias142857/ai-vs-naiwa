@@ -60,7 +60,7 @@ const RAIN_WINDUP = 0.5;
 const SLAM_SPREAD = 80;
 
 /**
- * 怪物 AI（ADR 0028）：按行为移动，按招式阶段推进，所有计时都在 WORLD_STEP 的 dt 上。
+ * 怪物 AI（ADR 0029）：按行为移动，按招式阶段推进，所有计时都在 WORLD_STEP 的 dt 上。
  * 旧行为（追击、保持距离、炮台、冲锋）仍由 `moveEnemy` 计算，结果与改动前一致。
  */
 export class EnemyAi {

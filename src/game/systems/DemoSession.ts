@@ -199,7 +199,7 @@ export class DemoSession {
             this.bridge.bullets.recycle(slot);
           }
       this.endTime += dt;
-      // 通关时等 Boss 死亡演出播完再弹结算（ADR 0028）。
+      // 通关时等 Boss 死亡演出播完再弹结算（ADR 0029）。
       const delay = this.dungeon.phase === 'won' ? BALANCE.victoryDelay : BALANCE.deathRestartDelay;
       if (this.endTime >= delay) {
         this.settled = true;

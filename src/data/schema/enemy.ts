@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { I18nKeySchema, IdSchema, PositiveNumber, Probability, TextureKeySchema } from './common';
 
 /**
- * 怪物行为（ADR 0009、ADR 0028）。移动方式与主要动作由行为决定，招式参数放在同名可选字段里。
+ * 怪物行为（ADR 0009、ADR 0029）。移动方式与主要动作由行为决定，招式参数放在同名可选字段里。
  * `wander` 仍未实现，保留在枚举中只为兼容旧数据校验。
  */
 export const EnemyBehaviorSchema = z.enum([

@@ -4,7 +4,7 @@ import type { ActorMove, ActorView } from '../combat/api';
 import type { Vec2 } from '../core/types';
 import { chaseVelocity } from './chase';
 
-/** 招式所处阶段。`time` 是本阶段剩余秒数，`span` 是本阶段总时长（ADR 0028）。 */
+/** 招式所处阶段。`time` 是本阶段剩余秒数，`span` 是本阶段总时长（ADR 0029）。 */
 export type BrainStage =
   | 'ready'
   | 'windup'
@@ -17,7 +17,7 @@ export type BrainStage =
   | 'spin'
   | 'stun';
 /** 当前阶段属于哪一招；`none` 表示常规移动与射击。 */
-/** 与 api 的 ActorMove 相同（ADR 0028）。 */
+/** 与 api 的 ActorMove 相同（ADR 0029）。 */
 export type BrainMove = ActorMove;
 
 export interface EnemyBrain {

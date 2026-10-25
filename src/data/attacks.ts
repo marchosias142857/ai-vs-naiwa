@@ -33,7 +33,7 @@ export const ATTACKS = {
     bulletSpeed: 115,
     pattern: 'radial',
   },
-  /** ADR 0028：跳跳蛙落地、鼓鼓蛙爆开、泥潜蛙出土、街舞蛙旋转、蛙王砸地。 */
+  /** ADR 0029：跳跳蛙落地、鼓鼓蛙爆开、泥潜蛙出土、街舞蛙旋转、蛙王砸地。 */
   hop_ring: {
     ...spit,
     name: 'attack.hop_ring',

@@ -1,4 +1,4 @@
-/** 怪物招式与房间机关的视觉参数（ADR 0028）；时长秒、尺寸游戏像素，只影响画面。 */
+/** 怪物招式与房间机关的视觉参数（ADR 0029）；时长秒、尺寸游戏像素，只影响画面。 */
 export const HAZARD_FX = {
   burstPool: 16,
   explosionSeconds: 0.35,

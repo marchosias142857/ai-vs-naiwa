@@ -61,7 +61,7 @@ export class LootSystem {
     }
     return false;
   }
-  /** 怪物掉落；`kind` 的 `loot` 倍率为 0 时（如分裂出的蝌蚪）不掉落也不消耗随机数（ADR 0028）。 */
+  /** 怪物掉落；`kind` 的 `loot` 倍率为 0 时（如分裂出的蝌蚪）不掉落也不消耗随机数（ADR 0029）。 */
   enemy(x: number, y: number, kind?: string): void {
     const rate =
       kind && Object.hasOwn(ENEMIES, kind) ? ((ENEMIES[kind as EnemyId] as EnemyDef).loot ?? 1) : 1;

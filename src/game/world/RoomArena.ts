@@ -61,7 +61,7 @@ export class RoomArena {
     this.bridge.bullets.recycle(slot);
   };
   show(run: DungeonRun, layout: number): void {
-    // Boss 房固定放石柱，冲撞撞柱会晕（ADR 0028）。
+    // Boss 房固定放石柱，冲撞撞柱会晕（ADR 0029）。
     if (run.room.kind === 'boss') this.setBoxes(BOSS_ROOM_LAYOUT);
     else this.setLayout(run.room.kind === 'combat' ? layout : 0);
     this.draw(run);

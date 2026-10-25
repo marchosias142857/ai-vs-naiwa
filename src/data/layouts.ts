@@ -19,7 +19,7 @@ export const ROOM_LAYOUTS = [
   ],
 ] as const satisfies RoomLayouts;
 
-/** Boss 房的四根石柱（ADR 0028）：引 Boss 冲撞撞柱会让它眩晕；离门口和墙边都留出通道。 */
+/** Boss 房的四根石柱（ADR 0029）：引 Boss 冲撞撞柱会让它眩晕；离门口和墙边都留出通道。 */
 export const BOSS_ROOM_LAYOUT = [
   { x: -76, y: -42, width: 22, height: 22 },
   { x: 76, y: -42, width: 22, height: 22 },

@@ -1,6 +1,5 @@
 import { TintModes } from 'phaser';
 import type { GameObjects } from 'phaser';
-import { RENDER_SCALE } from '../../config';
 import {
   BOSS_DEATH,
   MONSTER_TEXTURES,
@@ -19,17 +18,21 @@ interface PoseClock {
 }
 
 /**
- * 怪物逐帧动画（ADR 0028）：按 sim 给的 pose 选动作，腾空时整张图抬高 `lift`。
+ * 怪物逐帧动画（ADR 0029）：按 sim 给的 pose 选动作，腾空时整张图抬高 `lift`。
  * 只换贴图帧与位置，物理代理不受影响；没有逐帧图的怪物交还给 ActorArt 的旧静态画法。
  */
 export class EnemyArt {
   private readonly clocks: PoseClock[] = [];
+  private zoom = 1;
 
   constructor(slots: number) {
     for (let i = 0; i < slots; i++) this.clocks.push({ id: 0, action: '', since: 0 });
   }
 
-  /** 返回 false 表示这个怪物没有逐帧动画。`death` 是死亡后经过的秒数，`flash` 是受击闪白剩余秒数。 */
+  /**
+   * 返回 false 表示这个怪物没有逐帧动画。`death` 是死亡后经过的秒数，`flash` 是受击闪白剩余秒数，
+   * `zoom` 是世界相机的缩放，用来把帧对齐到渲染像素。
+   */
   draw(
     index: number,
     image: GameObjects.Image,
@@ -37,7 +40,9 @@ export class EnemyArt {
     time: number,
     death: number,
     flash: number,
+    zoom: number,
   ): boolean {
+    this.zoom = zoom;
     const anim = enemyAnimation(a.kind);
     if (!anim) return false;
     const clock = this.clocks[index]!;
@@ -120,8 +125,8 @@ export class EnemyArt {
     const x = a.x + dx,
       y = a.y - a.lift;
     image.setPosition(
-      Math.round((x - left) * RENDER_SCALE) / RENDER_SCALE + left,
-      Math.round((y - top) * RENDER_SCALE) / RENDER_SCALE + top,
+      Math.round((x - left) * this.zoom) / this.zoom + left,
+      Math.round((y - top) * this.zoom) / this.zoom + top,
     );
     return true;
   }

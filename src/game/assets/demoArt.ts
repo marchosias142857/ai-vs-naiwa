@@ -50,7 +50,7 @@ export function installDemoArt(scene: Scene): void {
   for (const [name, rect] of Object.entries(ENEMY_ART)) add(ART.enemies, name, rect);
   for (const [name, rect] of Object.entries(ENVIRONMENT_ART)) add(ART.environment, name, rect);
   for (const [name, rect] of Object.entries(DOOR_ART)) add(ART.doors, name, rect);
-  // 怪物逐帧图集（ADR 0028）：帧名为「怪物:动作:序号」。
+  // 怪物逐帧图集（ADR 0029）：帧名为「怪物:动作:序号」。
   for (const t of Object.values(MONSTER_TEXTURES))
     if (scene.textures.exists(t.key)) scene.textures.get(t.key).setFilter(Textures.FilterMode.NEAREST);
   for (const kind of Object.keys(ENEMIES)) {

@@ -7,7 +7,7 @@ import type { GameEvents } from '../../../src/sim/core/events';
 import { createInputFrame } from '../../../src/sim/core/types';
 
 /**
- * ADR 0028 怪物招式。用最小的「物理」代替 Arcade：按速度积分位置、限制在房间内、可选方块障碍挡住移动；
+ * ADR 0029 怪物招式。用最小的「物理」代替 Arcade：按速度积分位置、限制在房间内、可选方块障碍挡住移动；
  * 子弹生成后立即回收（需要时由用例自己统计）。
  */
 const DT = 1 / 60;

@@ -125,7 +125,7 @@ export class CombatFeedback {
       const actor = this.sim.getActor(slot.id);
       if (actor?.phase === 'dead') {
         state.death += dt;
-        // 有逐帧死亡动画的怪物等动画播完再回收（ADR 0028）。
+        // 有逐帧死亡动画的怪物等动画播完再回收（ADR 0029）。
         const seconds =
           actor.team === 'enemy' ? (deathSeconds(actor.kind) ?? FX.deathSeconds) : FX.deathSeconds;
         if (actor.team === 'enemy' && state.death >= seconds) this.bridge.actors.finishDeath(slot.id);
@@ -158,7 +158,7 @@ export class CombatFeedback {
       if (a.warning)
         g.lineStyle(FX.lineWidth, FX.warningColor).strokeCircle(x, y, a.radius + FX.warningPadding);
       if (a.team === 'enemy') {
-        // 逐帧怪物按贴图头顶放血条；腾空时跟着抬高（ADR 0028）。
+        // 逐帧怪物按贴图头顶放血条；腾空时跟着抬高（ADR 0029）。
         const art = enemyAnimation(a.kind)?.art;
         const width = a.radius * 2,
           top = (art ? y - a.lift - art.pivot.y * art.scale : y - a.radius * 1.25) - FX.healthOffset;
