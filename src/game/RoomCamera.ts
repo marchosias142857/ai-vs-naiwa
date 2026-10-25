@@ -1,37 +1,22 @@
-import { ART } from './assets/demoArt';
-import { ENVIRONMENT_ART } from '../data/art';
 import type { Scene, GameObjects } from 'phaser';
 import { DEPTH, GAME_WIDTH, GAME_HEIGHT, RENDER_SCALE } from '../config';
 import type { InputScene } from './ui/InputScene';
 import { GRAYBOX_BOUNDS as B } from './world/graybox';
 
-/** 地图占满画布，控件半透明覆盖；世界与物理尺度保持不变。 */
+/** 世界视口占满画布，保留既有倍率；padding 只参与超宽屏倍率计算，不限制滚动。 */
 export const ROOM_VIEW = { zoom: 1.5, padding: 24 } as const;
-
-const constrain = (value: number, start: number, length: number, view: number) =>
-  view >= length ? start + (length - view) / 2 : Math.max(start, Math.min(start + length - view, value));
 
 /** 世界尺寸与存档不变；相机、角色取样都对齐最终渲染像素。 */
 export class RoomCamera {
   private width = 0;
   private height = 0;
-  private room = -1;
-  private x = 0;
-  private y = 0;
-  private snap = true;
-  private readonly backdrop: GameObjects.TileSprite;
   private readonly markers: GameObjects.Graphics;
   constructor(
     private readonly scene: Scene,
     private readonly ui: InputScene,
   ) {
-    this.backdrop = scene.add
-      .tileSprite(0, 0, 1, 1, ART.environment, 'wall')
-      .setOrigin(0)
-      .setScrollFactor(0)
-      .setDepth(DEPTH.floor - 1)
-      .setTileScale(16 / ENVIRONMENT_ART.wall[2], 16 / ENVIRONMENT_ART.wall[3])
-      .setTint(0x607084);
+    // 房间外由相机清屏色填充，不平铺墙砖，也不增加全屏背景对象。
+    scene.cameras.main.setBackgroundColor('#000000');
     this.markers = scene.add
       .graphics()
       .setDepth(DEPTH.wallTops + 1)
@@ -48,7 +33,7 @@ export class RoomCamera {
     if (Number.isFinite(width) && this.scene.scale.width !== width)
       this.scene.scale.setGameSize(width, height);
   };
-  update(x: number, y: number, room: number, delta: number): void {
+  update(x: number, y: number): void {
     // launch 的 UI 场景会在本次场景队列结束后创建。
     if (!this.ui.controls) return;
     const c = this.scene.cameras.main;
@@ -58,25 +43,17 @@ export class RoomCamera {
     if (r.width !== this.width || r.height !== this.height) {
       this.width = r.width;
       this.height = r.height;
-      // 超宽横屏至少让房间及门口外沿覆盖视野宽度，避免控件落在大块墙外空地上。
+      // 保持已有桌面/手机倍率，不因取消房间边界限制而改变角色大小。
       const zoom = Math.max(
         RENDER_SCALE * ROOM_VIEW.zoom,
         Math.ceil((this.scene.scale.width / (B.width + ROOM_VIEW.padding * 2)) * 2) / 2,
       );
       c.setViewport(0, 0, this.scene.scale.width, this.scene.scale.height).setZoom(zoom);
-      this.backdrop.setSize(c.width / c.zoom, c.height / c.zoom);
-      this.snap = true;
     }
     const w = c.width / c.zoom,
       h = c.height / c.zoom;
-    const tx = constrain(x - w / 2, B.x - ROOM_VIEW.padding, B.width + ROOM_VIEW.padding * 2, w);
-    const ty = constrain(y - h / 2, B.y - ROOM_VIEW.padding, B.height + ROOM_VIEW.padding * 2, h);
-    const blend = this.snap || room !== this.room ? 1 : 1 - Math.exp(-Math.min(delta, 50) / 70);
-    this.x += (tx - this.x) * blend;
-    this.y += (ty - this.y) * blend;
-    c.setScroll(Math.round(this.x * c.zoom) / c.zoom, Math.round(this.y * c.zoom) / c.zoom);
-    this.room = room;
-    this.snap = false;
+    // 直接居中，边缘、换房和尺寸变化都不保留旧镜头偏移；误差仅为半个渲染像素。
+    c.setScroll(Math.round((x - w / 2) * c.zoom) / c.zoom, Math.round((y - h / 2) * c.zoom) / c.zoom);
   }
   /** 屏外门口和敌人的方向提示，不替代真实弹道或改变战斗规则。 */
   hint(x: number, y: number, color: number): void {

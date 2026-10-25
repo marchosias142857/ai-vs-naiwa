@@ -72,12 +72,12 @@ export class HubScene extends Scene {
     this.bridge.setInput(this.movement);
     if (input.interactPressed) this.panel.open();
   };
-  override update(_time: number, delta: number): void {
+  override update(): void {
     const p = this.sim.getActor(this.sim.playerId!);
     if (p) {
       this.ui.playerX = p.x;
       this.ui.playerY = p.y;
-      this.roomCamera.update(p.x, p.y, 0, delta);
+      this.roomCamera.update(p.x, p.y);
       this.roomCamera.hint(HUB.door.x, HUB.door.y, 0x7ee8ff);
     }
     this.panel.update();

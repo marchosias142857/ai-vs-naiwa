@@ -1,0 +1,90 @@
+{
+  "baseline": "c1b75f6c55761c7e83f65da200cda6529fcadda7",
+  "browser": "Chromium 153.0.8010.0, software rendering",
+  "projects": [
+    {
+      "project": "desktop",
+      "viewport": [1280, 720],
+      "corners": [
+        {
+          "corner": "north-west",
+          "player": [110, 53],
+          "maxCenterErrorRenderPx": 0.4817100367706644,
+          "sampledFrames": 115,
+          "backgroundSampleCss": [358, 288],
+          "backgroundPatchSize": [5, 5],
+          "backgroundRgb": [0, 0, 0]
+        },
+        {
+          "corner": "north-east",
+          "player": [370, 53],
+          "maxCenterErrorRenderPx": 0.4817100367706644,
+          "sampledFrames": 121,
+          "backgroundSampleCss": [922, 288],
+          "backgroundPatchSize": [5, 5],
+          "backgroundRgb": [0, 0, 0]
+        },
+        {
+          "corner": "south-west",
+          "player": [110, 217],
+          "maxCenterErrorRenderPx": 0.48171003677009594,
+          "sampledFrames": 120,
+          "backgroundSampleCss": [358, 432],
+          "backgroundPatchSize": [5, 5],
+          "backgroundRgb": [0, 0, 0]
+        },
+        {
+          "corner": "south-east",
+          "player": [370, 217],
+          "maxCenterErrorRenderPx": 0.48171003677009594,
+          "sampledFrames": 118,
+          "backgroundSampleCss": [922, 432],
+          "backgroundPatchSize": [5, 5],
+          "backgroundRgb": [0, 0, 0]
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "viewport": [863, 360],
+      "corners": [
+        {
+          "corner": "north-west",
+          "player": [110, 53],
+          "maxCenterErrorRenderPx": 0.5,
+          "sampledFrames": 116,
+          "backgroundSampleCss": [242, 144],
+          "backgroundPatchSize": [5, 5],
+          "backgroundRgb": [0, 0, 0]
+        },
+        {
+          "corner": "north-east",
+          "player": [370, 53],
+          "maxCenterErrorRenderPx": 0.5,
+          "sampledFrames": 118,
+          "backgroundSampleCss": [621, 144],
+          "backgroundPatchSize": [5, 5],
+          "backgroundRgb": [0, 0, 0]
+        },
+        {
+          "corner": "south-west",
+          "player": [110, 217],
+          "maxCenterErrorRenderPx": 0.5,
+          "sampledFrames": 114,
+          "backgroundSampleCss": [242, 216],
+          "backgroundPatchSize": [5, 5],
+          "backgroundRgb": [0, 0, 0]
+        },
+        {
+          "corner": "south-east",
+          "player": [370, 217],
+          "maxCenterErrorRenderPx": 0.5,
+          "sampledFrames": 115,
+          "backgroundSampleCss": [621, 216],
+          "backgroundPatchSize": [5, 5],
+          "backgroundRgb": [0, 0, 0]
+        }
+      ]
+    }
+  ]
+}

@@ -124,7 +124,7 @@ export class GameScene extends M1Scene {
     }
     this.demo.update();
     const p = this.demo.player;
-    if (p) this.roomCamera?.update(p.x, p.y, this.demo.dungeon.floor * 100 + this.demo.dungeon.roomId, delta);
+    if (p) this.roomCamera?.update(p.x, p.y);
     const d = this.demo.dungeon;
     for (const id of d.room.links) {
       const to = d.map.rooms[id]!;
