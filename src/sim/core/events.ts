@@ -59,6 +59,8 @@ export interface GameEvents {
   };
   'melee:hit': { team: Team; x: number; y: number; angle: number; targetId: EntityId; critical: boolean };
   'weapon:fired': { ownerId: EntityId; weaponId: string; x: number; y: number; angle: number };
+  /** 连锁闪电跳了一次（ADR 0031），只给特效用；伤害照常发 `entity:damaged` 与 `bullet:hit`。 */
+  'weapon:chained': { team: Team; x1: number; y1: number; x2: number; y2: number };
   /**
    * 子弹命中一个目标或撞墙，命中火花只由这个事件产生。`targetId` 为 `null` 表示打在墙上。
    * 穿透的子弹会对每个命中的目标各发一次（子弹继续飞行）；子弹是否结束以 `hitActor` 的返回值为准。

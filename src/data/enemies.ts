@@ -142,6 +142,7 @@ export const ENEMIES = {
     ...chaser,
     name: 'enemy.naiwa_boss',
     hp: 320,
+    freezeImmune: true,
     moveSpeed: 30,
     radius: 14,
     behavior: 'keep_distance',

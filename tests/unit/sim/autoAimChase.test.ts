@@ -28,6 +28,8 @@ function actor(
     lift: 0,
     aim: 0,
     move: 'none',
+    chill: 0,
+    frozen: false,
   };
 }
 const visible = () => true;

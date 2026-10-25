@@ -31,6 +31,8 @@ export const BalanceDefSchema = z.strictObject({
   /** 区域与石块的预热槽位数（ADR 0030）。 */
   zoneCapacity: z.int().positive(),
   rockCapacity: z.int().positive(),
+  /** 特殊弹体的预热槽位数（ADR 0031）。 */
+  shotCapacity: z.int().positive(),
 });
 
 export type BalanceDef = z.infer<typeof BalanceDefSchema>;

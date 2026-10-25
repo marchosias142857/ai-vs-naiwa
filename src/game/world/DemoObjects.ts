@@ -1,4 +1,4 @@
-import { ART } from '../assets/demoArt';
+import { ART, weaponTexture } from '../assets/demoArt';
 import { WEAPON_ART } from '../../data/art';
 import type { GameObjects, Scene } from 'phaser';
 import { t } from '../../i18n/t';
@@ -66,7 +66,7 @@ export class DemoObjects {
       if (shown && slot.kind === 'weapon' && weapon)
         weapon
           .setPosition(slot.x, slot.y)
-          .setTexture(ART.weapons, slot.weapon)
+          .setTexture(weaponTexture(slot.weapon), slot.weapon)
           .setScale(WEAPON_ART[slot.weapon].scale);
       text.setVisible(shown && (slot.kind !== 'weapon' || !weapon));
       text.setColor(slot.kind === 'coin' ? '#edce84' : slot.kind === 'health' ? '#ff8d9d' : '#91f3e7');

@@ -84,6 +84,8 @@ test('暂停编辑：拖动、大小透明度、真实触控与刷新恢复均�
   expect(input.fireX).toBeCloseTo(area.width * 0.6);
   expect(input.fireRadius).toBeCloseTo(67.2);
   if (isMobile) {
+    // 退出暂停后技能按钮要等一帧才恢复显示，直接读 boundingBox 偶尔拿到 null。
+    await expect(page.locator('[data-action="Space"]')).toBeVisible();
     const skill = (await page.locator('[data-action="Space"]').boundingBox())!;
     expect(skill.x + skill.width / 2 - area.x).toBeCloseTo(area.width * 0.38, 0);
     await page.locator('[data-action="Space"]').tap();

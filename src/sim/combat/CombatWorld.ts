@@ -1,5 +1,5 @@
 import { playerMuzzle } from '../weapons/muzzle';
-import { sectorHitsCircle } from '../weapons/melee';
+import { sectorHitsCircle, segmentDistance } from '../weapons/melee';
 import type { MeleeState } from './api';
 import { LOOT_RULES } from '../../data/loot';
 import { UPGRADES, type UpgradeId } from '../../data/player';
@@ -19,12 +19,14 @@ import type { GameEvents } from '../core/events';
 import { Random } from '../core/Random';
 import type { EntityId, InputFrame, Team, Vec2 } from '../core/types';
 import { getPattern, type BulletSink, type FireContext, type FirePattern } from '../weapons/patterns';
+import { Arsenal, type ArsenalHost } from '../weapons/Arsenal';
 import type {
   ActorMove,
   ActorPhase,
   ActorPose,
   ActorState,
   ActorView,
+  BeamView,
   BulletSpawn,
   CombatWorld,
   CombatWorldOptions,
@@ -32,6 +34,7 @@ import type {
   CombatWorldState,
   RockState,
   RockView,
+  ShotView,
   StepResult,
   ZoneKind,
   ZoneState,
@@ -54,15 +57,6 @@ const ROCK_ATTEMPTS = 8;
 const ROCK_STAGGER = 0.6;
 /** 判断冲撞撞到什么时，往前探的距离，像素。 */
 const CRASH_REACH = 6;
-
-/** 点到线段的距离。 */
-function segmentDistance(px: number, py: number, x1: number, y1: number, x2: number, y2: number): number {
-  const dx = x2 - x1,
-    dy = y2 - y1,
-    len2 = dx * dx + dy * dy;
-  const t = len2 > 0 ? Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / len2)) : 0;
-  return Math.hypot(px - (x1 + dx * t), py - (y1 + dy * t));
-}
 
 /** 实体的内部状态；对外以 `ActorView` 只读暴露。 */
 interface Actor extends ActorView {
@@ -98,6 +92,10 @@ interface Actor extends ActorView {
   move: ActorMove;
   /** 召唤者编号；0 表示不是被召唤出来的。 */
   parentId: number;
+  chill: number;
+  frozen: boolean;
+  /** 冰冻层数、每层减速、清零倒计时、冻结剩余秒数（ADR 0031）。 */
+  status: { stacks: number; per: number; time: number; freeze: number };
 }
 
 interface Zone extends ZoneView, ZoneState {
@@ -167,6 +165,9 @@ interface PlayerState {
   tuning: MoveTuning;
   burstLeft: number;
   burstWait: number;
+  /** 已蓄力秒数、射速预热秒数（ADR 0031）。 */
+  charge: number;
+  spin: number;
 }
 
 const alwaysVisible: LineOfSight = () => true;
@@ -230,26 +231,30 @@ function newActor(): Actor {
     aim: 0,
     move: 'none',
     parentId: 0,
+    chill: 0,
+    frozen: false,
+    status: { stacks: 0, per: 0, time: 0, freeze: 0 },
     knock: { dirX: 0, dirY: 0, total: 0, left: 0, timeLeft: 0, speed: 0, fresh: false },
   };
 }
 
-function newRock(): Rock {
-  return { active: false, landed: false, x: 0, y: 0, radius: 0, time: 0, fall: 0, life: 0, damage: 0 };
+function newRock(slot: number): Rock {
+  return { slot, active: false, landed: false, x: 0, y: 0, radius: 0, time: 0, fall: 0, life: 0, damage: 0 };
 }
 
 function saveZone(z: Readonly<Zone>): ZoneState {
-  const { team, kind, x, y, radius, remaining, duration, damage, tick, wait } = z;
-  return { team, kind, x, y, radius, remaining, duration, damage, tick, wait };
+  const { slot, team, kind, x, y, radius, remaining, duration, damage, tick, wait } = z;
+  return { slot, team, kind, x, y, radius, remaining, duration, damage, tick, wait };
 }
 
 function saveRock(r: Readonly<Rock>): RockState {
-  const { landed, x, y, radius, time, fall, life, damage } = r;
-  return { landed, x, y, radius, time, fall, life, damage };
+  const { slot, landed, x, y, radius, time, fall, life, damage } = r;
+  return { slot, landed, x, y, radius, time, fall, life, damage };
 }
 
-function newZone(): Zone {
+function newZone(slot: number): Zone {
   return {
+    slot,
     active: false,
     team: 'enemy',
     kind: 'poison',
@@ -304,6 +309,7 @@ function saveActor(a: Actor): ActorState {
     aim: a.aim,
     move: a.move,
     parentId: a.parentId,
+    status: { ...a.status },
   };
 }
 
@@ -337,6 +343,14 @@ function loadActor(a: Actor, s: Readonly<ActorState>): void {
   a.aim = s.aim;
   a.move = s.move;
   a.parentId = s.parentId;
+  Object.assign(a.status, s.status);
+  refreshChill(a);
+}
+
+/** 由冰冻状态算出给表现层看的减速比例与冻结标记。 */
+function refreshChill(a: Actor): void {
+  a.frozen = a.status.freeze > 0;
+  a.chill = a.frozen ? 1 : Math.min(1, a.status.stacks * a.status.per);
 }
 
 /** 每种事件一个 payload 复用栈。 */
@@ -411,6 +425,13 @@ function createPayloads() {
       targetId: null,
       critical: false,
     })),
+    chained: new PayloadStack<GameEvents['weapon:chained']>(() => ({
+      team: 'player',
+      x1: 0,
+      y1: 0,
+      x2: 0,
+      y2: 0,
+    })),
     exploded: new PayloadStack<GameEvents['combat:exploded']>(() => ({
       team: 'enemy',
       x: 0,
@@ -437,6 +458,7 @@ class CombatWorldImpl implements CombatWorld {
     duration: 0,
     damage: 0,
     hitIds: [],
+    lunge: 0,
   };
   private readonly muzzle = { x: 0, y: 0 };
   time = 0;
@@ -461,6 +483,7 @@ class CombatWorldImpl implements CombatWorld {
   private readonly spreadRng: Random;
   private readonly critRng: Random;
   private readonly aiRng: Random;
+  private readonly shotRng: Random;
   readonly zones: Zone[] = [];
   readonly rocks: Rock[] = [];
   private readonly ai: EnemyAi;
@@ -487,6 +510,35 @@ class CombatWorldImpl implements CombatWorld {
     act: (e, action, angle) => this.emitAct(e as Actor, action, angle),
     random: () => this.aiRng.next(),
   };
+  private readonly arsenalHost: ArsenalHost = {
+    actors: this.actors,
+    time: () => this.time,
+    los: (x1, y1, x2, y2) => this.los(x1, y1, x2, y2),
+    targetable: (a) => this.targetable(a as Actor),
+    actor: (id) => this.byId.get(id),
+    strike: (weapon, team, ownerId, target, damage, knockback, dirX, dirY, x, y) =>
+      this.strike(weapon, team, ownerId, target as Actor, damage, knockback, dirX, dirY, x, y),
+    wall: (team, x, y, angle) => this.emitHitAt(team, x, y, angle, null, false),
+    explode: (x, y, radius, damage, team, ownerId, knockback) =>
+      this.explodeAt(x, y, radius, damage, team, ownerId, knockback),
+    chained: (team, x1, y1, x2, y2) => this.emitChained(team, x1, y1, x2, y2),
+    chill: (target, def) => this.chillActor(target as Actor, def),
+    pay: (cost) => {
+      if (!this.resources.canFire(cost)) return false;
+      this.resources.spend(cost);
+      return true;
+    },
+    nextId: () => this.nextId++,
+  };
+  private readonly arsenal: Arsenal;
+  /** 本步开火是否真的生成了子弹或弹体（ADR 0031：弹体到上限时不扣能量）。 */
+  private fired = 0;
+  /** 蓄力发射时本次开火的伤害、弹速倍率与额外穿透；其余时候为 1、1、0。 */
+  private chargeDamage = 1;
+  private chargeSpeed = 1;
+  private chargePierce = 0;
+  /** 本步玩家因预热武器开火而乘的移动倍率，每步由 updatePlayer 重算，不存档。 */
+  private fireSlow = 1;
   private readonly lineOfSight: LineOfSight;
   private readonly navigation: CombatWorldOptions['navigation'];
   private readonly route = { x: 0, y: 0 };
@@ -518,10 +570,12 @@ class CombatWorldImpl implements CombatWorld {
     this.spreadRng = root.fork('spread');
     this.critRng = root.fork('crit');
     this.aiRng = root.fork('ai');
+    this.shotRng = root.fork('shot');
     this.bounds = options.bounds;
-    for (let i = 0; i < BALANCE.zoneCapacity; i++) this.zones.push(newZone());
-    for (let i = 0; i < BALANCE.rockCapacity; i++) this.rocks.push(newRock());
+    for (let i = 0; i < BALANCE.zoneCapacity; i++) this.zones.push(newZone(i));
+    for (let i = 0; i < BALANCE.rockCapacity; i++) this.rocks.push(newRock(i));
     this.ai = new EnemyAi(this.aiHost);
+    this.arsenal = new Arsenal(this.arsenalHost, this.shotRng, BALANCE.shotCapacity);
     this.bus = options.bus;
     this.maxBullets = options.maxBullets ?? DEFAULT_MAX_BULLETS;
     this.godMode = options.godMode ?? false;
@@ -540,6 +594,19 @@ class CombatWorldImpl implements CombatWorld {
     return this.player?.weaponId ?? 'pistol_basic';
   }
 
+  get shots(): readonly ShotView[] {
+    return this.arsenal.shots;
+  }
+
+  get beam(): BeamView {
+    return this.arsenal.beam;
+  }
+
+  get charge(): number {
+    const p = this.player;
+    return p?.weapon.charge ? p.charge / p.weapon.charge.time : 0;
+  }
+
   equipWeapon(id: WeaponId): boolean {
     const p = this.player;
     if (!p || this.playerDied || !Object.hasOwn(WEAPONS, id)) return false;
@@ -547,7 +614,10 @@ class CombatWorldImpl implements CombatWorld {
     p.weaponId = id;
     p.pattern = getPattern(p.weapon.pattern);
     p.burstLeft = 0;
+    p.charge = p.spin = 0;
+    this.arsenal.beamOff();
     this.melee.active = false;
+    this.melee.lunge = 0;
     this.melee.remaining = 0;
     this.melee.hitIds.length = 0;
     return true;
@@ -640,6 +710,8 @@ class CombatWorldImpl implements CombatWorld {
         cooldown: 0,
         burstLeft: 0,
         burstWait: 0,
+        charge: 0,
+        spin: 0,
         tuning: { maxSpeed: def.moveSpeed, accelTime: def.accelTime, decelTime: def.decelTime },
       };
       this.playerId = actor.id;
@@ -677,6 +749,8 @@ class CombatWorldImpl implements CombatWorld {
       if (dt > 0) {
         this.time += dt;
         for (const actor of this.actors) this.tickActor(actor, dt);
+        // 先移动已有弹体，本步新发射的弹体和 Arcade 子弹一样从下一步开始飞。
+        this.arsenal.update(dt);
         this.updatePlayer(input, dt);
         this.updateMelee(dt);
         this.updateEnemies(dt);
@@ -748,6 +822,7 @@ class CombatWorldImpl implements CombatWorld {
   clearHazards(): void {
     for (const z of this.zones) z.active = false;
     for (const r of this.rocks) r.active = false;
+    this.arsenal.clear();
   }
 
   releaseBullet(bulletId: EntityId): void {
@@ -763,6 +838,8 @@ class CombatWorldImpl implements CombatWorld {
       if (!enemy || !player || enemy.team === player.team) return;
       if (enemy.phase !== 'active' || player.phase !== 'active') return;
       if (this.ignoresDamage(player) || enemy.contactDamage <= 0 || !EnemyAi.grounded(enemy.brain)) return;
+      // 冻住的怪物没有接触伤害（ADR 0031）。
+      if (enemy.frozen) return;
       let dirX = player.x - enemy.x;
       let dirY = player.y - enemy.y;
       const d = Math.hypot(dirX, dirY);
@@ -837,6 +914,8 @@ class CombatWorldImpl implements CombatWorld {
         cooldown: p.cooldown,
         burstLeft: p.burstLeft,
         burstWait: p.burstWait,
+        charge: p.charge,
+        spin: p.spin,
         maxSpeed: p.tuning.maxSpeed,
         accelTime: p.tuning.accelTime,
         decelTime: p.tuning.decelTime,
@@ -844,11 +923,17 @@ class CombatWorldImpl implements CombatWorld {
       lastMoveDir: { x: this.lastMoveDir.x, y: this.lastMoveDir.y },
       dashDirection: { x: this.dashDirection.x, y: this.dashDirection.y },
       resources: r.save(),
-      rng: { spread: this.spreadRng.snapshot, crit: this.critRng.snapshot, ai: this.aiRng.snapshot },
+      rng: {
+        spread: this.spreadRng.snapshot,
+        crit: this.critRng.snapshot,
+        ai: this.aiRng.snapshot,
+        shot: this.shotRng.snapshot,
+      },
       actors: this.actors.map(saveActor),
       bullets,
       zones: this.zones.filter((z) => z.active).map(saveZone),
       rocks: this.rocks.filter((r) => r.active).map(saveRock),
+      ...this.arsenal.save(),
     };
   }
 
@@ -859,7 +944,8 @@ class CombatWorldImpl implements CombatWorld {
       this.bullets.size ||
       this.playerId !== null ||
       this.zones.some((z) => z.active) ||
-      this.rocks.some((r) => r.active)
+      this.rocks.some((r) => r.active) ||
+      this.arsenal.shots.some((s) => s.active)
     )
       throw new Error('只能把存档写入刚创建的世界');
     if (state.actors.length > this.actorPool.length || state.bullets.length > this.bulletPool.length)
@@ -880,6 +966,8 @@ class CombatWorldImpl implements CombatWorld {
       cooldown: p.cooldown,
       burstLeft: p.burstLeft,
       burstWait: p.burstWait,
+      charge: p.charge,
+      spin: p.spin,
       tuning: { maxSpeed: p.maxSpeed, accelTime: p.accelTime, decelTime: p.decelTime },
     };
     this.lastMoveDir.x = state.lastMoveDir.x;
@@ -891,12 +979,19 @@ class CombatWorldImpl implements CombatWorld {
     this.spreadRng.restore(state.rng.spread);
     this.critRng.restore(state.rng.crit);
     this.aiRng.restore(state.rng.ai);
+    this.shotRng.restore(state.rng.shot);
+    this.arsenal.load(state.shots, state.beam);
     if (state.zones.length > this.zones.length) throw new RangeError('存档超出区域容量');
     if (state.rocks.length > this.rocks.length) throw new RangeError('存档超出石块容量');
-    for (let i = 0; i < state.zones.length; i++)
-      Object.assign(this.zones[i]!, state.zones[i], { active: true });
-    for (let i = 0; i < state.rocks.length; i++)
-      Object.assign(this.rocks[i]!, state.rocks[i], { active: true });
+    // 回到原槽位：之后新区域、新石块占用的空槽与遍历顺序都与存档前一致。
+    for (const z of state.zones) {
+      if (this.zones[z.slot]?.active !== false) throw new RangeError('区域槽位无效或重复');
+      Object.assign(this.zones[z.slot]!, z, { active: true });
+    }
+    for (const r of state.rocks) {
+      if (this.rocks[r.slot]?.active !== false) throw new RangeError('石块槽位无效或重复');
+      Object.assign(this.rocks[r.slot]!, r, { active: true });
+    }
     for (const a of state.actors) {
       const actor = this.actorPool.pop()!;
       loadActor(actor, a);
@@ -955,6 +1050,9 @@ class CombatWorldImpl implements CombatWorld {
     actor.lift = actor.aim = 0;
     actor.move = 'none';
     actor.parentId = 0;
+    const st = actor.status;
+    st.stacks = st.per = st.time = st.freeze = 0;
+    refreshChill(actor);
     const k = actor.knock;
     k.dirX = k.dirY = k.total = k.left = k.timeLeft = k.speed = 0;
     k.fresh = false;
@@ -982,6 +1080,12 @@ class CombatWorldImpl implements CombatWorld {
     if (actor.phase === 'telegraph' && this.time >= actor.activateAt) this.activate(actor);
     actor.invulnerable = actor.phase === 'active' && this.time < actor.invulnUntil;
     this.tickKnockback(actor.knock, dt);
+    const st = actor.status;
+    if (st.freeze > 0 || st.stacks > 0) {
+      if (st.freeze > 0) st.freeze = Math.max(0, st.freeze - dt);
+      else if ((st.time -= dt) <= 0) st.stacks = st.time = 0;
+      refreshChill(actor);
+    }
   }
 
   /** 扣掉上一段时间里实际走过的击退距离，并给出下一段的击退速度。 */
@@ -1017,7 +1121,11 @@ class CombatWorldImpl implements CombatWorld {
   private updatePlayer(input: Readonly<InputFrame>, dt: number): void {
     const p = this.player;
     const actor = this.playerId === null ? undefined : this.byId.get(this.playerId);
-    if (!p || !actor || actor.phase !== 'active') return;
+    this.fireSlow = 1;
+    if (!p || !actor || actor.phase !== 'active') {
+      this.arsenal.beamOff();
+      return;
+    }
 
     const r = this.resources;
     r.step(dt);
@@ -1047,6 +1155,14 @@ class CombatWorldImpl implements CombatWorld {
     } else if (moving || input.source === 'touch') actor.facing = moveAngle;
     this.playerBodyFacing = input.fire || p.burstLeft > 0 || this.melee.active ? actor.facing : moveAngle;
 
+    this.pullTrigger(actor, p, input.fire, dt);
+    this.applyLunge(actor);
+  }
+
+  /** 开火输入：普通连发、光束、蓄力与射速预热（ADR 0031）。 */
+  private pullTrigger(actor: Actor, p: PlayerState, firing: boolean, dt: number): void {
+    const r = this.resources,
+      w = p.weapon;
     // 冷却：按住时连发并保留余量，保证射速准确；松开后冷却只减到 0，不会攒出连发。
     p.cooldown -= dt;
     if (p.burstLeft > 0) {
@@ -1054,20 +1170,92 @@ class CombatWorldImpl implements CombatWorld {
       while (p.burstLeft > 0 && p.burstWait <= 0) {
         this.fire(actor, p);
         p.burstLeft--;
-        p.burstWait += p.weapon.burstInterval ?? 1 / p.weapon.fireRate;
+        p.burstWait += w.burstInterval ?? 1 / w.fireRate;
       }
     }
-    if (!input.fire) {
+    if (w.beam) {
+      if (firing) this.fireBeam(actor, p, dt);
+      else this.arsenal.beamOff();
+    }
+    const c = w.charge;
+    if (w.beam || c || !firing) {
       if (p.cooldown < 0) p.cooldown = 0;
+      // 蓄力：按住只蓄力（冷却结束后才开始），松开才按蓄力比例发射。
+      if (c && firing && p.cooldown === 0) p.charge = Math.min(c.time, p.charge + dt);
+      else if (c && !firing && p.charge > 0) {
+        const k = p.charge < c.minTime ? 0 : p.charge / c.time;
+        this.chargeDamage = c.minScale + (c.maxScale - c.minScale) * k;
+        this.chargeSpeed = 1 + (c.speed - 1) * k;
+        this.chargePierce = k >= 1 ? c.fullPierce : 0;
+        this.fire(actor, p);
+        this.chargeDamage = this.chargeSpeed = 1;
+        this.chargePierce = 0;
+        p.charge = 0;
+        p.cooldown = 1 / w.fireRate / r.fireRateScale;
+      }
+      if (w.spinup && !firing) p.spin = Math.max(0, p.spin - (dt * w.spinup.time) / w.spinup.decay);
       return;
     }
+    // 射速预热：按住越久射速越高，开火期间走得慢。
+    const spin = w.spinup;
+    if (spin) {
+      p.spin = Math.min(spin.time, p.spin + dt);
+      this.fireSlow = spin.moveScale;
+    }
+    const rate = spin ? spin.startRate + (w.fireRate - spin.startRate) * (p.spin / spin.time) : w.fireRate;
     while (p.cooldown <= 0) {
       this.fire(actor, p);
-      if (p.weapon.pattern === 'burst') {
-        p.burstLeft = p.weapon.pellets - 1;
-        p.burstWait = p.weapon.burstInterval ?? 1 / p.weapon.fireRate;
+      if (w.pattern === 'burst') {
+        p.burstLeft = w.pellets - 1;
+        p.burstWait = w.burstInterval ?? 1 / w.fireRate;
       }
-      p.cooldown += (p.weapon.melee?.cooldown ?? 1 / p.weapon.fireRate) / r.fireRateScale;
+      p.cooldown += (w.melee?.cooldown ?? 1 / rate) / r.fireRateScale;
+    }
+  }
+
+  /** 光束每步结算；刚打开的那一步发 `weapon:fired`，给枪口火光与音效。 */
+  private fireBeam(owner: Actor, p: PlayerState, dt: number): void {
+    this.placeMuzzle(owner, p.weaponId);
+    const x = this.muzzle.x,
+      y = this.muzzle.y,
+      was = this.arsenal.beam.active;
+    const damage = p.weapon.damage * this.resources.damageScale;
+    if (this.arsenal.beamStep(owner.team, owner.id, p.weaponId, x, y, owner.facing, damage, dt) && !was)
+      this.emitFired(owner, p.weaponId, x, y);
+  }
+
+  /** 突进近战（ADR 0031）：挥动期间沿挥动方向冲，覆盖移动输入；可带冲刺无敌。 */
+  private applyLunge(actor: Actor): void {
+    const m = this.melee;
+    if (!m.active || m.lunge <= 0) return;
+    actor.base.x = Math.cos(m.angle) * m.lunge;
+    actor.base.y = Math.sin(m.angle) * m.lunge;
+    if ((WEAPONS[m.weaponId] as Readonly<WeaponDef>).melee?.dashInvulnerable) {
+      actor.invulnUntil = Math.max(actor.invulnUntil, this.time + m.remaining);
+      actor.invulnerable = true;
+    }
+  }
+
+  /** 枪口位置写入 `this.muzzle`：玩家按武器图的枪口，怪物在身体边缘；枪口越过近墙时退回身体中心。 */
+  private placeMuzzle(owner: Actor, weaponId: string): void {
+    const muzzle = this.muzzle;
+    if (owner.team === 'player')
+      playerMuzzle(
+        muzzle,
+        owner.x,
+        owner.y,
+        owner.facing,
+        weaponId as WeaponId,
+        characterArtFor(owner.kind).standardGrip,
+      );
+    else {
+      muzzle.x = owner.x + Math.cos(owner.facing) * owner.radius;
+      muzzle.y = owner.y + Math.sin(owner.facing) * owner.radius;
+    }
+    // 从身体发射让同一步物理墙体检测接管。
+    if (!this.lineOfSight(owner.x, owner.y, muzzle.x, muzzle.y)) {
+      muzzle.x = owner.x;
+      muzzle.y = owner.y;
     }
   }
 
@@ -1080,27 +1268,10 @@ class CombatWorldImpl implements CombatWorld {
       this.startMelee(owner, p.weapon, p.weaponId as WeaponId);
       return;
     }
-    const muzzle = this.muzzle;
-    if (owner.team === 'player')
-      playerMuzzle(
-        muzzle,
-        owner.x,
-        owner.y,
-        owner.facing,
-        p.weaponId as WeaponId,
-        characterArtFor(owner.kind).standardGrip,
-      );
-    else {
-      muzzle.x = owner.x + Math.cos(owner.facing) * owner.radius;
-      muzzle.y = owner.y + Math.sin(owner.facing) * owner.radius;
-    }
-    // 枪口不能越过近墙；从身体发射让同一步物理墙体检测接管。
-    if (!this.lineOfSight(owner.x, owner.y, muzzle.x, muzzle.y)) {
-      muzzle.x = owner.x;
-      muzzle.y = owner.y;
-    }
-    const muzzleX = muzzle.x,
-      muzzleY = muzzle.y;
+    if (p.weapon.attack === 'beam') return;
+    this.placeMuzzle(owner, p.weaponId);
+    const muzzleX = this.muzzle.x,
+      muzzleY = this.muzzle.y;
     this.fireCtx.x = muzzleX;
     this.fireCtx.y = muzzleY;
     this.fireCtx.aim = owner.facing;
@@ -1109,17 +1280,21 @@ class CombatWorldImpl implements CombatWorld {
     this.firingOwner = owner;
     this.firingWeapon = p.weapon;
     this.firingSource = p.weaponId;
-    const before = this.spawns.length;
+    this.fired = 0;
     p.pattern(this.fireCtx, this.sink);
     this.firingOwner = null;
-    if (this.spawns.length === before) return;
+    if (!this.fired) return;
     if (owner.team === 'player') this.resources.spend(p.weapon.energyCost);
+    this.emitFired(owner, p.weaponId, muzzleX, muzzleY);
+  }
+
+  private emitFired(owner: Readonly<Actor>, weaponId: string, x: number, y: number): void {
     const e = this.payloads.fired.acquire();
     try {
       e.ownerId = owner.id;
-      e.weaponId = p.weaponId;
-      e.x = muzzleX;
-      e.y = muzzleY;
+      e.weaponId = weaponId;
+      e.x = x;
+      e.y = y;
       e.angle = owner.facing;
       this.bus.emit('weapon:fired', e);
     } finally {
@@ -1137,6 +1312,8 @@ class CombatWorldImpl implements CombatWorld {
     m.remaining = m.duration = def.duration / this.resources.fireRateScale;
     m.damage = weapon.damage * this.resources.damageScale;
     m.hitIds.length = 0;
+    // 突进距离固定，攻速升级缩短挥动时就冲得更快。
+    m.lunge = def.lunge ? def.lunge / m.duration : 0;
     this.resources.spend(weapon.energyCost);
     const e = this.payloads.swung.acquire();
     try {
@@ -1200,13 +1377,47 @@ class CombatWorldImpl implements CombatWorld {
       }
     }
     m.remaining = Math.max(0, m.remaining - dt);
-    if (m.remaining === 0) m.active = false;
+    if (m.remaining === 0) {
+      m.active = false;
+      // 突进结束时把速度收回到正常移动上限，不靠减速慢慢滑停。
+      if (m.lunge > 0 && this.player) {
+        const v = owner.base,
+          speed = Math.hypot(v.x, v.y),
+          max = this.player.tuning.maxSpeed;
+        if (speed > max) {
+          v.x *= max / speed;
+          v.y *= max / speed;
+        }
+        m.lunge = 0;
+      }
+    }
   }
 
   private addBullet(x: number, y: number, angle: number): boolean {
     const owner = this.firingOwner;
     const weapon = this.firingWeapon;
     if (!owner) return false;
+    const scale = owner.team === 'player' ? this.resources.damageScale : 1;
+    if (weapon.shot) {
+      const damage = weapon.damage * scale * this.chargeDamage,
+        source = this.firingSource as WeaponId;
+      if (
+        !this.arsenal.add(
+          owner.team,
+          owner.id,
+          source,
+          x,
+          y,
+          angle,
+          damage,
+          this.chargeSpeed,
+          this.chargePierce,
+        )
+      )
+        return false;
+      this.fired++;
+      return true;
+    }
     const spawn = this.spawnPool[this.spawns.length];
     if (!spawn) return false;
     const bullet = this.bulletPool.pop();
@@ -1216,10 +1427,10 @@ class CombatWorldImpl implements CombatWorld {
     bullet.team = owner.team;
     bullet.ownerId = owner.id;
     bullet.angle = angle;
-    bullet.damage = weapon.damage * (owner.team === 'player' ? this.resources.damageScale : 1);
+    bullet.damage = weapon.damage * scale * this.chargeDamage;
     bullet.critChance = weapon.critChance;
     bullet.knockback = weapon.knockback;
-    bullet.pierceLeft = weapon.pierce;
+    bullet.pierceLeft = weapon.pierce + this.chargePierce;
     bullet.source = this.firingSource;
     bullet.hitCount = 0;
     this.bullets.set(id, bullet);
@@ -1230,11 +1441,12 @@ class CombatWorldImpl implements CombatWorld {
     spawn.x = x;
     spawn.y = y;
     spawn.angle = angle;
-    spawn.speed = weapon.bulletSpeed;
+    spawn.speed = weapon.bulletSpeed * this.chargeSpeed;
     spawn.radius = weapon.bulletRadius;
     spawn.lifetime = weapon.range / weapon.bulletSpeed;
     spawn.sprite = weapon.bulletSprite;
     this.spawns.push(spawn);
+    this.fired++;
     return true;
   }
 
@@ -1260,6 +1472,11 @@ class CombatWorldImpl implements CombatWorld {
     for (let i = 0; i < this.actors.length; i++) {
       const actor = this.actors[i]!;
       if (actor.team !== 'enemy' || actor.phase !== 'active') continue;
+      // 冻住的怪物不思考、不移动，招式计时也一起停住（ADR 0031）。
+      if (actor.frozen) {
+        actor.base.x = actor.base.y = 0;
+        continue;
+      }
       const def: Readonly<EnemyDef> = ENEMIES[actor.kind as EnemyId];
       let attack = def.attack,
         speedScale = 1;
@@ -1584,7 +1801,8 @@ class CombatWorldImpl implements CombatWorld {
       return;
     }
     const k = actor.knock;
-    const slow = actor.id === this.playerId ? this.playerSlow : 1;
+    // 玩家：奶潭与预热武器开火减速；怪物：冰冻减速，冻住时只剩击退（ADR 0031）。
+    const slow = actor.id === this.playerId ? this.playerSlow * this.fireSlow : 1 - actor.chill;
     actor.vx = actor.base.x * slow + k.dirX * k.speed;
     actor.vy = actor.base.y * slow + k.dirY * k.speed;
   }
@@ -1636,6 +1854,7 @@ class CombatWorldImpl implements CombatWorld {
       this.playerDied = true;
       this.melee.active = false;
       this.melee.remaining = 0;
+      this.arsenal.beamOff();
     }
     const d = this.payloads.died.acquire();
     try {
@@ -1693,18 +1912,92 @@ class CombatWorldImpl implements CombatWorld {
   }
 
   private emitHit(bullet: Bullet, x: number, y: number, targetId: EntityId | null, critical: boolean): void {
+    this.emitHitAt(bullet.team, x, y, bullet.angle, targetId, critical);
+  }
+
+  private emitHitAt(
+    team: Team,
+    x: number,
+    y: number,
+    angle: number,
+    targetId: EntityId | null,
+    critical: boolean,
+  ): void {
     const p = this.payloads.hit.acquire();
     try {
-      p.team = bullet.team;
+      p.team = team;
       p.x = x;
       p.y = y;
-      p.angle = bullet.angle;
+      p.angle = angle;
       p.targetId = targetId;
       p.critical = critical;
       this.bus.emit('bullet:hit', p);
     } finally {
       this.payloads.hit.release();
     }
+  }
+
+  private emitChained(team: Team, x1: number, y1: number, x2: number, y2: number): void {
+    const p = this.payloads.chained.acquire();
+    try {
+      p.team = team;
+      p.x1 = x1;
+      p.y1 = y1;
+      p.x2 = x2;
+      p.y2 = y2;
+      this.bus.emit('weapon:chained', p);
+    } finally {
+      this.payloads.chained.release();
+    }
+  }
+
+  /** 弹体与光束能打到：活动中，且没有钻到地下（ADR 0030）。 */
+  private targetable(a: Actor): boolean {
+    return a.phase === 'active' && !(a.team === 'enemy' && EnemyAi.hidden(a.brain));
+  }
+
+  /**
+   * 特殊弹体、光束、连锁的一次命中（ADR 0031），顺序同 `hitActor`：
+   * `entity:damaged` →（致命时）`entity:died` → `bullet:hit`。目标无敌时只发 `bullet:hit` 并返回 false。
+   */
+  private strike(
+    weapon: Readonly<WeaponDef>,
+    team: Team,
+    ownerId: EntityId,
+    target: Actor,
+    damage: number,
+    knockback: number,
+    dirX: number,
+    dirY: number,
+    x: number,
+    y: number,
+  ): boolean {
+    const angle = Math.atan2(dirY, dirX);
+    if (this.ignoresDamage(target)) {
+      this.emitHitAt(team, x, y, angle, target.id, false);
+      return false;
+    }
+    const critical = this.critRng.chance(weapon.critChance);
+    this.damage(target, critical ? damage * BALANCE.critMultiplier : damage, critical, dirX, dirY, ownerId);
+    if (target.phase === 'active' && knockback > 0) this.knockBack(target, dirX, dirY, knockback);
+    this.emitHitAt(team, x, y, angle, target.id, critical);
+    return true;
+  }
+
+  /** 叠一层冰冻；叠满冻住，冻住期间不再叠层。免疫冻结的怪物（Boss）只减速（ADR 0031）。 */
+  private chillActor(a: Actor, def: NonNullable<WeaponDef['chill']>): void {
+    const st = a.status;
+    if (a.phase !== 'active' || st.freeze > 0) return;
+    st.per = def.slow / def.stacks;
+    st.time = def.duration;
+    st.stacks = Math.min(def.stacks, st.stacks + 1);
+    const immune =
+      a.team === 'enemy' && (ENEMIES[a.kind as EnemyId] as Readonly<EnemyDef>).freezeImmune === true;
+    if (st.stacks >= def.stacks && !immune) {
+      st.freeze = def.freeze;
+      st.stacks = st.time = 0;
+    }
+    refreshChill(a);
   }
 }
 

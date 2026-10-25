@@ -69,6 +69,10 @@ export interface ActorView {
   readonly aim: number;
   /** 正在进行的招式；玩家恒为 none。 */
   readonly move: ActorMove;
+  /** 冰冻层数带来的移动减速比例，0～1（ADR 0031）；表现层据此染色。 */
+  readonly chill: number;
+  /** 是否被冻住：不行动、不移动、没有接触伤害（ADR 0031）。 */
+  readonly frozen: boolean;
 }
 
 /** 区域种类：毒气按间隔扣血，奶潭让另一阵营减速（ADR 0030）。 */
@@ -102,6 +106,40 @@ export interface RockView {
   /** 本块的预警总时长与落地后的总时长，秒。 */
   readonly fall: number;
   readonly life: number;
+}
+
+/**
+ * 特殊弹体（ADR 0031）：由 sim 移动并结算碰撞，game 只按位置画贴图，不建物理体。
+ * 对象由 sim 预热复用，`active` 为 false 的槽位不要绘制；`id` 变化表示槽位换了一发新弹体。
+ */
+export interface ShotView {
+  readonly active: boolean;
+  readonly id: EntityId;
+  readonly team: Team;
+  /** 发射它的武器；贴图为 `shot.sprite`，`child` 为 true 时为 `shot.split.sprite`。 */
+  readonly source: WeaponId;
+  /** 分裂出的小弹。 */
+  readonly child: boolean;
+  readonly x: number;
+  readonly y: number;
+  /** 贴图朝向，弧度：带 `spin` 的弹体按自转角，其余朝飞行方向。 */
+  readonly angle: number;
+  readonly radius: number;
+  /** 已飞行与总寿命，秒。 */
+  readonly time: number;
+  readonly life: number;
+}
+
+/** 持续光束（ADR 0031）。`active` 为 false 时不要绘制；长度已截到墙或石块为止。 */
+export interface BeamView {
+  readonly active: boolean;
+  readonly source: WeaponId;
+  /** 起点（枪口），世界坐标，像素。 */
+  readonly x: number;
+  readonly y: number;
+  readonly angle: number;
+  readonly length: number;
+  readonly width: number;
 }
 
 /** 需要生成的一颗子弹。对象由 sim 复用，只在下一次 `step` 之前有效；game 读取后立即从池中取子弹。 */
@@ -176,6 +214,8 @@ export interface MeleeState {
   duration: number;
   damage: number;
   hitIds: EntityId[];
+  /** 突进速度，像素/秒；0 表示这次挥动不突进（ADR 0031）。 */
+  lunge: number;
 }
 
 export interface CombatWorld {
@@ -188,6 +228,12 @@ export interface CombatWorld {
   readonly zones: readonly ZoneView[];
   /** 全部石块槽位（含未激活的），长度固定（ADR 0030）。 */
   readonly rocks: readonly RockView[];
+  /** 全部特殊弹体槽位（含未激活的），长度固定（ADR 0031）。 */
+  readonly shots: readonly ShotView[];
+  /** 玩家的持续光束（ADR 0031）。 */
+  readonly beam: BeamView;
+  /** 当前蓄力比例 0～1；没在蓄力或武器不能蓄力时为 0（ADR 0031）。 */
+  readonly charge: number;
   /** 玩家实体的编号；尚未生成玩家时为 null。 */
   readonly playerId: EntityId | null;
   /** 表现用身体朝向：未开火随最后移动方向，开火随武器；不参与弹道或碰撞（ADR 0025）。 */
@@ -248,7 +294,7 @@ export interface CombatWorld {
   hitWall(bulletId: EntityId, x: number, y: number): void;
   /** 子弹寿命到期或飞出地图，静默回收，不发事件。 */
   releaseBullet(bulletId: EntityId): void;
-  /** 换房时清掉全部区域与石块（ADR 0030），不发事件。 */
+  /** 换房时清掉全部区域、石块（ADR 0030）、特殊弹体与光束（ADR 0031），不发事件。 */
   clearHazards(): void;
   /** 怪物与玩家重叠。每帧重叠都可以调用，sim 自己处理无敌帧，不会重复扣血。 */
   contact(enemyId: EntityId, playerId: EntityId): void;
@@ -310,10 +356,14 @@ export interface ActorState {
   move: ActorMove;
   /** 召唤者编号；不是召唤出来的为 0（ADR 0030）。 */
   parentId: number;
+  /** 冰冻（ADR 0031）：层数、每层减速、清零倒计时与冻结剩余秒数。 */
+  status: { stacks: number; per: number; time: number; freeze: number };
 }
 
 /** 区域的存档数据（ADR 0030）。只保存激活的区域。 */
 export interface ZoneState {
+  /** 区域槽位下标；恢复到原槽位，后续生成与遍历的顺序才与存档前一致。 */
+  slot: number;
   team: Team;
   kind: ZoneKind;
   x: number;
@@ -329,6 +379,8 @@ export interface ZoneState {
 
 /** 石块的存档数据（ADR 0030）。只保存激活的石块。 */
 export interface RockState {
+  /** 石块槽位下标，含义同 `ZoneState.slot`。 */
+  slot: number;
   landed: boolean;
   x: number;
   y: number;
@@ -337,6 +389,52 @@ export interface RockState {
   fall: number;
   life: number;
   damage: number;
+}
+
+/** 特殊弹体的存档数据（ADR 0031），只保存激活的弹体。命中记录从旧到新排列。 */
+export interface ShotState {
+  /**
+   * 弹体槽位下标：弹体按槽位顺序移动，结束时分裂出的小弹占用第一个空槽。
+   * 恢复到原槽位，读档后的移动顺序与小弹位置才与存档前一致。
+   */
+  slot: number;
+  id: EntityId;
+  team: Team;
+  ownerId: EntityId;
+  source: WeaponId;
+  child: boolean;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  speed: number;
+  radius: number;
+  angle: number;
+  time: number;
+  life: number;
+  damage: number;
+  pierceLeft: number;
+  bounces: number;
+  /** 回旋镖是否在回程。 */
+  back: boolean;
+  /** 追踪目标编号，0 表示没有；距离下次找目标的秒数。 */
+  targetId: number;
+  seek: number;
+  hitIds: EntityId[];
+  hitTimes: number[];
+}
+
+/** 光束的存档数据（ADR 0031）：几何用于恢复后的首帧绘制，`wait`、`cost` 为下次伤害与扣能量的倒计时。 */
+export interface BeamState {
+  active: boolean;
+  source: WeaponId;
+  x: number;
+  y: number;
+  angle: number;
+  length: number;
+  width: number;
+  wait: number;
+  cost: number;
 }
 
 /** 存活子弹的存档数据（ADR 0019）。`source` 是发射时的武器或敌方攻击定义 ID，用来重建半径与外观。 */
@@ -367,6 +465,9 @@ export interface CombatWorldState {
     cooldown: number;
     burstLeft: number;
     burstWait: number;
+    /** 已蓄力秒数与射速预热秒数（ADR 0031）。 */
+    charge: number;
+    spin: number;
     maxSpeed: number;
     accelTime: number;
     decelTime: number;
@@ -374,11 +475,13 @@ export interface CombatWorldState {
   lastMoveDir: Vec2;
   dashDirection: Vec2;
   resources: PlayerResourcesState;
-  rng: { spread: number; crit: number; ai: number };
+  rng: { spread: number; crit: number; ai: number; shot: number };
   actors: ActorState[];
   bullets: BulletState[];
   zones: ZoneState[];
   rocks: RockState[];
+  shots: ShotState[];
+  beam: BeamState;
 }
 
 /** 新建一局战斗。实现在 `CombatWorld.ts`，这里只是稳定的入口。 */

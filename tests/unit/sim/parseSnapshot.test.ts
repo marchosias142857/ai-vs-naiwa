@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import { PLAYER_RULES } from '../../../src/data/player';
 import { createSimSnapshotSchema } from '../../../src/data/schema/save';
 import { simSaveFields } from '../../../src/data/saveFields';
-import { createCombatWorld } from '../../../src/sim/combat/api';
+import { createCombatWorld, type CombatWorld } from '../../../src/sim/combat/api';
 import { EventBus } from '../../../src/sim/core/EventBus';
 import type { GameEvents } from '../../../src/sim/core/events';
 import { Random } from '../../../src/sim/core/Random';
-import { createInputFrame } from '../../../src/sim/core/types';
+import { createInputFrame, type InputFrame } from '../../../src/sim/core/types';
 import { LootSystem } from '../../../src/sim/loot/LootSystem';
 import { DungeonRun } from '../../../src/sim/run/DungeonRun';
 import { RoomDirector } from '../../../src/sim/run/RoomDirector';
@@ -17,7 +17,7 @@ const limits = { actors: 31, bullets: 500 },
   fields = simSaveFields(limits),
   schema = createSimSnapshotSchema(limits),
   decode = createSimDecoder(limits);
-function sample(): SimSnapshot {
+function sample(extra?: (world: CombatWorld, input: InputFrame) => void): SimSnapshot {
   const bus = new EventBus<GameEvents>(),
     rng = new Random(42);
   const world = createCombatWorld({ seed: 42, bus, playerRules: PLAYER_RULES });
@@ -35,6 +35,7 @@ function sample(): SimSnapshot {
   const bullet = world.step(1 / 60, input).bulletSpawns[0]!;
   world.hitActor(bullet.id, target, 200, 100);
   world.removeActor(target);
+  extra?.(world, input);
   return saveSim({
     world,
     run,
@@ -49,6 +50,7 @@ describe('完整 sim 存档字段与业务校验', () => {
     const s = JSON.parse(JSON.stringify(sample())) as SimSnapshot;
     expect(schema.safeParse(s).success).toBe(true);
     s.world.zones.push({
+      slot: 3,
       team: 'enemy',
       kind: 'milk',
       x: 10,
@@ -60,7 +62,17 @@ describe('完整 sim 存档字段与业务校验', () => {
       tick: 0,
       wait: 0,
     });
-    s.world.rocks.push({ landed: true, x: 30, y: 30, radius: 9, time: 3, fall: 0.9, life: 7, damage: 1 });
+    s.world.rocks.push({
+      slot: 2,
+      landed: true,
+      x: 30,
+      y: 30,
+      radius: 9,
+      time: 3,
+      fall: 0.9,
+      life: 7,
+      damage: 1,
+    });
     expect(validateSaveFields(s, fields)).toBe(true);
     expect(schema.safeParse(s).success).toBe(true);
     expect(decode(s, 42)).toBe(s);
@@ -70,6 +82,41 @@ describe('完整 sim 存档字段与业务校验', () => {
     const stage = JSON.parse(JSON.stringify(s)) as SimSnapshot;
     (stage.world.actors[0]!.brain as { stage: string }).stage = 'flying';
     expect(validateSaveFields(stage, fields)).toBe(false);
+    // 区域、石块恢复到原槽位：槽位超出容量或重复都拒绝。
+    const twin = JSON.parse(JSON.stringify(s)) as SimSnapshot;
+    twin.world.rocks.push({ ...twin.world.rocks[0]! });
+    expect(decode(twin, 42)).toBeNull();
+    const far = JSON.parse(JSON.stringify(s)) as SimSnapshot;
+    far.world.zones[0]!.slot = 999;
+    expect(validateSaveFields(far, fields)).toBe(false);
+  });
+  it('ADR 0031 新字段：飞行中的弹体通过两套规则；异常弹体、光束、蓄力与冰冻被拒绝', () => {
+    const s = JSON.parse(
+      JSON.stringify(
+        sample((world, input) => {
+          world.takeWeapon('fin_boomerang');
+          // 狙击枪的 1 秒冷却换枪后保留，等它结束再扔出回旋镖。
+          for (let i = 0; i < 75; i++) world.step(1 / 60, input);
+        }),
+      ),
+    ) as SimSnapshot;
+    expect(s.world.shots).toHaveLength(1);
+    expect(validateSaveFields(s, fields)).toBe(true);
+    expect(schema.safeParse(s).success).toBe(true);
+    expect(decode(s, 42)).toBe(s);
+    const broken = (change: (c: SimSnapshot) => void) => {
+      const c = JSON.parse(JSON.stringify(s)) as SimSnapshot;
+      change(c);
+      return decode(c, 42);
+    };
+    expect(broken((c) => (c.world.shots[0]!.source = 'sniper_pierce' as never))).toBeNull();
+    expect(broken((c) => (c.world.shots[0]!.id = c.world.nextId))).toBeNull();
+    expect(broken((c) => (c.world.shots[0]!.hitIds = [c.world.shots[0]!.ownerId]))).toBeNull();
+    expect(broken((c) => (c.world.beam.active = true))).toBeNull();
+    expect(broken((c) => (c.world.player!.charge = 1))).toBeNull();
+    expect(
+      broken((c) => (c.world.actors[0]!.status = { stacks: 1, per: 0.1, time: 1, freeze: 1 })),
+    ).toBeNull();
   });
   it('JSON 往返接受真实 save，包括指向已回收目标的穿透记录；不改写输入', () => {
     const s = JSON.parse(JSON.stringify(sample())) as SimSnapshot;
