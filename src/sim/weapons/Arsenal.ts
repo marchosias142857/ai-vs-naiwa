@@ -47,8 +47,8 @@ export interface ArsenalHost {
     x: number,
     y: number,
   ): boolean;
-  /** 打墙：发出 `targetId` 为 null 的 `bullet:hit`。 */
-  wall(team: Team, x: number, y: number, angle: number): void;
+  /** 打墙：发出 `targetId` 为 null 的 `bullet:hit`；撞的是鱼雷桶时按 `damage` 扣耐久（ADR 0032）。 */
+  wall(team: Team, x: number, y: number, angle: number, damage: number): void;
   explode(
     x: number,
     y: number,
@@ -366,11 +366,11 @@ export class Arsenal {
       if (!(motion === 'boomerang' && s.back) && !this.host.los(s.x, s.y, nx, ny)) {
         if (motion === 'bounce' && s.bounces > 0) {
           s.bounces--;
-          this.host.wall(s.team, s.x, s.y, Math.atan2(s.vy, s.vx));
+          this.host.wall(s.team, s.x, s.y, Math.atan2(s.vy, s.vx), s.damage);
           this.reflect(s, nx, ny);
         } else if (motion === 'boomerang') this.turnBack(s);
         else {
-          this.host.wall(s.team, s.x, s.y, Math.atan2(s.vy, s.vx));
+          this.host.wall(s.team, s.x, s.y, Math.atan2(s.vy, s.vx), s.damage);
           return this.end(s, s.x, s.y, true);
         }
         nx = s.x;

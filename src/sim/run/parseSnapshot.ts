@@ -1,4 +1,6 @@
 import type { WeaponDef } from '../../data/schema';
+import type { TrapKind } from '../../data/schema/traps';
+import { TRAP_RULES } from '../../data/traps';
 import { ATTACKS } from '../../data/attacks';
 import { CHARACTERS } from '../../data/characters';
 import { DUNGEON } from '../../data/dungeon';
@@ -170,7 +172,7 @@ export function createSimDecoder(limits: SaveLimits): (value: unknown, seed: num
     const bulletIds = new Set(w.bullets.map((b) => b.id));
     if (w.bullets.some((b) => bulletIds.has(b.ownerId) || b.hitIds.some((id) => bulletIds.has(id))))
       return null;
-    if (!validWeaponState(w, ids) || !uniqueSlots(w)) return null;
+    if (!validWeaponState(w, ids) || !uniqueSlots(w) || !validTraps(w)) return null;
     if (
       s.loot.slots.some(
         (slot) =>
@@ -231,4 +233,32 @@ function validWeaponState(w: Readonly<SimSnapshot['world']>, ids: Set<number>): 
 /** 区域、石块与特殊弹体都恢复到原槽位（ADR 0030、0031），同一池里的槽位不能重复。 */
 function uniqueSlots(w: Readonly<SimSnapshot['world']>): boolean {
   return [w.zones, w.rocks, w.shots].every((list) => new Set(list.map((x) => x.slot)).size === list.length);
+}
+
+/** 每种机关允许的阶段（ADR 0032）。 */
+const TRAP_PHASES: Readonly<Record<TrapKind, readonly string[]>> = {
+  spikes: ['idle', 'warn', 'on'],
+  current: ['on'],
+  weed: ['on'],
+  mine: ['armed', 'fuse', 'idle'],
+  barrel: ['armed', 'broken'],
+};
+
+/** 机关的形状、阶段、耐久与命中记录（ADR 0032）。 */
+function validTraps(w: Readonly<SimSnapshot['world']>): boolean {
+  if (w.melee.traps >= 2 ** w.traps.length) return false;
+  return w.traps.every((t) => {
+    const rect = t.kind === 'spikes' || t.kind === 'current' || t.kind === 'weed';
+    return (
+      (rect
+        ? t.width > 0 && t.height > 0 && t.radius === 0
+        : t.width === 0 && t.height === 0 && t.radius > 0) &&
+      TRAP_PHASES[t.kind].includes(t.state) &&
+      t.hp <= (t.kind === 'barrel' && t.state === 'armed' ? TRAP_RULES.barrel.hp : 0) &&
+      (t.kind === 'barrel' && t.state === 'armed' ? t.hp > 0 : true) &&
+      (t.kind === 'spikes' || t.hitIds.length === 0) &&
+      new Set(t.hitIds).size === t.hitIds.length &&
+      t.hitIds.every((id) => id < w.nextId)
+    );
+  });
 }

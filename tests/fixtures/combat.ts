@@ -26,6 +26,11 @@ class FakeWorld implements CombatWorld {
     width: 0,
   };
   readonly charge = 0;
+  readonly traps = [];
+  setTraps() {}
+  hitTrap() {
+    return true;
+  }
   clearHazards() {}
   readonly melee = {
     active: false,
@@ -36,6 +41,7 @@ class FakeWorld implements CombatWorld {
     damage: 0,
     hitIds: [],
     lunge: 0,
+    traps: 0,
   };
 
   weaponId = 'pistol_basic' as const;

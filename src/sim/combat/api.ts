@@ -5,6 +5,7 @@ import type { EnemyBrain } from '../ai/brain';
 import type { CharacterId } from '../../data/characters';
 import type { WeaponId } from '../../data/weapons';
 import type { EnemyId } from '../../data/enemies';
+import type { TrapKind } from '../../data/schema/traps';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
 import type { EntityId, InputFrame, Seed, Team, Vec2 } from '../core/types';
@@ -106,6 +107,42 @@ export interface RockView {
   /** 本块的预警总时长与落地后的总时长，秒。 */
   readonly fall: number;
   readonly life: number;
+}
+
+/** 机关阶段（ADR 0032）。地刺 idle → warn → on；地雷 armed → fuse → idle；鱼雷桶 armed → broken；水流与海草恒为 on。 */
+export type TrapPhase = 'idle' | 'warn' | 'on' | 'armed' | 'fuse' | 'broken';
+
+/**
+ * 房间机关（ADR 0032）。对象由 sim 预热复用，`active` 为 false 的槽位不要绘制。
+ * 矩形机关（地刺、水流、海草）用 `width`/`height`，圆形机关（地雷、鱼雷桶）用 `radius`。
+ */
+export interface TrapView {
+  readonly active: boolean;
+  readonly kind: TrapKind;
+  readonly x: number;
+  readonly y: number;
+  readonly width: number;
+  readonly height: number;
+  readonly radius: number;
+  /** 水流方向，弧度。 */
+  readonly angle: number;
+  readonly state: TrapPhase;
+  /** 本阶段已过的秒数。 */
+  readonly time: number;
+  /** 鱼雷桶剩余耐久。 */
+  readonly hp: number;
+}
+
+/** `setTraps` 的一项：世界坐标的机关摆放。 */
+export interface TrapLayoutInput {
+  readonly kind: TrapKind;
+  readonly x: number;
+  readonly y: number;
+  readonly width: number;
+  readonly height: number;
+  readonly radius: number;
+  readonly angle: number;
+  readonly delay: number;
 }
 
 /**
@@ -216,6 +253,8 @@ export interface MeleeState {
   hitIds: EntityId[];
   /** 突进速度，像素/秒；0 表示这次挥动不突进（ADR 0031）。 */
   lunge: number;
+  /** 本次挥动已经砍过的机关槽位位掩码（ADR 0032）。 */
+  traps: number;
 }
 
 export interface CombatWorld {
@@ -228,6 +267,8 @@ export interface CombatWorld {
   readonly zones: readonly ZoneView[];
   /** 全部石块槽位（含未激活的），长度固定（ADR 0030）。 */
   readonly rocks: readonly RockView[];
+  /** 全部机关槽位（含未激活的），长度固定（ADR 0032）。 */
+  readonly traps: readonly TrapView[];
   /** 全部特殊弹体槽位（含未激活的），长度固定（ADR 0031）。 */
   readonly shots: readonly ShotView[];
   /** 玩家的持续光束（ADR 0031）。 */
@@ -294,7 +335,18 @@ export interface CombatWorld {
   hitWall(bulletId: EntityId, x: number, y: number): void;
   /** 子弹寿命到期或飞出地图，静默回收，不发事件。 */
   releaseBullet(bulletId: EntityId): void;
-  /** 换房时清掉全部区域、石块（ADR 0030）、特殊弹体与光束（ADR 0031），不发事件。 */
+  /**
+   * 摆放房间 `room` 的机关（ADR 0032），`room` 由调用方给出、每个房间唯一。
+   * 与当前房间编号相同时什么都不做，存档恢复后重建房间不会重置计时；换房时全部重新开始。
+   * 超出 `BALANCE.trapCapacity` 的机关不摆放。机关不随 `clearHazards` 清除。
+   */
+  setTraps(room: number, traps: readonly TrapLayoutInput[]): void;
+  /**
+   * 子弹打中鱼雷桶（ADR 0032）：按子弹伤害扣桶的耐久，打爆时爆炸。
+   * 返回 true 表示子弹应当消失（game 回收子弹）；桶已经爆掉时返回 false，子弹继续飞。
+   */
+  hitTrap(bulletId: EntityId, index: number, x: number, y: number): boolean;
+  /** 换房时清掉全部区域、石块（ADR 0030）、特殊弹体与光束（ADR 0031），不发事件。机关由 `setTraps` 换房重置。 */
   clearHazards(): void;
   /** 怪物与玩家重叠。每帧重叠都可以调用，sim 自己处理无敌帧，不会重复扣血。 */
   contact(enemyId: EntityId, playerId: EntityId): void;
@@ -424,6 +476,22 @@ export interface ShotState {
   hitTimes: number[];
 }
 
+/** 机关的存档数据（ADR 0032），只保存激活的机关；`hitIds` 是本次刺出已经伤过的实体。 */
+export interface TrapState {
+  kind: TrapKind;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  radius: number;
+  angle: number;
+  delay: number;
+  state: TrapPhase;
+  time: number;
+  hp: number;
+  hitIds: EntityId[];
+}
+
 /** 光束的存档数据（ADR 0031）：几何用于恢复后的首帧绘制，`wait`、`cost` 为下次伤害与扣能量的倒计时。 */
 export interface BeamState {
   active: boolean;
@@ -482,6 +550,9 @@ export interface CombatWorldState {
   rocks: RockState[];
   shots: ShotState[];
   beam: BeamState;
+  /** 当前机关摆放所属的房间编号，-1 表示还没摆放（ADR 0032）。 */
+  trapRoom: number;
+  traps: TrapState[];
 }
 
 /** 新建一局战斗。实现在 `CombatWorld.ts`，这里只是稳定的入口。 */

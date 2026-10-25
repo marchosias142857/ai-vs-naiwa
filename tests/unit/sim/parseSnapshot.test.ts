@@ -118,6 +118,33 @@ describe('完整 sim 存档字段与业务校验', () => {
       broken((c) => (c.world.actors[0]!.status = { stacks: 1, per: 0.1, time: 1, freeze: 1 })),
     ).toBeNull();
   });
+  it('ADR 0032 新字段：机关通过两套规则；形状、阶段、耐久异常被拒绝', () => {
+    const s = JSON.parse(
+      JSON.stringify(
+        sample((world, input) => {
+          world.setTraps(30, [
+            { kind: 'spikes', x: 100, y: 100, width: 32, height: 16, radius: 0, angle: 0, delay: 0 },
+            { kind: 'barrel', x: 60, y: 60, width: 0, height: 0, radius: 7, angle: 0, delay: 0 },
+          ]);
+          input.fire = false;
+          for (let i = 0; i < 100; i++) world.step(1 / 60, input);
+        }),
+      ),
+    ) as SimSnapshot;
+    expect(s.world.traps).toHaveLength(2);
+    expect(validateSaveFields(s, fields)).toBe(true);
+    expect(schema.safeParse(s).success).toBe(true);
+    expect(decode(s, 42)).toBe(s);
+    const broken = (change: (c: SimSnapshot) => void) => {
+      const c = JSON.parse(JSON.stringify(s)) as SimSnapshot;
+      change(c);
+      return decode(c, 42);
+    };
+    expect(broken((c) => (c.world.traps[1]!.width = 10))).toBeNull();
+    expect(broken((c) => (c.world.traps[0]!.state = 'fuse'))).toBeNull();
+    expect(broken((c) => (c.world.traps[1]!.hp = 99))).toBeNull();
+    expect(broken((c) => (c.world.melee.traps = 4))).toBeNull();
+  });
   it('JSON 往返接受真实 save，包括指向已回收目标的穿透记录；不改写输入', () => {
     const s = JSON.parse(JSON.stringify(sample())) as SimSnapshot;
     expect(s.world.bullets[0]!.hitIds.length).toBe(1);

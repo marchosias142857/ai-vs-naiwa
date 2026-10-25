@@ -2,10 +2,11 @@ import type { FloorCheckpoint } from '../../sim/run/checkpoint';
 import { CombatFeedback } from '../fx/CombatFeedback';
 import { HazardLayer } from '../fx/HazardLayer';
 import { WeaponFx } from '../fx/WeaponFx';
+import { TrapLayer } from '../fx/TrapLayer';
 import { Physics, Scenes } from 'phaser';
 import type { Scene } from 'phaser';
 import { POOL_SIZES } from '../../config';
-import { ROOM_LAYOUTS } from '../../data/layouts';
+import { roomTheme } from '../../data/traps';
 import { LOOT_RULES } from '../../data/loot';
 import { BALANCE } from '../../data/balance';
 import { PLAYER_RULES, UPGRADES, type UpgradeId } from '../../data/player';
@@ -38,6 +39,7 @@ export class DemoSession {
   readonly fx: CombatFeedback;
   readonly hazards: HazardLayer;
   private readonly weaponFx: WeaponFx;
+  private readonly trapFx: TrapLayer;
   readonly pause: PauseState;
   readonly rewards: RunRewards;
   private entry!: FloorCheckpoint;
@@ -93,6 +95,7 @@ export class DemoSession {
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, bus);
     this.hazards = new HazardLayer(scene, this.sim, this.bridge, bus);
     this.weaponFx = new WeaponFx(scene, this.sim, bus);
+    this.trapFx = new TrapLayer(scene, this.sim, this.bridge, this.arena);
     this.dungeon = restored
       ? DungeonRun.restore(seed, bus, restored.sim.run)
       : new DungeonRun(seed, bus, checkpoint?.floor);
@@ -295,9 +298,10 @@ export class DemoSession {
   }
   /** 恢复只重建几何与绘制，不 enterRoom / teleport / claim。 */
   private rebuildRoom(): void {
+    // 战斗房从本层主题的方案里选一个（内墙 + 机关，ADR 0032）。
     this.layout = this.root
       .fork(`layout:${this.dungeon.floor}:${this.dungeon.roomId}`)
-      .int(0, ROOM_LAYOUTS.length - 1);
+      .int(0, roomTheme(this.dungeon.floor).plans.length - 1);
     this.arena.show(this.dungeon, this.layout);
     this.drawnRevision = this.dungeon.revision;
   }
@@ -307,6 +311,7 @@ export class DemoSession {
     this.fx.update();
     this.hazards.update();
     this.weaponFx.update();
+    this.trapFx.update();
     if (this.drawnRevision !== this.dungeon.revision) {
       this.arena.draw(this.dungeon);
       this.drawnRevision = this.dungeon.revision;

@@ -20,4 +20,6 @@ export const BALANCE = {
   rockCapacity: 12,
   /** 同时存在的特殊弹体上限（ADR 0031）；加特林满速约 12 发同时在飞。 */
   shotCapacity: 64,
+  /** 一个房间最多摆放的机关数（ADR 0032）。 */
+  trapCapacity: 12,
 } as const satisfies BalanceDef;
