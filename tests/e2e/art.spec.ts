@@ -2,7 +2,7 @@ import { startAdventure } from './helpers/town';
 import { test, expect, type Page } from '@playwright/test';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { RENDER_SCALE } from '../../src/config';
+import { worldToScreen } from './helpers/camera';
 import { HERO_ART, HERO_FRAMES } from '../../src/data/art';
 
 /** Phaser 在解码后释放 blob URL；从实际素材响应核对字节，再检查渲染纹理和尺寸。 */
@@ -63,7 +63,6 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/?scene=Game&seed=42&god=1&debug=1');
   await page.waitForFunction(() => !!window.__AVN__?.demo?.visual);
-  const canvas = (await page.locator('#game canvas').boundingBox())!;
   for (const [dx, dy] of [
     [1, 0],
     [-1, 0],
@@ -71,10 +70,8 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
     [0, 1],
   ]) {
     const p = await page.evaluate(() => window.__AVN__!.demo!);
-    await page.mouse.move(
-      canvas.x + ((p.x + dx! * 55) / 480) * canvas.width,
-      canvas.y + ((p.y + dy! * 55) / 270) * canvas.height,
-    );
+    const target = await worldToScreen(page, p.x + dx! * 45, p.y + dy! * 45);
+    await page.mouse.move(target.x, target.y);
     await page.mouse.down();
     await page.waitForFunction(
       ({ dx, dy }) => {
@@ -98,8 +95,8 @@ test('真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中
     expect(v.weapon.depth < v.depth).toBe(dy === -1);
     const f = HERO_FRAMES[v.frame as keyof typeof HERO_FRAMES],
       sign = v.weapon.flipY ? 1 : -1;
-    const alignedX = (v.face.x + (v.flipX ? v.face.width : 0)) * RENDER_SCALE;
-    const top = v.face.y * RENDER_SCALE;
+    const alignedX = (v.face.x + (v.flipX ? v.face.width : 0)) * p.camera.zoom;
+    const top = v.face.y * p.camera.zoom;
     expect(v.face.visible).toBe(true);
     expect(alignedX).toBeCloseTo(Math.round(alignedX));
     expect(top).toBeCloseTo(Math.round(top));

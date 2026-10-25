@@ -113,5 +113,7 @@
   "quality.purple": "Purple",
   "quality.orange": "Orange",
   "quality.red": "Red",
-  "hub.cancel": "Stay in town"
+  "hub.cancel": "Stay in town",
+  "hud.map": "Map",
+  "hud.compactProgress": "Floor {floor}/{floors} · {state} · Dash {skill}"
 }

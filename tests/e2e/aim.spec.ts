@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { GAME_WIDTH } from '../../src/config';
+import { worldToScreen } from './helpers/camera';
 
 for (const room of ['arena', 'dungeon']) {
   test(`${room}：手动瞄准射线从身体中心穿过光标`, async ({ page, isMobile }, info) => {
@@ -12,11 +12,8 @@ for (const room of ['arena', 'dungeon']) {
       const state = window.__AVN__!;
       return state.combat ? { x: state.combat.playerX, y: state.combat.playerY } : state.demo!;
     });
-    const box = (await page.locator('#game canvas').boundingBox())!,
-      scale = box.width / GAME_WIDTH,
-      x = Math.round(box.x + (player.x + 80) * scale),
-      y = Math.round(box.y + (player.y + 25) * scale),
-      target = { x: (x - box.x) / scale, y: (y - box.y) / scale };
+    const target = { x: player.x + 45, y: player.y + 25 };
+    const { x, y } = await worldToScreen(page, target.x, target.y);
     await page.mouse.move(x, y);
     await page.mouse.down();
     await page.waitForFunction(() => !!window.__AVN__!.input!.aim);

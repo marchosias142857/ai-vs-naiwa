@@ -9,7 +9,7 @@ test('demo：默认地牢入口、行动按钮、真实走门、清房与暂停'
   await page.goto('/?scene=Game&seed=42&debug=1&god=1');
   await page.waitForFunction(() => !!window.__AVN__?.demo);
   await expect(page.locator('#demo-hud')).toBeVisible();
-  await expect(page.locator('.demo-status')).toContainText('空槽');
+  await expect(page.locator('.demo-status')).toContainText('基础手枪');
   if (isMobile) await page.locator('[data-action="KeyQ"]').dispatchEvent('pointerdown');
   else {
     await expect(page.locator('#demo-actions')).toBeHidden();

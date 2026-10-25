@@ -11,6 +11,8 @@ export class TouchState {
   fireDy = 0;
   width = 0;
   height = 0;
+  /** 正式房间给摇杆预留独立侧栏；灰盒仍沿用半屏操作。 */
+  moveWidth: number | null = null;
   x: number = UI.joystick.homeInset;
   y: number = UI.joystick.homeInset;
   dx = 0;
@@ -62,8 +64,8 @@ export class TouchState {
     }
     if (
       x >= 0 &&
-      x <= this.width * UI.moveArea.widthFraction &&
-      y >= UI.moveArea.top &&
+      x <= (this.moveWidth ?? this.width * UI.moveArea.widthFraction) &&
+      y >= (this.moveWidth === null ? UI.moveArea.top : this.height / 2) &&
       y <= this.height &&
       this.moveId === null
     ) {
@@ -98,11 +100,14 @@ export class TouchState {
     this.x = clamp(
       this.x,
       UI.joystick.radius,
-      Math.max(UI.joystick.radius, this.width * UI.moveArea.widthFraction - UI.joystick.radius),
+      Math.max(
+        UI.joystick.radius,
+        (this.moveWidth ?? this.width * UI.moveArea.widthFraction) - UI.joystick.radius,
+      ),
     );
     this.y = clamp(
       this.y,
-      UI.joystick.homeInset,
+      this.moveWidth === null ? UI.joystick.homeInset : this.height / 2 + UI.joystick.radius,
       Math.max(UI.joystick.homeInset, this.height - UI.joystick.radius),
     );
     const n = Math.max(UI.joystick.radius, Math.hypot(x - this.x, y - this.y));

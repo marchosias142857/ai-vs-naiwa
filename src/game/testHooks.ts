@@ -17,6 +17,15 @@ export interface TestHooks {
 }
 
 export interface DemoProbe {
+  camera: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    zoom: number;
+    scrollX: number;
+    scrollY: number;
+  };
   meleeActive: boolean;
   visual: {
     frame: string | number;
