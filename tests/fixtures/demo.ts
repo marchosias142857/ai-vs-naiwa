@@ -13,6 +13,7 @@ import type { GameEvents } from '../../src/sim/core/events';
 import { createInputFrame } from '../../src/sim/core/types';
 import { BALANCE } from '../../src/data/balance';
 import { DUNGEON } from '../../src/data/dungeon';
+import { doorStage, ROOM_CENTER, walkTo } from './route';
 
 class DemoHarness extends Scene {
   private hud?: DemoHud;
@@ -201,24 +202,15 @@ class DemoHarness extends Scene {
         }
       };
       const walk = (x: number, y: number) => {
-        for (let i = 0; i < 400; i++) {
-          const p = session.player!;
-          const dx = x - p.x,
-            dy = y - p.y,
-            n = Math.hypot(dx, dy);
-          if (n < 2) break;
-          input.move.x = dx / n;
-          input.move.y = dy / n;
-          tick(1);
-        }
-        input.move.x = input.move.y = 0;
+        if (!walkTo(session, input, () => tick(1), x, y)) throw Error(`未能走到 (${x}, ${y})`);
         tick(12);
       };
-      // 实际物理走到门口，不调用 DungeonRun.enter 或篡改 sim 位置。
+      // 实际物理绕开内墙与鱼雷桶走到门内侧，再穿门；不调用 DungeonRun.enter 或篡改 sim 位置。
       const next = (id: number) => {
-        walk(240, 135);
         const from = session.dungeon.room,
-          to = session.dungeon.map.rooms[id]!;
+          to = session.dungeon.map.rooms[id]!,
+          stage = doorStage(to.x - from.x, to.y - from.y);
+        walk(stage.x, stage.y);
         input.move.x = to.x - from.x;
         input.move.y = to.y - from.y;
         for (let i = 0; i < 400 && session.dungeon.roomId === from.id; i++) tick(1);
@@ -240,7 +232,7 @@ class DemoHarness extends Scene {
           next(room);
           clear();
         }
-        walk(240, 135);
+        walk(ROOM_CENTER.x, ROOM_CENTER.y);
         input.interactPressed = true;
         tick(1);
         input.interactPressed = false;
