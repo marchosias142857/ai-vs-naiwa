@@ -1,3 +1,4 @@
+import { UI_LAYOUT_CHANGED, uiEditor, uiRect } from '../../services/uiLayout';
 import { INPUT_UI as UI } from '../fx/params';
 import { Math as PhaserMath } from 'phaser';
 import type { Input, Scene } from 'phaser';
@@ -48,6 +49,7 @@ export class InputController {
     private readonly ui: Scene,
     readonly battle: Scene,
     private readonly togglePause: () => void,
+    private readonly customLayout = false,
   ) {
     this.canvas = ui.game.canvas;
     this.rect = this.canvas.getBoundingClientRect();
@@ -93,6 +95,7 @@ export class InputController {
     window.addEventListener('blur', this.reset, options);
     document.addEventListener('visibilitychange', this.reset, options);
     window.addEventListener('resize', this.resize, options);
+    window.addEventListener(UI_LAYOUT_CHANGED, this.resize, options);
     window.addEventListener('orientationchange', this.orientation, options);
     window.visualViewport?.addEventListener('resize', this.resize, options);
     ui.scale.on('resize', this.resize);
@@ -113,6 +116,13 @@ export class InputController {
       this.reset();
       this.touch.resize(this.rect.width, this.rect.height);
     }
+    if (this.customLayout) {
+      this.reset();
+      this.touch.configure(
+        uiRect('move', this.rect.width, this.rect.height),
+        uiRect('fire', this.rect.width, this.rect.height),
+      );
+    }
     document.documentElement.style.setProperty('--game-canvas-top', `${this.rect.top}px`);
   };
   private releasePointer(e: PointerEvent): void {
@@ -121,7 +131,7 @@ export class InputController {
     else if (!this.nativeTouch || e.pointerType !== 'touch') this.touch.up(e.pointerId);
   }
   private pointer(e: PointerEvent, down: boolean): void {
-    if (!this.ui.game.input.enabled) return;
+    if (!this.ui.game.input.enabled || uiEditor.open) return;
     if (this.nativeTouch && e.pointerType === 'touch') return;
     const x = e.clientX - this.rect.left,
       y = e.clientY - this.rect.top;
@@ -164,7 +174,7 @@ export class InputController {
       this.togglePause();
   }
   private touches(e: TouchEvent, down: boolean): void {
-    if (!this.ui.game.input.enabled) return;
+    if (!this.ui.game.input.enabled || uiEditor.open) return;
     let handled = false;
     for (const t of e.changedTouches) {
       const x = t.clientX - this.rect.left,
@@ -193,6 +203,10 @@ export class InputController {
   }
   /** 世界坐标原点由玩家位置提供，默认灰盒中心仅用于输入验收。 */
   sample(playerX: number, playerY: number) {
+    if (uiEditor.open) {
+      this.reset();
+      return this.frame;
+    }
     if (this.sampledFrame === this.ui.game.loop.frame) return this.frame;
     this.sampledFrame = this.ui.game.loop.frame;
     const pad = this.ui.input.gamepad?.pad1;

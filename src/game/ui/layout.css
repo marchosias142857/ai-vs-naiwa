@@ -1,0 +1,132 @@
+#layout-editor {
+  position: fixed;
+  z-index: 20;
+  background: #07111e44;
+  touch-action: none;
+  color: #e8ecff;
+  font:
+    12px/1.4 system-ui,
+    sans-serif;
+}
+.layout-item {
+  padding: 0;
+  touch-action: none;
+  cursor: move;
+  outline: 1px dashed #b8dfdf;
+  outline-offset: 4px;
+}
+.layout-item.selected,
+.layout-item:focus-visible {
+  outline: 3px dashed #7ee8ff;
+}
+.layout-item.vital i {
+  width: 100%;
+}
+.layout-item.vital span,
+.demo-vitals .vital span {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: inherit;
+  line-height: 1;
+}
+.layout-control,
+#demo-actions button[data-layout] {
+  border: 2px solid #dae9e9;
+  border-radius: 50%;
+  color: #fff;
+  background: #d9e9ef33;
+  text-shadow: 0 1px 2px #000;
+  box-sizing: border-box;
+}
+.layout-tools {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(310px, calc(100% - 24px));
+  box-sizing: border-box;
+  border: 1px solid #7ee8ff;
+  border-radius: 6px;
+  padding: 8px;
+  background: #0c1c2bf2;
+  box-shadow: 0 6px 24px #0008;
+}
+.layout-tools summary {
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.layout-tools:not([open]) {
+  width: auto;
+}
+.layout-tools p {
+  margin: 4px 0;
+  font-size: 11px;
+}
+.layout-tools select {
+  width: 100%;
+  height: 30px;
+  background: #173342;
+  color: #fff;
+  border: 1px solid #5d8d9c;
+}
+.layout-tools label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+}
+.layout-tools input {
+  min-width: 0;
+  flex: 1;
+  accent-color: #7ee8ff;
+}
+.layout-tools output {
+  width: 36px;
+  text-align: right;
+}
+.layout-actions {
+  display: flex;
+  gap: 6px;
+}
+.layout-actions button {
+  min-height: 40px;
+  flex: 1;
+  border: 1px solid #7ee8ff;
+  border-radius: 4px;
+  background: #173342;
+  color: #fff;
+}
+#layout-save {
+  background: #a1e2d5;
+  color: #0b2831;
+  font-weight: 700;
+}
+.layout-tools [role='status'] {
+  color: #ffc190;
+}
+.editing-layout #demo-pause,
+.editing-layout #demo-menu-panel,
+.editing-layout #demo-hud .demo-vitals,
+.editing-layout #hub-panel {
+  visibility: hidden;
+}
+#demo-actions {
+  pointer-events: none;
+}
+#demo-actions button[data-layout] {
+  pointer-events: auto;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+.demo-vitals {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+.demo-vitals .vital {
+  box-sizing: border-box;
+  border: 1px solid #d4e5e555;
+}

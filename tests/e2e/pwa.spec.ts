@@ -79,6 +79,10 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
     expect(response.headers()['content-type']).toBe('image/png');
   }
   expect((await cdp.send('Page.getInstallabilityErrors')).installabilityErrors).toEqual([]);
+  await page.locator('#demo-menu-panel summary').click();
+  await page.locator('#demo-menu-panel .settings-layout').click();
+  await page.getByRole('slider', { name: '透明度', exact: true }).fill('40');
+  await page.locator('#layout-save').click();
   await context.setOffline(true);
   await page.reload();
   await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
@@ -94,6 +98,7 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
   await reopened.goto(`${url}?scene=Game&seed=7`);
   await reopened.waitForFunction(() => window.__AVN__?.scene === 'Game');
   await reopened.waitForFunction(() => !!window.__AVN__?.demo?.visual);
+  await expect(reopened.locator('.vital-health')).toHaveCSS('opacity', '0.4');
   // 正式图集同样必须离线可用；仅有 Game 场景会漏掉图片加载失败的灰盒回退。
   const art = await reopened.evaluate(async () =>
     Promise.all(

@@ -1,3 +1,5 @@
+import { addLayoutSettings } from './LayoutEditor';
+import { uiEditor } from '../../services/uiLayout';
 import { guardGameUi } from './guardGameUi';
 import { t } from '../../i18n/t';
 import type { Scene } from 'phaser';
@@ -26,14 +28,15 @@ export class PausePanel {
       { signal: this.abort.signal },
     );
     this.root.append(continueButton, exit);
+    addLayoutSettings(this.root, ui, this.abort.signal);
     this.root.hidden = true;
     guardGameUi(this.root, ui, this.abort.signal);
     document.body.append(this.root);
     this.navigation = new MenuNavigation(this.root, ui);
   }
   update(paused: boolean): void {
-    this.root.hidden = !paused;
-    this.navigation.update(paused);
+    this.root.hidden = !paused || uiEditor.open;
+    this.navigation.update(paused && !uiEditor.open);
   }
   destroy(): void {
     this.abort.abort();

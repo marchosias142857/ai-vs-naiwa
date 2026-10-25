@@ -1,3 +1,4 @@
+import { UI_LAYOUT_CHANGED } from '../../services/uiLayout';
 import { Vitals } from './Vitals';
 import { guardGameUi } from './guardGameUi';
 import { LOOT_RULES } from '../../data/loot';
@@ -10,6 +11,7 @@ import { UPGRADES } from '../../data/player';
 import type { DemoSession } from '../systems/DemoSession';
 import { weaponLabel } from './labels';
 import './demo.css';
+import './layout.css';
 
 /** 战斗 HUD：固定 DOM 对象；只有计数文字按 4 Hz 刷新，小地图只在房间状态变化时画。 */
 export class DemoHud {
@@ -39,7 +41,7 @@ export class DemoHud {
   ) {
     this.root.id = 'demo-hud';
     this.status.className = 'demo-status';
-    this.status.append(this.vitals.root, this.statusText);
+    this.status.append(this.statusText);
     this.hint.className = 'demo-hint';
     this.map.className = 'demo-map';
     this.map.id = 'room-map';
@@ -88,12 +90,13 @@ export class DemoHud {
       { signal: this.abort.signal },
     );
     this.modal.append(this.shop, this.restart, this.menu);
-    this.root.append(this.status, this.mapToggle, this.map, this.hint, this.modal);
+    this.root.append(this.vitals.root, this.status, this.mapToggle, this.map, this.hint, this.modal);
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
     this.layout();
     scene.scale.on('resize', this.layout);
     window.addEventListener('resize', this.layout, { signal: this.abort.signal });
+    window.addEventListener(UI_LAYOUT_CHANGED, this.layout, { signal: this.abort.signal });
     window.addEventListener(
       'keydown',
       (e) => {
@@ -119,6 +122,7 @@ export class DemoHud {
   }
   private readonly layout = (): void => {
     const r = this.scene.game.canvas.getBoundingClientRect();
+    this.vitals.layout(r.width, r.height);
     Object.assign(this.root.style, {
       left: `${r.left}px`,
       top: `${r.top}px`,

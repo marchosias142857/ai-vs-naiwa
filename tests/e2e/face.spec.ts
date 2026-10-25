@@ -28,7 +28,7 @@ test('待机与行走的全部帧使用相同眼睛像素，左右移动时不�
     for (const action of ['run', 'idle'] as const) {
       if (action === 'idle') await page.keyboard.up(key);
       const frames = await page.evaluate(
-        ({ names }) =>
+        ({ names, faceScale }) =>
           new Promise<Record<string, string>>((resolve, reject) => {
             const source = document.querySelector<HTMLCanvasElement>('#game canvas')!;
             const canvas = document.createElement('canvas');
@@ -55,11 +55,38 @@ test('待机与行走的全部帧使用相同眼睛像素，左右移动时不�
                   canvas.height,
                 );
                 const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                // 原面部裁片两侧 8 源像素含活动的蓝色鬓发，眼睛均在更内侧。
+                // 放大后边缘取样会扫到邻接分片；只排除鬓发，眼睛仍逐像素严格比较。
+                const hairMargin = Math.ceil(8 * faceScale * scale);
                 let mask = '';
-                for (let i = 0; i < data.length; i += 4)
-                  mask += data[i]! < 70 && data[i + 1]! > 100 && data[i + 2]! > 180 ? '1' : '0';
+                for (let i = 0; i < data.length; i += 4) {
+                  const column = (i / 4) % canvas.width;
+                  mask +=
+                    column >= hairMargin &&
+                    column < canvas.width - hairMargin &&
+                    data[i]! < 70 &&
+                    data[i + 1]! > 100 &&
+                    data[i + 2]! > 180
+                      ? '1'
+                      : '0';
+                }
                 const previous = result[String(v.frame)];
-                if (previous && previous !== mask) return reject(new Error('同一帧移动时眼睛像素改变'));
+                if (previous && previous !== mask)
+                  return reject(
+                    new Error(
+                      `同一帧移动时眼睛像素改变 ${JSON.stringify({
+                        frame: v.frame,
+                        x,
+                        y,
+                        camera,
+                        changed: [...mask].flatMap((pixel, i) =>
+                          pixel === previous[i]
+                            ? []
+                            : [[i % canvas.width, Math.floor(i / canvas.width), pixel]],
+                        ),
+                      })}`,
+                    ),
+                  );
                 result[String(v.frame)] = mask;
               }
               if (Object.keys(result).length === names.length) resolve(result);
@@ -68,14 +95,15 @@ test('待机与行走的全部帧使用相同眼睛像素，左右移动时不�
             };
             sample();
           }),
-        { names: [...HERO_ART[action]] },
+        { names: [...HERO_ART[action]], faceScale: HERO_ART.scale },
       );
       expect(Object.keys(frames).sort()).toEqual([...HERO_ART[action]].sort());
       masks.push(...Object.values(frames));
     }
     const eyePixels = [...masks[0]!].filter((v) => v === '1').length;
     expect(eyePixels).toBeGreaterThan(8);
-    expect(eyePixels).toBeLessThan(80);
+    const zoom = await page.evaluate(() => window.__AVN__!.demo!.camera.zoom);
+    expect(eyePixels).toBeLessThan(80 * (zoom / 6) ** 2);
     expect(new Set(masks).size).toBe(1);
     directions.push(masks[0]!);
     await page.screenshot({ path: info.outputPath(`stable-face-${key}.png`) });

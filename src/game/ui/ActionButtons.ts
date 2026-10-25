@@ -1,7 +1,7 @@
 import { t } from '../../i18n/t';
 import type { Scene } from 'phaser';
-import { COLORS } from '../../config';
-import { INPUT_UI } from '../fx/params';
+import { UI_LAYOUT_CHANGED, placeUi, type UiKey } from '../../services/uiLayout';
+import './layout.css';
 import type { InputController } from '../input/InputController';
 
 /** 输入 UI 场景的动作按钮，固定 CSS 触控尺寸，避免随画布缩小到难以点击。 */
@@ -13,21 +13,20 @@ export class ActionButtons {
     private readonly scene: Scene,
     controls: InputController,
   ) {
-    const ui = INPUT_UI.actions;
     this.root.id = 'demo-actions';
     this.root.setAttribute('aria-label', t('input.actions'));
-    this.root.style.cssText = `position:fixed;display:flex;gap:${ui.gap}px;z-index:3;`;
+    this.root.style.cssText = `position:fixed;z-index:3;`;
     const actions = [
-      [t('input.skill'), 'Space'],
-      [t('input.swap'), 'KeyQ'],
-      [t('input.interact'), 'KeyE'],
+      [t('input.skill'), 'Space', 'skill'],
+      [t('input.swap'), 'KeyQ', 'swap'],
+      [t('input.interact'), 'KeyE', 'interact'],
     ] as const;
-    for (const [label, code] of actions) {
+    for (const [label, code, key] of actions) {
       const button = document.createElement('button');
       button.type = 'button';
       button.textContent = label;
       button.dataset.action = code;
-      button.style.cssText = `width:${ui.width}px;height:${ui.height}px;font:${ui.fontSize}px sans-serif;background:#${COLORS.background.toString(16).padStart(6, '0')};color:${COLORS.text};border:1px solid ${COLORS.accent};touch-action:manipulation;cursor:pointer;`;
+      button.dataset.layout = key;
       button.addEventListener(
         'pointerdown',
         (event) => {
@@ -48,17 +47,24 @@ export class ActionButtons {
     this.layout();
     scene.scale.on('resize', this.layout);
     window.addEventListener('resize', this.layout, { signal: this.abort.signal });
+    window.addEventListener(UI_LAYOUT_CHANGED, this.layout, { signal: this.abort.signal });
   }
   private readonly layout = (): void => {
-    const r = this.scene.game.canvas.getBoundingClientRect(),
-      ui = INPUT_UI.actions;
-    this.root.style.left = `${r.left + r.width / 2 - (ui.width * 3 + ui.gap * 2) / 2}px`;
-    this.root.style.top = `${r.bottom - ui.bottom - ui.height}px`;
+    const r = this.scene.game.canvas.getBoundingClientRect();
+    Object.assign(this.root.style, {
+      left: `${r.left}px`,
+      top: `${r.top}px`,
+      width: `${r.width}px`,
+      height: `${r.height}px`,
+    });
+    for (const button of this.root.querySelectorAll<HTMLButtonElement>('button'))
+      placeUi(button, button.dataset.layout as UiKey, r.width, r.height);
   };
+
   setVisible(value: boolean): void {
     if (this.visible === value) return;
     this.visible = value;
-    this.root.style.display = value ? 'flex' : 'none';
+    this.root.style.display = value ? 'block' : 'none';
   }
   destroy(): void {
     this.abort.abort();

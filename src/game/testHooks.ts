@@ -9,7 +9,17 @@ export interface TestHooks {
   seed: number;
   phaserVersion: string;
   readonly lifecycle?: LifecycleProbe;
-  readonly input?: InputFrame & { manualPaused: boolean };
+  readonly input?: InputFrame & {
+    manualPaused: boolean;
+    touch: {
+      moveX: number;
+      moveY: number;
+      moveRadius: number;
+      fireX: number;
+      fireY: number;
+      fireRadius: number;
+    };
+  };
   readonly combat?: CombatProbe;
   /** 调试工具（#17）的状态；只在 `?debug=1` 时存在。 */
   readonly debug?: DebugProbe;
@@ -105,7 +115,7 @@ interface LifecycleProbe {
   frame: number;
   sceneTime: number;
 }
-let readInput: (() => InputFrame & { manualPaused: boolean }) | undefined;
+let readInput: (() => NonNullable<TestHooks['input']>) | undefined;
 export function setInputProbe(read: typeof readInput): void {
   readInput = read;
   setTestHooks({});

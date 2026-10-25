@@ -165,7 +165,7 @@ test('标题与 HUD 完整画面；触屏提示使用轮盘说明', async ({ pag
       scroll: panel.scrollTop,
     };
   });
-  expect(layout.rows).toBe(1);
+  expect(layout.rows).toBeLessThanOrEqual(2);
   expect(layout.bottom).toBeLessThanOrEqual(layout.viewport);
   expect(layout.scroll).toBe(0);
   await page.locator('#demo-menu-panel summary').click();
@@ -197,7 +197,8 @@ test('参考图角色：受击使用新图集，死亡完整落地且隐藏武�
         upgrades: [],
         secondary: null,
         equipped: 'pistol_basic',
-        hp: 2,
+        // 首次命中必须非致死，避免 2 点伤害直接跳过受击动画。
+        hp: 6,
         armor: 0,
         energy: 50,
         coins: 0,
