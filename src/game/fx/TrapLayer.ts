@@ -5,10 +5,10 @@ import { BALANCE } from '../../data/balance';
 import { ROOM_ART_SCALE } from '../../data/roomArt';
 import { TRAP_RULES } from '../../data/traps';
 import type { CombatWorld, TrapView } from '../../sim/combat/api';
-import { standingBarrel } from '../../sim/room/Traps';
 import { ART } from '../assets/demoArt';
 import type { CombatBridge } from '../world/CombatBridge';
 import type { RoomArena } from '../world/RoomArena';
+import { newBarrelBody, syncBarrelBody, type BarrelBody } from './barrelBody';
 import { TRAP_FX as F } from './trapParams';
 
 /**
@@ -21,7 +21,7 @@ export class TrapLayer {
   private readonly props: GameObjects.Image[] = [];
   private readonly bodies: Physics.Arcade.Image[] = [];
   private readonly slotOf = new Map<Physics.Arcade.Image, number>();
-  private readonly standing: boolean[] = [];
+  private readonly placed: BarrelBody[] = [];
   private readonly group: Physics.Arcade.StaticGroup;
   private readonly colliders: Physics.Arcade.Collider[];
   private readonly enabled: boolean;
@@ -52,7 +52,7 @@ export class TrapLayer {
       body.setAlpha(0).disableBody(true, true);
       this.bodies.push(body);
       this.slotOf.set(body, i);
-      this.standing.push(false);
+      this.placed.push(newBarrelBody());
     }
     this.colliders = [
       scene.physics.add.collider(bridge.actors.group, this.group),
@@ -70,23 +70,25 @@ export class TrapLayer {
     if (this.sim.hitTrap(slot.id, index, body.center.x, body.center.y)) this.bridge.bullets.recycle(slot);
   };
 
-  /** 物理步里同步鱼雷桶的碰撞体：立起来就开启，爆掉就关掉并让导航重新计算。 */
+  /**
+   * 物理步里同步鱼雷桶的碰撞体：立起来或换房后换了位置就摆到桶上，爆掉就关掉并让导航重新计算。
+   * 换房时导航已由 `RoomArena` 重算，这里只在桶爆掉时通知。
+   */
   private readonly tick = (dt: number): void => {
     this.time += dt;
     const traps = this.sim.traps;
     let changed = false;
     for (let i = 0; i < this.bodies.length; i++) {
-      const t = traps[i],
-        body = this.bodies[i]!;
-      const solid = !!t && standingBarrel(t);
-      if (solid && !this.standing[i]) {
-        body.enableBody(true, t.x, t.y, true, false);
-        body.setDisplaySize(t.radius * F.barrelBody, t.radius * F.barrelBody).refreshBody();
-      } else if (!solid && this.standing[i]) {
+      const body = this.bodies[i]!,
+        placed = this.placed[i]!;
+      const action = syncBarrelBody(placed, traps[i], F.barrelBody);
+      if (action === 'place') {
+        body.enableBody(true, placed.x, placed.y, true, false);
+        body.setDisplaySize(placed.size, placed.size).refreshBody();
+      } else if (action === 'remove') {
         body.disableBody(true, true);
         changed = true;
       }
-      this.standing[i] = solid;
     }
     if (changed) this.arena.invalidateNavigation();
   };

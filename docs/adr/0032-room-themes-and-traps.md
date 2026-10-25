@@ -63,7 +63,7 @@
   - `hitTrap(bulletId, index, x, y)`：Arcade 子弹打中鱼雷桶。
 - `TrapView`、`TrapLayoutInput`、`TrapPhase`。
 - `combat:exploded` 的 `team` 改为 `Team | null`，null 表示机关爆炸、伤害范围内所有角色。目前只有 HazardLayer 订阅，它不看阵营。
-- `MeleeState.traps`：本次挥动已经砍过的机关槽位位掩码，所以 `trapCapacity` 不能超过 30。
+- `MeleeState.traps`：本次挥动已经砍过的机关槽位位掩码，所以 `trapCapacity` 不能超过 30。`setTraps` 换房时清零（槽位已换成新房间的机关），恢复同一房间时保留。
 - ADR 0031 的 `ArsenalHost.wall` 多一个 `damage` 参数：特殊弹体撞到鱼雷桶时，按弹体伤害扣耐久。
 
 ### 5. 存档（ADR 0019）
@@ -77,6 +77,7 @@
   - 地刺、水流、海草用平铺贴图：地刺预警时闪烁，水流朝方向滚动，海草左右摆；
   - 地雷、鱼雷桶用单张贴图：地雷点燃时闪红；鱼雷桶耐久过半出现裂纹，爆掉后留下碎片；
   - 立着的鱼雷桶开启静态碰撞体，挡人、挡子弹；子弹打中时调用 `hitTrap`；桶爆掉后让导航网格重新计算。
+  - 碰撞体跟着每个槽位当前的桶走：换房后同一槽位换成别处的桶，碰撞体移到新位置。
 - `RoomArena.isFree` 把立着的鱼雷桶也算作障碍：刷怪不会刷进桶里，导航会绕开它。
 - 冻住的怪物也会被水流冲走（ADR 0031 × 0032）。
 
