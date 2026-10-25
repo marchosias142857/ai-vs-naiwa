@@ -18,6 +18,7 @@ export const ART = {
   environment: 'demo_environment',
   title: 'demo_title',
   doors: 'demo_doors',
+  altar: 'talent_altar',
 } as const;
 /** 武器所在的图集：原武器在 `demo_weapons`，ADR 0031 的新武器在 `demo_arsenal`。 */
 export function weaponTexture(id: WeaponId): string {
@@ -37,6 +38,7 @@ export function preloadDemoArt(scene: Scene): void {
   scene.load.image(ART.enemies, `${base}enemies.png`);
   scene.load.image(ART.environment, `${base}environment.png`);
   scene.load.image(ART.title, `${base}title-confrontation-v1.webp`);
+  scene.load.image(ART.altar, `${base}talent-altar-v1.png`);
   scene.load.image(ART.doors, `${base}doors.png`);
   // 只加载有帧数据的图集；普通怪物图集生成前不请求不存在的文件。
   const used = new Set(Object.keys(ENEMIES).map((kind) => enemyAnimation(kind)?.texture));
@@ -45,7 +47,16 @@ export function preloadDemoArt(scene: Scene): void {
 }
 export function installDemoArt(scene: Scene): void {
   // 仅游戏图集保留像素边缘；画布与文字仍按完整渲染分辨率绘制。
-  for (const key of [ART.weapons, ART.arsenal, ART.rooms, ART.enemies, ART.environment, ART.doors, ART.title])
+  for (const key of [
+    ART.weapons,
+    ART.arsenal,
+    ART.rooms,
+    ART.enemies,
+    ART.environment,
+    ART.doors,
+    ART.title,
+    ART.altar,
+  ])
     if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Textures.FilterMode.NEAREST);
   const add = (atlas: string, name: string, rect: readonly [number, number, number, number]) => {
     if (scene.textures.exists(atlas) && !scene.textures.get(atlas).has(name))

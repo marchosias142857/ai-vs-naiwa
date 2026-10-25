@@ -1,4 +1,5 @@
 import type { Scene } from 'phaser';
+import { TalentPanel } from './TalentPanel';
 import { readProfile, takeProfileNotice } from '../save/metaProfile';
 import { SCENES } from '../../config';
 import { t } from '../../i18n/t';
@@ -12,6 +13,8 @@ import './demo.css';
 export class HubPanel {
   private readonly root = document.createElement('div');
   private readonly door = document.createElement('button');
+  private readonly altar = document.createElement('button');
+  private readonly talents: TalentPanel;
   private readonly modal = document.createElement('section');
   private readonly abort = new AbortController();
   private readonly navigation: MenuNavigation;
@@ -20,6 +23,7 @@ export class HubPanel {
     ui: Scene,
     private readonly pause: PauseState,
     private readonly near: () => boolean,
+    private readonly nearAltar: () => boolean,
   ) {
     readProfile();
     this.root.id = 'hub-panel';
@@ -27,6 +31,9 @@ export class HubPanel {
       hint = document.createElement('p');
     title.textContent = t('hub.title');
     hint.textContent = t('hub.hint');
+    this.altar.id = 'hub-altar';
+    this.altar.textContent = t('talent.interact');
+    this.altar.addEventListener('click', () => this.open(), { signal: this.abort.signal });
     this.door.id = 'hub-door';
     this.door.textContent = t('hub.interact');
     this.modal.id = 'hub-confirm';
@@ -48,9 +55,11 @@ export class HubPanel {
     this.door.addEventListener('click', () => this.open(), { signal: this.abort.signal });
     const close = () => {
       this.modal.hidden = true;
+      this.talents.root.hidden = true;
       this.pause.set('interaction', false);
       if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
     };
+    this.talents = new TalentPanel(pause, ui, this.abort.signal, close);
     cancel.addEventListener('click', close, { signal: this.abort.signal });
     enter.addEventListener(
       'click',
@@ -85,7 +94,7 @@ export class HubPanel {
       status.textContent = t(`talent.notice.${notice}`);
       this.root.append(status);
     }
-    this.root.append(title, hint, this.door, this.modal);
+    this.root.append(title, hint, this.door, this.altar, this.modal, this.talents.root);
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
     this.navigation = new MenuNavigation(this.modal, ui);
@@ -94,13 +103,19 @@ export class HubPanel {
     window.addEventListener('resize', this.layout, { signal: this.abort.signal });
   }
   open(): void {
-    if (!this.near() || this.pause.blocked) return;
+    if ((!this.near() && !this.nearAltar()) || this.pause.blocked) return;
     this.pause.set('interaction', true);
+    if (this.nearAltar()) {
+      this.talents.open();
+      return;
+    }
     this.modal.hidden = false;
     this.navigation.update(false);
     this.modal.querySelector('button')!.focus();
   }
   update(): void {
+    this.talents.update();
+    this.altar.hidden = !this.nearAltar() || this.pause.blocked;
     this.door.hidden = !this.near() || this.pause.blocked;
     this.modal.style.visibility = this.pause.has('manual') ? 'hidden' : '';
     this.navigation.update(!this.modal.hidden && !this.pause.has('manual'));

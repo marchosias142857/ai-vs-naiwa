@@ -17,7 +17,7 @@ import { bindCombatPause } from '../world/combatPause';
 import type { PauseState } from '../world/PauseState';
 import { createRoomArt } from '../world/RoomArt';
 
-/** 大厅不创建 DungeonRun / RunPersistence，任何大厅操作都不会写冒险存档。 */
+/** 大厅不创建 DungeonRun / RunPersistence，天赋只写局外档案，门口确认前保留旧冒险。 */
 export class HubScene extends Scene {
   private readonly bus = new EventBus<GameEvents>();
   private readonly movement = createInputFrame();
@@ -38,6 +38,10 @@ export class HubScene extends Scene {
       .image(HUB.door.x, HUB.door.y, ART.doors, 'open')
       .setDisplaySize(52, 39)
       .setDepth(DEPTH.floorDecals);
+    this.add
+      .image(HUB.altar.x, HUB.altar.y - 10, ART.altar)
+      .setDisplaySize(62, 62)
+      .setDepth(DEPTH.floorDecals);
     this.sim = createCombatWorld({ seed: 0, bus: this.bus, maxActors: 1, maxBullets: 1 });
     this.sim.spawnPlayer('ai_proto', HUB.spawn.x, HUB.spawn.y);
     this.bridge = new CombatBridge(this, this.sim);
@@ -50,7 +54,13 @@ export class HubScene extends Scene {
       this.ui.controls?.reset();
       this.bridge.clearInput();
     });
-    this.panel = new HubPanel(this, this.ui, this.pause, () => this.nearDoor);
+    this.panel = new HubPanel(
+      this,
+      this.ui,
+      this.pause,
+      () => this.nearDoor,
+      () => this.nearAltar,
+    );
     this.events.on(Scenes.Events.PRE_UPDATE, this.feedInput);
     this.events.once(Scenes.Events.SHUTDOWN, () => {
       this.events.off(Scenes.Events.PRE_UPDATE, this.feedInput);
@@ -64,10 +74,14 @@ export class HubScene extends Scene {
     const p = this.sim.getActor(this.sim.playerId!);
     return !!p && Math.hypot(p.x - HUB.door.x, p.y - HUB.door.y) <= HUB.reach;
   }
+  private get nearAltar(): boolean {
+    const p = this.sim.getActor(this.sim.playerId!);
+    return !!p && Math.hypot(p.x - HUB.altar.x, p.y - HUB.altar.y) <= HUB.reach;
+  }
   private readonly feedInput = (): void => {
     if (!this.ui.controls || this.pause.blocked) return;
     const input = this.ui.controls.sample(this.ui.playerX, this.ui.playerY);
-    // 大厅只接收移动和门的交互；不向 sim 传开火/技能/切枪。
+    // 大厅只接收移动和主城交互；不向 sim 传开火/技能/切枪。
     this.movement.move.x = input.move.x;
     this.movement.move.y = input.move.y;
     this.movement.source = input.source;
