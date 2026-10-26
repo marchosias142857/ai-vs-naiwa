@@ -131,6 +131,72 @@ test('图鉴全部条目、裁剪比例、键盘二维选择、尺寸变化与�
   expect(errors).toEqual([]);
 });
 
+test('鼠标在网格外松开、取消或关闭重开后，键盘和手柄焦点仍同步选择与详情', async ({ page }) => {
+  await installPad(page);
+  await open(page);
+  const buttons = page.locator('#bestiary-grid button');
+  const pressCard = async () => {
+    const box = (await selected(page).boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+  };
+  const moveOutside = async () => {
+    const box = (await page.locator('#bestiary-detail').boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 5 });
+  };
+  const expectSelection = async (index: number) => {
+    await expect(buttons.nth(index)).toBeFocused();
+    await expect(selected(page)).toHaveCount(1);
+    await expect(selected(page)).toHaveAttribute('data-enemy', cards[index]!.id);
+    await expect(page.locator('#bestiary-detail h3')).toHaveText(zh[cards[index]!.name]!);
+  };
+  await buttons.nth(1).click();
+  await pressCard();
+  await moveOutside();
+  await page.mouse.up();
+  await page.keyboard.press('ArrowRight');
+  await expectSelection(2);
+  await pressCard();
+  await moveOutside();
+  await page.mouse.up();
+  await padButton(page, 15, true);
+  await padButton(page, 15, false);
+  await expectSelection(3);
+
+  // 浏览器取消手势时没有 pointerup；在网格外派发相同 pointerId 的取消事件。
+  await page.locator('#bestiary-detail').evaluate((el) => {
+    window.addEventListener('pointerdown', (e) => el.setAttribute('data-test-pointer', String(e.pointerId)), {
+      once: true,
+      capture: true,
+    });
+  });
+  await pressCard();
+  await page.locator('#bestiary-detail').evaluate((el) => {
+    el.dispatchEvent(
+      new PointerEvent('pointercancel', {
+        pointerId: Number(el.getAttribute('data-test-pointer')),
+        bubbles: true,
+      }),
+    );
+    el.removeAttribute('data-test-pointer');
+  });
+  await page.keyboard.press('ArrowLeft');
+  await expectSelection(2);
+  await moveOutside();
+  await page.mouse.up();
+
+  // 保持鼠标按下关闭、重开；不依赖丢失的上一轮 pointerup 解除焦点抑制。
+  await pressCard();
+  await moveOutside();
+  await page.keyboard.press('Escape');
+  await page.keyboard.press('i');
+  await page.keyboard.press('ArrowLeft');
+  await expectSelection(1);
+  await moveOutside();
+  await page.mouse.up();
+  await page.keyboard.press('Escape');
+});
+
 test('图鉴英文手柄：X 打开、四向移动、右摇杆读长文、B 关闭不穿透', async ({ page }) => {
   await installPad(page);
   await page.goto('/?seed=42');

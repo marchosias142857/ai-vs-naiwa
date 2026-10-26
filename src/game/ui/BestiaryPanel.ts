@@ -17,6 +17,8 @@ export class BestiaryPanel {
   private readonly detail = document.createElement('article');
   private readonly navigation: BestiaryNavigation;
   private index = 0;
+  private pointer: { id: number; x: number; y: number } | undefined;
+  private dragged = false;
   constructor(
     scene: Scene,
     ui: Scene,
@@ -49,13 +51,11 @@ export class BestiaryPanel {
     body.append(grid, this.detail);
     this.root.append(header, body);
     const portraits = this.cards.map((card) => bestiaryPortrait(scene, card));
-    let pointer: { id: number; x: number; y: number } | undefined,
-      dragged = false;
     grid.addEventListener(
       'pointerdown',
       (e) => {
-        pointer = { id: e.pointerId, x: e.clientX, y: e.clientY };
-        dragged = false;
+        this.pointer = { id: e.pointerId, x: e.clientX, y: e.clientY };
+        this.dragged = false;
       },
       { signal, capture: true },
     );
@@ -63,27 +63,29 @@ export class BestiaryPanel {
       'pointermove',
       (e) => {
         if (
-          pointer?.id === e.pointerId &&
-          Math.hypot(e.clientX - pointer.x, e.clientY - pointer.y) > BESTIARY_UI.dragPixels
+          this.pointer?.id === e.pointerId &&
+          Math.hypot(e.clientX - this.pointer.x, e.clientY - this.pointer.y) > BESTIARY_UI.dragPixels
         )
-          dragged = true;
+          this.dragged = true;
       },
       { signal },
     );
-    grid.addEventListener(
+    // 鼠标没有隐式捕获；网格外松开也必须结束手势，且先于 UI 的冒泡拦截。
+    window.addEventListener(
       'pointercancel',
-      () => {
-        dragged = true;
-        pointer = undefined;
+      (e) => {
+        if (this.pointer?.id !== e.pointerId) return;
+        this.dragged = true;
+        this.pointer = undefined;
       },
-      { signal },
+      { signal, capture: true },
     );
-    grid.addEventListener(
+    window.addEventListener(
       'pointerup',
-      () => {
-        pointer = undefined;
+      (e) => {
+        if (this.pointer?.id === e.pointerId) this.pointer = undefined;
       },
-      { signal },
+      { signal, capture: true },
     );
     for (const [i, card] of this.cards.entries()) {
       const button = document.createElement('button'),
@@ -98,14 +100,14 @@ export class BestiaryPanel {
       button.addEventListener(
         'focus',
         () => {
-          if (!pointer) this.select(i, portraits);
+          if (!this.pointer) this.select(i, portraits);
         },
         { signal },
       );
       button.addEventListener(
         'click',
         (e) => {
-          if (dragged && e.detail !== 0) {
+          if (this.dragged && e.detail !== 0) {
             e.preventDefault();
             return;
           }
@@ -133,6 +135,8 @@ export class BestiaryPanel {
     );
   }
   open(): void {
+    this.pointer = undefined;
+    this.dragged = false;
     this.navigation.reset();
     this.root.hidden = false;
     this.buttons[this.index]!.focus({ preventScroll: true });
