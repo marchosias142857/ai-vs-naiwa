@@ -265,7 +265,7 @@
   "bestiary.naiwa_tongue.desc": "A frog that is almost all mouth. The tongue goes in a straight line; step sideways when its eyes go wide.",
   "bestiary.naiwa_bomber.attack": "Runs up to you, stops and swells red. When the fuse burns out it explodes, hurting you if you're close and scattering a ring of shots. It destroys itself in the blast.",
   "bestiary.naiwa_bomber.desc": "A black bomb with frog eyes and little feet; bumping into it doesn't hurt. Run as soon as it swells, or shoot it down on its way in.",
-  "bestiary.naiwa_brood.attack": "Keeps away from you and every so often pulses to hatch a few tadpoles, up to a limit on the field. Touching it also hurts.",
+  "bestiary.naiwa_brood.attack": "Keeps away from you and every so often pulses to hatch a few tadpoles. Each Spawn Cluster can only keep a limited number of its own tadpoles alive at once, and hatches more as they die. Touching it also hurts.",
   "bestiary.naiwa_brood.desc": "A translucent clump of frog eggs, each with a little dark tadpole inside. Take it out first or the tadpoles keep coming.",
   "bestiary.naiwa_burrower.attack": "Burrows and tunnels toward a spot next to you; it can't be hit or touched while underground or surfacing. Dirt flies just before it pops up, it fires a ring of shots as it emerges, stays above ground for a moment, then digs back down.",
   "bestiary.naiwa_burrower.desc": "A sandy frog in a miner's helmet; underground you only see its headlamp and a dirt mound. Attack while it stays above ground.",

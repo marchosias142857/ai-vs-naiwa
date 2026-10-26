@@ -9,6 +9,11 @@ import type { EnemyDef } from '../../../src/data/schema';
 import { BestiaryEntrySchema } from '../../../src/data/schema/bestiary';
 import en from '../../../src/i18n/en.json';
 import zh from '../../../src/i18n/zh-CN.json';
+import { PLAYER_RULES } from '../../../src/data/player';
+import { createCombatWorld } from '../../../src/sim/combat/api';
+import { EventBus } from '../../../src/sim/core/EventBus';
+import type { GameEvents } from '../../../src/sim/core/events';
+import { createInputFrame } from '../../../src/sim/core/types';
 import { bestiaryCards, bestiaryLabel } from '../../../src/sim/meta/bestiary';
 
 const IDS = Object.keys(ENEMIES) as EnemyId[];
@@ -100,6 +105,18 @@ describe('图鉴目录', () => {
     expect(by.naiwa_chaser!.frame.source).toBe('monsters-v1.png');
     expect(bestiaryCards()).toBe(cards);
   });
+  it('缓存目录深层冻结：调用方改不了卡片、数组与静态帧', () => {
+    const card = bestiaryCards().find((c) => c.id === 'naiwa_tadpole')!;
+    for (const value of [bestiaryCards(), card, card.floors, card.spawnedBy, card.frame])
+      expect(Object.isFrozen(value)).toBe(true);
+    expect(() => {
+      (card.floors as number[]).push(9);
+    }).toThrow();
+    expect(() => {
+      (card.frame as { x: number }).x = -1;
+    }).toThrow();
+    expect(bestiaryCards().find((c) => c.id === 'naiwa_tadpole')!.floors).toEqual([2, 3, DUNGEON.floors + 1]);
+  });
   it('不走动的怪移动速度记为 0：炮台、只会跳的、只会原地蓄力冲锋的', () => {
     const by = Object.fromEntries(bestiaryCards().map((c) => [c.id, c]));
     for (const id of ['naiwa_turret', 'naiwa_hopper', 'naiwa_charger']) expect(by[id]!.speed, id).toBe(0);
@@ -149,6 +166,23 @@ describe('说明与实际 AI 一致', () => {
     // 蝌蚪崽：不掉落。
     expect(DEF.naiwa_tadpole.loot).toBe(0);
     expect(DEF.naiwa_tadpole.behavior).toBe('chase');
+  });
+  it('蛙卵团：「每只蛙卵团」各自的蝌蚪崽有上限，不是全房间共享', () => {
+    const world = createCombatWorld({
+      seed: 5,
+      bus: new EventBus<GameEvents>(),
+      playerRules: PLAYER_RULES,
+      godMode: true,
+    });
+    world.spawnPlayer('ai_proto', 150, 150);
+    const a = world.spawnEnemy('naiwa_brood', 40, 40),
+      b = world.spawnEnemy('naiwa_brood', 260, 40);
+    const input = createInputFrame();
+    for (let i = 0; i < 60 * 30; i++) world.step(1 / 60, input);
+    const kids = world.save().actors.filter((x) => x.kind === 'naiwa_tadpole' && x.phase !== 'dead');
+    const max = DEF.naiwa_brood.summon!.max;
+    expect(kids.filter((x) => x.parentId === a).length).toBe(max);
+    expect(kids.filter((x) => x.parentId === b).length).toBe(max);
   });
   it('首领奶怪', () => {
     const boss = DEF.naiwa_boss;
