@@ -1,3 +1,4 @@
+import { bestiaryCards } from '../../src/sim/meta/bestiary';
 import { expect, test } from '@playwright/test';
 import { cp, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -142,6 +143,16 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
   expect(await reopened.evaluate(() => window.__AVN__?.seed)).toBe(7);
   await expect(reopened.locator('#game canvas')).toBeVisible();
   await reopened.screenshot({ path: info.outputPath('pwa-offline.png') });
+  await reopened.keyboard.press('Escape');
+  await reopened.locator('#pause-menu').click();
+  await reopened.locator('#start-run').click();
+  await reopened.locator('#hub-bestiary').click();
+  await expect(reopened.locator('#bestiary-grid button')).toHaveCount(bestiaryCards().length);
+  for (const card of bestiaryCards()) {
+    await reopened.locator(`[data-enemy="${card.id}"]`).click();
+    await expect(reopened.locator('#bestiary-detail .bestiary-art')).toBeVisible();
+  }
+  await reopened.screenshot({ path: info.outputPath('bestiary-offline.png'), scale: 'css' });
 });
 
 test('连续发布只提示更新，稍后及另一标签页均不强制刷新', async ({ page, context, isMobile }, info) => {
