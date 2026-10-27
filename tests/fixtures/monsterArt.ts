@@ -57,7 +57,7 @@ class MonsterScene extends Scene {
         check(!body.enable, `${kind}: telegraph disabled`);
         for (let i = 0; i < 30; i++) sim.step(0.05, input);
         actors.apply();
-        const actor = sim.getActor(id)!;
+        const actor = { ...sim.getActor(id)!, stage: 'ready' as const };
         const radius = ENEMIES[kind].radius;
         check(body.enable && actor.phase === 'active', `${kind}: activation`);
         check(body.radius === radius && body.isCircle, `${kind}: radius`);

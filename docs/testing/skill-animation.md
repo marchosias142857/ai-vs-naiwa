@@ -1,0 +1,54 @@
+# #101 第 3 步：技能动作与必要提示接入
+
+基线 main `ce358318f1c5c836983d7bde7d4fe467445ab43f`；依赖 Claude #113 的 `42d3840bb6c95b5412041a85ff2f63256c2bc545`。按[定稿方案](../design/monster-skill-moves.md)接入，来源分类继续沿用 [#112 审计](https://github.com/marchosias142857/ai-vs-naiwa/pull/112)。#112/#113 均未由 GPT 合并；ROADMAP/AGENTS 状态更新仍由 #112 维护，避免重复改写。
+
+## 改动
+
+- `skillPose` 只读阶段、进度、锁定方向；一次性动作按阶段比例选帧，旋转/地下按 `stageTime` 循环。原图保持 v4 造型、精度与帧数，压身、后坐、伸展、膨胀只作用于独立图片。
+- 技能不再使用观察时钟；待机、移动、死亡仍沿用原时钟。受击不遮盖前摇/腾空；冰蓝优先于受击闪白。石雨跺脚和放毒鼓动是预算控制的短装饰，读档不补播。
+- 必要 Graphics：巨爪爪痕、角冲擦痕、舌击口水点、冲撞人字箭头、跳跃落点影子、自爆八道范围刻度、地下土包/出土裂缝、眩晕星星、全下落时段的落石影子。暗影两端保留短奶白边，使深色地板上也能认出位置。
+- 必要提示没有 FxBudget 准入；冻结后保持阶段、形变和几何，不使用全局脉动。落石末段尘点、事件扬尘与短装饰动作仍受预算控制。
+- 同 PR 移除通用技能圈、舌击红虚线、冲撞红通道、自爆圈及落石红圈/填充。出生红圈、毒气/奶潭、机关、弹体、光束、实际爆炸保留。舌头收回只有画面，不延长伤害。
+- 中英文图鉴同步，明确普通射击在准备就绪后可以直接开火；没有为旋转、放毒或石雨新增 sim 阶段。
+- `HazardLayer` / `CombatFeedback` 显式销毁释放自身对象并解除 shutdown 监听，重复构建不保留旧提示。
+
+## #113 review 与兼容补丁
+
+在指定 head 的隔离检出运行完整 `npm run check`：Prettier **3.9.10**、ESLint、TypeScript、55 个单测文件 / **428 项单测**和 Vite 生产构建全部通过。[review](https://github.com/marchosias142857/ai-vs-naiwa/pull/113#pullrequestreview-5670768558) 已附发现和复现，未写 Claude 分支。
+
+旧冲锋档 `brain.span=0` 时，原实现每步用递减的 `time` 作为总时长，使 `stageTime` 整段保持零。补丁仅从同一份 `ENEMIES[kind].dash` 恢复旧档阶段总时长；不修改存档、随机、攻击时间、冷却、伤害或身体圆。新增前摇/冲刺/收招三个中途旧档的推进、冻结和再次读档回归；ADR 0038 修正兼容性说明。
+
+## 关键帧与状态证据
+
+[采样元数据](skill-animation/samples.json)记录每格的 stage/time/span/lock。样本由真实 AI 以 1/60 秒运行产生，使用真实图集和实际 EnemyArt/HazardLayer/CombatFeedback 渲染。画面是隔离验证场景，使用游戏地板纹理；不是负责人手机实测。没有对应阶段时表格明确留空，不虚构前摇或收招。
+
+| 图                                          | 覆盖                                                     |
+| ------------------------------------------- | -------------------------------------------------------- |
+| [关键帧 1](skill-animation/keyframes-1.png) | 巨爪、角冲、蓄跳、膨爆、围舌                             |
+| [关键帧 2](skill-animation/keyframes-2.png) | 负卵、鼓腮、菌冠、铲爪、鳍舞                             |
+| [关键帧 3](skill-animation/keyframes-3.png) | 放毒、Boss 冲撞/跳跃/召唤/石雨                           |
+| [关键帧 4](skill-animation/keyframes-4.png) | Boss 旋转/射击、撞柱眩晕、落石首步/落地/崩解             |
+| [冻结](skill-animation/frozen.png)          | 30 怪同组样本；普通怪冰蓝且提示保留，Boss 按既有规则免疫 |
+| [读档首帧](skill-animation/load.png)        | 不等待事件重放的身体与必要提示                           |
+| [装饰预算为零](skill-animation/zero.png)    | 30 怪与落石，`admit` 全部拒绝，必要提示仍存在            |
+
+活跃事件样本的生效首步回放该步记录的事件，以显示原有爆炸/落地扬尘；读档和零预算模式不补这些事件。冻结检查在真实 sim 冻结状态下推进十个物理步，对比图片帧/变换和提示命令缓冲。落石独立于施法者，施法者冻结或死亡不会抹掉已经生成的石块。
+
+## 本地验证
+
+最终结果与性能对照在本 PR 完成前补齐。WebKit 浏览器下载成功，但宿主缺少 GTK/GStreamer 等动态库；`playwright install-deps webkit` 因宿主 setgroups/seteuid 权限限制失败，不能把手机尺寸 Chromium 当作 Safari 验证。
+
+复现命令（Node 22，仓库锁定依赖；不新增依赖）：
+
+```sh
+npm run check
+npm run test:e2e
+node scripts/capture-skill-animation.mjs
+SKILL_BASELINE=/path/to/isolated-pr113 node scripts/benchmark-skill-animation.mjs
+```
+
+证据脚本支持 `SKILL_BROWSER` / `SKILL_BROWSER_ARGS` 指定现有 Chromium；执行时还需浏览器的字体配置。浏览器测试覆盖桌面与 Pixel 7 横屏；这不等于 iPhone 真机验收。
+
+## 交付边界
+
+远端 CI 继续关闭；没有合并、改写 main 或 Claude 分支。必要反馈与旧提示删除按负责人要求放在同一 PR。新 PNG 全为测试证据，不加入运行时包与 PWA 预缓存；游戏沿用两张 v4 怪物图集。#101 保持打开，待 Claude 交叉评审、负责人真机确认可读性与合并。#114–#119 只保持已登记队列，不在本 PR 开工。

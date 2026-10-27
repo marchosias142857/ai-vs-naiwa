@@ -10,6 +10,7 @@ import {
 } from '../../data/enemyArt';
 import type { ActorView } from '../../sim/combat/api';
 import { settings } from '../../services/settings';
+import { skillPose, type SkillPose } from './skillPose';
 import { WEAPON_FX } from '../fx/weaponParams';
 
 interface PoseClock {
@@ -18,6 +19,9 @@ interface PoseClock {
   since: number;
   /** 上一次绘制时的 sim 时间；冻住期间动画时钟跟着平移，画面停在当前帧（ADR 0031）。 */
   last: number;
+  effectId: number;
+  effect: string;
+  effectAt: number;
 }
 
 /**
@@ -27,9 +31,27 @@ interface PoseClock {
 export class EnemyArt {
   private readonly clocks: PoseClock[] = [];
   private zoom = 1;
+  private readonly skill: SkillPose = { action: '', frame: 0, dx: 0, dy: 0, sx: 1, sy: 1, cream: false };
 
   constructor(slots: number) {
-    for (let i = 0; i < slots; i++) this.clocks.push({ id: 0, action: '', since: 0, last: 0 });
+    for (let i = 0; i < slots; i++)
+      this.clocks.push({
+        id: 0,
+        action: '',
+        since: 0,
+        last: 0,
+        effectId: 0,
+        effect: '',
+        effectAt: -Infinity,
+      });
+  }
+
+  /** 仅装饰事件；调用方先申请 FxBudget，读档不补播，也不创建 sim 阶段。 */
+  effect(index: number, id: number, action: string, time: number): void {
+    const c = this.clocks[index]!;
+    c.effectId = id;
+    c.effect = action;
+    c.effectAt = time;
   }
 
   /**
@@ -57,13 +79,19 @@ export class EnemyArt {
       a.y + (ground === undefined ? a.radius : (ground - anim.art.pivot.y) * anim.art.scale),
     );
     const clock = this.clocks[index]!;
+    const staged = skillPose(a, anim.art, this.skill);
     const wanted = a.phase === 'dead' ? 'death' : a.pose;
     let action = pick(anim, wanted);
-    if (clock.id !== a.id || clock.action !== action) {
+    if (staged) {
+      // 技能不积累 PoseClock；离开技能后普通动作重新起算。
+      clock.id = a.id;
+      clock.action = '';
+    } else if (clock.id !== a.id || clock.action !== action) {
       clock.id = a.id;
       clock.action = action;
       clock.since = time;
     } else if (a.frozen) clock.since += time - clock.last;
+    if (a.frozen) clock.effectAt += time - clock.last;
     clock.last = time;
     const frames = anim.art.frames[action]!;
     const seconds = anim.art.seconds[action] ?? 0.1;
@@ -96,6 +124,10 @@ export class EnemyArt {
         // 最后一帧边淡出，免得尸体突然消失。
         if (frame === frames.length - 1) alpha = Math.max(0, 1 - (death - frame * seconds) / seconds);
       }
+    } else if (staged) {
+      action = this.skill.action;
+      frame = this.skill.frame;
+      dx = this.skill.dx;
     } else {
       const step = Math.floor(Math.max(0, time - clock.since) / seconds);
       // 蓄力与收招播到末帧后保持，不能在状态尚未结束时突然倒回第一帧。
@@ -106,6 +138,19 @@ export class EnemyArt {
         action === 'hurt' ||
         action === 'air';
       frame = once ? Math.min(frames.length - 1, step) : step % frames.length;
+    }
+    let effectScale = 1;
+    const elapsed = time - clock.effectAt;
+    if (!staged && a.phase === 'active' && clock.effectId === a.id && elapsed >= 0 && elapsed < 0.25) {
+      if (clock.effect === 'rain') {
+        action = pick(anim, 'attack');
+        frame = Math.min(
+          anim.art.frames[action]!.length - 1,
+          Math.floor((elapsed / 0.25) * anim.art.frames[action]!.length),
+        );
+      } else if (clock.effect === 'gas') effectScale += 0.08 * Math.sin((elapsed / 0.25) * Math.PI);
+    }
+    if (a.phase !== 'dead') {
       const hurt = anim.art.frames.hurt;
       const hurtSeconds = anim.art.seconds.hurt ?? 0.08;
       const hurtTime = time - hurtAt;
@@ -121,7 +166,20 @@ export class EnemyArt {
         frame = Math.floor(hurtTime / hurtSeconds);
       }
     }
-    return this.place(image, anim, a, action, frame, dx, 1, 1, alpha, white);
+    return this.place(
+      image,
+      anim,
+      a,
+      action,
+      frame,
+      dx,
+      staged ? this.skill.sx : 1,
+      staged ? this.skill.sy : effectScale,
+      alpha,
+      white,
+      staged ? this.skill.dy : 0,
+      staged && this.skill.cream,
+    );
   }
 
   private place(
@@ -135,10 +193,12 @@ export class EnemyArt {
     sy: number,
     alpha: number,
     white: boolean,
+    dy = 0,
+    cream = false,
   ): true {
     const art = anim.art;
     const [w, h] = art.size;
-    const faceLeft = Math.cos(a.facing) < 0;
+    const faceLeft = Math.cos(a.phase === 'active' && a.stage !== 'ready' ? a.aim : a.facing) < 0;
     const flip = faceLeft !== (art.facing === 'left');
     const ox = flip ? w - art.pivot.x : art.pivot.x;
     image
@@ -148,15 +208,16 @@ export class EnemyArt {
       .setOrigin(ox / w, art.pivot.y / h)
       .setScale(art.scale * sx, art.scale * sy)
       .setAlpha(alpha * (a.invulnerable ? 0.65 : 1));
-    if (white && settings.flashes) image.setTint(0xffffff).setTintMode(TintModes.FILL);
-    else if (a.frozen) image.setTint(WEAPON_FX.frozenTint).setTintMode(TintModes.MULTIPLY);
+    if (a.frozen) image.setTint(WEAPON_FX.frozenTint).setTintMode(TintModes.MULTIPLY);
+    else if (white && settings.flashes) image.setTint(0xffffff).setTintMode(TintModes.FILL);
+    else if (cream && settings.flashes) image.setTint(0xfff1c2).setTintMode(TintModes.FILL);
     else if (a.chill > 0) image.setTint(chillTint(a.chill)).setTintMode(TintModes.MULTIPLY);
     else image.clearTint().setTintMode(TintModes.MULTIPLY);
     // 帧左上角对齐渲染像素，像素块不抖。
     const left = ox * art.scale * sx,
       top = art.pivot.y * art.scale * sy;
     const x = a.x + dx,
-      y = a.y - a.lift;
+      y = a.y - a.lift + dy;
     image.setPosition(
       Math.round((x - left) * this.zoom) / this.zoom + left,
       Math.round((y - top) * this.zoom) / this.zoom + top,

@@ -66,6 +66,11 @@ export class ActorArt {
     slot.flash = flash;
     slot.death = death;
   }
+  /** 预算已准入的短装饰动作，不影响技能阶段或存档。 */
+  acted(id: number, action: string): void {
+    const index = this.actors.slots.findIndex((slot) => slot.id === id);
+    if (index >= 0) this.enemyArt.effect(index, id, action, this.sim.time);
+  }
   private readonly update = (): void => {
     this.weapon.setVisible(false);
     this.arc.clear();
