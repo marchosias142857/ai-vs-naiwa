@@ -1,4 +1,4 @@
-"""生成普通怪物像素图集 public/assets/demo/monsters-v2.png 与帧数据 src/data/monsterArt.ts。
+"""生成普通怪物像素图集 public/assets/demo/monsters-v1.png 与帧数据 src/data/monsterArt.ts。
 
 用法（仓库根目录）：python3 art-src/monsters/build_monsters.py [--preview 输出目录]
 
@@ -21,7 +21,7 @@ from PIL import Image  # noqa: E402
 from pixelkit import OUTLINE, Canvas, mix, preview  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-ATLAS = os.path.join(ROOT, "public", "assets", "demo", "monsters-v2.png")
+ATLAS = os.path.join(ROOT, "public", "assets", "demo", "monsters-v1.png")
 DATA = os.path.join(ROOT, "src", "data", "monsterArt.ts")
 ART_SCALE = 0.5
 WHITE = "#f7f4ea"
@@ -30,20 +30,6 @@ RED = "#e8414f"
 MOUTH = "#4a1027"
 TONGUE = "#ff7a9a"
 GOLD = ("#f4c542", "#ffe58a", "#b98a22")
-FRAME_PAD = (8, 8)
-FRAME_BOTTOM = 14
-
-
-def skin(c, cx, cy, rx, ry, pal, belly=None):
-    """手工分区的硬边色块；亮边与腹部跟随本帧身体，不能盖住五官。"""
-    mask = c.blob(cx, cy, rx, ry, pal)
-    c.fill(mask & c.ellipse(cx + rx * 0.16, cy + ry * 0.72, rx * 0.92, ry * 0.37), pal[2])
-    c.fill(mask & c.ellipse(cx - rx * 0.48, cy - ry * 0.38, rx * 0.27, ry * 0.16), mix(pal[1], WHITE, 0.35))
-    if belly:
-        patch = mask & c.ellipse(cx + rx * 0.1, cy + ry * 0.55, rx * 0.64, ry * 0.34)
-        c.fill(patch, belly)
-        c.fill(patch & (c.y > cy + ry * 0.72), mix(belly, pal[2], 0.35))
-    return mask
 
 
 # ---------------------------------------------------------------- 通用部件
@@ -69,15 +55,11 @@ def eye(c: Canvas, x: float, y: float, r: float, state: str = "open", look: floa
         else:
             c.fill(c.ring(x, y, r * 0.75, 1) | c.circle(x, y, 0.8), OUTLINE)
         return
-    globe = c.circle(x, y, r)
-    c.fill(globe, "#ffe066" if state == "glow" else WHITE)
-    if state != "glow":
-        c.fill(globe & (c.y > y + r * 0.4), "#b4cbc3")
+    c.fill(c.circle(x, y, r), "#ffe066" if state == "glow" else WHITE)
     pr = max(1.0, r * 0.55)
     px = x + look * (r - pr) * 0.9
     py = y + 0.3
-    c.fill(c.circle(px, py, pr + 0.55) & globe, RED if state in ("glow", "angry") else "#799f78")
-    c.fill(c.circle(px, py, pr) & globe, OUTLINE)
+    c.fill(c.circle(px, py, pr) & c.circle(x, y, r), RED if state in ("glow", "angry") else OUTLINE)
     c.dot(px - pr * 0.35, py - pr * 0.45, WHITE)
     if state == "angry":
         c.fill(c.line(x - r - 0.5, y - r - 0.5, x + r + 0.5, y - r * 0.2, 1.2), OUTLINE)
@@ -104,7 +86,6 @@ def feet(c: Canvas, x: float, y: float, color, spread: float = 4.0, step: int = 
     for i, side in enumerate((-1, 1)):
         lift = 1 if (step == 1 and i == 0) or (step == 2 and i == 1) else 0
         c.fill(c.ellipse(x + side * spread, y - 1 - lift, 2.4, 1.4), color)
-        c.dot(x + side * spread - 1, y - 2 - lift, mix(color, WHITE, 0.3))
 
 
 def cheeks(c: Canvas, xs, y: float, r: float = 1.4) -> None:
@@ -166,7 +147,7 @@ def chaser(c: Canvas, f: dict) -> None:
     cy = fy - 1 - ry + dy
     if f["action"] != "attack":
         feet(c, cx, fy + dy * 0.3, GREEN[2], 5, f.get("step", 0))
-    skin(c, cx, cy, rx, ry, GREEN, "#d4e69b")
+    c.blob(cx, cy, rx, ry, GREEN)
     c.fill(c.circle(cx - rx * 0.55, cy + ry * 0.05, 1.3) & c.ellipse(cx, cy, rx, ry), "#58b244")
     c.fill(c.circle(cx + rx * 0.35, cy - ry * 0.35, 1.0), "#58b244")
     if f["action"] == "attack":
@@ -195,9 +176,7 @@ def scout(c: Canvas, f: dict) -> None:
         c.fill(c.line(hx, hip_y, knee[0], knee[1], 2.2) | c.line(knee[0], knee[1], footx, fy - 2, 2.2), "#38b6c4")
         c.fill(c.ellipse(footx + 1, fy - 1.5, 3, 1.6), "#ff8a3d")
         c.fill(c.rect(footx - 1, fy - 1.2, footx + 3.5, fy - 0.4), WHITE)
-    skin(c, cx, 8.5 + bob, 7.5, 5.5, ("#47c8cb", "#8aead7", "#237c8b"), "#c9ead2")
-    for side in (-1, 1):
-        c.dot(cx + side * 2.5, hip_y + 2, "#8aead7")
+    c.blob(cx, 8.5 + bob, 7.5, 5.5, ("#47d3d9", "#8af0ec", "#25979f"))
     mouth_line(c, cx - 3, cx + 5, 10 + bob, 0.6)
     eyes = f.get("eyes", "open")
     eye(c, cx - 3, 4 + bob, 2.6, eyes, 0.7)
@@ -224,13 +203,6 @@ def tank(c: Canvas, f: dict) -> None:
             c.dot(cx + k, y + 0.5, "#dfe4ec")
     c.fill(c.rect(cx - 15, top - 1, cx + 15, top + 1.5), "#c3cad6")
     c.fill(c.rect(cx - 15, top + 0.5, cx + 15, top + 1.5), "#5d6475")
-    c.fill(bucket & c.rect(cx - 10, top + 6, cx - 8, bottom - 6), "#dfe4ec")
-    c.fill(bucket & c.line(cx + 5, top + 10, cx + 8, top + 13, 1), "#424b60")
-    c.fill(bucket & c.line(cx + 8, top + 13, cx + 6, top + 15, 1), "#424b60")
-    # 铜色握环与桶缘铆钉，让金属与皮肤在相同像素密度下可区分。
-    for side in (-1, 1):
-        c.fill(c.ring(cx + side * 14, top + 8, 2.2, 1), "#d3a568")
-        c.dot(cx + side * 11, bottom - 3, "#dfe4ec")
     if f.get("dent"):
         c.fill(c.circle(cx + 6, top + 12, 2), "#5d6475")
 
@@ -242,7 +214,7 @@ def spitter(c: Canvas, f: dict) -> None:
     ry = 9 * f.get("sy", 1)
     cy = fy - 1 - ry
     feet(c, cx, fy, "#5a3a8e", 5, f.get("step", 0))
-    skin(c, cx, cy, 10, ry, ("#9b6ad6", "#c9a2f4", "#60418b"), "#e7bddc")
+    c.blob(cx, cy, 10, ry, ("#9b6ad6", "#c9a2f4", "#69449e"))
     puffed = act == "windup"
     if puffed:
         r = 3.2 + i
@@ -252,8 +224,6 @@ def spitter(c: Canvas, f: dict) -> None:
     c.shade(horn, (cx + bell) / 2, cy + 1.5, 8, 6, *GOLD)
     c.fill(c.ellipse(bell, cy + 1.5, 2, 6.5), GOLD[2])
     c.fill(c.ellipse(bell + 0.5, cy + 1.5, 1.2, 5.2), "#5a3a12")
-    c.fill(horn & c.line(cx + 8, cy + 1, bell - 2, cy - 3, 1), GOLD[1])
-    c.fill(horn & c.line(bell - 3, cy - 3, bell - 3, cy + 6, 1), GOLD[2])
     if act == "attack" and i == 0:
         c.fill(c.circle(bell + 3, cy, 2.2), "#bfe9ff")
         c.dot(bell + 2.5, cy - 0.8, WHITE)
@@ -276,7 +246,7 @@ def turret(c: Canvas, f: dict) -> None:
         lx = cx + side * 5 + sway
         c.blob(lx, stem_y - 1 + abs(sway) * 0.3, 4.5, 2.2, ("#58c24b", "#94ea74", "#2f7f35"), angle=side * 0.5)
     hy = 15 + f.get("dy", 0)
-    skin(c, cx, hy, 10, 7.5, ("#e8604f", "#ffad87", "#9b3c4a"), "#ffcba5")
+    c.blob(cx, hy, 10, 7.5, ("#e8604f", "#ff967c", "#a93c3f"))
     if act == "attack":
         mouth_open(c, cx + 3, hy + 2.5, 3, 2.2, teeth=False, tongue=False)
     elif act == "windup":
@@ -291,9 +261,6 @@ def turret(c: Canvas, f: dict) -> None:
     c.shade(pot, cx, 26, 10, 7, "#d2794a", "#f0a06a", "#9a4f2c", 0.45, -0.2)
     c.fill(c.rect(cx - 12, 19, cx + 12, 22.5), "#e48a57")
     c.fill(c.rect(cx - 12, 22, cx + 12, 22.8), "#9a4f2c")
-    c.fill(pot & c.rect(cx - 7, 24, cx - 5, 29), "#f7ba82")
-    c.fill(pot & c.line(cx + 3, 23, cx + 1, 26, 1), "#844d40")
-    c.fill(pot & c.line(cx + 1, 26, cx + 3, 28, 1), "#844d40")
     if act == "attack" and i == 0:
         spark(c, cx + 8, hy + 2, 1)
 
@@ -307,8 +274,6 @@ def charger(c: Canvas, f: dict) -> None:
     ball = c.circle(cx, cy, r)
     c.shade(ball, cx, cy, r, r, "#5b3c9e", "#8a6ad0", "#34205f", 0.4, -0.25)
     c.fill(c.ellipse(cx - 4.5, cy - 5.5, 3, 1.6, -0.6), "#c3b3ef")
-    c.fill(ball & c.ring(cx - 2, cy - 2, r + 0.2, 1), "#ad8ce0")
-    c.fill(ball & c.ellipse(cx + 2, cy + 8, 5, 1), "#7651aa")
     # 指孔在球的下半圈随滚动转动；转到上半圈（眼睛的位置）就藏到背面不画。
     for k in range(3):
         a = 0.9 + roll + k * 0.6
@@ -340,7 +305,7 @@ def hopper(c: Canvas, f: dict) -> None:
         c.fill(c.line(cx - 4, y0, cx + 4, y1, 1.6) | c.line(cx + 4, y1, cx - 4, y2, 1.6), "#c3cad6" if k % 2 else "#9aa3b3")
     ry = 7.5 * f.get("sy", 1)
     cy = top - ry + 1.5
-    skin(c, cx, cy, 10 * f.get("sx", 1), ry, ("#ffb02e", "#ffda80", "#bf6b30"), "#ffedba")
+    c.blob(cx, cy, 10 * f.get("sx", 1), ry, ("#ffb02e", "#ffd36b", "#d47a12"))
     if act == "air":
         mouth_open(c, cx + 1.5, cy + 2.5, 2.5, 2, teeth=False)
     else:
@@ -363,8 +328,7 @@ def splitter(c: Canvas, f: dict) -> None:
     feet(c, 15, fy, "#d15f8c", 6, f.get("step", 0))
     eyes = f.get("eyes", "open")
     for k, (x, y, rx, ry, pal) in enumerate(layers):
-        skin(c, x, y, rx, ry, pal, mix(pal[1], WHITE, 0.4))
-        c.fill(c.ellipse(x - rx + 1, y + 2, 2, 1.3), pal[2])
+        c.blob(x, y, rx, ry, pal)
         if k < 2:
             # 下面两层只露出眯着的眼，像被压着
             eye(c, x - 3, y - ry * 0.6, 2.0, "tired" if eyes == "open" else eyes, 0.4, pal[2])
@@ -385,7 +349,6 @@ def tadpole(c: Canvas, f: dict) -> None:
         y = hy + math.sin(t * 3.4 + phase * 1.7) * (0.4 + t * 1.9)
         c.fill(c.circle(x, y, 1.7 - k * 0.15), "#2b2f45" if k < 5 else "#454b6b")
     c.blob(hx, hy, 4.5, 4, ("#2b2f45", "#4d5579", "#171a29"))
-    c.fill(c.ellipse(hx + 1, hy + 2, 2.3, 0.8), "#7883a2")
     c.fill(c.rect(hx - 3, hy - 2.2, hx + 5.5, hy - 0.2), OUTLINE)
     c.dot(hx - 1.5, hy - 1.8, "#9fd8ff")
     c.dot(hx + 3, hy - 1.8, "#9fd8ff")
@@ -404,9 +367,6 @@ def bomber(c: Canvas, f: dict) -> None:
     pal = (mix("#30364f", RED, hot), mix("#5a6386", "#ff8a8a", hot), mix("#171a29", "#7a1020", hot))
     c.blob(cx, cy, r, r, pal)
     c.fill(c.ellipse(cx - r * 0.4, cy - r * 0.45, 2.6, 1.4, -0.6), "#c7cde6")
-    c.fill(c.circle(cx, cy, r) & c.ring(cx - 1, cy - 2, r + 0.3, 1), pal[1])
-    for side in (-1, 1):
-        c.dot(cx + side * 8, cy + 5, "#7985a3")
     # 引信底座与引信
     c.fill(c.rect(cx + 2, cy - r - 1.5, cx + 7, cy - r + 1.5), "#8f98a8")
     for k in range(5):
@@ -427,7 +387,7 @@ def tongue(c: Canvas, f: dict) -> None:
     ry = 10.5 * f.get("sy", 1)
     cy = fy - 1 - ry
     feet(c, cx, fy, "#25716d", 5, f.get("step", 0))
-    skin(c, cx, cy, 12.5, ry, ("#3db0a4", "#7be0cf", "#256b71"), "#b5e2be")
+    c.blob(cx, cy, 12.5, ry, ("#3db0a4", "#7be0cf", "#25716d"))
     lip_y = cy + 1
     if act == "attack":
         mouth_open(c, cx + 2, lip_y + 2, 10, 6, teeth=False, tongue=False)
@@ -456,12 +416,9 @@ def brood(c: Canvas, f: dict) -> None:
         pulse = 0.6 if act == "windup" and (k + i) % 2 else 0
         x, y, rr = cx + dx, cy + dy, r + pulse
         c.fill(c.circle(x, y, rr + 1), OUTLINE)
-        shell = c.circle(x, y, rr)
-        c.shade(shell, x, y, rr, rr, "#fff1a0" if glow == k % 2 else "#addbb7", "#e7f8d4", "#598e82")
+        c.fill(c.circle(x, y, rr), "#fff1a0" if glow == k % 2 else "#b8e8b0")
         c.fill(c.circle(x - rr * 0.35, y - rr * 0.35, rr * 0.35), "#e6fbe0")
         c.fill(c.circle(x + 0.5, y + 0.5, 1.6), "#28403a")
-        c.fill(c.line(x + 1, y + 1, x + 3, y + 2, 1) & shell, "#28403a")
-        c.dot(x - rr * 0.5, y - rr * 0.45, WHITE)
     eyes = f.get("eyes", "open")
     eye(c, cx - 3, cy - 9, 3.0, eyes, 0.5)
     eye(c, cx + 3.5, cy - 9.5, 3.2, eyes, 0.5)
@@ -493,7 +450,7 @@ def burrower(c: Canvas, f: dict) -> None:
         dirt(c, cx, fy, 11, i)
     else:
         feet(c, cx, fy, "#8a5a2a", 5, f.get("step", 0))
-    skin(c, cx, cy, 11, ry, ("#d08a4a", "#f0b277", "#895e43"), "#edc58e")
+    c.blob(cx, cy, 11, ry, ("#d08a4a", "#f0b277", "#995d2c"))
     if up:
         for side in (-1, 1):
             c.fill(c.line(cx + side * 9, cy, cx + side * 13, cy - 7, 2.2), "#d08a4a")
@@ -508,8 +465,6 @@ def burrower(c: Canvas, f: dict) -> None:
     c.fill(c.ellipse(cx, hat_y, 8, 4.2) & c.rect(0, 0, 99, hat_y + 0.5), "#ffcf33")
     c.fill(c.rect(cx - 9.5, hat_y, cx + 9.5, hat_y + 1.4), "#e0a91a")
     c.fill(c.circle(cx + 4, hat_y - 1.5, 1.5), "#fffbe0")
-    c.fill(c.line(cx - 3, hat_y - 3, cx - 3, hat_y, 1), "#ffe994")
-    c.dot(cx + 4, hat_y - 1.5, WHITE)
     if act == "windup":
         dirt(c, cx, fy, 11, i + 1)
 
@@ -523,7 +478,7 @@ def dancer(c: Canvas, f: dict) -> None:
         hy = fy - 4
         c.fill(c.ellipse(cx, hy + 1, 6.5, 2.6), "#e8414f")
         c.blob(cx, hy - 7, 7.5, 7, ("#4cc2e0", "#8fe4f6", "#2a86a8"))
-        a = i * math.pi / 4
+        a = i * math.pi / 2
         for side in (-1, 1):
             lx = cx + math.cos(a + (0 if side > 0 else math.pi)) * 7
             ly = hy - 16 + math.sin(a + (0 if side > 0 else math.pi)) * 2
@@ -538,7 +493,7 @@ def dancer(c: Canvas, f: dict) -> None:
     bob = f.get("dy", 0)
     feet(c, cx + lean * 0.5, fy, "#2a86a8", 4, f.get("step", 0))
     cy = fy - 10 + bob
-    skin(c, cx + lean, cy, 8, 8.5, ("#4cc2e0", "#8fe4f6", "#2a7899"), "#c1eaf0")
+    c.blob(cx + lean, cy, 8, 8.5, ("#4cc2e0", "#8fe4f6", "#2a86a8"))
     for k in range(-3, 4):
         c.fill(c.circle(cx + lean + k * 1.6, cy + 2.5 + (1 - (k / 3) ** 2) * 1.8, 0.9), GOLD[0])
     mouth_line(c, cx + lean - 3, cx + lean + 4, cy + 0.5, 0.9)
@@ -548,9 +503,6 @@ def dancer(c: Canvas, f: dict) -> None:
     cap_y = cy - 12
     c.fill(c.ellipse(cx + lean, cap_y, 6, 3) & c.rect(0, 0, 99, cap_y + 0.8), "#e8414f")
     c.fill(c.rect(cx + lean - 9, cap_y - 0.2, cx + lean - 3, cap_y + 1.2), "#b82a3a")
-    c.fill(c.line(cx + lean - 3, cap_y - 1, cx + lean + 3, cap_y - 1, 1), "#ff8490")
-    c.dot(cx + lean + 2, cap_y - 2, WHITE)
-    c.dot(cx + lean, cy + 5, GOLD[1])
 
 
 def gasser(c: Canvas, f: dict) -> None:
@@ -565,7 +517,7 @@ def gasser(c: Canvas, f: dict) -> None:
             rr = r + (k % 2) * 0.7
             c.fill(c.circle(cx + dx - k * 0.6, cy + dy - k * 0.5, rr), "#a6e86a" if j % 2 else "#7cc84a")
     feet(c, cx, fy, "#6b7a2e", 5, f.get("step", 0))
-    skin(c, cx, cy + 1, 11.5, ry, ("#a5ad3e", "#d3db6a", "#66743b"), "#dedb98")
+    c.blob(cx, cy + 1, 11.5, ry, ("#a5ad3e", "#d3db6a", "#6b7a2e"))
     c.blob(cx + 3, cy + 3, 4, 3.5, ("#ffb3cf", "#ffd6e5", "#e27ea5"))
     c.fill(c.rect(cx + 8, cy - 2, cx + 12, cy), "#f2f2f2")
     c.fill(c.rect(cx + 8, cy - 1.5, cx + 12, cy - 0.5), "#c94a4a")
@@ -604,6 +556,7 @@ KINDS: dict[str, dict] = {
     "naiwa_chaser": {
         "draw": chaser,
         "size": (32, 31),
+        "radius": 6,
         "actions": {
             "idle": IDLE,
             "move": walk(),
@@ -616,6 +569,7 @@ KINDS: dict[str, dict] = {
     "naiwa_scout": {
         "draw": scout,
         "size": (24, 31),
+        "radius": 4,
         "actions": {
             "idle": [{}, {"dy": 0.5}, {}, {"eyes": "blink"}],
             "move": [{"swing": 1, "dy": -1}, {"swing": 0}, {"swing": -1, "dy": -1}, {"swing": 0}],
@@ -625,6 +579,7 @@ KINDS: dict[str, dict] = {
     "naiwa_tank": {
         "draw": tank,
         "size": (40, 42),
+        "radius": 9,
         "actions": {
             "idle": [{}, {"dy": 0.5}, {}, {"eyes": "blink"}],
             "move": [{"step": 1, "shake": -1}, {"step": 0}, {"step": 2, "shake": 1}, {"step": 0}],
@@ -634,6 +589,7 @@ KINDS: dict[str, dict] = {
     "naiwa_spitter": {
         "draw": spitter,
         "size": (36, 30),
+        "radius": 6,
         "actions": {
             "idle": IDLE,
             "move": walk(),
@@ -645,6 +601,7 @@ KINDS: dict[str, dict] = {
     "naiwa_turret": {
         "draw": turret,
         "size": (30, 34),
+        "radius": 6,
         "actions": {
             "idle": [{"sway": 0}, {"sway": 0.5}, {"sway": 0}, {"sway": -0.5, "eyes": "blink"}],
             "windup": [{"sway": 1.5, "shake": -1}, {"sway": -1.5, "shake": 1}],
@@ -655,6 +612,7 @@ KINDS: dict[str, dict] = {
     "naiwa_charger": {
         "draw": charger,
         "size": (34, 30),
+        "radius": 6,
         "actions": {
             "idle": [{"roll": 0}, {"roll": 0}, {"roll": 0, "eyes": "blink"}, {"roll": 0}],
             "move": [{"roll": k * 0.6} for k in range(4)],
@@ -667,6 +625,7 @@ KINDS: dict[str, dict] = {
     "naiwa_hopper": {
         "draw": hopper,
         "size": (30, 48),
+        "radius": 6,
         "actions": {
             "idle": [{"coil": 1.0}, {"coil": 0.95, "sy": 0.97}, {"coil": 1.0}, {"coil": 1.0, "eyes": "blink"}],
             "windup": [{"coil": 0.55, "sx": 1.1, "sy": 0.9, "eyes": "angry"}, {"coil": 0.45, "sx": 1.12, "sy": 0.88, "eyes": "angry"}],
@@ -678,6 +637,7 @@ KINDS: dict[str, dict] = {
     "naiwa_splitter": {
         "draw": splitter,
         "size": (30, 47),
+        "radius": 8,
         "actions": {
             "idle": [{"wob": 0}, {"wob": 0.5}, {"wob": 0}, {"wob": -0.5, "eyes": "blink"}],
             "move": [{"wob": 1, "step": 1}, {"wob": 0}, {"wob": -1, "step": 2}, {"wob": 0}],
@@ -687,6 +647,7 @@ KINDS: dict[str, dict] = {
     "naiwa_tadpole": {
         "draw": tadpole,
         "size": (20, 14),
+        "radius": 3,
         "actions": {
             "idle": [{"tail": k} for k in range(4)],
             "move": [{"tail": k * 1.6} for k in range(4)],
@@ -696,6 +657,7 @@ KINDS: dict[str, dict] = {
     "naiwa_bomber": {
         "draw": bomber,
         "size": (34, 38),
+        "radius": 6,
         "actions": {
             "idle": [{}, {"sy": 0.98}, {}, {"eyes": "blink"}],
             "move": walk(),
@@ -706,6 +668,7 @@ KINDS: dict[str, dict] = {
     "naiwa_tongue": {
         "draw": tongue,
         "size": (34, 30),
+        "radius": 6,
         "actions": {
             "idle": IDLE,
             "move": walk(),
@@ -717,6 +680,7 @@ KINDS: dict[str, dict] = {
     "naiwa_brood": {
         "draw": brood,
         "size": (40, 36),
+        "radius": 8,
         "actions": {
             "idle": [{}, {"dy": 0.5}, {}, {"eyes": "blink"}],
             "move": [{"dy": -1}, {}, {"dy": -1}, {}],
@@ -728,6 +692,7 @@ KINDS: dict[str, dict] = {
     "naiwa_burrower": {
         "draw": burrower,
         "size": (34, 34),
+        "radius": 6,
         "actions": {
             "idle": IDLE,
             "move": walk(),
@@ -740,6 +705,7 @@ KINDS: dict[str, dict] = {
     "naiwa_dancer": {
         "draw": dancer,
         "size": (30, 36),
+        "radius": 5,
         "actions": {
             "idle": [{"lean": 0}, {"lean": 0, "dy": 0.5}, {"lean": 0}, {"lean": 0, "eyes": "blink"}],
             "move": [{"lean": -1, "step": 1}, {"lean": 0, "dy": -1}, {"lean": 1, "step": 2}, {"lean": 0, "dy": -1}],
@@ -750,6 +716,7 @@ KINDS: dict[str, dict] = {
     "naiwa_gasser": {
         "draw": gasser,
         "size": (36, 32),
+        "radius": 6,
         "actions": {
             "idle": [{}, {"sy": 0.97}, {"cloud": 0}, {"cloud": 1}],
             "move": [{"step": 1}, {"step": 0, "cloud": 0}, {"step": 2, "cloud": 1}, {"step": 0}],
@@ -761,40 +728,12 @@ KINDS: dict[str, dict] = {
 
 # ---------------------------------------------------------------- 渲染与打包
 
-# 身体主体的固定圆心，单位为原生像素；与透明边距、帧尺寸及脚/尾巴分离。
-PIVOTS = {
-    "naiwa_chaser": (16, 17), "naiwa_scout": (12, 9), "naiwa_tank": (20, 25),
-    "naiwa_spitter": (13, 18), "naiwa_turret": (15, 21), "naiwa_charger": (15, 16),
-    "naiwa_hopper": (15, 27), "naiwa_splitter": (15, 28), "naiwa_tadpole": (12, 7),
-    "naiwa_bomber": (16, 22), "naiwa_tongue": (15, 16), "naiwa_brood": (20, 21),
-    "naiwa_burrower": (16, 22), "naiwa_dancer": (14, 24), "naiwa_gasser": (19, 21),
-}
-
-
-def smooth_cycle(params):
-    """相邻姿态间补画中间参数；形状在原生画布重画，不插值现成位图。"""
-    result = []
-    numeric = {"sx", "sy", "dy", "shake", "swing", "roll", "coil", "wob", "tail", "lean"}
-    for a, b in zip(params, params[1:] + params[:1]):
-        result.append(a)
-        mid = dict(a)
-        for key in numeric & (a.keys() | b.keys()):
-            default = 1 if key in {"sx", "sy", "coil"} else 0
-            mid[key] = (a.get(key, default) + b.get(key, default)) / 2
-        result.append(mid)
-    return result
-
-
-def frame_size(spec):
-    return spec["size"][0] + FRAME_PAD[0] * 2, spec["size"][1] + FRAME_PAD[1] + FRAME_BOTTOM
-
 
 def render(kind: str, spec: dict, f: dict) -> Image.Image:
-    base_w, base_h = spec["size"]
-    w, h = frame_size(spec)
-    c = Canvas(w, h, FRAME_PAD)
+    w, h = spec["size"]
+    c = Canvas(w, h)
     if "only_puff" in f:
-        puff(c, base_w / 2, base_h - 7, min(base_w, base_h) * 0.28, f["only_puff"])
+        puff(c, w / 2, h - 7, min(w, h) * 0.28, f["only_puff"])
         c.outline()
         return c.image()
     spec["draw"](c, f)
@@ -812,7 +751,7 @@ def render(kind: str, spec: dict, f: dict) -> Image.Image:
         img.alpha_composite(part, (max(0, (w - nw) // 2), bbox[3] - nh))
         if "puff" in f:
             pc = Canvas(w, h)
-            puff(pc, w / 2, bbox[3] - 4, min(base_w, base_h) * 0.26, f["puff"])
+            puff(pc, w / 2, bbox[3] - 4, min(w, h) * 0.26, f["puff"])
             pc.outline()
             img.alpha_composite(pc.image())
     return img
@@ -822,45 +761,23 @@ def build(preview_dir: str | None = None) -> None:
     rendered: dict[str, dict[str, list[Image.Image]]] = {}
     for kind, spec in KINDS.items():
         acts = dict(spec["actions"])
-        for action in ("idle", "move"):
-            if action in acts:
-                acts[action] = smooth_cycle(acts[action])
-        if kind == "naiwa_tadpole":
-            for action in ("idle", "move"):
-                acts[action] = [{"tail": k * math.tau / 8 / 1.7} for k in range(8)]
-        if kind == "naiwa_charger":
-            acts["move"] = [{"roll": k * math.tau / 8} for k in range(8)]
-        if kind == "naiwa_dancer":
-            acts["spin"] = [{} for _ in range(8)]
         acts["death"] = death_frames(kind)
         rendered[kind] = {a: [render(kind, spec, f) for f in frames(kind, a, ps)] for a, ps in acts.items()}
-        for action, images in rendered[kind].items():
-            for i, image in enumerate(images):
-                box = image.getbbox()
-                if not box or box[0] <= 0 or box[1] <= 0 or box[2] >= image.width or box[3] >= image.height:
-                    raise ValueError(f"{kind}:{action}:{i} 越过透明留白：{box}")
 
     atlas_w, pad = 1024, 2
     x = y = row_h = 0
     placed: dict[str, dict[str, list[tuple[int, int]]]] = {}
-    # 像素取整后完全相同的中间帧共享图块，保留帧名与计时但不重复占纹理内存。
-    unique: dict[tuple[int, int, bytes], tuple[int, int]] = {}
     for kind, actions in rendered.items():
-        w, h = frame_size(KINDS[kind])
+        w, h = KINDS[kind]["size"]
         placed[kind] = {}
         for action, imgs in actions.items():
             placed[kind][action] = []
-            for img in imgs:
-                key = (w, h, img.tobytes())
-                if key in unique:
-                    placed[kind][action].append(unique[key])
-                    continue
+            for _ in imgs:
                 if x + w > atlas_w:
                     x = 0
                     y += row_h + pad
                     row_h = 0
                 placed[kind][action].append((x, y))
-                unique[key] = (x, y)
                 x += w + pad
                 row_h = max(row_h, h)
     atlas = Image.new("RGBA", (atlas_w, y + row_h), (0, 0, 0, 0))
@@ -895,19 +812,14 @@ def write_data(placed) -> None:
     ]
     for kind, actions in placed.items():
         spec = KINDS[kind]
-        w, h = frame_size(spec)
-        px, py = PIVOTS[kind]
+        w, h = spec["size"]
+        radius_px = spec["radius"] / ART_SCALE
         seconds = {**spec["seconds"], "death": 0.09}
-        for action in ("idle", "move"):
-            if action in seconds:
-                seconds[action] /= 2
-        if kind == "naiwa_dancer":
-            seconds["spin"] /= 2
         lines += [
             f"  {kind}: {{",
             f"    size: [{w}, {h}],",
-            f"    pivot: {{ x: {fmt(px + FRAME_PAD[0])}, y: {fmt(py + FRAME_PAD[1])} }},",
-            f"    shadowY: {spec['size'][1] - 2 + FRAME_PAD[1]},",
+            # 身体圆心：脚底往上一个碰撞半径
+            f"    pivot: {{ x: {fmt(w / 2)}, y: {fmt(h - 2 - radius_px)} }},",
             f"    scale: {fmt(ART_SCALE)},",
             "    facing: 'right',",
             "    frames: {",

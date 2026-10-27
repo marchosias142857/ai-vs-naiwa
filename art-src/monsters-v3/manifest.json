@@ -1,0 +1,242 @@
+[
+  {
+    "id": "naiwa_chaser",
+    "source": "sources/naiwa_chaser.png",
+    "fit": [
+      26,
+      24
+    ],
+    "anchor": [
+      0.46,
+      0.56
+    ],
+    "special": "laugh",
+    "colors": 14,
+    "palette": [
+      "#14251e",
+      "#234c37",
+      "#3c7548",
+      "#5c985b",
+      "#8bb873",
+      "#aeaf7e",
+      "#ddcea0",
+      "#fae9b8",
+      "#e9b94d",
+      "#29222c",
+      "#6b343c",
+      "#bf7771",
+      "#edaaa1"
+    ]
+  },
+  {
+    "id": "naiwa_scout",
+    "source": "sources/naiwa_scout.png",
+    "fit": [
+      20,
+      30
+    ],
+    "anchor": [
+      0.55,
+      0.4
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_tank",
+    "source": "sources/naiwa_tank.png",
+    "fit": [
+      36,
+      32
+    ],
+    "anchor": [
+      0.5,
+      0.58
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_spitter",
+    "source": "sources/naiwa_spitter.png",
+    "fit": [
+      28,
+      25
+    ],
+    "anchor": [
+      0.5,
+      0.6
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_turret",
+    "source": "sources/naiwa_turret.png",
+    "fit": [
+      30,
+      26
+    ],
+    "anchor": [
+      0.5,
+      0.53
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_charger",
+    "source": "sources/naiwa_charger.png",
+    "fit": [
+      30,
+      27
+    ],
+    "anchor": [
+      0.48,
+      0.58
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_hopper",
+    "source": "sources/naiwa_hopper.png",
+    "fit": [
+      27,
+      30
+    ],
+    "anchor": [
+      0.52,
+      0.52
+    ],
+    "special": "air",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_splitter",
+    "source": "sources/naiwa_splitter.png",
+    "fit": [
+      32,
+      29
+    ],
+    "anchor": [
+      0.5,
+      0.58
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_tadpole",
+    "source": "sources/naiwa_tadpole.png",
+    "fit": [
+      18,
+      16
+    ],
+    "anchor": [
+      0.72,
+      0.55
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_bomber",
+    "source": "sources/naiwa_bomber.png",
+    "fit": [
+      25,
+      25
+    ],
+    "anchor": [
+      0.5,
+      0.57
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_tongue",
+    "source": "sources/naiwa_tongue.png",
+    "fit": [
+      30,
+      26
+    ],
+    "anchor": [
+      0.5,
+      0.6
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_brood",
+    "source": "sources/naiwa_brood.png",
+    "fit": [
+      32,
+      32
+    ],
+    "anchor": [
+      0.5,
+      0.63
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_burrower",
+    "source": "sources/naiwa_burrower.png",
+    "fit": [
+      30,
+      25
+    ],
+    "anchor": [
+      0.5,
+      0.58
+    ],
+    "special": "buried",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_dancer",
+    "source": "sources/naiwa_dancer.png",
+    "fit": [
+      24,
+      32
+    ],
+    "anchor": [
+      0.48,
+      0.46
+    ],
+    "special": "spin",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_gasser",
+    "source": "sources/naiwa_gasser.png",
+    "fit": [
+      30,
+      30
+    ],
+    "anchor": [
+      0.5,
+      0.65
+    ],
+    "special": "laugh",
+    "colors": 14
+  },
+  {
+    "id": "naiwa_boss",
+    "source": "sources/naiwa_boss.png",
+    "fit": [
+      60,
+      60
+    ],
+    "anchor": [
+      0.48,
+      0.58
+    ],
+    "special": "air",
+    "colors": 20,
+    "extraSource": "sources/naiwa_boss-extra.png"
+  }
+]

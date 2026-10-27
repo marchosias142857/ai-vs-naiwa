@@ -112,7 +112,7 @@ export class ActorArt {
       const zoom = this.scene.cameras.main.zoom;
       if (
         a.team === 'enemy' &&
-        this.enemyArt.draw(i, image, a, this.sim.time, slot.death, slot.flash, zoom, slot.shadow)
+        this.enemyArt.draw(i, image, a, this.sim.time, slot.death, slot.flash, zoom, slot.shadow, slot.hurtAt)
       ) {
         // 腾空时影子留在地上并缩小；钻进地下时不画影子（ADR 0030）。
         const k = 1 / (1 + a.lift / (a.radius * 4));

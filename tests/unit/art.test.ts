@@ -30,8 +30,8 @@ const files = [
   'enemies',
   'environment',
   'doors',
-  'monsters-v2',
-  'naiguai-v2',
+  'monsters-v3',
+  'naiguai-v3',
   'arsenal-v1',
   'rooms-v1',
 ];
@@ -52,10 +52,10 @@ function inImage(file: string, rects: readonly (readonly number[])[]) {
 describe('真实 PNG 图集与持握数据', () => {
   it('怪物资源升级退休旧 URL；寻路缓存覆盖所有实际半径', () => {
     expect(Object.values(MONSTER_TEXTURES).map((t) => t.source)).toEqual([
-      'monsters-v2.png',
-      'naiguai-v2.png',
+      'monsters-v3.png',
+      'naiguai-v3.png',
     ]);
-    for (const name of ['monsters-v1', 'naiguai-v1'])
+    for (const name of ['monsters-v1', 'naiguai-v1', 'monsters-v2', 'naiguai-v2'])
       expect(() => statSync(`public/assets/demo/${name}.png`)).toThrow();
     const radii = new Set([...Object.values(ENEMIES), ...Object.values(CHARACTERS)].map((a) => a.radius));
     expect(radii.size).toBeLessThanOrEqual(NAVIGATION.radiusCaches);
@@ -207,6 +207,12 @@ describe('真实 PNG 图集与持握数据', () => {
       expect(art.pivot.y).toBeLessThan(h);
       expect(art.shadowY).toBeGreaterThan(art.pivot.y);
       expect(art.shadowY).toBeLessThan(h);
+      // 少帧低分辨率是负责人选择，避免以后悄悄退回高精度长图集。
+      expect(Math.max(w, h)).toBeLessThanOrEqual(kind === 'naiwa_boss' ? 100 : 64);
+      expect(art.frames.idle?.length).toBe(4);
+      expect(art.frames.move?.length).toBeGreaterThanOrEqual(4);
+      expect(art.frames.move?.length).toBeLessThanOrEqual(6);
+      expect(art.frames.hurt?.length).toBe(2);
       for (const action of ['idle', 'death'])
         expect(art.frames[action]?.length, `${kind} ${action}`).toBeGreaterThan(0);
       for (const action of Object.keys(art.frames))

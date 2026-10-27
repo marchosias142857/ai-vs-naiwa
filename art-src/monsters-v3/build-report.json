@@ -1,0 +1,382 @@
+{
+  "assets": [
+    {
+      "file": "monsters-v3.png",
+      "bytes": 87864,
+      "size": [
+        1024,
+        602
+      ],
+      "rgbaBytes": 2465792,
+      "uniqueTiles": 360,
+      "sha256": "0eaf2bf3d8b08a05899d857e46480566509fab1680a27ed590bb8dd89d38393a"
+    },
+    {
+      "file": "naiguai-v3.png",
+      "bytes": 36487,
+      "size": [
+        512,
+        537
+      ],
+      "rgbaBytes": 1099776,
+      "uniqueTiles": 32,
+      "sha256": "476ba913effd9dd1ab6725c57f5c1d2c176798b4c2ffdcfd2ecfcf262690bf27"
+    }
+  ],
+  "monsters": [
+    {
+      "id": "naiwa_chaser",
+      "size": [
+        37,
+        26
+      ],
+      "pivot": [
+        16,
+        15
+      ],
+      "shadowY": 22,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_scout",
+      "size": [
+        36,
+        30
+      ],
+      "pivot": [
+        20,
+        16
+      ],
+      "shadowY": 27,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_tank",
+      "size": [
+        48,
+        40
+      ],
+      "pivot": [
+        23,
+        24
+      ],
+      "shadowY": 36,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_spitter",
+      "size": [
+        42,
+        29
+      ],
+      "pivot": [
+        20,
+        17
+      ],
+      "shadowY": 25,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_turret",
+      "size": [
+        44,
+        35
+      ],
+      "pivot": [
+        20,
+        20
+      ],
+      "shadowY": 31,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_charger",
+      "size": [
+        47,
+        33
+      ],
+      "pivot": [
+        19,
+        20
+      ],
+      "shadowY": 29,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_hopper",
+      "size": [
+        41,
+        36
+      ],
+      "pivot": [
+        20,
+        19
+      ],
+      "shadowY": 31,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "air": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_splitter",
+      "size": [
+        52,
+        35
+      ],
+      "pivot": [
+        25,
+        20
+      ],
+      "shadowY": 31,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_tadpole",
+      "size": [
+        27,
+        21
+      ],
+      "pivot": [
+        18,
+        12
+      ],
+      "shadowY": 17,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_bomber",
+      "size": [
+        36,
+        30
+      ],
+      "pivot": [
+        16,
+        17
+      ],
+      "shadowY": 27,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_tongue",
+      "size": [
+        41,
+        34
+      ],
+      "pivot": [
+        20,
+        21
+      ],
+      "shadowY": 30,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_brood",
+      "size": [
+        50,
+        36
+      ],
+      "pivot": [
+        24,
+        23
+      ],
+      "shadowY": 33,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_burrower",
+      "size": [
+        44,
+        33
+      ],
+      "pivot": [
+        20,
+        21
+      ],
+      "shadowY": 29,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "buried": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_dancer",
+      "size": [
+        38,
+        29
+      ],
+      "pivot": [
+        19,
+        14
+      ],
+      "shadowY": 26,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "spin": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_gasser",
+      "size": [
+        39,
+        38
+      ],
+      "pivot": [
+        19,
+        25
+      ],
+      "shadowY": 34,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "laugh": 4,
+        "death": 4
+      }
+    },
+    {
+      "id": "naiwa_boss",
+      "size": [
+        91,
+        75
+      ],
+      "pivot": [
+        45,
+        46
+      ],
+      "shadowY": 70,
+      "frames": {
+        "idle": 4,
+        "move": 4,
+        "windup": 2,
+        "attack": 2,
+        "recover": 2,
+        "hurt": 2,
+        "air": 4,
+        "death": 4,
+        "spin": 4,
+        "laugh": 4
+      }
+    }
+  ]
+}

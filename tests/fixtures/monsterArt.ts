@@ -106,6 +106,36 @@ class MonsterScene extends Scene {
             }
           }
         }
+        // Real rendered frame names: one-shot poses hold, hurt does not reset
+        // the gait clock or mask the attack tell, frozen actors keep the pose.
+        const idle = { ...actor, pose: 'idle' as const };
+        now += 10;
+        art.draw(0, visual, idle, now, 0, 0, 2, shadow);
+        art.draw(0, visual, idle, now + 0.01, 0, 0.05, 2, shadow, now);
+        check(visual.frame.name === monsterFrame(kind, 'hurt', 0), `${kind}: hurt frame`);
+        const resume = anim.art.seconds.hurt! * anim.art.frames.hurt!.length + 0.01;
+        art.draw(0, visual, idle, now + resume, 0, 0, 2, shadow, now);
+        check(
+          visual.frame.name ===
+            monsterFrame(
+              kind,
+              'idle',
+              Math.floor(resume / anim.art.seconds.idle!) % anim.art.frames.idle!.length,
+            ),
+          `${kind}: resume clock`,
+        );
+        const frozenFrame = visual.frame.name;
+        art.draw(0, visual, { ...idle, frozen: true }, now + resume + 10, 0, 0, 2, shadow, now);
+        check(visual.frame.name === frozenFrame, `${kind}: frozen pose`);
+        now += 30;
+        const windup = { ...actor, pose: 'windup' as const };
+        art.draw(0, visual, windup, now, 0, 0, 2, shadow, now);
+        check(visual.frame.name === monsterFrame(kind, 'windup', 0), `${kind}: hurt keeps tell`);
+        art.draw(0, visual, windup, now + 10, 0, 0, 2, shadow);
+        check(
+          visual.frame.name === monsterFrame(kind, 'windup', anim.art.frames.windup!.length - 1),
+          `${kind}: windup holds last frame`,
+        );
         check(JSON.stringify(actors.save()) === before, `${kind}: art mutated physics`);
         // 圆周四向探针：真正的 Arcade overlap，不以包围盒代替圆形命中。
         for (const angle of [0, Math.PI / 2, Math.PI, Math.PI * 1.5]) {
@@ -187,8 +217,10 @@ class MonsterScene extends Scene {
         ctx.drawImage(source, 0, 0);
         const [w, h] = anim.art.size;
         for (const [action, coords] of Object.entries(anim.art.frames)) {
+          const distinct = new Set<string>();
           for (const [x, y] of coords) {
             const pixels = ctx.getImageData(x, y, w, h).data;
+            distinct.add(Array.from(new Uint32Array(pixels.buffer)).join(','));
             let count = 0;
             for (let i = 3; i < pixels.length; i += 4) {
               const alpha = pixels[i]!;
@@ -204,6 +236,8 @@ class MonsterScene extends Scene {
             if (!count) errors.push(`${kind}:${action}: empty`);
             frames++;
           }
+          if ((action === 'idle' || action === 'move') && distinct.size < 2)
+            errors.push(`${kind}:${action}: identical stills instead of animation`);
         }
       }
       return { errors, frames, monsters: ids.length };
