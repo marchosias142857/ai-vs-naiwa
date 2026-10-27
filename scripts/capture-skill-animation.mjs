@@ -135,7 +135,7 @@ try {
   await gallery.setViewportSize({ width: 3904, height: 1200 });
   const formal = [];
   for (const zoom of [6, 8.5]) {
-    let html = `<h1>#120 落点可读性 · 正式相机 zoom ${zoom}</h1><p>1920×1080 / DPR 1 原生像素；左：首步，右：末步。${zoom === 6 ? '1080p 桌面相机' : 'Pixel 7 横屏相机近似值；此处展示原生画布，非真机截图'}。落石：精细红色四角；奶怪：奶白方形四角；透明度 0.9。蓄跳蛙按负责人要求无落点提示。</p>`;
+    let html = `<h1>#101 普通怪动作与 Boss 提示 · 正式相机 zoom ${zoom}</h1><p>1920×1080 / DPR 1 原生像素；左：首步，右：末步。${zoom === 6 ? '1080p 桌面相机' : 'Pixel 7 横屏相机近似值；此处展示原生画布，非真机截图'}。落石：精细红色四角；奶怪：奶白方形四角；透明度 0.9。普通怪不画攻击预告，蓄跳蛙无落点提示，膨爆蛙无范围刻度。</p>`;
     for (const kind of ['rock', 'hopper', 'boss-hop', 'fuse', 'bump']) {
       html += `<div class="name">${kind}</div><div style="display:flex;gap:16px">`;
       for (const last of [false, true]) {

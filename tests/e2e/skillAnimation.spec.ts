@@ -69,7 +69,17 @@ test('技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离', as
   expect(result.errors).toEqual([]);
   expect(result.samples).toBeGreaterThan(40);
   expect(result.frozen).toBeGreaterThan(20);
-  expect(result.cues).toBeGreaterThan(15);
+  expect(result.bossCues).toBeGreaterThan(0);
+  expect(result.ordinary.length).toBeGreaterThan(20);
+  for (const kind of ['naiwa_chaser', 'naiwa_charger', 'naiwa_bomber', 'naiwa_hopper']) {
+    const samples = result.ordinary.filter((s) => s.kind === kind);
+    expect(samples.length).toBeGreaterThan(0);
+    expect(samples.every((s) => !s.visible && s.strokes === 0)).toBe(true);
+  }
+  const tongue = result.ordinary.filter((s) => s.kind === 'naiwa_tongue');
+  expect(tongue.some((s) => s.stage === 'windup' && !s.visible)).toBe(true);
+  expect(tongue.some((s) => s.stage === 'active' && s.visible && s.strokes > 0)).toBe(true);
+  expect(result.ordinary.some((s) => s.kind === 'naiwa_burrower' && s.visible && s.strokes === 0)).toBe(true);
   await info.attach('skill-audit', { body: JSON.stringify(result), contentType: 'application/json' });
 });
 

@@ -11,7 +11,238 @@
     "errors": [],
     "samples": 70,
     "frozen": 38,
-    "cues": 24,
+    "cues": 13,
+    "bossCues": 8,
+    "ordinary": [
+      {
+        "kind": "naiwa_chaser",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_chaser",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_chaser",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_chaser",
+        "stage": "dash",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_chaser",
+        "stage": "recover",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_charger",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_charger",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_charger",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_charger",
+        "stage": "dash",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_charger",
+        "stage": "recover",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_hopper",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_hopper",
+        "stage": "air",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_hopper",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_hopper",
+        "stage": "recover",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_hopper",
+        "stage": "recover",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_bomber",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_bomber",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_tongue",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_tongue",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_tongue",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_tongue",
+        "stage": "active",
+        "strokes": 2,
+        "visible": true
+      },
+      {
+        "kind": "naiwa_tongue",
+        "stage": "recover",
+        "strokes": 2,
+        "visible": true
+      },
+      {
+        "kind": "naiwa_brood",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_brood",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_brood",
+        "stage": "active",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_spitter",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_spitter",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_spitter",
+        "stage": "active",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_turret",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_turret",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_turret",
+        "stage": "active",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_burrower",
+        "stage": "emerge",
+        "strokes": 0,
+        "visible": true
+      },
+      {
+        "kind": "naiwa_burrower",
+        "stage": "buried",
+        "strokes": 0,
+        "visible": true
+      },
+      {
+        "kind": "naiwa_burrower",
+        "stage": "emerge",
+        "strokes": 0,
+        "visible": true
+      },
+      {
+        "kind": "naiwa_burrower",
+        "stage": "active",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_burrower",
+        "stage": "active",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_dancer",
+        "stage": "spin",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_dancer",
+        "stage": "spin",
+        "strokes": 0,
+        "visible": false
+      }
+    ],
     "children": 730,
     "textures": 22,
     "emptyGraphics": 5

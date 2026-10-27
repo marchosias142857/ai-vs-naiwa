@@ -17,22 +17,9 @@ export function drawSkillTell(g: GameObjects.Graphics, a: ActorView): void {
   const p = Math.max(0, Math.min(1, a.stageSpan > 0 ? a.stageTime / a.stageSpan : 0));
   const cx = Math.cos(a.aim),
     cy = Math.sin(a.aim);
-  if (a.move === 'dash' && a.stage === 'windup' && def.dash) {
-    const chaser = a.kind === 'naiwa_chaser';
-    const len = def.dash.speed * def.dash.duration * (chaser ? 1 : 0.3 + 0.7 * p);
-    for (let i = -1; i <= 1; i++) {
-      const x = a.x - cy * i * 3,
-        y = a.y + cx * i * 3;
-      stroke(g, x, y, x + cx * len, y + cy * len, 0.3 + 0.5 * p * p);
-    }
-  } else if (a.move === 'lash' && def.lash) {
-    if (a.stage === 'windup') {
-      for (let i = 1; i <= 4; i++) {
-        const d = (i * def.lash.length) / 4;
-        g.fillStyle(DARK, 0.8).fillCircle(a.x + cx * d, a.y + cy * d, 2);
-        g.fillStyle(CREAM, a.aimLocked ? 1 : 0.4).fillCircle(a.x + cx * d, a.y + cy * d, 1.2);
-      }
-    } else if (a.stage === 'active' || a.stage === 'recover') {
+  // 普通怪用身体动作预告；这里只画真实舌头、地下土包与 Boss 提示。
+  if (a.move === 'lash' && def.lash) {
+    if (a.stage === 'active' || a.stage === 'recover') {
       const length = def.lash.length * (a.stage === 'recover' ? 1 - p : 1);
       const tx = a.x + cx * length,
         ty = a.y + cy * length;
@@ -64,30 +51,8 @@ export function drawSkillTell(g: GameObjects.Graphics, a: ActorView): void {
     // 砸地范围围绕身体圆心，不随脚底影子偏移或压扁；蓄跳蛙按负责人要求不画落点提示。
     const side = Math.max(a.radius, 6) * 3;
     landingBoundary(g, a.landX, a.landY, side, side, p);
-  } else if (a.move === 'fuse' && def.fuse) {
-    const count = a.stageSpan - a.stageTime <= 0.15 ? 8 : 1 + Math.floor(p * 7);
-    for (let i = 0; i < count; i++) {
-      const angle = (i * Math.PI) / 4,
-        x = Math.cos(angle),
-        y = Math.sin(angle);
-      const r = def.fuse.radius;
-      stroke(g, a.x + x * (r - 2), a.y + y * (r - 2), a.x + x * (r + 3), a.y + y * (r + 3), 0.8);
-      stroke(
-        g,
-        a.x + x * (r + 3),
-        a.y + y * (r + 3),
-        a.x + x * (r + 5) - y * 2,
-        a.y + y * (r + 5) + x * 2,
-        0.8,
-      );
-    }
   } else if (a.move === 'burrow' && (a.stage === 'buried' || a.stage === 'emerge')) {
     g.fillStyle(DARK, 0.65).fillEllipse(a.x, a.y + 2, a.radius * 2.2, a.radius);
-    const spread = a.stage === 'emerge' ? 2 + p * a.radius : 2;
-    for (let i = 0; i < 3; i++) {
-      const angle = (i * Math.PI * 2) / 3;
-      stroke(g, a.x, a.y, a.x + Math.cos(angle) * spread, a.y + Math.sin(angle) * spread, 0.6);
-    }
   }
   if (a.stage === 'stun') {
     const art = a.kind === 'naiwa_boss' ? NAIGUAI_ART : MONSTER_ART[a.kind as keyof typeof MONSTER_ART];

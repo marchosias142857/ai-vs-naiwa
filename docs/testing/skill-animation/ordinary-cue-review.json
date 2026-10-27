@@ -1,0 +1,704 @@
+{
+  "baseMain": "5a4e6b4c4b05597e51a1068104be2840c7f2dd83",
+  "verifiedSourceTree": "4cff6ba52192eed387d11d3716c2cc4c40ff87df",
+  "ownerRevision": "Ordinary enemies telegraph through their body animation only; retain actual attacks, underground mound and existing Boss cues.",
+  "check": {
+    "passed": true,
+    "unitFiles": 55,
+    "unitTests": 430,
+    "node": "22.23.4"
+  },
+  "stats": {
+    "startTime": "2026-10-27T20:17:25.418Z",
+    "duration": 148409.638,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "project": "desktop",
+      "title": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2785,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "title": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1764,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2854,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1859,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 18489,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 35223,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 20341,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 35944,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 4258,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2732,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 4028,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2545,
+          "retry": 0
+        }
+      ]
+    }
+  ],
+  "skillAudit": {
+    "errors": [],
+    "samples": 70,
+    "frozen": 38,
+    "cues": 13,
+    "bossCues": 8,
+    "ordinary": [
+      {
+        "kind": "naiwa_chaser",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_chaser",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_chaser",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_chaser",
+        "stage": "dash",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_chaser",
+        "stage": "recover",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_charger",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_charger",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_charger",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_charger",
+        "stage": "dash",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_charger",
+        "stage": "recover",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_hopper",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_hopper",
+        "stage": "air",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_hopper",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_hopper",
+        "stage": "recover",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_hopper",
+        "stage": "recover",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_bomber",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_bomber",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_tongue",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_tongue",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_tongue",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_tongue",
+        "stage": "active",
+        "strokes": 2,
+        "visible": true
+      },
+      {
+        "kind": "naiwa_tongue",
+        "stage": "recover",
+        "strokes": 2,
+        "visible": true
+      },
+      {
+        "kind": "naiwa_brood",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_brood",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_brood",
+        "stage": "active",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_spitter",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_spitter",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_spitter",
+        "stage": "active",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_turret",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_turret",
+        "stage": "windup",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_turret",
+        "stage": "active",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_burrower",
+        "stage": "emerge",
+        "strokes": 0,
+        "visible": true
+      },
+      {
+        "kind": "naiwa_burrower",
+        "stage": "buried",
+        "strokes": 0,
+        "visible": true
+      },
+      {
+        "kind": "naiwa_burrower",
+        "stage": "emerge",
+        "strokes": 0,
+        "visible": true
+      },
+      {
+        "kind": "naiwa_burrower",
+        "stage": "active",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_burrower",
+        "stage": "active",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_dancer",
+        "stage": "spin",
+        "strokes": 0,
+        "visible": false
+      },
+      {
+        "kind": "naiwa_dancer",
+        "stage": "spin",
+        "strokes": 0,
+        "visible": false
+      }
+    ],
+    "children": 730,
+    "textures": 22,
+    "emptyGraphics": 5
+  },
+  "landingAudit": {
+    "errors": [],
+    "records": [
+      {
+        "label": "rock-0",
+        "markers": 7,
+        "segments": 84,
+        "geometry": [
+          {
+            "kind": "rock",
+            "center": [260, 130],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999996],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [317.41428930402043, 80.27294258580213],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 9.000000000000002],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [260.61746455812033, 70.43733831062656],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 9.000000000000002],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [238.17175001656045, 158.57529727270963],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [248.69882475912704, 183.1823339822589],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [242.55808822714152, 140.89849111423368],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [243.13007563239114, 203.74361521577447],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      },
+      {
+        "label": "rock-0.3",
+        "markers": 7,
+        "segments": 84,
+        "geometry": [
+          {
+            "kind": "rock",
+            "center": [260, 130],
+            "progress": 0.30037842417689586,
+            "scale": 1.2098864727469314,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999993, 9.000000000000005],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [317.41428930402043, 80.27294258580213],
+            "progress": 0.3017971368156084,
+            "scale": 1.2094608589553175,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999995, 8.999999999999995],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [260.61746455812033, 70.43733831062656],
+            "progress": 0.35561268749459407,
+            "scale": 1.193316193751622,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999995, 8.999999999999996],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [238.17175001656045, 158.57529727270963],
+            "progress": 0.3684340855652788,
+            "scale": 1.1894697743304163,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.00000000000001, 9.00000000000001],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [248.69882475912704, 183.1823339822589],
+            "progress": 0.290385880719773,
+            "scale": 1.2128842357840681,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000007, 9.000000000000007],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [242.55808822714152, 140.89849111423368],
+            "progress": 0.3424005984293913,
+            "scale": 1.1972798204711828,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000009, 9.000000000000009],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [243.13007563239114, 203.74361521577447],
+            "progress": 0.32724532452945776,
+            "scale": 1.2018264026411627,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000004, 9.000000000000004],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      },
+      {
+        "label": "rock-0.9",
+        "markers": 4,
+        "segments": 48,
+        "geometry": [
+          {
+            "kind": "rock",
+            "center": [260, 130],
+            "progress": 0.9011352725306905,
+            "scale": 1.029659418240793,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000009, 8.999999999999995],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [317.41428930402043, 80.27294258580213],
+            "progress": 0.9053914104468277,
+            "scale": 1.0283825768659518,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000007, 8.999999999999995],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [248.69882475912704, 183.1823339822589],
+            "progress": 0.871157642159322,
+            "scale": 1.0386527073522034,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000002, 9.000000000000002],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [243.13007563239114, 203.74361521577447],
+            "progress": 0.9817359735883748,
+            "scale": 1.0054792079234876,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000012, 9.000000000000012],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      },
+      {
+        "label": "rock-1",
+        "markers": 2,
+        "segments": 24,
+        "geometry": [
+          {
+            "kind": "rock",
+            "center": [260, 130],
+            "progress": 0.9972563682672975,
+            "scale": 1.0008230895198107,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999988, 9.000000000000002],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [248.69882475912704, 183.1823339822589],
+            "progress": 0.9640811239896496,
+            "scale": 1.010775662803105,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999996, 8.999999999999996],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      },
+      {
+        "label": "naiwa_hopper-first",
+        "markers": 0,
+        "segments": 0,
+        "geometry": [],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": true
+      },
+      {
+        "label": "naiwa_hopper-last",
+        "markers": 0,
+        "segments": 0,
+        "geometry": [],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": true
+      },
+      {
+        "label": "naiwa_boss-first",
+        "markers": 1,
+        "segments": 12,
+        "geometry": [
+          {
+            "kind": "boss-hop",
+            "center": [260, 130],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [21, 21],
+            "actualUnscaledHalfSize": [21.000000000000007, 21.000000000000004],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      },
+      {
+        "label": "naiwa_boss-last",
+        "markers": 1,
+        "segments": 12,
+        "geometry": [
+          {
+            "kind": "boss-hop",
+            "center": [259.99999999999994, 130],
+            "progress": 0.9791666666666676,
+            "scale": 1.0062499999999996,
+            "expectedHalfSize": [21, 21],
+            "actualUnscaledHalfSize": [20.99999999999999, 21],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      }
+    ],
+    "children": 730,
+    "textures": 22,
+    "denseActors": 30,
+    "denseRocks": 7
+  },
+  "unchangedTreesAndBlobs": {
+    "src/sim": "6f974fe8c83ee28b8e364758df72f3b062a96340",
+    "public": "c9a0191d7253f76af08c76e46fbf27a65d3643a6",
+    "src/game/entities/EnemyArt.ts": "e6e785821e58381be6c43932429dcaa3610eff21",
+    "src/game/entities/skillPose.ts": "c0cfcc633a2ff181ef39cac1b5504752b00e8f40",
+    "src/game/fx/HazardLayer.ts": "065f025962d69504e259afb7cd46004539035c1e"
+  },
+  "newlyCapturedImagesIdenticalToBase": ["keyframes-3.png", "keyframes-4.png"],
+  "bundle": {
+    "name": "index-HFUBqy39.js",
+    "bytes": 1661337,
+    "sha256": "21c3a04f44bd7579720342505db7b5bf00aa865d00455289d21e49938745b918",
+    "baseBytes": 1662553,
+    "deltaBytes": -1216,
+    "precacheEntries": 20
+  },
+  "limitations": [
+    "No WebKit/Safari/iPhone validation in this round.",
+    "No full E2E or ABAB FPS rerun; historic results remain pinned to their original code.",
+    "Resource-growth audit only: 30 enemies + 7 rocks, 120 renders and repeated reloads.",
+    "Screenshots use Chromium native 1920x1080 canvas; zoom 8.5 approximates Pixel 7 landscape, not device capture."
+  ]
+}
