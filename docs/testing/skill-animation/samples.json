@@ -1,4 +1,12 @@
 {
+  "render": {
+    "width": 1920,
+    "height": 1080,
+    "cssWidth": 1920,
+    "cssHeight": 1080,
+    "imageRendering": "auto",
+    "dpr": 1
+  },
   "audit": {
     "errors": [],
     "samples": 70,

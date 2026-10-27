@@ -51,10 +51,20 @@ const browser = await chromium.launch({
   args: JSON.parse(process.env.SKILL_BROWSER_ARGS ?? '[]'),
 });
 try {
-  const page = await browser.newPage({ viewport: { width: 960, height: 540 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
   page.on('pageerror', (e) => console.error(e));
   await page.goto(url);
   await page.waitForFunction(() => window.skillList);
+  const render = await page.locator('#game canvas').evaluate((c) => ({
+    width: c.width,
+    height: c.height,
+    cssWidth: c.getBoundingClientRect().width,
+    cssHeight: c.getBoundingClientRect().height,
+    imageRendering: window.getComputedStyle(c).imageRendering,
+    dpr: window.devicePixelRatio,
+  }));
+  if (render.width !== 1920 || render.height !== 1080 || render.cssWidth !== 1920)
+    throw Error(`Evidence must capture the production framebuffer 1:1: ${JSON.stringify(render)}`);
   const audit = await page.evaluate(() => window.skillAudit());
   if (audit.errors.length) throw Error(JSON.stringify(audit));
   console.log(JSON.stringify(audit));
@@ -74,16 +84,16 @@ try {
       await page.locator('#game canvas').screenshot({ path: join(temp, `${row}-${column}.png`) });
     }
   }
-  const gallery = await browser.newPage({ viewport: { width: 1560, height: 1100 }, deviceScaleFactor: 1 });
+  const gallery = await browser.newPage({ viewport: { width: 3928, height: 1100 }, deviceScaleFactor: 1 });
   const style =
-    '<style>*{box-sizing:border-box}body{margin:0;background:#111923;color:#f5eed7;font:16px Arial,sans-serif;padding:24px}h1{margin:0 0 8px;font-size:24px}p{color:#b9c4cd;margin:8px 0 18px}.row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}.cell{background:#1c2933;min-height:190px}.cell img{display:block;width:100%;image-rendering:pixelated}.caption{font-size:13px;padding:8px}.empty{height:165px;display:grid;place-content:center;color:#8998a8}.name{font-size:16px;margin:12px 0 6px}</style>';
+    '<style>*{box-sizing:border-box}body{margin:0;background:#111923;color:#f5eed7;font:20px Arial,sans-serif;padding:24px}h1{margin:0 0 8px;font-size:28px}p{color:#b9c4cd;margin:8px 0 18px}.row{display:grid;grid-template-columns:repeat(5,768px);gap:10px;margin-bottom:18px}.cell{background:#1c2933;min-height:470px}.cell img{display:block;width:100%;image-rendering:auto}.caption{font-size:20px;padding:8px}.empty{height:432px;display:grid;place-content:center;color:#8998a8}.name{font-size:24px;margin:12px 0 6px}</style>';
   const renderSheet = async (body, name) => {
     await gallery.setContent(style + body);
     await gallery.locator('img').evaluateAll((images) => Promise.all(images.map((i) => i.decode())));
     await gallery.screenshot({ path: join(out, name), fullPage: true });
   };
   for (let start = 0; start < rows.length; start += 5) {
-    let html = `<h1>#101 技能关键帧 · ${start + 1}–${Math.min(start + 5, rows.length)}</h1><p>真实 sim 阶段与实际 Phaser 渲染；列顺序：前摇首帧 / 锁定 / 前摇末帧 / 生效首帧 / 收招。无对应阶段明确留空。</p>`;
+    let html = `<h1>#101 技能关键帧 · ${start + 1}–${Math.min(start + 5, rows.length)}</h1><p>1920×1080 高清渲染 · v4 原图不变。列顺序：前摇首帧 / 锁定 / 前摇末帧 / 生效首帧 / 收招。请打开原图查看；无对应阶段明确留空。</p>`;
     for (let r = start; r < Math.min(start + 5, rows.length); r++) {
       html += `<div class="name">${rows[r].name}</div><div class="row">`;
       for (let c = 0; c < 5; c++) {
@@ -100,17 +110,28 @@ try {
     await renderSheet(html, `keyframes-${1 + start / 5}.png`);
   }
   // Three identical dense arrangements expose what load/freeze/zero-budget retain.
+  await gallery.setViewportSize({ width: 1968, height: 1200 });
   for (const mode of ['frozen', 'load', 'zero']) {
     const dense = await page.evaluate((mode) => window.skillDense(mode), mode);
     await settle();
     await page.locator('#game canvas').screenshot({ path: join(temp, `${mode}.png`) });
     await renderSheet(
-      `<h1>#101 · ${mode}</h1><p>30 个怪物 + 落石，同一组真实阶段样本；冻结不推进，读档不补事件，zero 禁止所有装饰预算准入。Boss 按原规则免疫冻结。</p><img style="width:1440px;image-rendering:pixelated" src="${url}/proof/${mode}.png">`,
+      `<h1>#101 · ${mode}</h1><p>1920×1080 原生画布，无像素化放大。30 个怪物 + 落石；冻结不推进，读档不补事件，zero 禁止装饰准入。Boss 免疫冻结。</p><img style="display:block;width:1920px;image-rendering:auto" src="${url}/proof/${mode}.png">`,
       `${mode}.png`,
     );
     metadata.push(dense);
   }
-  await writeFile(join(out, 'samples.json'), JSON.stringify({ audit, samples: metadata }, null, 2) + '\n');
+  // A native-resolution crop for reviewing sprite detail without scaling a contact sheet.
+  // Only the presentation crop changes; it is the same rendered sample as keyframes-1, row 1.
+  await gallery.setViewportSize({ width: 1328, height: 620 });
+  await renderSheet(
+    `<h1>#101 · v4 怪物原生细节</h1><p>正式高清配置，1920×1080 画布的 1:1 局部；未改图集、未放大截图。巨爪：前摇首帧 / 前摇末帧。</p><div style="display:flex;gap:16px">${[0, 2].map((column) => `<div style="width:632px;height:440px;overflow:hidden;position:relative"><img style="position:absolute;width:1920px;max-width:none;left:-440px;top:-300px;image-rendering:auto" src="${url}/proof/0-${column}.png"></div>`).join('')}</div>`,
+    'detail.png',
+  );
+  await writeFile(
+    join(out, 'samples.json'),
+    JSON.stringify({ render, audit, samples: metadata }, null, 2) + '\n',
+  );
 } finally {
   await browser.close();
   server.closeAllConnections();

@@ -1,5 +1,5 @@
-import { AUTO, Game, Scene, GameObjects } from 'phaser';
-import { DEPTH } from '../../src/config';
+import { AUTO, Game, Scene, GameObjects, Scale } from 'phaser';
+import { DEPTH, GAME_WIDTH, GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
 import { ART, installDemoArt, preloadDemoArt } from '../../src/game/assets/demoArt';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import { EnemyArt } from '../../src/game/entities/EnemyArt';
@@ -83,7 +83,7 @@ class SkillScene extends Scene {
       load(sample, mode);
       const a = sim.getActor(sample.id)!;
       const wide = a.move === 'bump' || cases[row]!.name === 'falling_rocks';
-      this.cameras.main.setZoom(wide ? 1.35 : 2.3).centerOn(a.x + (wide ? 70 : 20), a.y - 6);
+      this.cameras.main.setZoom((wide ? 1.35 : 2.3) * RENDER_SCALE).centerOn(a.x + (wide ? 70 : 20), a.y - 6);
       return {
         kind: a.kind,
         move: a.move,
@@ -117,7 +117,7 @@ class SkillScene extends Scene {
         { state, id: 1, label: '30 enemies', events: [], explosions: [] },
         mode === 'frozen' ? 'load' : mode,
       );
-      this.cameras.main.setZoom(1).centerOn(240, 135);
+      this.cameras.main.setZoom(RENDER_SCALE).centerOn(GAME_WIDTH / 2, GAME_HEIGHT / 2);
       return { actors: sim.actors.length, rocks: sim.rocks.filter((r) => r.active).length, budget: mode };
     };
     window.skillAudit = () => {
@@ -228,9 +228,12 @@ declare global {
 }
 new Game({
   type: AUTO,
-  width: 480,
-  height: 270,
-  pixelArt: true,
+  // Match the production framebuffer, not a 270p intermediate enlarged by CSS.
+  width: GAME_WIDTH * RENDER_SCALE,
+  height: GAME_HEIGHT * RENDER_SCALE,
+  antialias: true,
+  roundPixels: false,
+  scale: { mode: Scale.FIT, autoCenter: Scale.CENTER_BOTH },
   parent: 'game',
   physics: { default: 'arcade', arcade: { fixedStep: true } },
   scene: [SkillScene],

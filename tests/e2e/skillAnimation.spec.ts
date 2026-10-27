@@ -5,6 +5,7 @@ import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { extname, join, resolve } from 'node:path';
 import type {} from '../fixtures/skillAnimation';
+import { GAME_WIDTH, GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
 
 let directory: string, url: string, server: ReturnType<typeof createServer>;
 test.beforeAll(async () => {
@@ -54,6 +55,16 @@ test.afterAll(async () => {
 test('技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离', async ({ page }, info) => {
   await page.goto(url);
   await page.waitForFunction(() => window.skillAudit);
+  // Verify the actual drawing buffer on both viewport sizes; CSS enlargement must not mask 270p.
+  const canvas = page.locator('#game canvas');
+  expect(await canvas.evaluate((c: HTMLCanvasElement) => [c.width, c.height])).toEqual([
+    GAME_WIDTH * RENDER_SCALE,
+    GAME_HEIGHT * RENDER_SCALE,
+  ]);
+  await page.evaluate(() => window.skillDense('load'));
+  const bounds = await canvas.boundingBox();
+  expect(bounds).not.toBeNull();
+  expect(bounds!.width / bounds!.height).toBeCloseTo(GAME_WIDTH / GAME_HEIGHT, 2);
   const result = await page.evaluate(() => window.skillAudit());
   expect(result.errors).toEqual([]);
   expect(result.samples).toBeGreaterThan(40);

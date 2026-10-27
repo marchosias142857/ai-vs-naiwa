@@ -20,10 +20,11 @@
 
 ## 关键帧与状态证据
 
-[采样元数据](skill-animation/samples.json)记录每格的 stage/time/span/lock。样本由真实 AI 以 1/60 秒运行产生，使用真实图集和实际 EnemyArt/HazardLayer/CombatFeedback 渲染。画面是隔离验证场景，使用游戏地板纹理；不是负责人手机实测。没有对应阶段时表格明确留空，不虚构前摇或收招。
+[采样元数据](skill-animation/samples.json)记录每格的 stage/time/span/lock。样本由真实 AI 以 1/60 秒运行产生，使用真实图集和实际 EnemyArt/HazardLayer/CombatFeedback 渲染。画面是隔离验证场景，使用游戏地板纹理；不是负责人手机实测。现已改为与正式入口一致的 1920×1080 画布、抗锯齿与 FIT 缩放；相机放大同步乘以 RENDER_SCALE，世界视野保持不变。采集时 DPR 1、CSS 画布也是 1920×1080，直接捕获原生像素；全景不缩放，关键帧大图用正常平滑缩略显示，不再使用 pixelated 放大。没有对应阶段时表格明确留空，不虚构前摇或收招。
 
 | 图                                          | 覆盖                                                     |
 | ------------------------------------------- | -------------------------------------------------------- |
+| [原生细节](skill-animation/detail.png)      | 巨爪前摇首帧与末帧的 1:1 局部，便于检查 v4 贴图精度      |
 | [关键帧 1](skill-animation/keyframes-1.png) | 巨爪、角冲、蓄跳、膨爆、围舌                             |
 | [关键帧 2](skill-animation/keyframes-2.png) | 负卵、鼓腮、菌冠、铲爪、鳍舞                             |
 | [关键帧 3](skill-animation/keyframes-3.png) | 放毒、Boss 冲撞/跳跃/召唤/石雨                           |
@@ -38,7 +39,7 @@
 
 完整 `npm run check` 已通过：Prettier 3.9.10、ESLint、TypeScript、55 个文件 / 430 项单测、Vite 生产构建。技能验证包含 70 个真实阶段样本、38 个冻结检查、25 个必要提示检查；重建前后显示对象 730 个、纹理 22 张，未增长。
 
-构建前清空生成目录，PWA 预缓存保持 20 项（11533.75 KiB）。相对 #113，主 JS 从 1,657,451 增至 1,662,098 字节（+4,647）；相同 Python gzip 方法从 446,809 增至 448,495 字节（+1,686）。没有新增运行时图片。[完整性记录](skill-animation/integrity.json)包含 7 张已上传图片的字节数、SHA-256、Git blob SHA 和远端一致性。
+构建前清空生成目录，PWA 预缓存保持 20 项（11533.75 KiB）。相对 #113，主 JS 从 1,657,451 增至 1,662,098 字节（+4,647）；相同 Python gzip 方法从 446,809 增至 448,495 字节（+1,686）。没有新增运行时图片。[完整性记录](skill-animation/integrity.json)包含 8 张已上传图片的字节数、SHA-256、Git blob SHA 和远端一致性。
 
 全量 Chromium E2E（桌面 + Pixel 7 横屏、单 worker、零重试）：**202 通过、18 个原有设备条件跳过、零失败**，20.4 分钟完成。[逐项结果](skill-animation/e2e.json)保留名称、状态、耗时与跳过条件。两端均通过真实子路径 manifest/安装条件、断网刷新、关闭重开、图鉴资源离线、连续两次更新及跨标签页不强制刷新；新技能专项、正式续玩/冻结倒计时、输入与对象池压力也均通过。
 
@@ -79,3 +80,14 @@ SKILL_BASELINE=/path/to/isolated-pr113 node scripts/benchmark-skill-animation.mj
 - 上述 202 通过 / 18 条件跳过的 Chromium E2E、PWA 离线行为及 ABAB 性能数据是旧 head 的历史验证，本次没有重新运行。运行时代码、资源、配置与测试逐字节一致，因此沿用其适用结论，不把旧结果标记为新一轮测试。
 - 已知演示限制：现有技能截图使用 480×270 验证画布，放大后损失美术细节，不能用于判断 v4 的实际精度。原图完整保留；提高演示分辨率和重新出图尚未完成，不能因本次同步将草稿视为可合并。
 - 6 项 WebKit 测试仍未运行，Safari / iPhone 真机仍未验证；手机尺寸 Chromium 不替代真机。继续保留草稿，等待演示修正、交叉评审及负责人验收。不修改 main / Claude 分支，不合并 PR，不运行远端 CI，不启动 #114–#119。
+
+## 2026-10-27：修正演示渲染精度
+
+旧版演示 fixture 使用 480×270 画布与 pixelArt，再把截图放大，导致素材细节丢失。这是演示配置缺陷，不能用旧版图片判断 v4 美术精度。正式游戏入口、怪物图集和缩放元数据均未回退。
+
+本轮仅修改验证 fixture、截图脚本、对应 E2E 和证据文档：复用 GAME_WIDTH / GAME_HEIGHT / RENDER_SCALE，保留世界坐标和各招式的原构图；改为 antialias=true、roundPixels=false、Scale.FIT。相机 zoom 同步乘 4，避免只扩大画布而缩小怪物。八张新图取代旧证据，detail.png 是高清画布原生像素的局部，未重绘、锐化或放大；其余关键帧表请打开原图查看。
+
+- 本轮重新运行 Node 22 的完整 npm run check，通过 55 文件 / 430 项单测、格式、ESLint、类型和生产构建。
+- 技能专项在桌面及横屏 Chromium 重新验证实际 drawing buffer 为 1920×1080、FIT 纵横比正确；70 个阶段样本、38 项冻结检查、25 项提示检查仍通过，显示对象 730 / 纹理 22 均不增长。
+- 同步 main 后 src、public、配置和锁文件与已完成全量验证的 0926b51 逐字节相同；生产 JS 仍为 index-BAxG-RRE.js，预缓存仍为 20 项。此前 202 通过 / 18 跳过的全量 Chromium E2E、PWA 和 ABAB 性能结果继续作为历史验证，本轮未重复运行。
+- Safari / iPhone 和 Claude 交叉评审仍待完成；保留草稿，不自动合并。
