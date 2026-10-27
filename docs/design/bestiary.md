@@ -86,3 +86,11 @@
 - 文案：`t(card.name)`、`t(card.attack)`、`t(card.desc)`、`t('bestiary.role.' + card.role)`；界面标签用 `bestiary.*`（已在中英文里提供）。出没楼层用 `bestiary.floor` / `bestiary.bossFloor` 拼接；小怪再加一行 `bestiary.spawnedBy`，`{names}` 填产生者名称。
 - 图片：`card.frame` 给出图集文件、纹理 key、帧左上角、帧宽高和朝向。
 - 不要在界面里硬编码怪物数量、编号或名单；新增怪物只需在 `BESTIARY` 加一行（漏加会编译失败），界面自动出现。
+
+## 8. GPT 接线补充
+
+- 键盘 I、标准手柄 X（按钮 2）打开；Esc、返回按钮或 B（按钮 1）关闭。这些快捷操作仅在主城生效。
+- 独立 `BestiaryNavigation` 处理四向网格导航，不改变其他菜单。Tab 在当前卡片和返回之间切换；PageUp/PageDown 或右摇杆滚动详情。
+- 打开、切后台或失焦后先等手柄回中，防止按住按钮穿透；关闭走原有 interaction 暂停清理。游戏既有松键减速不改动。
+- `bestiaryPortrait` 只缓存裁剪坐标，不缓存额外位图；源图仍是现有两个怪物图集。卡片与详情复用这些背景图。
+- 运行时验证、截图与本地环境限制见 [接线测试](../testing/bestiary.md)。

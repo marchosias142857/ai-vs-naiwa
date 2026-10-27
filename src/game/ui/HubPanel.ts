@@ -1,5 +1,7 @@
 import type { Scene } from 'phaser';
 import { TalentPanel } from './TalentPanel';
+import { BestiaryPanel } from './BestiaryPanel';
+import { BESTIARY_UI } from '../fx/params';
 import { readProfile, takeProfileNotice } from '../save/metaProfile';
 import { SCENES } from '../../config';
 import { t } from '../../i18n/t';
@@ -15,12 +17,15 @@ export class HubPanel {
   private readonly door = document.createElement('button');
   private readonly altar = document.createElement('button');
   private readonly talents: TalentPanel;
+  private readonly book = document.createElement('button');
+  private bestiary?: BestiaryPanel;
+  private bookHeld = true;
   private readonly modal = document.createElement('section');
   private readonly abort = new AbortController();
   private readonly navigation: MenuNavigation;
   constructor(
     private readonly scene: Scene,
-    ui: Scene,
+    private readonly ui: Scene,
     private readonly pause: PauseState,
     private readonly near: () => boolean,
     private readonly nearAltar: () => boolean,
@@ -31,6 +36,11 @@ export class HubPanel {
       hint = document.createElement('p');
     title.textContent = t('hub.title');
     hint.textContent = t('hub.hint');
+    this.book.id = 'hub-bestiary';
+    this.book.textContent = t('bestiary.open');
+    this.book.title = t('bestiary.shortcut');
+    this.book.setAttribute('aria-keyshortcuts', 'I');
+    this.book.addEventListener('click', () => this.openBestiary(), { signal: this.abort.signal });
     this.altar.id = 'hub-altar';
     this.altar.textContent = t('talent.interact');
     this.altar.addEventListener('click', () => this.open(), { signal: this.abort.signal });
@@ -94,13 +104,36 @@ export class HubPanel {
       status.textContent = t(`talent.notice.${notice}`);
       this.root.append(status);
     }
-    this.root.append(title, hint, this.door, this.altar, this.modal, this.talents.root);
+    this.root.append(title, hint, this.book, this.door, this.altar, this.modal, this.talents.root);
+    window.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.code !== BESTIARY_UI.key || e.repeat || this.pause.blocked || !scene.game.input.enabled) return;
+        e.preventDefault();
+        this.openBestiary();
+      },
+      { signal: this.abort.signal },
+    );
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
     this.navigation = new MenuNavigation(this.modal, ui);
     this.layout();
     scene.scale.on('resize', this.layout);
     window.addEventListener('resize', this.layout, { signal: this.abort.signal });
+  }
+  private openBestiary(): void {
+    if (this.pause.blocked || !this.scene.game.input.enabled) return;
+    this.pause.set('interaction', true);
+    if (!this.bestiary) {
+      this.bestiary = new BestiaryPanel(this.scene, this.ui, this.pause, this.abort.signal, () => {
+        this.bestiary!.root.hidden = true;
+        this.pause.set('interaction', false);
+        this.book.hidden = false;
+        if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+      });
+      this.root.append(this.bestiary.root);
+    }
+    this.bestiary.open();
   }
   open(): void {
     if ((!this.near() && !this.nearAltar()) || this.pause.blocked) return;
@@ -114,6 +147,12 @@ export class HubPanel {
     this.modal.querySelector('button')!.focus();
   }
   update(): void {
+    const pad = this.ui.input.gamepad?.pad1;
+    const held = !!pad?.connected && !!pad.buttons[BESTIARY_UI.open]?.pressed;
+    if (held && !this.bookHeld) this.openBestiary();
+    this.bookHeld = held;
+    this.bestiary?.update();
+    this.book.hidden = this.pause.blocked;
     this.talents.update();
     this.altar.hidden = !this.nearAltar() || this.pause.blocked;
     this.door.hidden = !this.near() || this.pause.blocked;
