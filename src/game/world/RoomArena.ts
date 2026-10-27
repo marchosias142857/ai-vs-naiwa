@@ -4,9 +4,10 @@ import { DUNGEON } from '../../data/dungeon';
 import type { TrapPlacement } from '../../data/schema/traps';
 import type { TrapLayoutInput } from '../../sim/combat/api';
 import { standingBarrel } from '../../sim/room/Traps';
+import { LiveRoomGeometry } from '../../sim/geometry/LiveRoomGeometry';
+import { createGeometryHit, GeometryMask, type GeometryQueries } from '../../sim/geometry/RoomGeometry';
 import { ART } from '../assets/demoArt';
 import { NavigationGrid } from '../../sim/dungeon/NavigationGrid';
-import { NAVIGATION } from '../../data/navigation';
 import type { Vec2 } from '../../sim/core/types';
 import type { GameObjects, Physics, Scene } from 'phaser';
 import { COLORS, DEPTH, TILE_SIZE } from '../../config';
@@ -24,6 +25,12 @@ interface Box {
   readonly width: number;
   readonly height: number;
 }
+const ROOM_BOUNDARY = [
+  { x: B.x, y: B.y },
+  { x: B.x + B.width, y: B.y },
+  { x: B.x + B.width, y: B.y + B.height },
+  { x: B.x, y: B.y + B.height },
+];
 
 /** 房间切换复用固定的内墙池。门口跨越判定由 DungeonRun 校验连接与锁门状态。 */
 export class RoomArena {
@@ -34,6 +41,11 @@ export class RoomArena {
   private readonly slots: Physics.Arcade.Image[] = [];
   private readonly doors: GameObjects.Image[] = [];
   private readonly colliders: Physics.Arcade.Collider[];
+  private readonly geometry: LiveRoomGeometry;
+  private geometryRevision = -1;
+  private readonly from = { x: 0, y: 0 };
+  private readonly to = { x: 0, y: 0 };
+  private readonly hit = createGeometryHit();
   constructor(
     scene: Scene,
     private readonly bridge: CombatBridge,
@@ -57,7 +69,8 @@ export class RoomArena {
       image.disableBody(true, true);
       this.slots.push(image);
     }
-    this.navigation = new NavigationGrid(B, this.isFree, this.pathClear);
+    this.geometry = new LiveRoomGeometry(ROOM_BOUNDARY, [], bridge.sim);
+    this.navigation = new NavigationGrid(B, this.canWalk, this.pathClear);
     this.colliders = [
       scene.physics.add.collider(bridge.actors.group, this.walls),
       reflectBullets
@@ -87,9 +100,10 @@ export class RoomArena {
       traps = p.traps;
     }
     this.art?.show(theme.art, boxes);
-    this.setBoxes(boxes);
+    this.setBoxes(boxes, run.room.kind === 'boss' ? 'pillar' : 'wall');
     // 每层每个房间的编号唯一；同一房间重建（存档恢复）时 sim 保留机关进行中的状态。
     this.placeTraps(run.floor * DUNGEON.gridSize ** 2 + run.roomId, traps);
+    this.prepareGeometry();
     this.draw(run);
   }
   /** 机关换算成世界坐标交给 sim；与当前摆放相同时 sim 保留进行中的状态（存档恢复）。 */
@@ -117,7 +131,7 @@ export class RoomArena {
   setLayout(layout: number): void {
     this.setBoxes(ROOM_LAYOUTS[layout % ROOM_LAYOUTS.length]!);
   }
-  private setBoxes(boxes: readonly Box[]): void {
+  private setBoxes(boxes: readonly Box[], kind: 'wall' | 'pillar' = 'wall'): void {
     // 新主题的内墙由 RoomArt 平铺障碍块画出来，这里的墙体只保留碰撞。
     const hidden = this.art?.drawsBlocks ?? false;
     for (let i = 0; i < this.slots.length; i++) {
@@ -134,6 +148,31 @@ export class RoomArena {
         .setDepth(DEPTH.wallTops)
         .setAlpha(hidden ? 0 : 1);
     }
+    this.geometry.setRoom(
+      ROOM_BOUNDARY,
+      boxes.slice(0, this.slots.length).map((box, i) => {
+        const x = B.x + B.width / 2 + box.x,
+          y = B.y + B.height / 2 + box.y;
+        const l = x - box.width / 2,
+          r = x + box.width / 2;
+        const t = y - box.height / 2,
+          b = y + box.height / 2;
+        return {
+          id: `${kind}:${i}`,
+          kind,
+          mask: 15,
+          shape: {
+            type: 'polygon',
+            points: [
+              { x: l, y: t },
+              { x: r, y: t },
+              { x: r, y: b },
+              { x: l, y: b },
+            ],
+          },
+        };
+      }),
+    );
     this.navigation.invalidate();
   }
   draw(run: DungeonRun): void {
@@ -223,6 +262,18 @@ export class RoomArena {
       this.bridge.sim.syncPosition(a.id, x, y);
     }
   }
+  /** Refresh before a decision, then expose only read-only queries. This also covers same-step
+   * barrel/rock changes and restored pools without altering WORLD_STEP listener order.
+   * AI integration supplies this as a provider; EnemyAi must never import the game layer.
+   */
+  prepareGeometry(): GeometryQueries {
+    this.geometry.sync();
+    if (this.geometryRevision !== this.geometry.revision) {
+      this.navigation.invalidate();
+      this.geometryRevision = this.geometry.revision;
+    }
+    return this.geometry;
+  }
   readonly isFree = (x: number, y: number, r: number): boolean => {
     if (x - r < B.x || x + r > B.x + B.width || y - r < B.y || y + r > B.y + B.height) return false;
     for (const s of this.slots)
@@ -237,30 +288,24 @@ export class RoomArena {
       if (standingBarrel(t) && Math.hypot(t.x - x, t.y - y) < t.radius + r) return false;
     return true;
   };
+  private readonly canWalk = (x: number, y: number, r: number): boolean => {
+    this.from.x = x;
+    this.from.y = y;
+    return this.geometry.canOccupy(this.from, r, 'walk');
+  };
   readonly steer = (x: number, y: number, tx: number, ty: number, radius: number, out: Vec2): boolean => {
+    this.prepareGeometry();
     if (this.pathClear(x, y, tx, ty, radius)) return false;
     return this.navigation.steer(x, y, tx, ty, radius, out);
   };
   private readonly pathClear = (x1: number, y1: number, x2: number, y2: number, radius: number): boolean => {
-    // 接触墙面允许离开，避免闭线段的边界交点将紧贴墙面的怪物锁死。
-    const r = Math.max(0, radius - NAVIGATION.tieEpsilon);
-    if (!this.isFree(x1, y1, r) || !this.isFree(x2, y2, r)) return false;
-    for (const s of this.slots)
-      if (
-        s.body?.enable &&
-        segmentHitsBox(
-          x1,
-          y1,
-          x2,
-          y2,
-          s.x - s.displayWidth / 2 - r,
-          s.y - s.displayHeight / 2 - r,
-          s.x + s.displayWidth / 2 + r,
-          s.y + s.displayHeight / 2 + r,
-        )
-      )
-        return false;
-    return true;
+    this.from.x = x1;
+    this.from.y = y1;
+    this.to.x = x2;
+    this.to.y = y2;
+    this.geometry.sweepCircle(this.from, this.to, radius, GeometryMask.walk, this.hit);
+    // A legal endpoint may exactly touch; only an earlier collision prevents reaching it.
+    return (!this.hit.hit || this.hit.t === 1) && this.geometry.canOccupy(this.to, radius, 'walk');
   };
   readonly lineOfSight = (x1: number, y1: number, x2: number, y2: number): boolean => {
     for (const s of this.slots)

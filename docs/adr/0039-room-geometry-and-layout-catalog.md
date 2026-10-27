@@ -198,3 +198,15 @@ freezeV1 单测还必须锁定迁移公式的前提：`DemoSession.root` 自 `ne
 - 类别仍与轮廓角色分离：锁门可标为 boundary，但作为室内实心障碍参与查询，不误当作房间外轮廓。同距 boundary 优先，其余按稳定字符串 ID 的既有排序，不临时改 ID 或排序协议。
 
 动态适配仍待后续 PR：采用“静态模板快照 + 固定容量动态圆槽”避免桶/落石变化时复制全部静态多边形，是后续适配器设计要求；本 PR 只交付不可变查询内核，不将该优化记为已实现。
+
+### #124 合并后的动态适配与导航接入（2026-10-27）
+
+#124 已经负责人合入 main `a6a8d2d`，Claude review 5675468297 通过。下一份实现以 `LiveRoomGeometry` 组合静态 RoomGeometry 和固定容量动态圆槽：静态轮廓仅在切房/重建时分配；动态槽与 CombatWorld 的 trap/rock 索引一一对应，ID 固定为 `barrel:<slot>` / `rock:<slot>`，不补零、不改排序。静态物件禁止占用这两个 ID 前缀。已落地 active rock、standingBarrel 挡全部四个掩码，预警落石、破桶及其他机关不成为阻挡。沿用 #124 的同一圆形扫掠内核，避免两套接触算法分叉。
+
+`sync()` 由适配层显式调用，比较阻挡状态/坐标/半径，只在这些值变化时原地更新槽位并递增 revision；时间/hp 等无关字段不使导航失效。只读 GeometryQueries 的方法不自行同步、抽数或修改 sim。查询对象是可复用的当前观察视图，不是跨 sync 保持历史值的不可变副本；结果 out 仍由调用者持有。一个 session 保留同一适配器，切房与读档重建递增 revision，既有存档不新增该派生状态。
+
+生产地图暴露 `RoomArena.prepareGeometry(): GeometryQueries`，每次决策取一次，先同步当前 sim 的固定槽（含同一步内桶/石块变化），再按 revision 使 NavigationGrid 半径缓存失效。每次 steer 在网格批量查询前仅 prepare 一次，不在每个网格点重扫动态池。原 WORLD_STEP 次序不变。当前矩形与布局内墙按物理使用的同一 Box 坐标生成多边形，普通内墙归 wall，Boss 四柱归 pillar；既有锁门通过外轮廓与 DungeonRun 过门判定维持，不虚构新增门碰撞。
+
+本份只把寻路的完整圆占据和胶囊路径接到新查询：会绕开立桶与已落石，圆角净空更准确，物理墙体和图像未换。RoomDirector 的 isFree 与旧回退暂保留，待模板锚点及随机回退一起实施；旧 LOS 回调保留供尚未接线的 AI 使用。Claude 可从 main 开始 AI 接线，建议在 sim 的 options/host 用 `() => GeometryQueries` provider（测试可返回静态 RoomGeometry），生产接线时取 RoomArena.prepareGeometry，不能在 CombatWorld 构造时缓存一次视图后永久不刷新；game 层 import 不进入 sim。此 provider 建议供 Claude 协调/复审，GPT 本份不改 CombatWorldOptions、AiHost 或 EnemyAi。
+
+新目录/冻结 v1、存档模板 ID、RoomDirector 锚点、不规则房间物理、美术及 200 组合验收均仍待后续；当前不是地图重绘完成。寻路改变会影响后续战斗位置，不能宣称新旧构建战斗轨迹相同；仍保留既有跨构建入口兜底。
