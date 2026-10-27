@@ -1,7 +1,7 @@
 import { ATTACKS, type AttackId } from '../../data/attacks';
 import { BALANCE } from '../../data/balance';
 import type { EnemyDef, EnemySpecial } from '../../data/schema';
-import type { ActorPose, ActorView, ZoneKind } from '../combat/api';
+import type { ActorPose, ActorStage, ActorView, ZoneKind } from '../combat/api';
 import type { EnemyAction } from '../core/events';
 import type { Vec2 } from '../core/types';
 import { moveEnemy, type BrainMove, type BrainStage, type EnemyBrain } from './brain';
@@ -17,6 +17,20 @@ export interface EnemyBody extends ActorView {
   lift: number;
   aim: number;
   move: BrainMove;
+  stage: ActorStage;
+  stageTime: number;
+  stageSpan: number;
+  aimLocked: boolean;
+  landX: number;
+  landY: number;
+}
+
+/** 房间内边界，用来把预计落点限制在房间里。 */
+export interface StageBounds {
+  readonly x: number;
+  readonly y: number;
+  readonly width: number;
+  readonly height: number;
 }
 
 /** 招式落地时需要战斗世界执行的动作；实现方负责伤害、子弹、区域、石块与事件。 */
@@ -216,6 +230,49 @@ export class EnemyAi {
         break;
       default:
         e.pose = 'idle';
+    }
+  }
+
+  /**
+   * 由已存档的 AI 状态推出表现用的阶段、进度、方向锁定与落点（ADR 0038）。只写这几个视图字段，
+   * 不改变任何规则状态；CombatWorld 在每个物理步末与读档后各调用一次，所以同一状态永远得到同一结果。
+   */
+  static stageView(e: EnemyBody, bounds?: StageBounds): void {
+    const b = e.brain;
+    e.landX = e.landY = 0;
+    if (b.move === 'none') {
+      // 常规射击：前摇是冷却末段的表现（pose 已按射程与视线判定），后坐是 shot 计时。
+      e.aimLocked = false;
+      if (e.pose === 'windup') setStage(e, 'windup', SHOT_TELL - b.cooldown, SHOT_TELL);
+      else if (e.pose === 'attack') setStage(e, 'active', SHOT_POSE - b.shot, SHOT_POSE);
+      else setStage(e, 'ready', 0, 0);
+      return;
+    }
+    // 旧存档的冲锋没有写 span，读档后从当前剩余时间起算，最多影响这一次动作的起始帧。
+    const span = Math.max(b.span, b.time);
+    setStage(e, b.stage, span - b.time, b.stage === 'ready' ? 0 : span);
+    switch (b.move) {
+      case 'dash':
+        e.aimLocked = b.stage !== 'ready';
+        break;
+      case 'lash':
+      case 'bump':
+        e.aimLocked = b.stage !== 'windup' || b.time <= AIM_LOCK;
+        break;
+      case 'hop':
+        e.aimLocked = b.stage !== 'windup';
+        if (b.stage === 'air') {
+          const left = Math.max(0, b.time) * b.speed;
+          e.landX = e.x + b.dirX * left;
+          e.landY = e.y + b.dirY * left;
+          if (bounds) {
+            e.landX = Math.min(bounds.x + bounds.width - e.radius, Math.max(bounds.x + e.radius, e.landX));
+            e.landY = Math.min(bounds.y + bounds.height - e.radius, Math.max(bounds.y + e.radius, e.landY));
+          }
+        }
+        break;
+      default:
+        e.aimLocked = false;
     }
   }
 
@@ -563,4 +620,10 @@ export class EnemyAi {
     const d = Math.hypot(target.x - e.x, target.y - e.y);
     return d <= range && this.host.lineOfSight(e.x, e.y, target.x, target.y);
   }
+}
+
+function setStage(e: EnemyBody, stage: ActorStage, time: number, span: number): void {
+  e.stage = stage;
+  e.stageSpan = span;
+  e.stageTime = Math.min(span, Math.max(0, time));
 }

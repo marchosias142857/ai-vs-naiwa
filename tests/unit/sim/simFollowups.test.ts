@@ -137,6 +137,12 @@ describe('保持距离与炮台的移动', () => {
     lift: 0,
     aim: 0,
     move: 'none',
+    stage: 'ready',
+    stageTime: 0,
+    stageSpan: 0,
+    aimLocked: false,
+    landX: 0,
+    landY: 0,
     chill: 0,
     frozen: false,
   });

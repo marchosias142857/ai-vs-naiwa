@@ -113,6 +113,12 @@ class FakeWorld implements CombatWorld {
       lift: 0,
       aim: 0,
       move: 'none',
+      stage: 'ready',
+      stageTime: 0,
+      stageSpan: 0,
+      aimLocked: false,
+      landX: 0,
+      landY: 0,
       chill: 0,
       frozen: false,
     });
