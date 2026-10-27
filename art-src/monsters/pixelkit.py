@@ -27,13 +27,14 @@ def mix(a: str, b: str, t: float) -> str:
 
 
 class Canvas:
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int, offset=(0, 0)):
         self.w = width
         self.h = height
         self.px = np.zeros((height, width, 4), np.uint8)
         ys, xs = np.mgrid[0:height, 0:width]
-        self.x = xs + 0.5
-        self.y = ys + 0.5
+        self.offset = offset
+        self.x = xs + 0.5 - offset[0]
+        self.y = ys + 0.5 - offset[1]
 
     # ---- 遮罩 ----
     def ellipse(self, cx: float, cy: float, rx: float, ry: float, angle: float = 0.0) -> np.ndarray:
@@ -82,7 +83,7 @@ class Canvas:
         self.px[mask] = rgba(color)
 
     def dot(self, x: float, y: float, color) -> None:
-        ix, iy = int(math.floor(x)), int(math.floor(y))
+        ix, iy = int(math.floor(x + self.offset[0])), int(math.floor(y + self.offset[1]))
         if 0 <= ix < self.w and 0 <= iy < self.h:
             self.px[iy, ix] = rgba(color)
 

@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { DOOR_ART, ENEMY_ART, ENVIRONMENT_ART, HERO_ART, HERO_FRAMES, WEAPON_ART } from '../../src/data/art';
 import { ENEMIES } from '../../src/data/enemies';
+import { NAVIGATION } from '../../src/data/navigation';
 import { MONSTER_TEXTURES, enemyAnimation } from '../../src/data/enemyArt';
 import { WEAPONS } from '../../src/data/weapons';
 import { ARSENAL_SHOT_ART } from '../../src/data/arsenalArt';
@@ -29,8 +30,8 @@ const files = [
   'enemies',
   'environment',
   'doors',
-  'monsters-v1',
-  'naiguai-v1',
+  'monsters-v2',
+  'naiguai-v2',
   'arsenal-v1',
   'rooms-v1',
 ];
@@ -49,6 +50,16 @@ function inImage(file: string, rects: readonly (readonly number[])[]) {
   }
 }
 describe('真实 PNG 图集与持握数据', () => {
+  it('怪物资源升级退休旧 URL；寻路缓存覆盖所有实际半径', () => {
+    expect(Object.values(MONSTER_TEXTURES).map((t) => t.source)).toEqual([
+      'monsters-v2.png',
+      'naiguai-v2.png',
+    ]);
+    for (const name of ['monsters-v1', 'naiguai-v1'])
+      expect(() => statSync(`public/assets/demo/${name}.png`)).toThrow();
+    const radii = new Set([...Object.values(ENEMIES), ...Object.values(CHARACTERS)].map((a) => a.radius));
+    expect(radii.size).toBeLessThanOrEqual(NAVIGATION.radiusCaches);
+  });
   it('待机行走逐字节保留负责人参考图 2，角色新版本不复用旧缓存 URL', () => {
     expect(
       createHash('sha256')
@@ -194,6 +205,8 @@ describe('真实 PNG 图集与持握数据', () => {
       expect(art.pivot.x).toBeLessThan(w);
       expect(art.pivot.y).toBeGreaterThan(0);
       expect(art.pivot.y).toBeLessThan(h);
+      expect(art.shadowY).toBeGreaterThan(art.pivot.y);
+      expect(art.shadowY).toBeLessThan(h);
       for (const action of ['idle', 'death'])
         expect(art.frames[action]?.length, `${kind} ${action}`).toBeGreaterThan(0);
       for (const action of Object.keys(art.frames))

@@ -44,10 +44,17 @@ export class EnemyArt {
     death: number,
     flash: number,
     zoom: number,
+    shadow?: GameObjects.Ellipse,
   ): boolean {
     this.zoom = zoom;
     const anim = enemyAnimation(a.kind);
     if (!anim) return false;
+    // 长腿和奶怪的脚底与身体半径无关；腾空时影子仍留在固定地面位置。
+    const ground = anim.art.shadowY;
+    shadow?.setPosition(
+      a.x,
+      a.y + (ground === undefined ? a.radius : (ground - anim.art.pivot.y) * anim.art.scale),
+    );
     const clock = this.clocks[index]!;
     const wanted = a.phase === 'dead' ? 'death' : a.pose;
     const action = pick(anim, wanted);

@@ -5,8 +5,8 @@ import type { MonsterArt } from './schema/art';
 
 /** 怪物逐帧图集的纹理 key 与源文件（ADR 0030）。 */
 export const MONSTER_TEXTURES = {
-  monsters: { key: 'demo_monsters', source: 'monsters-v1.png' },
-  naiguai: { key: 'demo_naiguai', source: 'naiguai-v1.png' },
+  monsters: { key: 'demo_monsters', source: 'monsters-v2.png' },
+  naiguai: { key: 'demo_naiguai', source: 'naiguai-v2.png' },
 } as const;
 export type MonsterTexture = keyof typeof MONSTER_TEXTURES;
 

@@ -1,4 +1,4 @@
-"""把负责人绘制的奶怪动作表切成最终 Boss 的游戏帧，输出 public/assets/demo/naiguai-v1.png 与 src/data/naiguaiArt.ts。
+"""把负责人绘制的奶怪动作表切成最终 Boss 的游戏帧，输出 public/assets/demo/naiguai-v2.png 与 src/data/naiguaiArt.ts。
 
 用法（仓库根目录）：python3 art-src/naiguai/import_naiguai.py art-src/naiguai/source.png [--preview 目录]
 
@@ -15,7 +15,7 @@ import numpy as np
 from PIL import Image
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-ATLAS = os.path.join(ROOT, "public", "assets", "demo", "naiguai-v1.png")
+ATLAS = os.path.join(ROOT, "public", "assets", "demo", "naiguai-v2.png")
 DATA = os.path.join(ROOT, "src", "data", "naiguaiArt.ts")
 
 # 源图网格：列的横向范围与行的分隔（实测透明间隙）。
@@ -26,9 +26,9 @@ TARGET_HEIGHT = 104
 SOURCE_HEIGHT = 351
 SCALE = TARGET_HEIGHT / SOURCE_HEIGHT
 OUTLINE = (52, 26, 14, 255)
-PALETTE_SIZE = 24
+PALETTE_SIZE = 32
 PAD = 2
-CONTRAST = 4.0
+CONTRAST = 2.0
 
 
 def cells(sheet: Image.Image) -> list[Image.Image]:
@@ -109,27 +109,35 @@ def build(source: str, preview_dir: str | None) -> None:
         out[edge(mask)] = OUTLINE
         cleaned.append(out)
 
-    # 每帧按脚底对齐：裁到不透明范围，记录脚底中心。
+    # 用原画奶白色肚皮的中心对齐身体，弯腰和拳头外伸不再拖动水平锚点。
+    # 保留全部原始动作，只清理调色板与取样，不从碰撞半径反推美术坐标。
     boxes = []
+    anchors = []
     for f in cleaned:
         ys, xs = np.where(f[..., 3] > 0)
         boxes.append((xs.min(), ys.min(), xs.max() + 1, ys.max() + 1))
-    width = max(b[2] - b[0] for b in boxes) + 2
-    height = max(b[3] - b[1] for b in boxes) + 2
+        belly = (f[..., 0] > 200) & (f[..., 1] > 175) & (f[..., 2] > 110) & (f[..., 3] > 0)
+        belly[:int(f.shape[0] * 0.35)] = False
+        by, bx = np.where(belly)
+        if len(bx) < 100:
+            raise ValueError("奶怪肚皮取样失效，不能静默退回脚底锚点")
+        anchors.append((round(float(bx.mean())), round(float(by.mean()))))
+    margin = 3
+    pivot = (max(a[0] - b[0] for a, b in zip(anchors, boxes)) + margin,
+             max(a[1] - b[1] for a, b in zip(anchors, boxes)) + margin)
+    width = pivot[0] + max(b[2] - a[0] for a, b in zip(anchors, boxes)) + margin
+    height = pivot[1] + max(b[3] - a[1] for a, b in zip(anchors, boxes)) + margin
     atlas = Image.new("RGBA", ((width + PAD) * 4, (height + PAD) * 3), (0, 0, 0, 0))
     coords = []
-    for i, (f, b) in enumerate(zip(cleaned, boxes)):
+    for i, (f, b, anchor) in enumerate(zip(cleaned, boxes, anchors)):
         crop = Image.fromarray(f).crop(b)
-        # 水平按帧中心、竖直按脚底放进统一大小的格子
-        ox = (width - crop.width) // 2
-        oy = height - 1 - crop.height
+        ox = pivot[0] - (anchor[0] - b[0])
+        oy = pivot[1] - (anchor[1] - b[1])
         cx = (i % 4) * (width + PAD)
         cy = (i // 4) * (height + PAD)
         atlas.alpha_composite(crop, (cx + ox, cy + oy))
         coords.append((cx, cy))
     atlas.save(ATLAS, optimize=True)
-    # 身体圆心：脚底往上约 0.38 个身高（肚皮中心），与碰撞圆一致。
-    pivot = (width / 2, height - 1 - round(TARGET_HEIGHT * 0.38))
     write_data(coords, (width, height), pivot)
     if preview_dir:
         os.makedirs(preview_dir, exist_ok=True)
@@ -160,6 +168,7 @@ def write_data(coords, size, pivot) -> None:
         "export const NAIGUAI_ART = {",
         f"  size: [{size[0]}, {size[1]}],",
         f"  pivot: {{ x: {fmt(pivot[0])}, y: {fmt(pivot[1])} }},",
+        f"  shadowY: {size[1] - 3},",
         "  scale: 0.5,",
         "  facing: 'left',",
         "  frames: {",
