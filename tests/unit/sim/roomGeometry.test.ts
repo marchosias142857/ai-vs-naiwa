@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
 import {
   RoomGeometry,
+  CONTACT_EPSILON,
   GeometryMask as M,
   createGeometryHit,
   type GeometryObstacle,
@@ -8,6 +9,7 @@ import {
 import { createCombatWorld } from '../../../src/sim/combat/api';
 import { EventBus } from '../../../src/sim/core/EventBus';
 import { TRAP_RULES } from '../../../src/data/traps';
+import { segmentHitsBox } from '../../../src/sim/dungeon/geometry';
 const p = (x: number, y: number) => ({ x, y });
 const rect = (l: number, t: number, r: number, b: number) => [p(l, t), p(r, t), p(r, b), p(l, b)];
 const bounds = rect(0, 0, 100, 100);
@@ -96,7 +98,7 @@ it('zero length, overlap, outside, endpoint contact and miss reset caller output
   const g = new RoomGeometry(bounds, [], 1),
     out = createGeometryHit();
   g.sweepCircle(p(-10, 50), p(50, 50), 2, M.walk, out);
-  expect(out).toMatchObject({ hit: true, t: 0, nx: 0, ny: 0 });
+  expect(out).toMatchObject({ hit: true, t: 0, nx: 1, ny: 0 });
   g.sweepCircle(p(50, 50), p(50, 50), 2, M.walk, out);
   expect(out).toMatchObject({ hit: false, t: 1, distance: 0, id: null, kind: null, nx: 0, ny: 0 });
   g.sweepCircle(p(50, 50), p(98, 50), 2, M.walk, out);
@@ -184,8 +186,178 @@ it('continuous sweep agrees with independent dense circle sampling across many n
           }
           if (out.hit && out.t > 0) {
             // Contact must be on an edge/circle footprint, not merely a false broadphase hit.
-            expect(g.canOccupy(p(out.x, out.y), 3.000001, 'walk')).toBe(false);
+            expect(g.canOccupy(p(out.x, out.y), 3 + CONTACT_EPSILON * 2, 'walk')).toBe(false);
           }
         }
     }
+});
+
+const contactCases = [
+  { name: 'boundary', obstacles: [], x: 6, nx: 1 },
+  { name: 'pillar', obstacles: [box('pillar', 'pillar', 50, 40, 60, 60)], x: 44, nx: -1 },
+  {
+    name: 'circle',
+    obstacles: [{ id: 'rock', kind: 'rock', mask: 15, shape: { type: 'circle', x: 50, y: 50, radius: 10 } }],
+    x: 34,
+    nx: -1,
+  },
+] satisfies { name: string; obstacles: GeometryObstacle[]; x: number; nx: number }[];
+it.each(contactCases)(
+  '$name: touching / 0.01 penetration / epsilon gap allow departure and sliding, block entry',
+  ({ obstacles, x, nx }) => {
+    for (const reverse of [false, true]) {
+      const contour = reverse ? [...bounds].reverse() : bounds;
+      const obs = obstacles.map((o) =>
+        o.shape.type === 'polygon' && reverse
+          ? { ...o, shape: { ...o.shape, points: [...o.shape.points].reverse() } }
+          : o,
+      );
+      const g = new RoomGeometry(contour, obs, 1),
+        out = createGeometryHit();
+      for (const penetration of [0, 0.01, -CONTACT_EPSILON / 2]) {
+        const from = p(x - nx * penetration, 50);
+        for (const purpose of ['walk', 'surface', 'land', 'spawn', 'rock'] as const)
+          expect(g.canOccupy(from, 6, purpose)).toBe(true);
+        for (const to of [p(from.x + nx * 20, 50), p(from.x, 80), from]) {
+          g.sweepCircle(from, to, 6, M.walk | M.land, out);
+          expect(out.hit, `${reverse}/${penetration}/${to.x}/${to.y}`).toBe(false);
+        }
+        g.sweepCircle(from, p(from.x - nx * 20, 50), 6, M.walk, out);
+        expect(out).toMatchObject({ hit: true, t: 0, nx, ny: 0 });
+        expect(Math.hypot(out.nx, out.ny)).toBeCloseTo(1);
+      }
+      expect(g.canOccupy(p(x - nx * (CONTACT_EPSILON + 0.001), 50), 6, 'walk')).toBe(false);
+      // Outside the tolerance band, entry is a positive TOI, never an inflated collider.
+      g.sweepCircle(p(x + nx * CONTACT_EPSILON * 2, 50), p(x - nx, 50), 6, M.walk, out);
+      expect(out.t).toBeGreaterThan(0);
+      expect(out.x).toBeCloseTo(x);
+      g.sweepCircle(p(x + nx * 10, 50), p(x, 50), 6, M.walk, out);
+      expect(out).toMatchObject({ hit: true, t: 1, nx, ny: 0 });
+      // Invalid starts cannot silently tunnel out, even on a zero-length query.
+      for (const to of [p(x + nx * 20, 50), p(x - nx * 1.01, 50)]) {
+        g.sweepCircle(p(x - nx * 1.01, 50), to, 6, M.walk, out);
+        expect(out).toMatchObject({ hit: true, t: 0, nx, ny: 0 });
+      }
+    }
+  },
+);
+it('Boss sliding against the outer wall hits the wall-adjacent pillar first', () => {
+  const g = new RoomGeometry(rect(0, 0, 200, 100), [box('pillar', 'pillar', 100, 0, 120, 40)], 1);
+  const out = createGeometryHit();
+  for (const y of [14, 13.99, 14.5]) {
+    g.sweepCircle(p(20, y), p(120, y), 14, M.walk, out);
+    expect(out).toMatchObject({ hit: true, kind: 'pillar', x: 86, nx: -1, ny: 0 });
+    expect(out.t).toBeCloseTo(0.66);
+  }
+});
+it('initial shallow contact does not suppress later entry into the same concave contour', () => {
+  const contour = [p(0, 0), p(40, 0), p(40, 40), p(60, 40), p(60, 0), p(100, 0), p(100, 100), p(0, 100)];
+  const obstacle = {
+    id: 'wall',
+    kind: 'wall',
+    mask: 15,
+    shape: {
+      type: 'polygon',
+      points: [p(20, 20), p(80, 20), p(80, 80), p(60, 80), p(60, 40), p(40, 40), p(40, 80), p(20, 80)],
+    },
+  } satisfies GeometryObstacle;
+  const out = createGeometryHit();
+  new RoomGeometry(contour, [], 1).sweepCircle(p(5.99, 20), p(80, 20), 6, M.walk, out);
+  expect(out).toMatchObject({ hit: true, x: 34, kind: 'boundary', nx: -1 });
+  new RoomGeometry(bounds, [obstacle], 1).sweepCircle(p(45.99, 60), p(70, 60), 6, M.walk, out);
+  expect(out).toMatchObject({ hit: true, x: 54, id: 'wall', nx: -1 });
+});
+it('zero-radius vertices return unit normals opposing travel, including both polygon windings', () => {
+  const out = createGeometryHit();
+  for (const reverse of [false, true]) {
+    const wall = box('wall', 'wall', 40, 40, 60, 60);
+    const obs =
+      wall.shape.type === 'polygon' && reverse
+        ? { ...wall, shape: { ...wall.shape, points: [...wall.shape.points].reverse() } }
+        : wall;
+    const g = new RoomGeometry(bounds, [obs], 1);
+    for (const [from, to] of [
+      [p(20, 40), p(80, 40)],
+      [p(80, 60), p(20, 60)],
+      [p(20, 20), p(50, 50)],
+    ]) {
+      g.traceSegment(from!, to!, M.projectile, out);
+      expect(out.hit).toBe(true);
+      expect(Math.hypot(out.nx, out.ny)).toBeCloseTo(1);
+      expect((to!.x - from!.x) * out.nx + (to!.y - from!.y) * out.ny).toBeLessThan(0);
+    }
+  }
+});
+it('outside rooms and deeply embedded polygon/circle centres report separating normals', () => {
+  const out = createGeometryHit();
+  new RoomGeometry(bounds, [], 1).sweepCircle(p(-0.001, 50), p(20, 50), 0, M.walk, out);
+  expect(out).toMatchObject({ hit: true, t: 0, nx: 1, ny: 0 });
+  for (const obstacle of contactCases.slice(1)) {
+    const g = new RoomGeometry(bounds, obstacle.obstacles, 1);
+    g.sweepCircle(p(50, 50), p(20, 50), 6, M.walk, out);
+    expect(out).toMatchObject({ hit: true, t: 0 });
+    expect(Math.hypot(out.nx, out.ny)).toBeCloseTo(1);
+  }
+});
+
+it('pure LOS retains legacy closed-polygon contact without the body epsilon band', () => {
+  const world = createCombatWorld({
+    seed: 9,
+    bus: new EventBus(),
+    lineOfSight: (x1, y1, x2, y2) => !segmentHitsBox(x1, y1, x2, y2, 40, 40, 60, 60),
+  });
+  const legacy = world as unknown as { los(x1: number, y1: number, x2: number, y2: number): boolean };
+  const g = new RoomGeometry(bounds, [box('wall', 'wall', 40, 40, 60, 60)], 1),
+    out = createGeometryHit();
+  const starts = [p(40, 40), p(40, 50), p(60, 60), p(39.99, 40), p(39.99, 39.99), p(40.01, 50), p(50, 50)];
+  for (const from of starts)
+    for (const to of [...starts, p(20, 40), p(80, 40), p(20, 20), p(80, 80)]) {
+      g.traceSegment(from, to, M.LOS, out);
+      expect(!out.hit, `${from.x}/${from.y} -> ${to.x}/${to.y}`).toBe(legacy.los(from.x, from.y, to.x, to.y));
+      if (out.hit) expect(Math.hypot(out.nx, out.ny)).toBeCloseTo(1);
+    }
+  g.traceSegment(p(39.99, 40), p(50, 40), M.LOS, out);
+  expect(out.t).toBeGreaterThan(0);
+  expect(out.x).toBeCloseTo(40);
+});
+it('rounded polygon corners share the contact tolerance and separate along a unit radial normal', () => {
+  const g = new RoomGeometry(bounds, [box('pillar', 'pillar', 50, 50, 60, 60)], 1),
+    out = createGeometryHit();
+  const n = -Math.SQRT1_2;
+  for (const penetration of [0, 0.01]) {
+    const from = p(50 + n * (6 - penetration), 50 + n * (6 - penetration));
+    expect(g.canOccupy(from, 6, 'walk')).toBe(true);
+    g.sweepCircle(from, p(from.x - 10, from.y - 10), 6, M.walk, out);
+    expect(out.hit).toBe(false);
+    g.sweepCircle(from, p(from.x - 2, from.y + 2), 6, M.walk, out);
+    expect(out.hit).toBe(false);
+    g.sweepCircle(from, p(from.x + 10, from.y + 10), 6, M.walk, out);
+    expect(out).toMatchObject({ hit: true, t: 0 });
+    expect(out.nx).toBeCloseTo(n);
+    expect(out.ny).toBeCloseTo(n);
+  }
+});
+it('boundary-class locked doors are solid obstacles, with boundary tie priority', () => {
+  const out = createGeometryHit();
+  const g = new RoomGeometry(
+    bounds,
+    [box('pillar', 'pillar', 40, 20, 60, 80), box('door', 'boundary', 40, 20, 60, 80)],
+    1,
+  );
+  g.sweepCircle(p(20, 50), p(80, 50), 6, M.walk, out);
+  expect(out).toMatchObject({ hit: true, x: 34, kind: 'boundary', id: 'door', nx: -1 });
+  g.sweepCircle(p(34, 50), p(20, 50), 6, M.walk, out);
+  expect(out.hit).toBe(false);
+  g.sweepCircle(p(50, 50), p(20, 50), 6, M.walk, out);
+  expect(out).toMatchObject({ hit: true, t: 0, id: 'door' });
+});
+
+it('future tangency from free space and endpoint contact keep closed sweep semantics', () => {
+  const out = createGeometryHit();
+  for (const obstacles of [contactCases[2]!.obstacles, [box('pillar', 'pillar', 50, 40, 60, 60)]]) {
+    const g = new RoomGeometry(bounds, obstacles, 1);
+    g.sweepCircle(p(20, 34), p(50, 34), 6, M.walk, out);
+    expect(out).toMatchObject({ hit: true, t: 1, x: 50, y: 34 });
+    expect(Math.hypot(out.nx, out.ny)).toBeCloseTo(1);
+  }
 });
