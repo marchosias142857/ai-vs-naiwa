@@ -274,5 +274,9 @@
   "bestiary.naiwa_tadpole.attack": "Darts after you and rams you.",
   "bestiary.naiwa_tadpole.desc": "Little ones from a Frog Stack breaking apart, or hatched by the Spawn Cluster and Naiguai. Very low HP and they never drop anything.",
   "bestiary.naiwa_boss.attack": "Keeps its distance while firing volleys at you, and rotates through three moves. Belly Charge: tracks you while winding up, locks its direction and rushes; crashing into a pillar, an inner wall or a fallen rock stuns it for a while and it takes extra damage while stunned, but hitting the outer room wall only stops it. Belly Slam: locks onto your position at take-off, sends a big ring of shots out on landing, drops rocks near you and leaves a slowing milk puddle. Belly Laugh: spins in place firing rings of shots. Below about two thirds of its HP its volleys become rings, it moves faster and starts summoning tadpoles; below about one third the volleys get denser and faster, it charges twice in a row and calls down rock showers around you. Falling rocks show where they will land, and stay as obstacles for a while after landing.",
-  "bestiary.naiwa_boss.desc": "The master of the Milk Temple, with a big round belly. It can't be frozen. Lure it into a charge toward a pillar or rock, then unload on it while it is stunned."
+  "bestiary.naiwa_boss.desc": "The master of the Milk Temple, with a big round belly. It can't be frozen. Lure it into a charge toward a pillar or rock, then unload on it while it is stunned.",
+  "bestiary.open": "Bestiary",
+  "bestiary.shortcut": "Open bestiary: I / gamepad X",
+  "bestiary.back": "Back",
+  "bestiary.controls": "Arrows / left stick: select · PageUp/PageDown / right stick: scroll details · Esc / B: back"
 }
