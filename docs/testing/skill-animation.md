@@ -1,6 +1,6 @@
 # #101 第 3 步：技能动作与必要提示接入
 
-基线 main `ce358318f1c5c836983d7bde7d4fe467445ab43f`；依赖 Claude #113 的 `42d3840bb6c95b5412041a85ff2f63256c2bc545`。按[定稿方案](../design/monster-skill-moves.md)接入，来源分类继续沿用 [#112 审计](https://github.com/marchosias142857/ai-vs-naiwa/pull/112)。#112/#113 均未由 GPT 合并；ROADMAP/AGENTS 状态更新仍由 #112 维护，避免重复改写。
+当前基线 main `81f74e46964d489706a4dd1976bf483b450257db`（#113 已由负责人 squash 合并）；原开发基线 `ce358318f1c5c836983d7bde7d4fe467445ab43f`，原依赖提交 `42d3840bb6c95b5412041a85ff2f63256c2bc545` 已从本 PR 的提交链移除。按[定稿方案](../design/monster-skill-moves.md)接入，来源分类继续沿用 [#112 审计](https://github.com/marchosias142857/ai-vs-naiwa/pull/112)。#112/#113 均未由 GPT 合并；ROADMAP/AGENTS 状态更新仍由 #112 维护，避免重复改写。
 
 ## 改动
 
@@ -69,3 +69,13 @@ SKILL_BASELINE=/path/to/isolated-pr113 node scripts/benchmark-skill-animation.mj
 ## 交付边界
 
 远端 CI 继续关闭；没有合并、改写 main 或 Claude 分支。必要反馈与旧提示删除按负责人要求放在同一 PR。新 PNG 全为测试证据，不加入运行时包与 PWA 预缓存；游戏沿用两张 v4 怪物图集。#101 保持打开，待 Claude 交叉评审、负责人真机确认可读性与合并。#114–#119 只保持已登记队列，不在本 PR 开工。
+
+## 2026-10-27：#113 合并后同步 main
+
+- 读取最新两份 PR、main 的 AGENTS/ROADMAP 与本记录后，将自己的四个提交重放到 `81f74e46964d489706a4dd1976bf483b450257db`，没有冲突。原依赖 `42d3840` 与 squash 后 main 的完整文件树相同；只改变父提交关系，不重复携带 #113 的契约与方案差异。
+- 同步前远端 head 为 `0926b51a13d5dc15305b45ae351cefd162b9cdfb`。保留全部技能表现、旧冲锋补丁、验证脚本和证据；二进制直接复用已有 Git blob。发布使用 expected head 租约，禁止覆盖并发更新。
+- 重放四个提交后，完整 tree 仍为 `a857b59ef1d4cd883223ec3443e468f8ef4134e6`，与旧 head 完全相同。随后仅更新本验证文档。`src` tree 为 `bb528bad3535414f00194601320f4f008719013d`，`public` tree 为 `c9a0191d7253f76af08c76e46fbf27a65d3643a6`，配置、锁文件、测试和脚本也无差异。
+- 本次重新运行完整 `npm run check` 通过（Node 24.22.1，Prettier 3.9.10、ESLint、TypeScript、55 文件 / 430 单测、生产构建）；PWA 构建预缓存 20 项 / 11533.75 KiB。文档更新后另跑格式检查。
+- 上述 202 通过 / 18 条件跳过的 Chromium E2E、PWA 离线行为及 ABAB 性能数据是旧 head 的历史验证，本次没有重新运行。运行时代码、资源、配置与测试逐字节一致，因此沿用其适用结论，不把旧结果标记为新一轮测试。
+- 已知演示限制：现有技能截图使用 480×270 验证画布，放大后损失美术细节，不能用于判断 v4 的实际精度。原图完整保留；提高演示分辨率和重新出图尚未完成，不能因本次同步将草稿视为可合并。
+- 6 项 WebKit 测试仍未运行，Safari / iPhone 真机仍未验证；手机尺寸 Chromium 不替代真机。继续保留草稿，等待演示修正、交叉评审及负责人验收。不修改 main / Claude 分支，不合并 PR，不运行远端 CI，不启动 #114–#119。
