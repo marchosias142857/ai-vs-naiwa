@@ -5,6 +5,12 @@ import type { EnemyDef, EnemySpecial } from '../../data/schema';
 import type { ActorPose, ActorStage, ActorView, ZoneKind } from '../combat/api';
 import type { EnemyAction } from '../core/events';
 import type { Vec2 } from '../core/types';
+import {
+  createGeometryHit,
+  GeometryMask,
+  type GeometryHit,
+  type GeometryQueries,
+} from '../geometry/RoomGeometry';
 import { moveEnemy, type BrainMove, type BrainStage, type EnemyBrain } from './brain';
 import { chaseVelocity } from './chase';
 
@@ -55,6 +61,8 @@ export interface AiHost {
   act(e: EnemyBody, action: EnemyAction, angle: number): void;
   /** AI 专用随机流 [0, 1)。 */
   random(): number;
+  /** 当前房间几何（ADR 0039），每次决策取一次、不缓存；null 表示沿用旧矩形规则。 */
+  geometry(): GeometryQueries | null;
 }
 
 /** 开火前额外显示蓄力动作的时长，只影响 pose。 */
@@ -73,12 +81,18 @@ const CRASH_RATIO = 0.35;
 const RAIN_WINDUP = 0.5;
 /** 落地砸石的散布半径，像素。 */
 const SLAM_SPREAD = 80;
+/** 起跳落点不合法时沿原方向每次后退的距离，世界单位（ADR 0039）。 */
+const LAND_BACKOFF = 2;
 
 /**
  * 怪物 AI（ADR 0030）：按行为移动，按招式阶段推进，所有计时都在 WORLD_STEP 的 dt 上。
  * 旧行为（追击、保持距离、炮台、冲锋）仍由 `moveEnemy` 计算，结果与改动前一致。
  */
 export class EnemyAi {
+  private readonly hit: GeometryHit = createGeometryHit();
+  private readonly from = { x: 0, y: 0 };
+  private readonly to = { x: 0, y: 0 };
+
   constructor(private readonly host: AiHost) {}
 
   /** 出生时按数据设定各计时器，避免所有怪物同一时刻放招。 */
@@ -378,10 +392,9 @@ export class EnemyAi {
       const dx = tx - e.x,
         dy = ty - e.y,
         d = Math.hypot(dx, dy);
-      const travel = Math.min(d, hop.range);
       b.dirX = d > 0 ? dx / d : Math.cos(e.facing);
       b.dirY = d > 0 ? dy / d : Math.sin(e.facing);
-      b.speed = travel / hop.air;
+      b.speed = this.landing(e, b.dirX, b.dirY, Math.min(d, hop.range)) / hop.air;
       e.aim = Math.atan2(b.dirY, b.dirX);
       this.next(e, 'air', hop.air);
       this.host.act(e, 'hop', e.aim);
@@ -405,6 +418,27 @@ export class EnemyAi {
     }
     e.base.x = e.base.y = 0;
     if (b.time <= 0) this.finish(e, def.behavior === 'hop' ? 0 : RECOVER_COOLDOWN);
+  }
+
+  /**
+   * 起跳时把跳跃距离截到第一个阻挡前，终点不能落地就沿原方向每次退 2 单位，最差原地跳（ADR 0039）。
+   * 只在起跳那一步调用、不抽随机数，结果写进已存档的 `brain.speed`，读档与 stageView 无需重算。
+   */
+  private landing(e: EnemyBody, dirX: number, dirY: number, travel: number): number {
+    const geo = this.host.geometry();
+    if (!geo || travel <= 0) return travel;
+    this.from.x = e.x;
+    this.from.y = e.y;
+    this.to.x = e.x + dirX * travel;
+    this.to.y = e.y + dirY * travel;
+    geo.sweepCircle(this.from, this.to, e.radius, GeometryMask.walk | GeometryMask.land, this.hit);
+    let d = this.hit.hit ? this.hit.distance : travel;
+    for (; d > 0; d = d > LAND_BACKOFF ? d - LAND_BACKOFF : 0) {
+      this.to.x = e.x + dirX * d;
+      this.to.y = e.y + dirY * d;
+      if (geo.canOccupy(this.to, e.radius, 'land')) break;
+    }
+    return d;
   }
 
   private startLash(e: EnemyBody, def: Readonly<EnemyDef>, target: ActorView): void {
