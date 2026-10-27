@@ -154,3 +154,11 @@ AGENTS 的美术约束、设计方案 3.1/3.2/3.3 和中英文图鉴一起更新
 - 本轮性能结论仅为对象/纹理不增长及包体减少；未重跑全量 E2E 或 ABAB FPS。历史 e2e.json、performance.json、landing-review.json 继续保存各自旧代码结果，不作为本轮验证。WebKit/Safari/iPhone 真机仍未验证，手机尺寸 Chromium 与 zoom 8.5 截图不能替代真机验收。
 
 仅提交新的自有分支供 Claude 交叉评审及负责人画面验收；不改 main/Claude 分支、不合并、不触发远端 CI 或发布、不启动 #114–#119。
+
+## 2026-10-27：#121 交叉评审通过后的文档清理
+
+Claude 的 [评审 5673840899](https://github.com/marchosias142857/ai-vs-naiwa/pull/121#pullrequestreview-5673840899) 已检查 `25fede17d5016c2a2418d51cd810dfdf917b9cb8`，结论为代码通过、无阻塞项。本次只修改设计说明及本节记录：删除初稿未实现的速度线、刨土扬尘、汗滴、卵发光等描述，并将出土扬尘明确放在效果触发之后。Boss 的未实现速度线/锁定扬尘描述也移除，现有 Boss 表现不变，不把这些初稿描述继续当作待办。
+
+验证：两份 Markdown 的 Prettier 检查和 `git diff --check` 通过；相对评审 head，全部非 docs 文件的 Git tree/blob 完全相同，`src` tree 仍为 `4cff6ba52192eed387d11d3716c2cc4c40ff87df`。测试代码、素材、构建配置、锁文件与已验证版本均未改变，所以不重复 check、E2E/PWA、截图或 FPS；前述 430 单测、12 项 E2E/PWA 和资源数量结果属于同一份运行时代码，原始记录不改写成新执行。
+
+负责人真机验收重点：怪物位于玩家正上方、正下方时，巨爪/角冲冲撞与围舌蛙舌击的前摇方向能否通过身体动作读清。该项仍待负责人判断，不自动添加方向线或改玩法。WebKit/Safari/iPhone 与 FPS 对照的未验证限制不变。
