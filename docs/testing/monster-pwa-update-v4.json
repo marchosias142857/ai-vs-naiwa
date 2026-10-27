@@ -1,0 +1,35 @@
+{
+  "baseline": "e1fe232",
+  "oldScript": "./assets/index-qcxu4lDp.js",
+  "newScript": "./assets/index-l1bIbg_e.js",
+  "oldAvailableWhileWaiting": [
+    {
+      "file": "monsters-v3.png",
+      "ok": true,
+      "bytes": 87864
+    },
+    {
+      "file": "naiguai-v3.png",
+      "ok": true,
+      "bytes": 36487
+    }
+  ],
+  "offlineAssets": [
+    {
+      "file": "monsters-v4.png",
+      "ok": true,
+      "bytes": 184167,
+      "dimensions": [1536, 900],
+      "sha256": "2779cea86b9a00dc08026009b3774315fdc884c8f99954dbc2e4e28cc18b9321"
+    },
+    {
+      "file": "naiguai-v4.png",
+      "ok": true,
+      "bytes": 80237,
+      "dimensions": [768, 810],
+      "sha256": "243a5ebb33f0cfacaf51f3d8fcaadd31528ca9861bf9374156eea852895c02bf"
+    }
+  ],
+  "retiredCachedUrls": [],
+  "offlineBestiaryCards": 16
+}

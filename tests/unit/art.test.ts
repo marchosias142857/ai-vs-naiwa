@@ -30,8 +30,8 @@ const files = [
   'enemies',
   'environment',
   'doors',
-  'monsters-v3',
-  'naiguai-v3',
+  'monsters-v4',
+  'naiguai-v4',
   'arsenal-v1',
   'rooms-v1',
 ];
@@ -52,10 +52,17 @@ function inImage(file: string, rects: readonly (readonly number[])[]) {
 describe('真实 PNG 图集与持握数据', () => {
   it('怪物资源升级退休旧 URL；寻路缓存覆盖所有实际半径', () => {
     expect(Object.values(MONSTER_TEXTURES).map((t) => t.source)).toEqual([
-      'monsters-v3.png',
-      'naiguai-v3.png',
+      'monsters-v4.png',
+      'naiguai-v4.png',
     ]);
-    for (const name of ['monsters-v1', 'naiguai-v1', 'monsters-v2', 'naiguai-v2'])
+    for (const name of [
+      'monsters-v1',
+      'naiguai-v1',
+      'monsters-v2',
+      'naiguai-v2',
+      'monsters-v3',
+      'naiguai-v3',
+    ])
       expect(() => statSync(`public/assets/demo/${name}.png`)).toThrow();
     const radii = new Set([...Object.values(ENEMIES), ...Object.values(CHARACTERS)].map((a) => a.radius));
     expect(radii.size).toBeLessThanOrEqual(NAVIGATION.radiusCaches);
@@ -207,8 +214,9 @@ describe('真实 PNG 图集与持握数据', () => {
       expect(art.pivot.y).toBeLessThan(h);
       expect(art.shadowY).toBeGreaterThan(art.pivot.y);
       expect(art.shadowY).toBeLessThan(h);
-      // 少帧低分辨率是负责人选择，避免以后悄悄退回高精度长图集。
-      expect(Math.max(w, h)).toBeLessThanOrEqual(kind === 'naiwa_boss' ? 100 : 64);
+      // 适度提高原生精度，同时限制世界占用尺寸并保留少帧动作。
+      expect(Math.max(w, h)).toBeLessThanOrEqual(kind === 'naiwa_boss' ? 150 : 96);
+      expect(Math.max(w, h) * art.scale).toBeLessThanOrEqual(kind === 'naiwa_boss' ? 50 : 32);
       expect(art.frames.idle?.length).toBe(4);
       expect(art.frames.move?.length).toBeGreaterThanOrEqual(4);
       expect(art.frames.move?.length).toBeLessThanOrEqual(6);

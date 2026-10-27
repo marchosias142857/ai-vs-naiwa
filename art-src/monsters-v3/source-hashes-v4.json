@@ -1,0 +1,140 @@
+[
+  {
+    "path": "art-src/monsters-v3/design.png",
+    "bytes": 1722560,
+    "sha256": "e03959d4da260f1cc78e5c0bde1a5a2fcc55b9c88ec777e28dfb87b20d63e69f",
+    "gitBlob": "d9260663f751d935b0fd865e607e0a1940d0af7f"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_bomber.png",
+    "bytes": 1893227,
+    "sha256": "29af382ace9dce40a194eceb0803ad4dbc0d1242d792222d06c363636ee4b83c",
+    "gitBlob": "21fb4760150651276af58a6b4f42facd690dabaf"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_boss-extra.png",
+    "bytes": 1390929,
+    "sha256": "f774c56b2507dc438e2496285766eed729728df573396d34c4d98f2946b3d684",
+    "gitBlob": "2e9d9406072af291659f9e5e693a702119751173"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_boss.png",
+    "bytes": 2128596,
+    "sha256": "15d2288dfd6a3c28c08f17b2dd938d11912afa35f8290076fb2adf49befd1f78",
+    "gitBlob": "47014881cf4368237589147fbb9e68f7d21bf090"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_brood.png",
+    "bytes": 2148713,
+    "sha256": "c9eb40c5dc0b9bf4c82acd517b0593f5ff7e5e378bacdd67a15dc3e5a49c5359",
+    "gitBlob": "6cff021d7f732492a3840edf07684a694cb84893"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_burrower.png",
+    "bytes": 1847115,
+    "sha256": "b06ab28466a99e2c4a8487d8c7b15e208e7d95dc208bb88a05eed3468dbb6765",
+    "gitBlob": "376829bb278598e0f5939b835456e6f9983e9cce"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_charger.png",
+    "bytes": 1928634,
+    "sha256": "b65b80026b7571d0a872202675bb58a4574d4d7ad83b744bd6aab856749ecbaa",
+    "gitBlob": "c7d57eaf61b55f8db9145788c5fd46f94fa0b7f5"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_chaser.png",
+    "bytes": 1856560,
+    "sha256": "af45a6661598f5a653c3bb4aa4343aa5fac6374c8e94f25e626aef15927b8172",
+    "gitBlob": "d98760e92967421476b9b8b4e7120506957b4b92"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_dancer.png",
+    "bytes": 2177502,
+    "sha256": "c4838d3ce2b808526a99382efb692b6ba42203a78c2e848d6a82f5d8bb74a857",
+    "gitBlob": "65221e408d7f9203f6ff473ba991c91044cb246a"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_gasser.png",
+    "bytes": 2087163,
+    "sha256": "570c66ef40c6443a507a8a57f8421fa4b43508b7c17a80f0b34cffb96c35bc84",
+    "gitBlob": "1b68c2b093853f7ee56900344a99ce21fd87aa5f"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_hopper.png",
+    "bytes": 1907957,
+    "sha256": "f9f79d5e998f0024278cfdccef63f40bda494934252f73573cd313ba94da6d60",
+    "gitBlob": "0ca878e5b69f564d7c2be4173e013acd114df6fc"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_scout.png",
+    "bytes": 1920824,
+    "sha256": "114b5191aace3da0a0bc7e8b20155e4b0db91da2cd12c73832ed7d9156ac01f5",
+    "gitBlob": "57077cf14f084566c8cc44d7b865fed6430a436f"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_spitter.png",
+    "bytes": 1902833,
+    "sha256": "2c3109ec509d75118020734cc9f9444fe43e37129688cf6aa3bdcd7d63c5507c",
+    "gitBlob": "82aecd9ebf339a8f686a8f5b56876df623e7c01c"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_splitter.png",
+    "bytes": 2011326,
+    "sha256": "101a0e533d9fc50885183144847ed01fd466eb6bca9b173ababb576b2c923386",
+    "gitBlob": "5e95d13c52a69757b50ac3835d8534f899503230"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_tadpole.png",
+    "bytes": 1594472,
+    "sha256": "13f221d853352fe3a9764e21a55071f4970c20874b415fce1f2227cbe716c69d",
+    "gitBlob": "0f5ce148e0481bfb7f7b098a8ffaee98cc2a6964"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_tank.png",
+    "bytes": 2140618,
+    "sha256": "ba0753b451aad309216cb2b2f242e960c8310c20a734bb3234987baa9317dd75",
+    "gitBlob": "54638b2ddcb1116cfdc070bb895a2279d4545e3c"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_tongue.png",
+    "bytes": 1917025,
+    "sha256": "98fc3e8efeba05ee89d6fd3e043d0d074c26f70b7c260201c32e768beb8977bc",
+    "gitBlob": "558f6c1c38ee78df526d5d254cc247067c20c2e4"
+  },
+  {
+    "path": "art-src/monsters-v3/sources/naiwa_turret.png",
+    "bytes": 1999939,
+    "sha256": "81708a49c367cabb6dcc1ea7752ae08e3ce77edc7dcae08129aebb5bb08d8395",
+    "gitBlob": "3cc8b279f26093f8b0938cac52528acbfdf8df50"
+  },
+  {
+    "path": "docs/testing/monster-bestiary-v4.png",
+    "bytes": 269167,
+    "sha256": "4f853242ac8edf4ac04f0657475aec2710aa1328a41af16fbb723340c597e28b",
+    "gitBlob": "575b6afc4a2cd8215db35afc3ff129432dae7723"
+  },
+  {
+    "path": "docs/testing/monster-move-v4.gif",
+    "bytes": 142797,
+    "sha256": "26c4b51d57b7703964ce764f6ac89bd568cb7a1ef3680476898fb64cdeea636d",
+    "gitBlob": "621b4b6b01147b40af9dc04507f18288e0d6c9a0"
+  },
+  {
+    "path": "docs/testing/monster-roster-v4.png",
+    "bytes": 49024,
+    "sha256": "68ca054b3bc5613dfecd7b6faa1b7737d77603837a8d1abbddb50702e8484dc9",
+    "gitBlob": "3eb20b78c4ad46497cce455a5adcc2e474338bde"
+  },
+  {
+    "path": "public/assets/demo/monsters-v4.png",
+    "bytes": 184167,
+    "sha256": "2779cea86b9a00dc08026009b3774315fdc884c8f99954dbc2e4e28cc18b9321",
+    "gitBlob": "5d500263e991ba8a737e957cd17fa0682f57c6a7"
+  },
+  {
+    "path": "public/assets/demo/naiguai-v4.png",
+    "bytes": 80237,
+    "sha256": "243a5ebb33f0cfacaf51f3d8fcaadd31528ca9861bf9374156eea852895c02bf",
+    "gitBlob": "43b0e93eb767c98c5501615c7bec260553f3ff1a"
+  }
+]
