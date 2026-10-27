@@ -1,0 +1,118 @@
+{
+  "baseline": "e1fe232",
+  "scope": ["monsterArt.spec.ts", "bestiary.spec.ts", "pwa.spec.ts"],
+  "stats": {
+    "startTime": "2026-10-27T06:13:43.333Z",
+    "duration": 156160.953,
+    "expected": 15,
+    "skipped": 1,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "project": "desktop",
+      "title": "图鉴全部条目、裁剪比例、键盘二维选择、尺寸变化与返回主城",
+      "status": "passed"
+    },
+    {
+      "project": "desktop",
+      "title": "鼠标在网格外松开、取消或关闭重开后，键盘和手柄焦点仍同步选择与详情",
+      "status": "passed"
+    },
+    {
+      "project": "desktop",
+      "title": "图鉴英文手柄：X 打开、四向移动、右摇杆读长文、B 关闭不穿透",
+      "status": "passed"
+    },
+    {
+      "project": "desktop",
+      "title": "触屏网格拖动只滚动不选中，点按更新详情；旧冒险与档案保持原文",
+      "status": "skipped"
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "图鉴全部条目、裁剪比例、键盘二维选择、尺寸变化与返回主城",
+      "status": "passed"
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "鼠标在网格外松开、取消或关闭重开后，键盘和手柄焦点仍同步选择与详情",
+      "status": "passed"
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "图鉴英文手柄：X 打开、四向移动、右摇杆读长文、B 关闭不穿透",
+      "status": "passed"
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "触屏网格拖动只滚动不选中，点按更新详情；旧冒险与档案保持原文",
+      "status": "passed"
+    },
+    {
+      "project": "desktop",
+      "title": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+      "status": "passed",
+      "atlas-audit": {
+        "errors": [],
+        "frames": 392,
+        "monsters": 16
+      }
+    },
+    {
+      "project": "desktop",
+      "title": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+      "status": "passed",
+      "body-audit": {
+        "errors": [],
+        "frames": 2192,
+        "acquisitions": 34,
+        "children": 36,
+        "textures": 20
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+      "status": "passed",
+      "atlas-audit": {
+        "errors": [],
+        "frames": 392,
+        "monsters": 16
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+      "status": "passed",
+      "body-audit": {
+        "errors": [],
+        "frames": 2192,
+        "acquisitions": 34,
+        "children": 36,
+        "textures": 20
+      }
+    },
+    {
+      "project": "desktop",
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "status": "passed"
+    },
+    {
+      "project": "desktop",
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "status": "passed"
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "status": "passed"
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "status": "passed"
+    }
+  ]
+}

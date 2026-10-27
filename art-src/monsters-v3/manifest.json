@@ -11,7 +11,7 @@
       0.56
     ],
     "special": "laugh",
-    "colors": 14,
+    "colors": 18,
     "palette": [
       "#14251e",
       "#234c37",
@@ -40,7 +40,7 @@
       0.4
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_tank",
@@ -54,7 +54,7 @@
       0.58
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_spitter",
@@ -68,7 +68,7 @@
       0.6
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_turret",
@@ -82,7 +82,7 @@
       0.53
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_charger",
@@ -96,7 +96,7 @@
       0.58
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_hopper",
@@ -110,7 +110,7 @@
       0.52
     ],
     "special": "air",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_splitter",
@@ -124,7 +124,7 @@
       0.58
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_tadpole",
@@ -138,7 +138,7 @@
       0.55
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_bomber",
@@ -152,7 +152,7 @@
       0.57
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_tongue",
@@ -166,7 +166,7 @@
       0.6
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_brood",
@@ -180,7 +180,7 @@
       0.63
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_burrower",
@@ -194,7 +194,7 @@
       0.58
     ],
     "special": "buried",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_dancer",
@@ -208,7 +208,7 @@
       0.46
     ],
     "special": "spin",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_gasser",
@@ -222,7 +222,7 @@
       0.65
     ],
     "special": "laugh",
-    "colors": 14
+    "colors": 18
   },
   {
     "id": "naiwa_boss",
@@ -236,7 +236,7 @@
       0.58
     ],
     "special": "air",
-    "colors": 20,
+    "colors": 30,
     "extraSource": "sources/naiwa_boss-extra.png"
   }
 ]
