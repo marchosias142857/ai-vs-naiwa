@@ -1,0 +1,16 @@
+# map-themes-v2 — built-in imagegen edit prompt
+
+Use case: precise-object-edit
+Asset type: revised four-theme map art direction sheet for AI VS NAIWA, built from reusable environment modules.
+Input image: the existing four-room art sheet is the edit target. Preserve its polished fine pixel-art finish, 2x2 layout, four material themes, top-down camera and consistent scale.
+Primary changes:
+
+1. Remove EVERY seashell, scallop, clam, fan-shell or shell-emblem symbol, including all wall badges, central floor medallions, pillar crests and doorway ornaments. Do not replace them with another repeated logo. Plain stone joints, rivets and restrained material detail are enough.
+2. Dramatically enlarge the connected unobstructed walking and dodging space. At least about 80–85% of each room's interior should visually be calm open floor. This is a visual target, not an engineering measurement. Keep broad continuous combat areas and generous door approaches. No thin bridges, long narrow choke corridors or large internal water trenches. Move water, vegetation and storage into shallow small edge recesses. Keep the distinct L/stepped/notched/clipped-corner silhouettes, but make the L-shaped arms broad and the notches shallow. The center of every room must feel roomy.
+3. Make the image visibly plausible as modular tile art: reusable quiet floor repeats, consistent wall thickness, straight wall segments and clean inner/outer corners, standard door openings, small reusable bank transitions. Do NOT invent unique pictorial floor paintings, big central emblems or bespoke giant scenic objects that would require new art for each room. The same kit must be reusable for 100–200 layouts per theme.
+   Theme-specific edits:
+   Top-left blue-grey temple: retain the L shape but use wide arms, remove the long central river and bridge. Small shallow teal edge basins recessed behind clear stone rims occupy at most a small fraction of the room. No shell symbols. Broad dark blue slate floor of low contrast.
+   Top-right timber wreck: retain stepped outline, reduce storage props and keep them tightly in an edge nook. Broad uninterrupted quiet plank floor and wide routes, straight reusable timber/metal wall modules, only small water recesses at outer edges.
+   Bottom-left coral abyss: remove the long river trench and busy central growth; keep the broad blue-indigo mineral floor with a shallow notch. Tiny coral perimeter accents and one small inset spike plate close to an edge, leaving ample room to bypass it.
+   Bottom-right milk sanctuary: darken/desaturate the cream floor to a muted warm grey-beige so cream boss indicators will contrast. Remove the central shell design, shell pillar badges and decorative fountain heads. Keep four SMALL squat plain pillars widely separated; small milk-white edge basins with simple modular stone rims. Large clear central combat zone. Walls and pillars use the same carefully finished art precision as the other three themes.
+   Avoid all text, characters, UI, attack indicators, arrows, hazard rings, ornate emblems, shells, glossy 3D shading, bloom, blurry paint, chunky placeholder pixels, or large pools consuming combat floor. Preserve fine deliberate pixel clusters and readable material edges. This is still an art prototype, not a playable screenshot or collision diagram.
