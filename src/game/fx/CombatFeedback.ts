@@ -35,6 +35,7 @@ export class CombatFeedback {
   private hurt = 0;
   private death = 0;
   activeCount = 0;
+  private destroyed = false;
   constructor(
     private readonly scene: Scene,
     private readonly sim: CombatWorld,
@@ -170,8 +171,6 @@ export class CombatFeedback {
         if (a.team === 'enemy') slot.image.setAlpha(Math.max(0, 1 - state.death / FX.deathSeconds));
         continue;
       }
-      if (a.warning)
-        g.lineStyle(FX.lineWidth, FX.warningColor).strokeCircle(x, y, a.radius + FX.warningPadding);
       if (a.team === 'enemy') {
         // 逐帧怪物按贴图头顶放血条；腾空时跟着抬高（ADR 0030）。
         const art = enemyAnimation(a.kind)?.art;
@@ -196,7 +195,14 @@ export class CombatFeedback {
         .fillStyle(FX.dimColor, Math.min(FX.dimAlpha, (this.death / FX.dimSeconds) * FX.dimAlpha))
         .fillRect(0, 0, viewWidth, viewHeight);
   }
-  private readonly destroy = (): void => {
+  /** 显式释放与场景 shutdown 共用同一路径，重建表现层不会保留旧提示。 */
+  readonly destroy = (): void => {
+    if (this.destroyed) return;
+    this.destroyed = true;
+    this.scene.events.off('shutdown', this.destroy);
+    for (const effect of this.effects) effect.image.destroy();
+    this.marks.destroy();
+    this.overlay.destroy();
     this.bus.off('bullet:hit', this.onHit);
     this.bus.off('melee:hit', this.onHit);
     this.bus.off('weapon:fired', this.onFire);

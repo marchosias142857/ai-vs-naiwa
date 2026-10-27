@@ -1,4 +1,5 @@
 import { ATTACKS, type AttackId } from '../../data/attacks';
+import { ENEMIES, type EnemyId } from '../../data/enemies';
 import { BALANCE } from '../../data/balance';
 import type { EnemyDef, EnemySpecial } from '../../data/schema';
 import type { ActorPose, ActorStage, ActorView, ZoneKind } from '../combat/api';
@@ -248,8 +249,21 @@ export class EnemyAi {
       else setStage(e, 'ready', 0, 0);
       return;
     }
-    // 旧存档的冲锋没有写 span，读档后从当前剩余时间起算，最多影响这一次动作的起始帧。
-    const span = Math.max(b.span, b.time);
+    // 旧冲锋存档 span=0：从同一套招式数据恢复完整时长，不能用逐步递减的 time 作分母。
+    const dash =
+      b.move === 'dash' && b.span === 0
+        ? (ENEMIES[e.kind as EnemyId] as Readonly<EnemyDef>)?.dash
+        : undefined;
+    const legacySpan = dash
+      ? b.stage === 'windup'
+        ? dash.windup
+        : b.stage === 'dash'
+          ? dash.duration
+          : b.stage === 'recover'
+            ? dash.recovery
+            : 0
+      : 0;
+    const span = Math.max(b.span || legacySpan, b.time);
     setStage(e, b.stage, span - b.time, b.stage === 'ready' ? 0 : span);
     switch (b.move) {
       case 'dash':

@@ -1,0 +1,1275 @@
+{
+  "render": {
+    "width": 1920,
+    "height": 1080,
+    "cssWidth": 1920,
+    "cssHeight": 1080,
+    "imageRendering": "auto",
+    "dpr": 1
+  },
+  "audit": {
+    "errors": [],
+    "samples": 70,
+    "frozen": 38,
+    "cues": 24,
+    "children": 730,
+    "textures": 22,
+    "emptyGraphics": 5
+  },
+  "landingAudit": {
+    "errors": [],
+    "records": [
+      {
+        "label": "rock-0",
+        "markers": 7,
+        "segments": 84,
+        "geometry": [
+          {
+            "kind": "rock",
+            "center": [260, 130],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999996],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [317.41428930402043, 80.27294258580213],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 9.000000000000002],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [260.61746455812033, 70.43733831062656],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 9.000000000000002],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [238.17175001656045, 158.57529727270963],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [248.69882475912704, 183.1823339822589],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [242.55808822714152, 140.89849111423368],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [243.13007563239114, 203.74361521577447],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      },
+      {
+        "label": "rock-0.3",
+        "markers": 7,
+        "segments": 84,
+        "geometry": [
+          {
+            "kind": "rock",
+            "center": [260, 130],
+            "progress": 0.30037842417689586,
+            "scale": 1.2098864727469314,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999993, 9.000000000000005],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [317.41428930402043, 80.27294258580213],
+            "progress": 0.3017971368156084,
+            "scale": 1.2094608589553175,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999995, 8.999999999999995],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [260.61746455812033, 70.43733831062656],
+            "progress": 0.35561268749459407,
+            "scale": 1.193316193751622,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999995, 8.999999999999996],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [238.17175001656045, 158.57529727270963],
+            "progress": 0.3684340855652788,
+            "scale": 1.1894697743304163,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.00000000000001, 9.00000000000001],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [248.69882475912704, 183.1823339822589],
+            "progress": 0.290385880719773,
+            "scale": 1.2128842357840681,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000007, 9.000000000000007],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [242.55808822714152, 140.89849111423368],
+            "progress": 0.3424005984293913,
+            "scale": 1.1972798204711828,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000009, 9.000000000000009],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [243.13007563239114, 203.74361521577447],
+            "progress": 0.32724532452945776,
+            "scale": 1.2018264026411627,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000004, 9.000000000000004],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      },
+      {
+        "label": "rock-0.9",
+        "markers": 4,
+        "segments": 48,
+        "geometry": [
+          {
+            "kind": "rock",
+            "center": [260, 130],
+            "progress": 0.9011352725306905,
+            "scale": 1.029659418240793,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000009, 8.999999999999995],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [317.41428930402043, 80.27294258580213],
+            "progress": 0.9053914104468277,
+            "scale": 1.0283825768659518,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000007, 8.999999999999995],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [248.69882475912704, 183.1823339822589],
+            "progress": 0.871157642159322,
+            "scale": 1.0386527073522034,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000002, 9.000000000000002],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [243.13007563239114, 203.74361521577447],
+            "progress": 0.9817359735883748,
+            "scale": 1.0054792079234876,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [9.000000000000012, 9.000000000000012],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      },
+      {
+        "label": "rock-1",
+        "markers": 2,
+        "segments": 24,
+        "geometry": [
+          {
+            "kind": "rock",
+            "center": [260, 130],
+            "progress": 0.9972563682672975,
+            "scale": 1.0008230895198107,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999988, 9.000000000000002],
+            "radiusContract": true
+          },
+          {
+            "kind": "rock",
+            "center": [248.69882475912704, 183.1823339822589],
+            "progress": 0.9640811239896496,
+            "scale": 1.010775662803105,
+            "expectedHalfSize": [9, 9],
+            "actualUnscaledHalfSize": [8.999999999999996, 8.999999999999996],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      },
+      {
+        "label": "naiwa_hopper-first",
+        "markers": 0,
+        "segments": 0,
+        "geometry": [],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": true
+      },
+      {
+        "label": "naiwa_hopper-last",
+        "markers": 0,
+        "segments": 0,
+        "geometry": [],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": true
+      },
+      {
+        "label": "naiwa_boss-first",
+        "markers": 1,
+        "segments": 12,
+        "geometry": [
+          {
+            "kind": "boss-hop",
+            "center": [260, 130],
+            "progress": 0,
+            "scale": 1.3,
+            "expectedHalfSize": [21, 21],
+            "actualUnscaledHalfSize": [21.000000000000007, 21.000000000000004],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      },
+      {
+        "label": "naiwa_boss-last",
+        "markers": 1,
+        "segments": 12,
+        "geometry": [
+          {
+            "kind": "boss-hop",
+            "center": [259.99999999999994, 130],
+            "progress": 0.9791666666666676,
+            "scale": 1.0062499999999996,
+            "expectedHalfSize": [21, 21],
+            "actualUnscaledHalfSize": [20.99999999999999, 21],
+            "radiusContract": true
+          }
+        ],
+        "modesIdentical": ["normal", "zero", "frozen", "load"],
+        "hopperHintRemoved": false
+      }
+    ],
+    "children": 730,
+    "textures": 22,
+    "denseActors": 30,
+    "denseRocks": 7
+  },
+  "formal": [
+    {
+      "label": "rock-0",
+      "zoom": 6,
+      "time": 1.3871391322743147,
+      "span": 1.3871391322743147
+    },
+    {
+      "label": "rock-1",
+      "zoom": 6,
+      "time": 0.003805798940981313,
+      "span": 1.3871391322743147
+    },
+    {
+      "label": "naiwa_hopper-first",
+      "zoom": 6,
+      "time": 0,
+      "span": 0.55
+    },
+    {
+      "label": "naiwa_hopper-last",
+      "zoom": 6,
+      "time": 0.55,
+      "span": 0.55
+    },
+    {
+      "label": "naiwa_boss-first",
+      "zoom": 6,
+      "time": 0,
+      "span": 0.8
+    },
+    {
+      "label": "naiwa_boss-last",
+      "zoom": 6,
+      "time": 0.7833333333333341,
+      "span": 0.8
+    },
+    {
+      "label": "fuse-first",
+      "zoom": 6,
+      "time": 0,
+      "span": 0.9
+    },
+    {
+      "label": "fuse-last",
+      "zoom": 6,
+      "time": 0.8833333333333344,
+      "span": 0.9
+    },
+    {
+      "label": "bump-first",
+      "zoom": 6,
+      "time": 0,
+      "span": 0.8
+    },
+    {
+      "label": "bump-last",
+      "zoom": 6,
+      "time": 0.7833333333333341,
+      "span": 0.8
+    },
+    {
+      "label": "rock-0",
+      "zoom": 8.5,
+      "time": 1.3871391322743147,
+      "span": 1.3871391322743147
+    },
+    {
+      "label": "rock-1",
+      "zoom": 8.5,
+      "time": 0.003805798940981313,
+      "span": 1.3871391322743147
+    },
+    {
+      "label": "naiwa_hopper-first",
+      "zoom": 8.5,
+      "time": 0,
+      "span": 0.55
+    },
+    {
+      "label": "naiwa_hopper-last",
+      "zoom": 8.5,
+      "time": 0.55,
+      "span": 0.55
+    },
+    {
+      "label": "naiwa_boss-first",
+      "zoom": 8.5,
+      "time": 0,
+      "span": 0.8
+    },
+    {
+      "label": "naiwa_boss-last",
+      "zoom": 8.5,
+      "time": 0.7833333333333341,
+      "span": 0.8
+    },
+    {
+      "label": "fuse-first",
+      "zoom": 8.5,
+      "time": 0,
+      "span": 0.9
+    },
+    {
+      "label": "fuse-last",
+      "zoom": 8.5,
+      "time": 0.8833333333333344,
+      "span": 0.9
+    },
+    {
+      "label": "bump-first",
+      "zoom": 8.5,
+      "time": 0,
+      "span": 0.8
+    },
+    {
+      "label": "bump-last",
+      "zoom": 8.5,
+      "time": 0.7833333333333341,
+      "span": 0.8
+    }
+  ],
+  "samples": [
+    {
+      "row": 0,
+      "column": 0,
+      "kind": "naiwa_chaser",
+      "move": "dash",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.45,
+      "aimLocked": true,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 0,
+      "column": 1,
+      "kind": "naiwa_chaser",
+      "move": "dash",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.45,
+      "aimLocked": true,
+      "label": "方向锁定",
+      "rocks": 0
+    },
+    {
+      "row": 0,
+      "column": 2,
+      "kind": "naiwa_chaser",
+      "move": "dash",
+      "stage": "windup",
+      "stageTime": 0.4499999999999999,
+      "stageSpan": 0.45,
+      "aimLocked": true,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 0,
+      "column": 3,
+      "kind": "naiwa_chaser",
+      "move": "dash",
+      "stage": "dash",
+      "stageTime": 0,
+      "stageSpan": 0.18,
+      "aimLocked": true,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 0,
+      "column": 4,
+      "kind": "naiwa_chaser",
+      "move": "dash",
+      "stage": "recover",
+      "stageTime": 0.3000000000000002,
+      "stageSpan": 0.6,
+      "aimLocked": true,
+      "label": "收招 / 地面停留",
+      "rocks": 0
+    },
+    {
+      "row": 1,
+      "column": 0,
+      "kind": "naiwa_charger",
+      "move": "dash",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.65,
+      "aimLocked": true,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 1,
+      "column": 1,
+      "kind": "naiwa_charger",
+      "move": "dash",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.65,
+      "aimLocked": true,
+      "label": "方向锁定",
+      "rocks": 0
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "kind": "naiwa_charger",
+      "move": "dash",
+      "stage": "windup",
+      "stageTime": 0.6333333333333336,
+      "stageSpan": 0.65,
+      "aimLocked": true,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "kind": "naiwa_charger",
+      "move": "dash",
+      "stage": "dash",
+      "stageTime": 0,
+      "stageSpan": 0.35,
+      "aimLocked": true,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "kind": "naiwa_charger",
+      "move": "dash",
+      "stage": "recover",
+      "stageTime": 0.550000000000001,
+      "stageSpan": 1.1,
+      "aimLocked": true,
+      "label": "收招 / 地面停留",
+      "rocks": 0
+    },
+    {
+      "row": 2,
+      "column": 0,
+      "kind": "naiwa_hopper",
+      "move": "hop",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.45,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "kind": "naiwa_hopper",
+      "move": "hop",
+      "stage": "air",
+      "stageTime": 0,
+      "stageSpan": 0.55,
+      "aimLocked": true,
+      "label": "起跳锁定 / 落点",
+      "rocks": 0
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "kind": "naiwa_hopper",
+      "move": "hop",
+      "stage": "windup",
+      "stageTime": 0.4499999999999999,
+      "stageSpan": 0.45,
+      "aimLocked": false,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "kind": "naiwa_hopper",
+      "move": "hop",
+      "stage": "recover",
+      "stageTime": 0,
+      "stageSpan": 0.55,
+      "aimLocked": true,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "kind": "naiwa_hopper",
+      "move": "hop",
+      "stage": "recover",
+      "stageTime": 0.2833333333333334,
+      "stageSpan": 0.55,
+      "aimLocked": true,
+      "label": "收招 / 地面停留",
+      "rocks": 0
+    },
+    {
+      "row": 3,
+      "column": 0,
+      "kind": "naiwa_bomber",
+      "move": "fuse",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.9,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "kind": "naiwa_bomber",
+      "move": "fuse",
+      "stage": "windup",
+      "stageTime": 0.8833333333333344,
+      "stageSpan": 0.9,
+      "aimLocked": false,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "kind": "naiwa_bomber",
+      "move": "fuse",
+      "stage": "dead",
+      "stageTime": 0.35,
+      "stageSpan": 0.35,
+      "aimLocked": false,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 4,
+      "column": 0,
+      "kind": "naiwa_tongue",
+      "move": "lash",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.55,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 4,
+      "column": 1,
+      "kind": "naiwa_tongue",
+      "move": "lash",
+      "stage": "windup",
+      "stageTime": 0.30000000000000004,
+      "stageSpan": 0.55,
+      "aimLocked": true,
+      "label": "方向锁定",
+      "rocks": 0
+    },
+    {
+      "row": 4,
+      "column": 2,
+      "kind": "naiwa_tongue",
+      "move": "lash",
+      "stage": "windup",
+      "stageTime": 0.55,
+      "stageSpan": 0.55,
+      "aimLocked": true,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 4,
+      "column": 3,
+      "kind": "naiwa_tongue",
+      "move": "lash",
+      "stage": "active",
+      "stageTime": 0,
+      "stageSpan": 0.16,
+      "aimLocked": true,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 4,
+      "column": 4,
+      "kind": "naiwa_tongue",
+      "move": "lash",
+      "stage": "recover",
+      "stageTime": 0.3000000000000002,
+      "stageSpan": 0.6,
+      "aimLocked": true,
+      "label": "收招 / 地面停留",
+      "rocks": 0
+    },
+    {
+      "row": 5,
+      "column": 0,
+      "kind": "naiwa_brood",
+      "move": "summon",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.7,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 5,
+      "column": 2,
+      "kind": "naiwa_brood",
+      "move": "summon",
+      "stage": "windup",
+      "stageTime": 0.6833333333333338,
+      "stageSpan": 0.7,
+      "aimLocked": false,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 5,
+      "column": 3,
+      "kind": "naiwa_brood",
+      "move": "summon",
+      "stage": "active",
+      "stageTime": 0,
+      "stageSpan": 0.3,
+      "aimLocked": false,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 6,
+      "column": 0,
+      "kind": "naiwa_spitter",
+      "move": "none",
+      "stage": "windup",
+      "stageTime": 2.220446049250313e-16,
+      "stageSpan": 0.35,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 6,
+      "column": 2,
+      "kind": "naiwa_spitter",
+      "move": "none",
+      "stage": "windup",
+      "stageTime": 0.3333333333333335,
+      "stageSpan": 0.35,
+      "aimLocked": false,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 6,
+      "column": 3,
+      "kind": "naiwa_spitter",
+      "move": "none",
+      "stage": "active",
+      "stageTime": 0,
+      "stageSpan": 0.25,
+      "aimLocked": false,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 7,
+      "column": 0,
+      "kind": "naiwa_turret",
+      "move": "none",
+      "stage": "windup",
+      "stageTime": 2.220446049250313e-16,
+      "stageSpan": 0.35,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 7,
+      "column": 2,
+      "kind": "naiwa_turret",
+      "move": "none",
+      "stage": "windup",
+      "stageTime": 0.3333333333333335,
+      "stageSpan": 0.35,
+      "aimLocked": false,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 7,
+      "column": 3,
+      "kind": "naiwa_turret",
+      "move": "none",
+      "stage": "active",
+      "stageTime": 0,
+      "stageSpan": 0.25,
+      "aimLocked": false,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 8,
+      "column": 0,
+      "kind": "naiwa_burrower",
+      "move": "burrow",
+      "stage": "emerge",
+      "stageTime": 0,
+      "stageSpan": 0.5,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 8,
+      "column": 1,
+      "kind": "naiwa_burrower",
+      "move": "burrow",
+      "stage": "buried",
+      "stageTime": 0,
+      "stageSpan": 1.6,
+      "aimLocked": false,
+      "label": "地下（无方向锁定）",
+      "rocks": 0
+    },
+    {
+      "row": 8,
+      "column": 2,
+      "kind": "naiwa_burrower",
+      "move": "burrow",
+      "stage": "emerge",
+      "stageTime": 0.4999999999999999,
+      "stageSpan": 0.5,
+      "aimLocked": false,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 8,
+      "column": 3,
+      "kind": "naiwa_burrower",
+      "move": "burrow",
+      "stage": "active",
+      "stageTime": 0,
+      "stageSpan": 1.4,
+      "aimLocked": false,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 8,
+      "column": 4,
+      "kind": "naiwa_burrower",
+      "move": "burrow",
+      "stage": "active",
+      "stageTime": 0.31666666666666554,
+      "stageSpan": 1.4,
+      "aimLocked": false,
+      "label": "收招 / 地面停留",
+      "rocks": 0
+    },
+    {
+      "row": 9,
+      "column": 2,
+      "kind": "naiwa_dancer",
+      "move": "spin",
+      "stage": "spin",
+      "stageTime": 0.7333333333333345,
+      "stageSpan": 0.9,
+      "aimLocked": false,
+      "label": "旋转中（无前摇）",
+      "rocks": 0
+    },
+    {
+      "row": 9,
+      "column": 3,
+      "kind": "naiwa_dancer",
+      "move": "spin",
+      "stage": "spin",
+      "stageTime": 0,
+      "stageSpan": 0.9,
+      "aimLocked": false,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 10,
+      "column": 3,
+      "kind": "naiwa_gasser",
+      "move": "none",
+      "stage": "ready",
+      "stageTime": 0,
+      "stageSpan": 0,
+      "aimLocked": false,
+      "label": "放毒事件（无前摇/收招）",
+      "rocks": 0
+    },
+    {
+      "row": 11,
+      "column": 0,
+      "kind": "naiwa_boss",
+      "move": "bump",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.8,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 11,
+      "column": 1,
+      "kind": "naiwa_boss",
+      "move": "bump",
+      "stage": "windup",
+      "stageTime": 0.5500000000000008,
+      "stageSpan": 0.8,
+      "aimLocked": true,
+      "label": "方向锁定",
+      "rocks": 0
+    },
+    {
+      "row": 11,
+      "column": 2,
+      "kind": "naiwa_boss",
+      "move": "bump",
+      "stage": "windup",
+      "stageTime": 0.7833333333333341,
+      "stageSpan": 0.8,
+      "aimLocked": true,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 11,
+      "column": 3,
+      "kind": "naiwa_boss",
+      "move": "bump",
+      "stage": "dash",
+      "stageTime": 0,
+      "stageSpan": 1.3,
+      "aimLocked": true,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 11,
+      "column": 4,
+      "kind": "naiwa_boss",
+      "move": "bump",
+      "stage": "recover",
+      "stageTime": 0.3000000000000002,
+      "stageSpan": 0.6,
+      "aimLocked": true,
+      "label": "收招 / 地面停留",
+      "rocks": 0
+    },
+    {
+      "row": 12,
+      "column": 0,
+      "kind": "naiwa_boss",
+      "move": "hop",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.55,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 7
+    },
+    {
+      "row": 12,
+      "column": 1,
+      "kind": "naiwa_boss",
+      "move": "hop",
+      "stage": "air",
+      "stageTime": 0,
+      "stageSpan": 0.8,
+      "aimLocked": true,
+      "label": "起跳锁定 / 落点",
+      "rocks": 7
+    },
+    {
+      "row": 12,
+      "column": 2,
+      "kind": "naiwa_boss",
+      "move": "hop",
+      "stage": "windup",
+      "stageTime": 0.55,
+      "stageSpan": 0.55,
+      "aimLocked": false,
+      "label": "前摇末步",
+      "rocks": 7
+    },
+    {
+      "row": 12,
+      "column": 3,
+      "kind": "naiwa_boss",
+      "move": "hop",
+      "stage": "recover",
+      "stageTime": 0,
+      "stageSpan": 0.6,
+      "aimLocked": true,
+      "label": "生效首步",
+      "rocks": 12
+    },
+    {
+      "row": 12,
+      "column": 4,
+      "kind": "naiwa_boss",
+      "move": "hop",
+      "stage": "recover",
+      "stageTime": 0.3000000000000002,
+      "stageSpan": 0.6,
+      "aimLocked": true,
+      "label": "收招 / 地面停留",
+      "rocks": 12
+    },
+    {
+      "row": 13,
+      "column": 0,
+      "kind": "naiwa_boss",
+      "move": "summon",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.8,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 5
+    },
+    {
+      "row": 13,
+      "column": 2,
+      "kind": "naiwa_boss",
+      "move": "summon",
+      "stage": "windup",
+      "stageTime": 0.7833333333333341,
+      "stageSpan": 0.8,
+      "aimLocked": false,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 13,
+      "column": 3,
+      "kind": "naiwa_boss",
+      "move": "summon",
+      "stage": "active",
+      "stageTime": 0,
+      "stageSpan": 0.3,
+      "aimLocked": false,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 14,
+      "column": 0,
+      "kind": "naiwa_boss",
+      "move": "rain",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.5,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 14,
+      "column": 2,
+      "kind": "naiwa_boss",
+      "move": "rain",
+      "stage": "windup",
+      "stageTime": 0.4999999999999999,
+      "stageSpan": 0.5,
+      "aimLocked": false,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 14,
+      "column": 3,
+      "kind": "naiwa_boss",
+      "move": "none",
+      "stage": "ready",
+      "stageTime": 0,
+      "stageSpan": 0,
+      "aimLocked": false,
+      "label": "生效首步",
+      "rocks": 7
+    },
+    {
+      "row": 15,
+      "column": 2,
+      "kind": "naiwa_boss",
+      "move": "spin",
+      "stage": "spin",
+      "stageTime": 1.4499999999999986,
+      "stageSpan": 1.8,
+      "aimLocked": false,
+      "label": "旋转中（无前摇）",
+      "rocks": 5
+    },
+    {
+      "row": 15,
+      "column": 3,
+      "kind": "naiwa_boss",
+      "move": "spin",
+      "stage": "spin",
+      "stageTime": 0,
+      "stageSpan": 1.8,
+      "aimLocked": false,
+      "label": "生效首步",
+      "rocks": 12
+    },
+    {
+      "row": 16,
+      "column": 0,
+      "kind": "naiwa_boss",
+      "move": "none",
+      "stage": "windup",
+      "stageTime": 2.220446049250313e-16,
+      "stageSpan": 0.35,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 16,
+      "column": 2,
+      "kind": "naiwa_boss",
+      "move": "none",
+      "stage": "windup",
+      "stageTime": 0.3333333333333335,
+      "stageSpan": 0.35,
+      "aimLocked": false,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 16,
+      "column": 3,
+      "kind": "naiwa_boss",
+      "move": "none",
+      "stage": "active",
+      "stageTime": 0,
+      "stageSpan": 0.25,
+      "aimLocked": false,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 17,
+      "column": 0,
+      "kind": "naiwa_boss",
+      "move": "bump",
+      "stage": "windup",
+      "stageTime": 0,
+      "stageSpan": 0.8,
+      "aimLocked": false,
+      "label": "前摇首步",
+      "rocks": 0
+    },
+    {
+      "row": 17,
+      "column": 1,
+      "kind": "naiwa_boss",
+      "move": "bump",
+      "stage": "windup",
+      "stageTime": 0.5500000000000008,
+      "stageSpan": 0.8,
+      "aimLocked": true,
+      "label": "方向锁定",
+      "rocks": 0
+    },
+    {
+      "row": 17,
+      "column": 2,
+      "kind": "naiwa_boss",
+      "move": "bump",
+      "stage": "windup",
+      "stageTime": 0.7833333333333341,
+      "stageSpan": 0.8,
+      "aimLocked": true,
+      "label": "前摇末步",
+      "rocks": 0
+    },
+    {
+      "row": 17,
+      "column": 3,
+      "kind": "naiwa_boss",
+      "move": "bump",
+      "stage": "dash",
+      "stageTime": 0,
+      "stageSpan": 1.3,
+      "aimLocked": true,
+      "label": "生效首步",
+      "rocks": 0
+    },
+    {
+      "row": 17,
+      "column": 4,
+      "kind": "naiwa_boss",
+      "move": "bump",
+      "stage": "stun",
+      "stageTime": 0,
+      "stageSpan": 2.2,
+      "aimLocked": true,
+      "label": "撞柱眩晕首步",
+      "rocks": 0
+    },
+    {
+      "row": 18,
+      "column": 0,
+      "kind": "naiwa_boss",
+      "move": "none",
+      "stage": "ready",
+      "stageTime": 0,
+      "stageSpan": 0,
+      "aimLocked": false,
+      "label": "落石首步 t=0",
+      "rocks": 7
+    },
+    {
+      "row": 18,
+      "column": 2,
+      "kind": "naiwa_boss",
+      "move": "none",
+      "stage": "active",
+      "stageTime": 0.016666666666666663,
+      "stageSpan": 0.25,
+      "aimLocked": false,
+      "label": "落地前末步",
+      "rocks": 7
+    },
+    {
+      "row": 18,
+      "column": 3,
+      "kind": "naiwa_boss",
+      "move": "none",
+      "stage": "active",
+      "stageTime": 0.033333333333333326,
+      "stageSpan": 0.25,
+      "aimLocked": false,
+      "label": "落地首步 / 障碍",
+      "rocks": 7
+    },
+    {
+      "row": 18,
+      "column": 4,
+      "kind": "naiwa_boss",
+      "move": "spin",
+      "stage": "spin",
+      "stageTime": 0.9499999999999976,
+      "stageSpan": 1.8,
+      "aimLocked": false,
+      "label": "崩解",
+      "rocks": 11
+    },
+    {
+      "actors": 30,
+      "rocks": 7,
+      "budget": "frozen"
+    },
+    {
+      "actors": 30,
+      "rocks": 7,
+      "budget": "load"
+    },
+    {
+      "actors": 30,
+      "rocks": 7,
+      "budget": "zero"
+    }
+  ]
+}

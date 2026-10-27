@@ -4,13 +4,13 @@ import { DEPTH, DEPTH_Y_SORT } from '../../config';
 import { BALANCE } from '../../data/balance';
 import { ENEMIES, type EnemyId } from '../../data/enemies';
 import { BOSS_DEATH, enemyAnimation } from '../../data/enemyArt';
-import type { EnemyDef } from '../../data/schema';
 import type { CombatWorld } from '../../sim/combat/api';
 import type { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
 import { settings } from '../../services/settings';
 import type { CombatBridge } from '../world/CombatBridge';
 import { HAZARD_FX as H, ROCK_PIXELS, ROCK_PALETTE } from './hazardParams';
+import { drawSkillTell, landingShadow, landingBoundary } from './skillTells';
 import { fxBudget, type FxBudget } from './FxBudget';
 
 interface Burst {
@@ -111,6 +111,11 @@ export class HazardLayer {
   private readonly onExploded = (e: GameEvents['combat:exploded']): void =>
     this.burst(e.x, e.y, e.radius, H.explosionSeconds, H.explosionColor);
   private readonly onActed = (e: GameEvents['enemy:acted']): void => {
+    if (
+      (e.action === 'rain' || e.action === 'gas') &&
+      this.budget.admit('spark', this.scene.cameras.main, e.x, e.y, 20)
+    )
+      this.bridge.actors.art?.acted(e.id, e.action);
     const feet = e.y + (ENEMIES[e.kind as EnemyId]?.radius ?? 0);
     if (e.action === 'land' || e.action === 'emerge' || e.action === 'crash' || e.action === 'stun')
       this.burst(e.x, feet, H.dustRadius, H.dustSeconds, H.dustColor);
@@ -153,8 +158,8 @@ export class HazardLayer {
     g.clear();
     m.clear();
     this.drawZones(g);
-    this.drawRocks(m);
-    this.drawTells(m);
+    this.drawRocks();
+    for (const a of this.sim.actors) drawSkillTell(m, a);
     this.drawBursts(m);
     this.drawBossDeath(m);
   }
@@ -185,7 +190,7 @@ export class HazardLayer {
     }
   }
 
-  private drawRocks(m: GameObjects.Graphics): void {
+  private drawRocks(): void {
     const rocks = this.sim.rocks;
     for (let i = 0; i < this.rockArt.length; i++) {
       const r = rocks[i],
@@ -205,95 +210,29 @@ export class HazardLayer {
           .setDepth(DEPTH.actors + (r.y + r.radius) * DEPTH_Y_SORT);
         continue;
       }
-      // 预警：红圈逐渐收紧，石块从高处落下，地上的影子越来越实。
-      const t = 1 - r.time / r.fall;
-      m.lineStyle(1, H.warnColor, 0.5 + 0.5 * t).strokeCircle(r.x, r.y, r.radius * (1.6 - 0.6 * t));
-      m.fillStyle(H.warnColor, 0.12 + 0.18 * t).fillCircle(r.x, r.y, r.radius);
-      m.fillStyle(0x07111e, 0.35 * t).fillEllipse(r.x, r.y + r.radius * 0.3, r.radius * 2 * t, r.radius * t);
+      // 从出现的首步起就标明落点，不因装饰预算耗尽而消失。
+      const t = Math.max(0, Math.min(1, 1 - r.time / r.fall));
+      landingShadow(this.ground, r.x, r.y, r.radius * (1 + t), r.radius * (1 + t), 0.25 + 0.45 * t);
+      landingBoundary(this.marks, r.x, r.y, r.radius * 2, r.radius * 2, t, H.rockTellColor);
+      if (r.time < 0.15 && this.budget.admit('spark', this.scene.cameras.main, r.x, r.y, r.radius)) {
+        this.ground.fillStyle(0xfff1c2, 0.8);
+        for (let k = 0; k < 6; k++) {
+          const angle = (k * Math.PI) / 3;
+          this.ground.fillRect(
+            r.x + Math.cos(angle) * r.radius - 0.5,
+            r.y + Math.sin(angle) * r.radius - 0.5,
+            1,
+            1,
+          );
+        }
+      }
       art
         .setVisible(t > 0.35)
         .setPosition(r.x, r.y - (1 - t) * H.rockDrop)
         .setScale(size)
         .setAlpha(1)
-        .setDepth(DEPTH.fx);
-    }
-  }
-
-  /** 招式预警：舌击线、冲撞通道、自爆半径；出舌时画舌头；眩晕时头顶转星星。 */
-  private drawTells(m: GameObjects.Graphics): void {
-    const pulse = 0.5 + 0.5 * Math.sin(this.time * H.pulseSpeed);
-    for (const a of this.sim.actors) {
-      // 冻住的怪物招式暂停，不画预警（ADR 0031）。
-      if (a.team !== 'enemy' || a.phase !== 'active' || a.frozen) continue;
-      const def = ENEMIES[a.kind as EnemyId] as Readonly<EnemyDef>;
-      const cx = Math.cos(a.aim),
-        cy = Math.sin(a.aim);
-      if (a.move === 'lash' && def.lash) {
-        if (a.pose === 'windup')
-          this.dashed(m, a.x, a.y, a.x + cx * def.lash.length, a.y + cy * def.lash.length, pulse);
-        else if (a.pose === 'attack') this.tongue(m, a.x, a.y, cx, cy, def.lash);
-      }
-      if (a.move === 'bump' && a.pose === 'windup') {
-        const len = H.bumpTell,
-          w = a.radius;
-        m.fillStyle(H.warnColor, 0.1 + 0.12 * pulse)
-          .beginPath()
-          .moveTo(a.x - cy * w, a.y + cx * w)
-          .lineTo(a.x - cy * w + cx * len, a.y + cx * w + cy * len)
-          .lineTo(a.x + cy * w + cx * len, a.y - cx * w + cy * len)
-          .lineTo(a.x + cy * w, a.y - cx * w)
-          .closePath()
-          .fillPath();
-      }
-      if (a.move === 'fuse' && def.fuse)
-        m.lineStyle(1, H.warnColor, 0.4 + 0.6 * pulse).strokeCircle(a.x, a.y, def.fuse.radius);
-      if (a.move === 'bump' && a.pose === 'recover')
-        this.stars(m, a.x, a.y - this.headHeight(a.kind, a.radius));
-    }
-  }
-
-  private headHeight(kind: string, radius: number): number {
-    const art = enemyAnimation(kind)?.art;
-    return art ? art.pivot.y * art.scale + 2 : radius * 1.6;
-  }
-
-  private dashed(
-    m: GameObjects.Graphics,
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number,
-    pulse: number,
-  ): void {
-    const len = Math.hypot(x2 - x1, y2 - y1),
-      n = Math.max(1, Math.floor(len / H.dash));
-    m.lineStyle(1, H.warnColor, 0.45 + 0.55 * pulse);
-    for (let i = 0; i < n; i += 2) {
-      const a = i / n,
-        b = Math.min(1, (i + 1) / n);
-      m.lineBetween(x1 + (x2 - x1) * a, y1 + (y2 - y1) * a, x1 + (x2 - x1) * b, y1 + (y2 - y1) * b);
-    }
-  }
-
-  private tongue(
-    m: GameObjects.Graphics,
-    x: number,
-    y: number,
-    cx: number,
-    cy: number,
-    lash: NonNullable<EnemyDef['lash']>,
-  ): void {
-    const tx = x + cx * lash.length,
-      ty = y + cy * lash.length;
-    m.lineStyle(lash.width + 1, H.tongueDark, 1).lineBetween(x, y, tx, ty);
-    m.lineStyle(lash.width - 1, H.tongueColor, 1).lineBetween(x, y, tx, ty);
-    m.fillStyle(H.tongueColor, 1).fillCircle(tx, ty, lash.width * 0.8);
-  }
-
-  private stars(m: GameObjects.Graphics, x: number, y: number): void {
-    for (let k = 0; k < 3; k++) {
-      const a = this.time * H.starSpeed + (k * Math.PI * 2) / 3;
-      m.fillStyle(H.starColor, 1).fillRect(x + Math.cos(a) * 8 - 1, y + Math.sin(a) * 2.5 - 1, 2, 2);
+        // 下落末段也必须能看见边界，不能让石块贴图盖住 marks。
+        .setDepth(DEPTH.fx - 1);
     }
   }
 
@@ -348,6 +287,7 @@ export class HazardLayer {
   readonly destroy = (): void => {
     if (this.destroyed) return;
     this.destroyed = true;
+    this.scene.events.off('shutdown', this.destroy);
     this.bus.off('combat:exploded', this.onExploded);
     this.bus.off('entity:died', this.onDied);
     this.bus.off('enemy:acted', this.onActed);
