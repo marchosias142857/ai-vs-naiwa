@@ -289,6 +289,14 @@ class SkillScene extends Scene {
       let samples = 0,
         frozen = 0,
         cues = 0;
+      const ordinary: { kind: string; stage: string; strokes: number; visible: boolean }[] = [];
+      let bossCues = 0,
+        strokes = 0;
+      const originalLineStyle = tells.lineStyle.bind(tells);
+      tells.lineStyle = (...args) => {
+        strokes++;
+        return originalLineStyle(...args);
+      };
       const check = (ok: boolean, label: string) => {
         if (!ok) errors.push(label);
       };
@@ -325,9 +333,33 @@ class SkillScene extends Scene {
             cold.draw(0, probe, a, 456, 0, 0, 1);
             check(first === JSON.stringify(pose()), `${row.name}/${sample.label}: cold-load frame mismatch`);
             tells.clear();
+            const empty = JSON.stringify(tells.commandBuffer);
+            strokes = 0;
             drawSkillTell(tells, a);
             const commands = JSON.stringify(tells.commandBuffer);
-            if (tells.commandBuffer.length > 5) cues++;
+            const visible = commands !== empty;
+            if (visible) cues++;
+            if (a.kind === 'naiwa_boss') {
+              if (visible) bossCues++;
+            } else {
+              const tongue = a.move === 'lash' && (a.stage === 'active' || a.stage === 'recover');
+              const mound = a.move === 'burrow' && (a.stage === 'buried' || a.stage === 'emerge');
+              check(
+                visible === (tongue || mound),
+                `${row.name}/${sample.label}: unexpected/missing geometry`,
+              );
+              check(tongue || strokes === 0, `${row.name}/${sample.label}: ordinary attack hint retained`);
+              ordinary.push({ kind: a.kind, stage: a.stage, strokes, visible });
+            }
+            for (const mode of ['normal', 'load']) {
+              load(sample, mode);
+              tells.clear();
+              drawSkillTell(tells, sim.getActor(sample.id)!);
+              check(
+                JSON.stringify(tells.commandBuffer) === commands,
+                `${row.name}/${mode}: geometry differs`,
+              );
+            }
             if (a.kind !== 'naiwa_boss') {
               const state = sim.save();
               state.actors.find((e) => e.id === a.id)!.status.freeze = 10;
@@ -355,6 +387,7 @@ class SkillScene extends Scene {
           check(JSON.stringify(bridge.actors.save()) === before, `${row.name}: art mutated physics`);
         }
       }
+      tells.lineStyle = originalLineStyle;
       check(this.children.length === initialChildren, 'scene children grew across reloads');
       check(this.textures.getTextureKeys().length === initialTextures, 'textures grew across reloads');
       // Clearing a room must clear skill marks as well as falling-rock images.
@@ -367,6 +400,8 @@ class SkillScene extends Scene {
         samples,
         frozen,
         cues,
+        bossCues,
+        ordinary,
         children: initialChildren,
         textures: initialTextures,
         emptyGraphics: marks.length,
@@ -394,6 +429,8 @@ declare global {
       samples: number;
       frozen: number;
       cues: number;
+      bossCues: number;
+      ordinary: { kind: string; stage: string; strokes: number; visible: boolean }[];
       children: number;
       textures: number;
       emptyGraphics: number;
