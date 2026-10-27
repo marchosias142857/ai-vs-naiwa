@@ -47,7 +47,7 @@ export interface ActorView {
   /** 数据 ID，如 `ai_proto`、`naiwa_chaser`。 */
   readonly kind: string;
   readonly phase: ActorPhase;
-  /** 脚底中心的世界坐标，像素（最近一次 `syncPosition` 写入的值）。 */
+  /** 身体圆心的世界坐标，像素（最近一次 `syncPosition` 写入的值）。 */
   readonly x: number;
   readonly y: number;
   /** 本帧希望的速度，像素/秒，已包含击退；game 把它设到物理体上。预警与死亡阶段为 0。 */
@@ -321,7 +321,7 @@ export interface CombatWorld {
   /** 生成怪物：进入出场预警（`BALANCE.spawnTelegraph` 秒），预警结束时由 `step` 发出 `entity:activated`。 */
   spawnEnemy(kind: EnemyId, x: number, y: number): EntityId;
 
-  /** 写回物理体的位置（脚底中心）。对未知或已移除的编号不做任何事。 */
+  /** 写回物理体的位置（身体圆心）。对未知或已移除的编号不做任何事。 */
   syncPosition(id: EntityId, x: number, y: number): void;
   /**
    * 推进一帧。`dt` 单位为秒，内部截断到 0.05 秒以内，避免卡顿后一帧走得太远。

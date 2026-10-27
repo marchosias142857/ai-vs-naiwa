@@ -1,0 +1,1519 @@
+{
+  "targeted": [
+    {
+      "project": "desktop",
+      "test": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+      "status": "passed",
+      "durationMs": 2034,
+      "audits": {
+        "atlas-audit": {
+          "errors": [],
+          "frames": 392,
+          "monsters": 16
+        }
+      }
+    },
+    {
+      "project": "desktop",
+      "test": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+      "status": "passed",
+      "durationMs": 1182,
+      "audits": {
+        "body-audit": {
+          "errors": [],
+          "frames": 2192,
+          "acquisitions": 34,
+          "children": 36,
+          "textures": 20
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "test": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+      "status": "passed",
+      "durationMs": 1672,
+      "audits": {
+        "atlas-audit": {
+          "errors": [],
+          "frames": 392,
+          "monsters": 16
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "test": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+      "status": "passed",
+      "durationMs": 1253,
+      "audits": {
+        "body-audit": {
+          "errors": [],
+          "frames": 2192,
+          "acquisitions": 34,
+          "children": 36,
+          "textures": 20
+        }
+      }
+    }
+  ],
+  "targetedStats": {
+    "startTime": "2026-10-27T05:28:44.820Z",
+    "duration": 15137.517,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "related": [
+    {
+      "file": "art.spec.ts",
+      "test": "待机与行走完整循环；停步重新待机、暂停冻结动作",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 6165
+        }
+      ]
+    },
+    {
+      "file": "art.spec.ts",
+      "test": "真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中心",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 12631
+        }
+      ]
+    },
+    {
+      "file": "art.spec.ts",
+      "test": "重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记录",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 10489
+        }
+      ]
+    },
+    {
+      "file": "art.spec.ts",
+      "test": "标题与 HUD 完整画面；触屏提示使用轮盘说明",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 7990
+        }
+      ]
+    },
+    {
+      "file": "art.spec.ts",
+      "test": "参考图角色：受击使用新图集，死亡完整落地且隐藏武器",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 20176
+        }
+      ]
+    },
+    {
+      "file": "art.spec.ts",
+      "test": "待机与行走完整循环；停步重新待机、暂停冻结动作",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 7138
+        }
+      ]
+    },
+    {
+      "file": "art.spec.ts",
+      "test": "真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中心",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 14963
+        }
+      ]
+    },
+    {
+      "file": "art.spec.ts",
+      "test": "重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记录",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 11682
+        }
+      ]
+    },
+    {
+      "file": "art.spec.ts",
+      "test": "标题与 HUD 完整画面；触屏提示使用轮盘说明",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 8296
+        }
+      ]
+    },
+    {
+      "file": "art.spec.ts",
+      "test": "参考图角色：受击使用新图集，死亡完整落地且隐藏武器",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 22116
+        }
+      ]
+    },
+    {
+      "file": "bestiary.spec.ts",
+      "test": "图鉴全部条目、裁剪比例、键盘二维选择、尺寸变化与返回主城",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 17678
+        }
+      ]
+    },
+    {
+      "file": "bestiary.spec.ts",
+      "test": "鼠标在网格外松开、取消或关闭重开后，键盘和手柄焦点仍同步选择与详情",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 5080
+        }
+      ]
+    },
+    {
+      "file": "bestiary.spec.ts",
+      "test": "图鉴英文手柄：X 打开、四向移动、右摇杆读长文、B 关闭不穿透",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 4722
+        }
+      ]
+    },
+    {
+      "file": "bestiary.spec.ts",
+      "test": "触屏网格拖动只滚动不选中，点按更新详情；旧冒险与档案保持原文",
+      "project": "desktop",
+      "status": "skipped",
+      "results": [
+        {
+          "status": "skipped",
+          "durationMs": 583
+        }
+      ]
+    },
+    {
+      "file": "bestiary.spec.ts",
+      "test": "图鉴全部条目、裁剪比例、键盘二维选择、尺寸变化与返回主城",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 20909
+        }
+      ]
+    },
+    {
+      "file": "bestiary.spec.ts",
+      "test": "鼠标在网格外松开、取消或关闭重开后，键盘和手柄焦点仍同步选择与详情",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 5638
+        }
+      ]
+    },
+    {
+      "file": "bestiary.spec.ts",
+      "test": "图鉴英文手柄：X 打开、四向移动、右摇杆读长文、B 关闭不穿透",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 4907
+        }
+      ]
+    },
+    {
+      "file": "bestiary.spec.ts",
+      "test": "触屏网格拖动只滚动不选中，点按更新详情；旧冒险与档案保持原文",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 3235
+        }
+      ]
+    },
+    {
+      "file": "bestiaryLifecycle.spec.ts",
+      "test": "真实主城输入冻结、恢复和开关/重进：DOM、纹理、监听与 alpha 扫描不增长",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 6307
+        }
+      ]
+    },
+    {
+      "file": "bestiaryLifecycle.spec.ts",
+      "test": "真实主城输入冻结、恢复和开关/重进：DOM、纹理、监听与 alpha 扫描不增长",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 7794
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "预热500、超限退回sim、寿命回收且不新建贴图",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 857
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "实时物理坐标、墙边界、碰撞只报告sim、阶段与死亡回收",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 536
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "场景关闭安全清理，已存活子弹退回sim",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 477
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "一帧 0 个物理步：边沿恰好消费一次，复制输入向量",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 435
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "一帧 1 个物理步：边沿恰好消费一次，复制输入向量",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 451
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "一帧 2 个物理步：边沿恰好消费一次，复制输入向量",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 359
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实 sim + Arcade：1/60 秒锁步击退距离与同时间对照组相符",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1008
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实 sim + Arcade：1/120 秒锁步击退距离与同时间对照组相符",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1164
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中心一致",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 976
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1669
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实命中反馈使用预热池，预警隐藏与死亡延迟回收",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 764
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "出口升级界面可买补给，再选择升级进入下一层",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1450
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实 Arcade 中追击怪绕过内墙接近玩家",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 648
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "100 秒锁步压力：持续 30 怪、弹丸与反馈池不增长",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 8593
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "楼层入口继续与不中断推进得到相同升级候选",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2230
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "瞬时反馈池：满池、部分到期、反复回收不重复占槽或新建对象",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 763
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "装饰事件风暴：分类预算、重复回收、纹理复用和 sim 隔离",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 878
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "存档物理往返：mixed，真实 Arcade 后续命中与快照一致",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1118
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "存档物理往返：full，真实 Arcade 后续命中与快照一致",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1909
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "存档物理往返：corpse，真实 Arcade 后续命中与快照一致",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1246
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "存档物理往返：teleport，真实 Arcade 后续命中与快照一致",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1061
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "恢复冻结：真实物理和子弹寿命停住；暂停中断重新计时并清掉已锁存边沿",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 5527
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "满级天赋四个出口按钮均可选；换层保留 runId 和天赋并完整通关",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1369
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "预热500、超限退回sim、寿命回收且不新建贴图",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1045
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "实时物理坐标、墙边界、碰撞只报告sim、阶段与死亡回收",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 870
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "场景关闭安全清理，已存活子弹退回sim",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 383
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "一帧 0 个物理步：边沿恰好消费一次，复制输入向量",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 365
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "一帧 1 个物理步：边沿恰好消费一次，复制输入向量",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 419
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "一帧 2 个物理步：边沿恰好消费一次，复制输入向量",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 804
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实 sim + Arcade：1/60 秒锁步击退距离与同时间对照组相符",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1042
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实 sim + Arcade：1/120 秒锁步击退距离与同时间对照组相符",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1329
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中心一致",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1063
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2022
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实命中反馈使用预热池，预警隐藏与死亡延迟回收",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1776
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "出口升级界面可买补给，再选择升级进入下一层",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1395
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "真实 Arcade 中追击怪绕过内墙接近玩家",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 813
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "100 秒锁步压力：持续 30 怪、弹丸与反馈池不增长",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 10703
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "楼层入口继续与不中断推进得到相同升级候选",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 3049
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "瞬时反馈池：满池、部分到期、反复回收不重复占槽或新建对象",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 700
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "装饰事件风暴：分类预算、重复回收、纹理复用和 sim 隔离",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 778
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "存档物理往返：mixed，真实 Arcade 后续命中与快照一致",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1321
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "存档物理往返：full，真实 Arcade 后续命中与快照一致",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1997
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "存档物理往返：corpse，真实 Arcade 后续命中与快照一致",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1029
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "存档物理往返：teleport，真实 Arcade 后续命中与快照一致",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1271
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "恢复冻结：真实物理和子弹寿命停住；暂停中断重新计时并清掉已锁存边沿",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 5635
+        }
+      ]
+    },
+    {
+      "file": "entities.spec.ts",
+      "test": "满级天赋四个出口按钮均可选；换层保留 runId 和天赋并完整通关",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1304
+        }
+      ]
+    },
+    {
+      "file": "pwa.spec.ts",
+      "test": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 10787
+        }
+      ]
+    },
+    {
+      "file": "pwa.spec.ts",
+      "test": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 23366
+        }
+      ]
+    },
+    {
+      "file": "pwa.spec.ts",
+      "test": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 13434
+        }
+      ]
+    },
+    {
+      "file": "pwa.spec.ts",
+      "test": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 26725
+        }
+      ]
+    },
+    {
+      "file": "resumeProduction.spec.ts",
+      "test": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 16588
+        }
+      ]
+    },
+    {
+      "file": "resumeProduction.spec.ts",
+      "test": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 15737
+        }
+      ]
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "test": "不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 15695
+        }
+      ]
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "test": "真实移动到四个墙角时人物持续居中，房间外露出黑色背景",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 38812
+        }
+      ]
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "test": "跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 5975
+        }
+      ]
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "test": "移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 5153
+        }
+      ]
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "test": "主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动",
+      "project": "desktop",
+      "status": "skipped",
+      "results": [
+        {
+          "status": "skipped",
+          "durationMs": 1117
+        }
+      ]
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "test": "不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 11413
+        }
+      ]
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "test": "真实移动到四个墙角时人物持续居中，房间外露出黑色背景",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 35476
+        }
+      ]
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "test": "跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 5516
+        }
+      ]
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "test": "移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "results": [
+        {
+          "status": "skipped",
+          "durationMs": 1375
+        }
+      ]
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "test": "主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 6633
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 5427
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "同步保存 hidden，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1629
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1825
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "同步保存 both，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1857
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 3647
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 7061
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 7094
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "skipped",
+      "results": [
+        {
+          "status": "skipped",
+          "durationMs": 1344
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "恢复后手柄长按须先中立，随后新按键才能射击",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 6547
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 4132
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 8340
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "菜单兜底区分 updated，入口独立校验",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2376
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "菜单兜底区分 invalid，入口独立校验",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2298
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "菜单兜底区分 corrupt，入口独立校验",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1711
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1579
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2274
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1610
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 4954
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "同步保存 hidden，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2011
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1596
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "同步保存 both，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1603
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 3748
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 7036
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 7312
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 7404
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "恢复后手柄长按须先中立，随后新按键才能射击",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 5527
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2009
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2913
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "菜单兜底区分 updated，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1903
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "菜单兜底区分 invalid，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1709
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "菜单兜底区分 corrupt，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1417
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 1824
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 756
+        }
+      ]
+    },
+    {
+      "file": "save.spec.ts",
+      "test": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 2044
+        }
+      ]
+    },
+    {
+      "file": "stress.spec.ts",
+      "test": "stress=1：混合怪、柱子、测量导出与退出清理",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 28513
+        }
+      ]
+    },
+    {
+      "file": "stress.spec.ts",
+      "test": "stress=combat：混合怪、柱子、测量导出与退出清理",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 10459
+        }
+      ]
+    },
+    {
+      "file": "stress.spec.ts",
+      "test": "stress=1：混合怪、柱子、测量导出与退出清理",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 25774
+        }
+      ]
+    },
+    {
+      "file": "stress.spec.ts",
+      "test": "stress=combat：混合怪、柱子、测量导出与退出清理",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 10153
+        }
+      ]
+    }
+  ],
+  "relatedStats": {
+    "startTime": "2026-10-27T05:38:08.033Z",
+    "duration": 719248.203,
+    "expected": 116,
+    "skipped": 4,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "note": "Targeted 4 + related 120 cases: 120 passed, 4 conditional skips, no failures. First related run was interrupted after progress output stopped refreshing and produced no complete report; only the complete rerun is counted here."
+}

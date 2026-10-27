@@ -1,5 +1,7 @@
 # 最终 Boss 奶怪
 
+> 历史 v1 资源源程序。当前怪物使用 `art-src/monsters-v3/` 的新造型与低分辨率关键帧，请按该目录 README 构建。
+
 - 源图：`source.png`，负责人绘制并提供的奶怪动作表（4 列 × 3 行：8 帧行走、待机、捧腹、弯腰捧腹、待机），用于本游戏的最终 Boss。
 - 输出：`public/assets/demo/naiguai-v1.png` 与 `src/data/naiguaiArt.ts`（生成文件，不要手改）。
 - 重新生成：`python3 art-src/naiguai/import_naiguai.py art-src/naiguai/source.png --preview <预览目录>`。

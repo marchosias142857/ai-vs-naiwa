@@ -5,8 +5,8 @@ import type { MonsterArt } from './schema/art';
 
 /** 怪物逐帧图集的纹理 key 与源文件（ADR 0030）。 */
 export const MONSTER_TEXTURES = {
-  monsters: { key: 'demo_monsters', source: 'monsters-v1.png' },
-  naiguai: { key: 'demo_naiguai', source: 'naiguai-v1.png' },
+  monsters: { key: 'demo_monsters', source: 'monsters-v3.png' },
+  naiguai: { key: 'demo_naiguai', source: 'naiguai-v3.png' },
 } as const;
 export type MonsterTexture = keyof typeof MONSTER_TEXTURES;
 
@@ -38,6 +38,7 @@ export const POSE_FALLBACK: Readonly<Record<string, readonly string[]>> = {
   buried: ['buried', 'idle'],
   spin: ['spin', 'attack', 'idle'],
   laugh: ['laugh', 'attack', 'idle'],
+  hurt: ['hurt', 'idle'],
   death: ['death', 'windup', 'idle'],
 };
 
@@ -49,7 +50,7 @@ export function deathSeconds(kind: string): number | undefined {
   return frames && anim ? frames.length * (anim.art.seconds.death ?? 0.1) : undefined;
 }
 
-/** Boss 死亡演出的分段（秒）：定住闪白狂抖 → 捧腹狂笑 → 瘫软碎成像素。只用负责人画的帧加特效。 */
+/** Boss 死亡分段保持原时长：闪白狂抖 → 捧腹狂笑 → 绘制的倒地/消散关键帧。 */
 export const BOSS_DEATH = {
   shake: 1.4,
   laugh: 0.8,

@@ -1,5 +1,7 @@
 # 普通怪物像素图集
 
+> 历史 v1 资源源程序。当前怪物使用 `art-src/monsters-v3/` 的新造型与低分辨率关键帧，请按该目录 README 构建。
+
 - 输出：`public/assets/demo/monsters-v1.png` 与 `src/data/monsterArt.ts`（生成文件，不要手改）。
 - 重新生成：`python3 art-src/monsters/build_monsters.py --preview <预览目录>`（只需 numpy 与 Pillow）。
 - 来源与许可：Claude 用本目录脚本逐像素绘制，全部为本项目原创形象，无第三方素材，可随游戏商用、修改与分发。

@@ -44,13 +44,21 @@ export class EnemyArt {
     death: number,
     flash: number,
     zoom: number,
+    shadow?: GameObjects.Ellipse,
+    hurtAt = -Infinity,
   ): boolean {
     this.zoom = zoom;
     const anim = enemyAnimation(a.kind);
     if (!anim) return false;
+    // 长腿和奶怪的脚底与身体半径无关；腾空时影子仍留在固定地面位置。
+    const ground = anim.art.shadowY;
+    shadow?.setPosition(
+      a.x,
+      a.y + (ground === undefined ? a.radius : (ground - anim.art.pivot.y) * anim.art.scale),
+    );
     const clock = this.clocks[index]!;
     const wanted = a.phase === 'dead' ? 'death' : a.pose;
-    const action = pick(anim, wanted);
+    let action = pick(anim, wanted);
     if (clock.id !== a.id || clock.action !== action) {
       clock.id = a.id;
       clock.action = action;
@@ -61,28 +69,25 @@ export class EnemyArt {
     const seconds = anim.art.seconds[action] ?? 0.1;
     let frame: number;
     let dx = 0,
-      sx = 1,
-      sy = 1,
       alpha = 1,
       white = flash > 0;
     if (a.phase === 'dead') {
       if (a.kind === 'naiwa_boss') {
-        // Boss 演出：定住闪白狂抖 → 捧腹狂笑 → 压扁淡出（碎成像素的粒子由 HazardLayer 画）。
+        // Boss 演出：定住闪白狂抖 → 捧腹狂笑 → 倒地消散（碎成像素的粒子由 HazardLayer 画）。
         const d = BOSS_DEATH;
         if (death < d.shake) {
           frame = 0;
           dx = Math.sin(death * 90) * d.shakePixels;
           white = Math.floor(death / d.flashEvery) % 2 === 0;
         } else if (death < d.shake + d.laugh) {
-          const spin = anim.art.frames.spin ?? frames;
-          const k = Math.floor((death - d.shake) / 0.08) % spin.length;
+          const laughAction = anim.art.frames.laugh ? 'laugh' : action;
+          const laugh = anim.art.frames[laughAction]!;
+          const k = Math.floor((death - d.shake) / (anim.art.seconds[laughAction] ?? 0.12)) % laugh.length;
           const wobble = Math.sin(death * 70) * d.laughShakePixels;
-          return this.place(image, anim, a, 'spin', k, wobble, 1, 1, 1, false);
+          return this.place(image, anim, a, laughAction, k, wobble, 1, 1, 1, false);
         } else {
           const t = Math.min(1, (death - d.shake - d.laugh) / d.dissolve);
-          frame = 0;
-          sy = 1 - 0.7 * t;
-          sx = 1 + 0.3 * t;
+          frame = Math.min(frames.length - 1, Math.floor(t * frames.length));
           alpha = 1 - t;
           white = t < 0.25;
         }
@@ -92,9 +97,31 @@ export class EnemyArt {
         if (frame === frames.length - 1) alpha = Math.max(0, 1 - (death - frame * seconds) / seconds);
       }
     } else {
-      frame = Math.floor(Math.max(0, time - clock.since) / seconds) % frames.length;
+      const step = Math.floor(Math.max(0, time - clock.since) / seconds);
+      // 蓄力与收招播到末帧后保持，不能在状态尚未结束时突然倒回第一帧。
+      const once =
+        action === 'windup' ||
+        action === 'attack' ||
+        action === 'recover' ||
+        action === 'hurt' ||
+        action === 'air';
+      frame = once ? Math.min(frames.length - 1, step) : step % frames.length;
+      const hurt = anim.art.frames.hurt;
+      const hurtSeconds = anim.art.seconds.hurt ?? 0.08;
+      const hurtTime = time - hurtAt;
+      // 受击不盖住出招/腾空/钻地姿态，也不重置原动作时钟。
+      if (
+        hurt &&
+        !a.frozen &&
+        (action === 'idle' || action === 'move' || action === 'recover') &&
+        hurtTime >= 0 &&
+        hurtTime < hurt.length * hurtSeconds
+      ) {
+        action = 'hurt';
+        frame = Math.floor(hurtTime / hurtSeconds);
+      }
     }
-    return this.place(image, anim, a, action, frame, dx, sx, sy, alpha, white);
+    return this.place(image, anim, a, action, frame, dx, 1, 1, alpha, white);
   }
 
   private place(

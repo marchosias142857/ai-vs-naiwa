@@ -101,8 +101,8 @@ describe('图鉴目录', () => {
     expect(by.naiwa_tadpole!.spawnedBy).toEqual(['naiwa_splitter', 'naiwa_brood', 'naiwa_boss']);
     expect(by.naiwa_tadpole!.floors).toEqual([2, 3, DUNGEON.floors + 1]);
     expect(by.naiwa_boss!.freezeImmune).toBe(true);
-    expect(by.naiwa_boss!.frame.source).toBe('naiguai-v1.png');
-    expect(by.naiwa_chaser!.frame.source).toBe('monsters-v1.png');
+    expect(by.naiwa_boss!.frame.source).toBe('naiguai-v3.png');
+    expect(by.naiwa_chaser!.frame.source).toBe('monsters-v3.png');
     expect(bestiaryCards()).toBe(cards);
   });
   it('缓存目录深层冻结：调用方改不了卡片、数组与静态帧', () => {

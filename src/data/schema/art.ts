@@ -44,6 +44,8 @@ const corner = z.tuple([z.int().nonnegative(), z.int().nonnegative()]).readonly(
 export const MonsterArtSchema = z.strictObject({
   size: z.tuple([z.int().positive(), z.int().positive()]).readonly(),
   pivot: point,
+  /** 固定脚底线，图集像素；只定位影子，不参与碰撞。旧资源省略时沿用 radius。 */
+  shadowY: z.number().nonnegative().optional(),
   scale: z.number().positive(),
   facing: z.enum(['left', 'right']),
   frames: z.record(z.string(), z.array(corner).min(1).readonly()),
