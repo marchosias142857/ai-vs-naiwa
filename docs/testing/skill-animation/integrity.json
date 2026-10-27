@@ -1,0 +1,69 @@
+{
+  "evidenceCommit": "d6a3bf3f1e373c71a7bfec57421f2cefbfa488dc",
+  "files": [
+    {
+      "path": "docs/testing/skill-animation/frozen.png",
+      "bytes": 72762,
+      "sha256": "9f209f3c40ae6ebf9cd5c65f5b742845ab04235e2e3ec1d12831a024893f53f9",
+      "gitBlob": "4b2837daae00ec029039f55e2d790b351d3ce471",
+      "remoteBytesIdentical": true
+    },
+    {
+      "path": "docs/testing/skill-animation/keyframes-1.png",
+      "bytes": 187610,
+      "sha256": "c9c88ef2490cbe8c3f69f31d3a78ce11e52ca245a06d1029e3e066343fcf89b9",
+      "gitBlob": "ba9f28324ca71c05d691a8458ac0388ecad99976",
+      "remoteBytesIdentical": true
+    },
+    {
+      "path": "docs/testing/skill-animation/keyframes-2.png",
+      "bytes": 164972,
+      "sha256": "442602d4b0bca37059da6ec486f8a16eff82e9d5a101c998d9704bfd307b1d95",
+      "gitBlob": "784dba39241f268377cbb5a73030f3007f02f07d",
+      "remoteBytesIdentical": true
+    },
+    {
+      "path": "docs/testing/skill-animation/keyframes-3.png",
+      "bytes": 193106,
+      "sha256": "374c52de4e088d1af91a80150ad9d50b8b1f3f6ed17f776a0bf2ebb9573466e1",
+      "gitBlob": "371ecdad7079f333a90a13bddb0f9803dd68f25c",
+      "remoteBytesIdentical": true
+    },
+    {
+      "path": "docs/testing/skill-animation/keyframes-4.png",
+      "bytes": 158153,
+      "sha256": "5f21558332044dd768094328495889798965622a356988d94de3e099c21b75d5",
+      "gitBlob": "5750152f5dcc45301d36245c0f2e2bc999225b5d",
+      "remoteBytesIdentical": true
+    },
+    {
+      "path": "docs/testing/skill-animation/load.png",
+      "bytes": 72403,
+      "sha256": "3ad736a7fbcf2825b49666440f0074d6c5ca159d929825c23b317864b1b46d8b",
+      "gitBlob": "f75e06968fbbcec178983bbdb1913771655277b1",
+      "remoteBytesIdentical": true
+    },
+    {
+      "path": "docs/testing/skill-animation/zero.png",
+      "bytes": 72432,
+      "sha256": "818375e3a231828d27538fa1611d5279710d3ce1b6fb1755581c1a779d7c2de4",
+      "gitBlob": "3f5004fac9b6ad848dcfef1005581320be51ec85",
+      "remoteBytesIdentical": true
+    }
+  ],
+  "package": {
+    "baseline": {
+      "name": "index-DNwDU85H.js",
+      "bytes": 1657451,
+      "gzipBytes": 446809,
+      "precacheEntries": 20
+    },
+    "candidate": {
+      "name": "index-BAxG-RRE.js",
+      "bytes": 1662098,
+      "gzipBytes": 448495,
+      "precacheEntries": 20
+    }
+  },
+  "remoteWorkflowRunsAtEvidenceCommit": []
+}

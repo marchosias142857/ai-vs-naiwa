@@ -36,8 +36,16 @@ for (const [variant, root] of Object.entries(roots)) {
     plugins: [
       {
         name: 'identical-skill-load',
-        transform: (code, id) =>
-          id.endsWith('/src/debug/StressRun.ts') ? { code: harness, map: null } : undefined,
+        enforce: 'pre',
+        transform: (code, id) => {
+          if (id.endsWith('/src/debug/StressRun.ts')) return { code: harness, map: null };
+          if (!id.endsWith('/src/game/fx/HazardLayer.ts')) return;
+          // Capacity mode already disables damage/expiry. Apply the same no-consumption
+          // rule to rock overlaps in BOTH diagnostic builds, keeping exactly 400 bullets.
+          const overlap = 'scene.physics.add.overlap(bridge.bullets.group, this.group, this.hitRock)';
+          if (!code.includes(overlap)) throw Error('HazardLayer overlap instrumentation no longer matches.');
+          return { code: code.replace(overlap, overlap.replace('this.hitRock', '() => {}')), map: null };
+        },
       },
     ],
   });
@@ -89,6 +97,10 @@ try {
     const file = join(temp, `report-${reports.length}.json`);
     await (await pending).saveAs(file);
     const report = JSON.parse(await readFile(file, 'utf8'));
+    if (report.actorMin !== 30 || report.bulletMin !== 400 || report.peakBullets !== 400)
+      throw Error(
+        `Invalid fixed load: ${report.actorMin} enemies, ${report.bulletMin}–${report.peakBullets} bullets`,
+      );
     reports.push({ variant, ...report });
     console.log(
       JSON.stringify({
@@ -109,7 +121,7 @@ try {
       {
         baseline: '42d3840bb6c95b5412041a85ff2f63256c2bc545',
         method:
-          'ABAB; identical augmented StressRun in both production builds; HazardLayer active; 13 enemy kinds (bomber excluded to maintain constant load), 30 enemies + 400 bullets; seed 42; 1920×1080 DPR1; >=240 render frames after warm-up; no other browser tests running. Software renderer is not phone FPS.',
+          "ABAB; identical augmented StressRun in both production builds; HazardLayer active; rock overlap callback is a no-op in BOTH diagnostic builds to retain the capacity profile's no-projectile-consumption rule. 13 enemy kinds (bomber excluded), measured and asserted constant 30 enemies + 400 bullets; seed 42; 1920×1080 DPR1; >=240 render frames after warm-up; no other browser tests running. This is a rendering benchmark, not a collision test; software renderer is not phone FPS.",
         reports,
       },
       null,

@@ -2,8 +2,8 @@
   "audit": {
     "errors": [],
     "samples": 70,
-    "frozen": 37,
-    "cues": 24,
+    "frozen": 38,
+    "cues": 25,
     "children": 730,
     "textures": 22,
     "emptyGraphics": 5
@@ -206,9 +206,9 @@
       "column": 2,
       "kind": "naiwa_bomber",
       "move": "fuse",
-      "stage": "dead",
-      "stageTime": 0.35,
-      "stageSpan": 0.35,
+      "stage": "windup",
+      "stageTime": 0.8833333333333344,
+      "stageSpan": 0.9,
       "aimLocked": false,
       "label": "前摇末步",
       "rocks": 0
