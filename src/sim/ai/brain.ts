@@ -1,12 +1,11 @@
 import { BALANCE } from '../../data/balance';
 import type { EnemyDef } from '../../data/schema';
-import type { ActorMove, ActorView } from '../combat/api';
+import type { ActorMove, ActorStage, ActorView } from '../combat/api';
 import type { Vec2 } from '../core/types';
 import { chaseVelocity } from './chase';
 
 /** 招式所处阶段。`time` 是本阶段剩余秒数，`span` 是本阶段总时长（ADR 0030）。 */
-export type BrainStage =
-  'ready' | 'windup' | 'dash' | 'recover' | 'air' | 'active' | 'buried' | 'emerge' | 'spin' | 'stun';
+export type BrainStage = ActorStage;
 /** 当前阶段属于哪一招，与 api 的 ActorMove 相同；`none` 表示常规移动与射击（ADR 0030）。 */
 export type BrainMove = ActorMove;
 
@@ -89,18 +88,20 @@ export function moveEnemy(
   }
   if (brain.stage === 'ready') {
     brain.stage = 'windup';
-    brain.time = dash.windup;
+    // span 只给表现层算进度（ADR 0038），不参与冲锋判定。
+    brain.time = brain.span = dash.windup;
     brain.dirX = distance > 0 ? dx / distance : 1;
     brain.dirY = distance > 0 ? dy / distance : 0;
   } else if (brain.time <= 0) {
     if (brain.stage === 'windup') {
       brain.stage = 'dash';
-      brain.time = dash.duration;
+      brain.time = brain.span = dash.duration;
     } else if (brain.stage === 'dash') {
       brain.stage = 'recover';
-      brain.time = dash.recovery;
+      brain.time = brain.span = dash.recovery;
     } else {
       brain.stage = 'ready';
+      brain.span = 0;
     }
   }
   if (brain.stage === 'dash') {

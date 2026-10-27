@@ -24,6 +24,7 @@ import { Arsenal, type ArsenalHost } from '../weapons/Arsenal';
 import { Traps, standingBarrel, type TrapHost } from '../room/Traps';
 import type {
   ActorMove,
+  ActorStage,
   ActorPhase,
   ActorPose,
   ActorState,
@@ -95,6 +96,12 @@ interface Actor extends ActorView {
   lift: number;
   aim: number;
   move: ActorMove;
+  stage: ActorStage;
+  stageTime: number;
+  stageSpan: number;
+  aimLocked: boolean;
+  landX: number;
+  landY: number;
   /** 召唤者编号；0 表示不是被召唤出来的。 */
   parentId: number;
   chill: number;
@@ -239,6 +246,12 @@ function newActor(): Actor {
     lift: 0,
     aim: 0,
     move: 'none',
+    stage: 'ready',
+    stageTime: 0,
+    stageSpan: 0,
+    aimLocked: false,
+    landX: 0,
+    landY: 0,
     parentId: 0,
     chill: 0,
     frozen: false,
@@ -845,6 +858,7 @@ class CombatWorldImpl implements CombatWorld {
         }
         this.trapSystem.update(dt);
         for (const actor of this.actors) this.applyVelocity(actor);
+        this.refreshStages();
       }
       this.result.playerDead = this.playerDied;
       return this.result;
@@ -1093,6 +1107,8 @@ class CombatWorldImpl implements CombatWorld {
       this.actors.push(actor);
       this.byId.set(actor.id, actor);
     }
+    // 招式进度不存档，从已恢复的 AI 状态重算，读档首帧即与存档前一致（ADR 0038）。
+    this.refreshStages();
     for (const b of state.bullets) {
       const bullet = this.bulletPool.pop()!;
       bullet.id = b.id;
@@ -1144,6 +1160,9 @@ class CombatWorldImpl implements CombatWorld {
     actor.pose = 'idle';
     actor.lift = actor.aim = 0;
     actor.move = 'none';
+    actor.stage = 'ready';
+    actor.stageTime = actor.stageSpan = actor.landX = actor.landY = 0;
+    actor.aimLocked = false;
     actor.parentId = 0;
     const st = actor.status;
     st.stacks = st.per = st.time = st.freeze = 0;
@@ -1571,6 +1590,11 @@ class CombatWorldImpl implements CombatWorld {
   private finishBullet(bullet: Bullet): void {
     this.bullets.delete(bullet.id);
     this.bulletPool.push(bullet);
+  }
+
+  /** 每步末从 AI 状态推出全部怪物的招式视图（含冻住、预警与死亡中的），读档后同样调用一次。 */
+  private refreshStages(): void {
+    for (const a of this.actors) if (a.team === 'enemy') EnemyAi.stageView(a, this.bounds);
   }
 
   private updateEnemies(dt: number): void {

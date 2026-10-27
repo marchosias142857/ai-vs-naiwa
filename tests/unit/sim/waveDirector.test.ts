@@ -19,6 +19,12 @@ const ACTOR_DEFAULTS = {
   lift: 0,
   aim: 0,
   move: 'none' as const,
+  stage: 'ready' as const,
+  stageTime: 0,
+  stageSpan: 0,
+  aimLocked: false,
+  landX: 0,
+  landY: 0,
   chill: 0,
   frozen: false,
 };

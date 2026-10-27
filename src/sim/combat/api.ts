@@ -36,6 +36,12 @@ export type ActorPose = 'idle' | 'move' | 'windup' | 'attack' | 'air' | 'recover
 /** 当前招式（ADR 0030），给表现层画对应的预警；`none` 表示常规移动与射击。 */
 export type ActorMove =
   'none' | 'dash' | 'hop' | 'lash' | 'summon' | 'fuse' | 'burrow' | 'spin' | 'bump' | 'rain';
+/**
+ * 招式阶段（ADR 0038），与 AI 内部阶段同名。`ready` 表示没有在出招；常规射击（`move` 为 none）
+ * 的开火前摇记为 `windup`，开火后的后坐记为 `active`。
+ */
+export type ActorStage =
+  'ready' | 'windup' | 'dash' | 'recover' | 'air' | 'active' | 'buried' | 'emerge' | 'spin' | 'stun';
 
 /**
  * 实体的只读视图。对象由 sim 持有并在实体存活期间复用；读取字段即可，不要修改。
@@ -71,6 +77,24 @@ export interface ActorView {
   readonly aim: number;
   /** 正在进行的招式；玩家恒为 none。 */
   readonly move: ActorMove;
+  /**
+   * 招式阶段与进度（ADR 0038）：每个物理步末由 AI 状态推出，读档时重算，不另存。
+   * 表现层按 `stageTime / stageSpan` 选帧与做形变，不自建会漂移的动画时钟；冻住时两者都不变。
+   */
+  readonly stage: ActorStage;
+  /** 本阶段已过的秒数，0～`stageSpan`。 */
+  readonly stageTime: number;
+  /** 本阶段总秒数；`ready` 为 0。地下潜行可能提前结束，以阶段切换为准。 */
+  readonly stageSpan: number;
+  /** `aim` 是否已锁定：此后到本招结束方向不再改变（冲锋、舌击、冲撞、跳跃）。 */
+  readonly aimLocked: boolean;
+  /**
+   * 跳跃预计落点（ADR 0038），世界坐标，仅 `move === 'hop' && stage === 'air'` 时有效，其余为 0。
+   * 按当前位置与剩余滞空时间推算并限制在房间内，每步更新。路上无遮挡时与真实落点相差不超过一个物理步的位移；
+   * 被挡住或击退时随实际位置逐步收敛。
+   */
+  readonly landX: number;
+  readonly landY: number;
   /** 冰冻层数带来的移动减速比例，0～1（ADR 0031）；表现层据此染色。 */
   readonly chill: number;
   /** 是否被冻住：不行动、不移动、没有接触伤害（ADR 0031）。 */
