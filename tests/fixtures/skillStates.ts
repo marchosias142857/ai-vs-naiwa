@@ -202,3 +202,43 @@ export function skillStates(): SkillCase[] {
   cases.push({ name: 'falling_rocks', kind: 'naiwa_boss', move: 'rain', frames: rockFrames });
   return cases;
 }
+
+/** 从真实首帧推进到可读性评审要求的时间点，不手填阶段或落点。 */
+export function landingStates(cases: SkillCase[]): SkillSample[] {
+  const result: SkillSample[] = [];
+  const rain = cases.find((c) => c.name === 'falling_rocks')!.frames[0]!;
+  let world = createCombatWorld({ seed: 8, bus: new EventBus<GameEvents>(), godMode: true });
+  const advance = () => {
+    for (const a of world.actors) world.syncPosition(a.id, a.x + a.vx * DT, a.y + a.vy * DT);
+    world.step(DT, createInputFrame());
+  };
+  for (const target of [0, 0.3, 0.9, 1]) {
+    world = createCombatWorld({ seed: 8, bus: new EventBus<GameEvents>(), godMode: true });
+    const state = structuredClone(rain.state);
+    // Exact spawn boundary before the first decrement; other samples use actual sim steps.
+    if (target === 0) for (const rock of state.rocks) if (!rock.landed) rock.time = rock.fall;
+    world.load(state);
+    let previous = world.save();
+    for (let step = 0; step < 180; step++) {
+      const r = world.rocks.find((r) => r.active)!;
+      if (r.landed) break;
+      previous = world.save();
+      if (1 - r.time / r.fall >= target) break;
+      advance();
+    }
+    result.push({ ...rain, state: previous, events: [], explosions: [], label: `rock-${target}` });
+  }
+  for (const kind of ['naiwa_hopper', 'naiwa_boss']) {
+    const first = cases.find((c) => c.kind === kind && c.move === 'hop')!.frames[1]!;
+    result.push({ ...first, label: `${kind}-first` });
+    world = createCombatWorld({ seed: 8, bus: new EventBus<GameEvents>(), godMode: true });
+    world.load(first.state);
+    let last = world.save();
+    for (let step = 0; step < 180 && world.getActor(first.id)!.stage === 'air'; step++) {
+      last = world.save();
+      advance();
+    }
+    result.push({ ...first, state: last, events: [], explosions: [], label: `${kind}-last` });
+  }
+  return result;
+}

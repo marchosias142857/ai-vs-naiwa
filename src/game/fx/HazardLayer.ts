@@ -10,7 +10,7 @@ import type { GameEvents } from '../../sim/core/events';
 import { settings } from '../../services/settings';
 import type { CombatBridge } from '../world/CombatBridge';
 import { HAZARD_FX as H, ROCK_PIXELS, ROCK_PALETTE } from './hazardParams';
-import { drawSkillTell, landingShadow } from './skillTells';
+import { drawSkillTell, landingShadow, landingBoundary } from './skillTells';
 import { fxBudget, type FxBudget } from './FxBudget';
 
 interface Burst {
@@ -213,6 +213,7 @@ export class HazardLayer {
       // 从出现的首步起就标明落点，不因装饰预算耗尽而消失。
       const t = Math.max(0, Math.min(1, 1 - r.time / r.fall));
       landingShadow(this.ground, r.x, r.y, r.radius * (1 + t), r.radius * (1 + t), 0.25 + 0.45 * t);
+      landingBoundary(this.marks, r.x, r.y, r.radius * 2, r.radius * 2, t);
       if (r.time < 0.15 && this.budget.admit('spark', this.scene.cameras.main, r.x, r.y, r.radius)) {
         this.ground.fillStyle(0xfff1c2, 0.8);
         for (let k = 0; k < 6; k++) {
@@ -230,7 +231,8 @@ export class HazardLayer {
         .setPosition(r.x, r.y - (1 - t) * H.rockDrop)
         .setScale(size)
         .setAlpha(1)
-        .setDepth(DEPTH.fx);
+        // 下落末段也必须能看见边界，不能让石块贴图盖住 marks。
+        .setDepth(DEPTH.fx - 1);
     }
   }
 

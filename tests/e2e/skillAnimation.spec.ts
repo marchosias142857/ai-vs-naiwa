@@ -72,3 +72,14 @@ test('技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离', as
   expect(result.cues).toBeGreaterThan(15);
   await info.attach('skill-audit', { body: JSON.stringify(result), contentType: 'application/json' });
 });
+
+test('落点首步、早段、末段在零预算、冻结和读档下保持高对比四角', async ({ page }, info) => {
+  await page.goto(url);
+  await page.waitForFunction(() => window.landingAudit);
+  const result = await page.evaluate(() => window.landingAudit());
+  expect(result.errors).toEqual([]);
+  expect(result.records).toHaveLength(8);
+  expect(result.denseActors).toBe(30);
+  expect(result.denseRocks).toBe(7);
+  await info.attach('landing-audit', { body: JSON.stringify(result), contentType: 'application/json' });
+});

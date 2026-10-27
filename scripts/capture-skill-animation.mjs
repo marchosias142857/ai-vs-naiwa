@@ -68,6 +68,9 @@ try {
   const audit = await page.evaluate(() => window.skillAudit());
   if (audit.errors.length) throw Error(JSON.stringify(audit));
   console.log(JSON.stringify(audit));
+  const landingAudit = await page.evaluate(() => window.landingAudit());
+  if (landingAudit.errors.length) throw Error(JSON.stringify(landingAudit));
+  console.log(JSON.stringify(landingAudit));
   const rows = await page.evaluate(() => window.skillList());
   const metadata = [];
   const settle = () =>
@@ -128,9 +131,32 @@ try {
     `<h1>#101 · v4 怪物原生细节</h1><p>正式高清配置，1920×1080 画布的 1:1 局部；未改图集、未放大截图。巨爪：前摇首帧 / 前摇末帧。</p><div style="display:flex;gap:16px">${[0, 2].map((column) => `<div style="width:632px;height:440px;overflow:hidden;position:relative"><img style="position:absolute;width:1920px;max-width:none;left:-440px;top:-300px;image-rendering:auto" src="${url}/proof/0-${column}.png"></div>`).join('')}</div>`,
     'detail.png',
   );
+  // Native pixels at the two production camera zooms; no contact-sheet downscaling.
+  await gallery.setViewportSize({ width: 3904, height: 1200 });
+  const formal = [];
+  for (const zoom of [6, 8.5]) {
+    let html = `<h1>#120 落点可读性 · 正式相机 zoom ${zoom}</h1><p>1920×1080 / DPR 1 原生像素；左：首步，右：末步。${zoom === 6 ? '1080p 桌面相机' : 'Pixel 7 横屏相机近似值；此处展示原生画布，非真机截图'}。奶白四角为必要提示，透明度 0.9。</p>`;
+    for (const kind of ['rock', 'hopper', 'boss-hop', 'fuse', 'bump']) {
+      html += `<div class="name">${kind}</div><div style="display:flex;gap:16px">`;
+      for (const last of [false, true]) {
+        const sample = await page.evaluate(({ kind, last, zoom }) => window.formalTell(kind, last, zoom), {
+          kind,
+          last,
+          zoom,
+        });
+        formal.push(sample);
+        await settle();
+        const name = `formal-${zoom}-${kind}-${last}.png`;
+        await page.locator('#game canvas').screenshot({ path: join(temp, name) });
+        html += `<div style="width:1920px;flex:none"><div class="caption">${sample.label} · ${sample.time.toFixed(3)}/${sample.span.toFixed(3)}s · zoom ${zoom} · 1:1</div><img style="display:block;width:1920px;max-width:none" src="${url}/proof/${name}"></div>`;
+      }
+      html += '</div>';
+    }
+    await renderSheet(html, `formal-${zoom}.png`);
+  }
   await writeFile(
     join(out, 'samples.json'),
-    JSON.stringify({ render, audit, samples: metadata }, null, 2) + '\n',
+    JSON.stringify({ render, audit, landingAudit, formal, samples: metadata }, null, 2) + '\n',
   );
 } finally {
   await browser.close();

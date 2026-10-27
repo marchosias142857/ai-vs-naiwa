@@ -16,6 +16,177 @@
     "textures": 22,
     "emptyGraphics": 5
   },
+  "landingAudit": {
+    "errors": [],
+    "records": [
+      {
+        "label": "rock-0",
+        "markers": 7,
+        "segments": 56
+      },
+      {
+        "label": "rock-0.3",
+        "markers": 7,
+        "segments": 56
+      },
+      {
+        "label": "rock-0.9",
+        "markers": 4,
+        "segments": 32
+      },
+      {
+        "label": "rock-1",
+        "markers": 2,
+        "segments": 16
+      },
+      {
+        "label": "naiwa_hopper-first",
+        "markers": 1,
+        "segments": 8
+      },
+      {
+        "label": "naiwa_hopper-last",
+        "markers": 1,
+        "segments": 8
+      },
+      {
+        "label": "naiwa_boss-first",
+        "markers": 1,
+        "segments": 8
+      },
+      {
+        "label": "naiwa_boss-last",
+        "markers": 1,
+        "segments": 8
+      }
+    ],
+    "children": 730,
+    "textures": 22,
+    "denseActors": 30,
+    "denseRocks": 7
+  },
+  "formal": [
+    {
+      "label": "rock-0",
+      "zoom": 6,
+      "time": 1.3871391322743147,
+      "span": 1.3871391322743147
+    },
+    {
+      "label": "rock-1",
+      "zoom": 6,
+      "time": 0.003805798940981313,
+      "span": 1.3871391322743147
+    },
+    {
+      "label": "naiwa_hopper-first",
+      "zoom": 6,
+      "time": 0,
+      "span": 0.55
+    },
+    {
+      "label": "naiwa_hopper-last",
+      "zoom": 6,
+      "time": 0.55,
+      "span": 0.55
+    },
+    {
+      "label": "naiwa_boss-first",
+      "zoom": 6,
+      "time": 0,
+      "span": 0.8
+    },
+    {
+      "label": "naiwa_boss-last",
+      "zoom": 6,
+      "time": 0.7833333333333341,
+      "span": 0.8
+    },
+    {
+      "label": "fuse-first",
+      "zoom": 6,
+      "time": 0,
+      "span": 0.9
+    },
+    {
+      "label": "fuse-last",
+      "zoom": 6,
+      "time": 0.8833333333333344,
+      "span": 0.9
+    },
+    {
+      "label": "bump-first",
+      "zoom": 6,
+      "time": 0,
+      "span": 0.8
+    },
+    {
+      "label": "bump-last",
+      "zoom": 6,
+      "time": 0.7833333333333341,
+      "span": 0.8
+    },
+    {
+      "label": "rock-0",
+      "zoom": 8.5,
+      "time": 1.3871391322743147,
+      "span": 1.3871391322743147
+    },
+    {
+      "label": "rock-1",
+      "zoom": 8.5,
+      "time": 0.003805798940981313,
+      "span": 1.3871391322743147
+    },
+    {
+      "label": "naiwa_hopper-first",
+      "zoom": 8.5,
+      "time": 0,
+      "span": 0.55
+    },
+    {
+      "label": "naiwa_hopper-last",
+      "zoom": 8.5,
+      "time": 0.55,
+      "span": 0.55
+    },
+    {
+      "label": "naiwa_boss-first",
+      "zoom": 8.5,
+      "time": 0,
+      "span": 0.8
+    },
+    {
+      "label": "naiwa_boss-last",
+      "zoom": 8.5,
+      "time": 0.7833333333333341,
+      "span": 0.8
+    },
+    {
+      "label": "fuse-first",
+      "zoom": 8.5,
+      "time": 0,
+      "span": 0.9
+    },
+    {
+      "label": "fuse-last",
+      "zoom": 8.5,
+      "time": 0.8833333333333344,
+      "span": 0.9
+    },
+    {
+      "label": "bump-first",
+      "zoom": 8.5,
+      "time": 0,
+      "span": 0.8
+    },
+    {
+      "label": "bump-last",
+      "zoom": 8.5,
+      "time": 0.7833333333333341,
+      "span": 0.8
+    }
+  ],
   "samples": [
     {
       "row": 0,

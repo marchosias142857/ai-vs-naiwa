@@ -1,5 +1,5 @@
 {
-  "evidenceCommit": "8d2bc609dc5f61a00ecd3a023e227396cf79c70f",
+  "evidenceCommit": "46638945e6a7dc2a264b28aa5c889a058c9df86f",
   "files": [
     {
       "path": "docs/testing/skill-animation/detail.png",
@@ -11,21 +11,39 @@
       "remoteBytesIdentical": true
     },
     {
+      "path": "docs/testing/skill-animation/formal-6.png",
+      "bytes": 525260,
+      "width": 3904,
+      "height": 6001,
+      "sha256": "336ade78f76dc94698bc80a4798d0643c4c65210c3acaaf5c9d22fb7cfafdbfc",
+      "gitBlob": "d4c071a40c8bc02e03d2382e0ec0a2495b65fc42",
+      "remoteBytesIdentical": true
+    },
+    {
+      "path": "docs/testing/skill-animation/formal-8.5.png",
+      "bytes": 538630,
+      "width": 3904,
+      "height": 6001,
+      "sha256": "11325cca94a26b3ddf58fb87832525a1dde4fc624dabd8340010cb26aa91d88c",
+      "gitBlob": "19e312ca3bd0727ec6806b2f934f496619bc92f3",
+      "remoteBytesIdentical": true
+    },
+    {
       "path": "docs/testing/skill-animation/frozen.png",
-      "bytes": 196729,
+      "bytes": 203701,
       "width": 1968,
       "height": 1221,
-      "sha256": "0ec76a90325013f7e2363b9a0d21bdc3a151f334f79e7c3d135cb084198c6d1a",
-      "gitBlob": "278bb78ebb31eb86349b0e8df579b5e2c54f6cba",
+      "sha256": "989250bc378a80b370463e75134d54ec125409e1f70b090ad555c237705a3a45",
+      "gitBlob": "820ecdfee18f0cc9e210c4b4320a22bddbcfc3af",
       "remoteBytesIdentical": true
     },
     {
       "path": "docs/testing/skill-animation/keyframes-1.png",
-      "bytes": 1032274,
+      "bytes": 1032736,
       "width": 3928,
       "height": 2813,
-      "sha256": "a5d771200baff69d7a519b758c6eeb3f5b2644365b0c1347d56df12b8989bf8f",
-      "gitBlob": "85b08b46d2beb6ec7fd63482c469fac18e448ba0",
+      "sha256": "f34ac9fe98ca2c12c70acd00a71248585ebb3396ca164a6fac06b27353f0a4bd",
+      "gitBlob": "1a52a0046fadc7920cc0d83fcb3d2fe9a297ce7a",
       "remoteBytesIdentical": true
     },
     {
@@ -39,78 +57,39 @@
     },
     {
       "path": "docs/testing/skill-animation/keyframes-3.png",
-      "bytes": 1102028,
+      "bytes": 1119679,
       "width": 3928,
       "height": 2813,
-      "sha256": "9d2eda1be4b905ef7bec51fe0264c3017cd55333191b9f4b36583dd939e96a23",
-      "gitBlob": "bb7dffd5d45f7428ec4ad435e021f6d70d9dd01e",
+      "sha256": "7bca75b6d5bff99d63e105149645f0e4f517787e92ddea201ced252b453cf7d0",
+      "gitBlob": "33ed6bbba4a0b2fc027292c97ea19630915b83d9",
       "remoteBytesIdentical": true
     },
     {
       "path": "docs/testing/skill-animation/keyframes-4.png",
-      "bytes": 876178,
+      "bytes": 885256,
       "width": 3928,
       "height": 2279,
-      "sha256": "1d32b2fd4b76cce5b577ef09c25e13e6aca94147d4f49a58356a0b9005fed30e",
-      "gitBlob": "30739a6607961c0c92b0a62a58ceae4659966f2f",
+      "sha256": "072c6c2d0da6694873a16059cf9ca3ecacc07cc9f6f45960ef2d60490d17fbb5",
+      "gitBlob": "59c5cf7e8b934864cdb4a977d07ba89ef18c6448",
       "remoteBytesIdentical": true
     },
     {
       "path": "docs/testing/skill-animation/load.png",
-      "bytes": 196609,
+      "bytes": 203546,
       "width": 1968,
       "height": 1221,
-      "sha256": "c8cb3fd301c1cb69aa963b3341675e22f611a75f54fd80f4cbbc5a74e6459fec",
-      "gitBlob": "4a677fdba21e77b563e635f053143e3a10c67b3b",
+      "sha256": "819de4111a96a4b7d6cc8fb9b29d79c961ac681a3d948a033b883ff2cdaafe87",
+      "gitBlob": "bcdfd644070b46e0e28e6b31f41a545e59d0ad52",
       "remoteBytesIdentical": true
     },
     {
       "path": "docs/testing/skill-animation/zero.png",
-      "bytes": 196595,
+      "bytes": 203532,
       "width": 1968,
       "height": 1221,
-      "sha256": "be720cece2ee36708b36dc20888492dfca33e11a9f9da367ec3a565b2965355d",
-      "gitBlob": "2fc8f47f6f9c3a7753c7ed4ad24f4932eec1e191",
+      "sha256": "42da90eb9fce854307ae66f99bd996af10dffe889c8432a1e3924b6321c36516",
+      "gitBlob": "dd8068f0732769184e54651c076e3ace7daae284",
       "remoteBytesIdentical": true
     }
-  ],
-  "package": {
-    "baseline": {
-      "name": "index-DNwDU85H.js",
-      "bytes": 1657451,
-      "gzipBytes": 446809,
-      "precacheEntries": 20
-    },
-    "candidate": {
-      "name": "index-BAxG-RRE.js",
-      "bytes": 1662098,
-      "gzipBytes": 448495,
-      "precacheEntries": 20
-    }
-  },
-  "render": {
-    "width": 1920,
-    "height": 1080,
-    "cssWidth": 1920,
-    "cssHeight": 1080,
-    "imageRendering": "auto",
-    "dpr": 1
-  },
-  "hdVerification": {
-    "node": "22.23.4",
-    "check": "passed",
-    "unitFiles": 55,
-    "unitTests": 430,
-    "chromiumE2E": {
-      "passed": 2,
-      "failed": 0,
-      "skipped": 0,
-      "durationSeconds": 14.6,
-      "projects": ["desktop", "mobile-landscape"]
-    },
-    "runtimeReference": "0926b51a13d5dc15305b45ae351cefd162b9cdfb",
-    "runtimeSourceAssetsConfigUnchanged": true,
-    "historicalFullE2E": "e2e.json",
-    "historicalPerformance": "performance.json"
-  }
+  ]
 }

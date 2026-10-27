@@ -1,0 +1,169 @@
+{
+  "reviewedHead": "4610930520456c2c30dce3c98f8efca235c84b83",
+  "stats": {
+    "startTime": "2026-10-27T18:32:51.673Z",
+    "duration": 135750.54499999998,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "file": "monsterArt.spec.ts",
+      "title": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2501,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "monsterArt.spec.ts",
+      "title": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1640,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "monsterArt.spec.ts",
+      "title": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2778,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "monsterArt.spec.ts",
+      "title": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 1863,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "pwa.spec.ts",
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 17599,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "pwa.spec.ts",
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 30142,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "pwa.spec.ts",
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 19879,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "pwa.spec.ts",
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 33830,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "skillAnimation.spec.ts",
+      "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2785,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "skillAnimation.spec.ts",
+      "title": "落点首步、早段、末段在零预算、冻结和读档下保持高对比四角",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2404,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "skillAnimation.spec.ts",
+      "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2955,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "skillAnimation.spec.ts",
+      "title": "落点首步、早段、末段在零预算、冻结和读档下保持高对比四角",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 2481,
+          "retry": 0
+        }
+      ]
+    }
+  ]
+}

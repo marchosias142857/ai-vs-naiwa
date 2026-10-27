@@ -52,7 +52,7 @@ export function drawSkillTell(g: GameObjects.Graphics, a: ActorView): void {
   } else if (a.move === 'hop' && a.stage === 'air') {
     const art = a.kind === 'naiwa_boss' ? NAIGUAI_ART : MONSTER_ART[a.kind as keyof typeof MONSTER_ART];
     const offset = art?.shadowY === undefined ? a.radius : (art.shadowY - art.pivot.y) * art.scale;
-    const scale = 1.4 - 0.4 * p;
+    const scale = 1.3 - 0.3 * p;
     landingShadow(
       g,
       a.landX,
@@ -61,6 +61,7 @@ export function drawSkillTell(g: GameObjects.Graphics, a: ActorView): void {
       a.radius * P.shadowHeight * scale,
       0.35 + 0.4 * p,
     );
+    landingBoundary(g, a.landX, a.landY + offset, a.radius * P.shadowWidth, a.radius * P.shadowHeight, p);
   } else if (a.move === 'fuse' && def.fuse) {
     const count = a.stageSpan - a.stageTime <= 0.15 ? 8 : 1 + Math.floor(p * 7);
     for (let i = 0; i < count; i++) {
@@ -96,7 +97,7 @@ export function drawSkillTell(g: GameObjects.Graphics, a: ActorView): void {
   }
 }
 
-/** 暗影两端留短奶白边，深色地板上也能辨认；属于必要落点提示。 */
+/** 暗影填充与高对比边界分开，后者从首步起保持可辨认。 */
 export function landingShadow(
   g: GameObjects.Graphics,
   x: number,
@@ -106,9 +107,32 @@ export function landingShadow(
   alpha: number,
 ): void {
   g.fillStyle(DARK, alpha).fillEllipse(x, y, width, height);
-  g.fillStyle(CREAM, alpha)
-    .fillRect(x - width / 2, y - 0.5, 2, 1)
-    .fillRect(x + width / 2 - 2, y - 0.5, 2, 1);
+}
+
+/** 四角位于落点椭圆上，从 1.3 倍收到 1 倍；必要提示不申请 FxBudget。 */
+export function landingBoundary(
+  g: GameObjects.Graphics,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  progress: number,
+): void {
+  const scale = 1.3 - 0.3 * Math.max(0, Math.min(1, progress));
+  const rx = (width / 2) * scale * Math.SQRT1_2;
+  const ry = (height / 2) * scale * Math.SQRT1_2;
+  for (let i = 0; i < 4; i++) {
+    const sx = i % 2 ? 1 : -1;
+    const sy = i < 2 ? -1 : 1;
+    const cx = x + sx * rx,
+      cy = y + sy * ry;
+    // 黑色底线兼顾浅色地砖；奶白线固定 0.9 透明度，不脉动、不变淡。
+    for (let layer = 0; layer < 2; layer++) {
+      g.lineStyle(layer ? 1.5 : 3.5, layer ? CREAM : DARK, 0.9);
+      g.lineBetween(cx - sx * rx * 0.5, cy, cx, cy);
+      g.lineBetween(cx, cy, cx, cy - sy * ry * 0.5);
+    }
+  }
 }
 
 function stroke(g: GameObjects.Graphics, x: number, y: number, tx: number, ty: number, alpha: number): void {
