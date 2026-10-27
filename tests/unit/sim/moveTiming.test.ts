@@ -293,21 +293,37 @@ describe('招式进度视图（ADR 0038）', () => {
     expect(lashed).toBe(need);
   });
 
-  it('旧存档里没有 span 的冲锋：读档后从剩余时间起算，不出现负进度', () => {
-    const t = setup(2);
-    t.world.spawnPlayer('ai_proto', PLAYER.x, PLAYER.y);
-    const id = t.world.spawnEnemy('naiwa_charger', 60, 100);
-    let state: CombatWorldState | null = null;
-    for (let i = 0; i < 60 * 8 && !state; i++) {
-      t.step();
-      if (t.world.getActor(id)!.stage === 'windup') state = t.world.save();
-    }
-    const brain = state!.actors.find((a) => a.id === id)!.brain;
-    brain.span = 0;
-    const old = reload(state!, 2);
-    const a = old.world.getActor(id)!;
-    expect(a.stage).toBe('windup');
-    expect(a.stageTime).toBe(0);
-    expect(a.stageSpan).toBeCloseTo(brain.time, 9);
-  });
+  it.each(['windup', 'dash', 'recover'] as const)(
+    '旧冲锋存档 %s：恢复中途进度，推进、冻结与再读档一致',
+    (stage) => {
+      const t = setup(2);
+      t.world.spawnPlayer('ai_proto', PLAYER.x, PLAYER.y);
+      const id = t.world.spawnEnemy('naiwa_charger', 60, 100);
+      for (let i = 0; i < 60 * 8; i++) {
+        t.step();
+        const a = t.world.getActor(id)!;
+        if (a.stage === stage && a.stageTime > a.stageSpan / 3) break;
+      }
+      const expected = view(t.world.getActor(id)!);
+      expect(expected.stage).toBe(stage);
+      const state = t.world.save();
+      const saved = state.actors.find((a) => a.id === id)!;
+      saved.brain.span = 0;
+      const old = reload(state, 2);
+      expect(view(old.world.getActor(id)!)).toEqual(expected);
+      for (let i = 0; i < 6; i++) old.step();
+      expect(old.world.getActor(id)!.stageTime).toBeCloseTo(expected.stageTime + 6 * DT, 8);
+      expect(old.world.save().actors.find((a) => a.id === id)!.brain.span).toBe(0);
+      const frozen = old.world.save();
+      frozen.actors.find((a) => a.id === id)!.status.freeze = 1;
+      const f = reload(frozen, 2);
+      const before = view(f.world.getActor(id)!);
+      for (let i = 0; i < 6; i++) f.step();
+      expect([f.world.getActor(id)!.stageTime, f.world.getActor(id)!.stageSpan]).toEqual([
+        before.stageTime,
+        before.stageSpan,
+      ]);
+      expect(view(reload(f.world.save(), 2).world.getActor(id)!)).toEqual(view(f.world.getActor(id)!));
+    },
+  );
 });
