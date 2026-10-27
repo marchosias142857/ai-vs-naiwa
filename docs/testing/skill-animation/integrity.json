@@ -1,5 +1,5 @@
 {
-  "evidenceCommit": "46638945e6a7dc2a264b28aa5c889a058c9df86f",
+  "evidenceCommit": "7038b911668bfefa9bebdfaa79a7c760aaead27f",
   "files": [
     {
       "path": "docs/testing/skill-animation/detail.png",
@@ -12,38 +12,38 @@
     },
     {
       "path": "docs/testing/skill-animation/formal-6.png",
-      "bytes": 525260,
+      "bytes": 536671,
       "width": 3904,
       "height": 6001,
-      "sha256": "336ade78f76dc94698bc80a4798d0643c4c65210c3acaaf5c9d22fb7cfafdbfc",
-      "gitBlob": "d4c071a40c8bc02e03d2382e0ec0a2495b65fc42",
+      "sha256": "f275b0a7a60a2b77c394bb7dd8c5143b86ce0900b1f6e1ff71ee556189e16e0a",
+      "gitBlob": "ee28dca5c081d3cd61910b6a8704c0fc9560112c",
       "remoteBytesIdentical": true
     },
     {
       "path": "docs/testing/skill-animation/formal-8.5.png",
-      "bytes": 538630,
+      "bytes": 554063,
       "width": 3904,
       "height": 6001,
-      "sha256": "11325cca94a26b3ddf58fb87832525a1dde4fc624dabd8340010cb26aa91d88c",
-      "gitBlob": "19e312ca3bd0727ec6806b2f934f496619bc92f3",
+      "sha256": "224ead157b478881441dd85653bdf26a91a73c2dd705f001d2383c2703367c1e",
+      "gitBlob": "6272b680e8812930d797e20091dc3a72010bafed",
       "remoteBytesIdentical": true
     },
     {
       "path": "docs/testing/skill-animation/frozen.png",
-      "bytes": 203701,
+      "bytes": 202924,
       "width": 1968,
       "height": 1221,
-      "sha256": "989250bc378a80b370463e75134d54ec125409e1f70b090ad555c237705a3a45",
-      "gitBlob": "820ecdfee18f0cc9e210c4b4320a22bddbcfc3af",
+      "sha256": "a21672a2861e638cf12b32aa20d455fab14da4ea7fbfd10d90942b62d4045dd1",
+      "gitBlob": "92a462d95301c34a020e94b516ff90cd8ddefb61",
       "remoteBytesIdentical": true
     },
     {
       "path": "docs/testing/skill-animation/keyframes-1.png",
-      "bytes": 1032736,
+      "bytes": 1031391,
       "width": 3928,
       "height": 2813,
-      "sha256": "f34ac9fe98ca2c12c70acd00a71248585ebb3396ca164a6fac06b27353f0a4bd",
-      "gitBlob": "1a52a0046fadc7920cc0d83fcb3d2fe9a297ce7a",
+      "sha256": "ea5b2ced1af4d9fa7921b51355ed66a3595db0350be7cd6a37a323b4b2ffc1f9",
+      "gitBlob": "d99aef8824177c74ea16bfb5e51d255a5247ef48",
       "remoteBytesIdentical": true
     },
     {
@@ -57,38 +57,38 @@
     },
     {
       "path": "docs/testing/skill-animation/keyframes-3.png",
-      "bytes": 1119679,
+      "bytes": 1117138,
       "width": 3928,
       "height": 2813,
-      "sha256": "7bca75b6d5bff99d63e105149645f0e4f517787e92ddea201ced252b453cf7d0",
-      "gitBlob": "33ed6bbba4a0b2fc027292c97ea19630915b83d9",
+      "sha256": "508bfe224f0017ae1a5f2e878f2748dec9dcac8495460b2d1478b3cdc0cc0a72",
+      "gitBlob": "8118f5d8dc3a0c41bb0f6b38016c14d43177a4b3",
       "remoteBytesIdentical": true
     },
     {
       "path": "docs/testing/skill-animation/keyframes-4.png",
-      "bytes": 885256,
+      "bytes": 882371,
       "width": 3928,
       "height": 2279,
-      "sha256": "072c6c2d0da6694873a16059cf9ca3ecacc07cc9f6f45960ef2d60490d17fbb5",
-      "gitBlob": "59c5cf7e8b934864cdb4a977d07ba89ef18c6448",
+      "sha256": "b7a67550a8f896709ffdc5dd09eee11f51c364dfb2587ba2da3725129631108c",
+      "gitBlob": "174608090fb4ffdbb8eba4e75f1a40c7977862cb",
       "remoteBytesIdentical": true
     },
     {
       "path": "docs/testing/skill-animation/load.png",
-      "bytes": 203546,
+      "bytes": 202778,
       "width": 1968,
       "height": 1221,
-      "sha256": "819de4111a96a4b7d6cc8fb9b29d79c961ac681a3d948a033b883ff2cdaafe87",
-      "gitBlob": "bcdfd644070b46e0e28e6b31f41a545e59d0ad52",
+      "sha256": "4c8ed4896df5bd7116f96bf006db3cfea52d7c1d5ce635c41d06a28247fe46b7",
+      "gitBlob": "9982d179ba1da1986a92f63e6be672574b2b1238",
       "remoteBytesIdentical": true
     },
     {
       "path": "docs/testing/skill-animation/zero.png",
-      "bytes": 203532,
+      "bytes": 202764,
       "width": 1968,
       "height": 1221,
-      "sha256": "42da90eb9fce854307ae66f99bd996af10dffe889c8432a1e3924b6321c36516",
-      "gitBlob": "dd8068f0732769184e54651c076e3ace7daae284",
+      "sha256": "fb32d09beddb6888f0c1c5d685c00fc81c0076ebdb869ca4c7c2439e41164fb7",
+      "gitBlob": "7f55653f0acd7f98cd5f11afb961390549765bbb",
       "remoteBytesIdentical": true
     }
   ]

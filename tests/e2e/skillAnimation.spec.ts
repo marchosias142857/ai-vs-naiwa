@@ -73,7 +73,7 @@ test('技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离', as
   await info.attach('skill-audit', { body: JSON.stringify(result), contentType: 'application/json' });
 });
 
-test('落点首步、早段、末段在零预算、冻结和读档下保持高对比四角', async ({ page }, info) => {
+test('落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致', async ({ page }, info) => {
   await page.goto(url);
   await page.waitForFunction(() => window.landingAudit);
   const result = await page.evaluate(() => window.landingAudit());

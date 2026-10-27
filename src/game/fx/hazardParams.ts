@@ -20,6 +20,7 @@ export const HAZARD_FX = {
   starColor: 0xffe36a,
   starSpeed: 6,
   rockDrop: 60,
+  rockTellColor: 0xf05a4f,
   rockCrumble: 0.5,
   /** 石块碰撞方块边长 = 半径 × 这个倍数。 */
   rockBody: 1.7,

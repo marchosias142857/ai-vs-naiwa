@@ -6,9 +6,6 @@ import { EnemyArt } from '../../src/game/entities/EnemyArt';
 import { CombatBridge } from '../../src/game/world/CombatBridge';
 import { HazardLayer } from '../../src/game/fx/HazardLayer';
 import { CombatFeedback } from '../../src/game/fx/CombatFeedback';
-import { MONSTER_ART } from '../../src/data/monsterArt';
-import { NAIGUAI_ART } from '../../src/data/naiguaiArt';
-import { PRESENTATION } from '../../src/data/presentation';
 import { drawSkillTell } from '../../src/game/fx/skillTells';
 import { fxBudget } from '../../src/game/fx/FxBudget';
 import { createCombatWorld, type CombatWorldState } from '../../src/sim/combat/api';
@@ -160,7 +157,8 @@ class SkillScene extends Scene {
       };
       GameObjects.Graphics.prototype.lineBetween = function (x1, y1, x2, y2) {
         const style = styles.get(this);
-        if (style?.[0] === 1.5 && style[1] === 0xfff1c2) segments.push([x1, y1, x2, y2, style[2]!]);
+        if (style?.[0] === 0.7 && (style[1] === 0xfff1c2 || style[1] === 0xf05a4f))
+          segments.push([x1, y1, x2, y2, style[2]!, style[1]!]);
         return originalLine.call(this, x1, y1, x2, y2);
       };
       const capture = () => {
@@ -192,37 +190,36 @@ class SkillScene extends Scene {
             if (sample.label === 'rock-1') check(r.time > 0 && r.time <= 1 / 60, 'missing final-rock sample');
           }
           const expected: number[][] = [];
-          // Independent expected extents: four corners lie on the true ellipse at +/-45 degrees.
+          // Independent contract: box sides reach the true radius; player radius is not added to the art.
           for (const r of sim.rocks)
             if (r.active && !r.landed) {
               const p = Math.max(0, Math.min(1, 1 - r.time / r.fall));
-              expected.push([r.x, r.y, r.radius, r.radius, p]);
+              expected.push([r.x, r.y, r.radius, r.radius, p, 0xf05a4f]);
             }
           for (const a of sim.actors)
             if (a.phase === 'active' && a.move === 'hop' && a.stage === 'air') {
-              const art =
-                a.kind === 'naiwa_boss' ? NAIGUAI_ART : MONSTER_ART[a.kind as keyof typeof MONSTER_ART];
-              const offset = art?.shadowY === undefined ? a.radius : (art.shadowY - art.pivot.y) * art.scale;
-              expected.push([
-                a.landX,
-                a.landY + offset,
-                (a.radius * PRESENTATION.shadowWidth) / 2,
-                (a.radius * PRESENTATION.shadowHeight) / 2,
-                a.stageTime / a.stageSpan,
-              ]);
+              if (a.kind === 'naiwa_hopper') {
+                tells.clear();
+                const empty = JSON.stringify(tells.commandBuffer);
+                drawSkillTell(tells, a);
+                check(JSON.stringify(tells.commandBuffer) === empty, 'hopper retained landing hint');
+              } else if (a.kind === 'naiwa_boss') {
+                const half = Math.max(a.radius, 6) * 1.5;
+                expected.push([a.landX, a.landY, half, half, a.stageTime / a.stageSpan, 0xfff1c2]);
+              }
             }
           const normal = capture();
-          check(expected.length > 0, `${sample.label}: no actual landing`);
-          check(segments.length === expected.length * 8, `${sample.label}: missing corner segments`);
+          const geometry: object[] = [];
+          check(segments.length === expected.length * 12, `${sample.label}: missing corner segments`);
           for (let i = 0; i < expected.length; i++) {
-            const [x, y, rx, ry, p] = expected[i]!;
-            const group = segments.slice(i * 8, i * 8 + 8);
+            const [x, y, rx, ry, p, color] = expected[i]!;
+            const group = segments.slice(i * 12, i * 12 + 12);
             const xs = group.flatMap((s) => [s[0]!, s[2]!]);
             const ys = group.flatMap((s) => [s[1]!, s[3]!]);
-            const scale = (1.3 - 0.3 * p!) / Math.sqrt(2);
+            const scale = 1.3 - 0.3 * p!;
             check(
-              group.every((s) => s[4]! >= 0.75),
-              `${sample.label}: low opacity`,
+              group.every((s) => s[4]! >= 0.75 && s[5] === color),
+              `${sample.label}: wrong color or low opacity`,
             );
             check(
               Math.abs(Math.min(...xs) - (x! - rx! * scale)) < 1e-6 &&
@@ -231,6 +228,19 @@ class SkillScene extends Scene {
                 Math.abs(Math.max(...ys) - (y! + ry! * scale)) < 1e-6,
               `${sample.label}: wrong landing bounds`,
             );
+            const halfWidth = (Math.max(...xs) - Math.min(...xs)) / (2 * scale);
+            const halfHeight = (Math.max(...ys) - Math.min(...ys)) / (2 * scale);
+            const radiusContract = Math.abs(halfWidth - rx!) < 1e-6 && Math.abs(halfHeight - ry!) < 1e-6;
+            check(radiusContract, `${sample.label}: unscaled radius contract`);
+            geometry.push({
+              kind: color === 0xf05a4f ? 'rock' : 'boss-hop',
+              center: [x, y],
+              progress: p,
+              scale,
+              expectedHalfSize: [rx, ry],
+              actualUnscaledHalfSize: [halfWidth, halfHeight],
+              radiusContract,
+            });
           }
           for (const mode of ['zero', 'frozen', 'load']) {
             load(sample, mode);
@@ -239,7 +249,14 @@ class SkillScene extends Scene {
             for (let i = 0; i < 10; i++) render();
             check(capture() === normal, `${sample.label}/${mode}: render clock changed boundary`);
           }
-          records.push({ label: sample.label, markers: expected.length, segments: expected.length * 8 });
+          records.push({
+            label: sample.label,
+            markers: expected.length,
+            segments: expected.length * 12,
+            geometry,
+            modesIdentical: ['normal', 'zero', 'frozen', 'load'],
+            hopperHintRemoved: sample.label.startsWith('naiwa_hopper'),
+          });
         }
         window.skillDense('zero');
         const children = this.children.length,

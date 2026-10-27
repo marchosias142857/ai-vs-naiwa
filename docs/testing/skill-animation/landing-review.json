@@ -1,12 +1,300 @@
 {
-  "reviewedHead": "4610930520456c2c30dce3c98f8efca235c84b83",
+  "reviewedHead": "4decfeae2bb76bf4a39bee540aa766041f03dfab",
+  "reviewId": 5672582315,
+  "verifiedSourceTree": "5a1a9881dc4d690f735de2904ec2ad680eddf42f",
+  "ownerRevision": "No separate hopper landing hint; refined red rock corners; cream square boss-slam corners.",
   "stats": {
-    "startTime": "2026-10-27T18:32:51.673Z",
-    "duration": 135750.54499999998,
+    "startTime": "2026-10-27T18:54:19.812Z",
+    "duration": 126953.885,
     "expected": 12,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
+  },
+  "geometryAssertions": {
+    "rockUnscaledHalfWidth": "r.radius",
+    "rockUnscaledHalfHeight": "r.radius",
+    "bossUnscaledHalfSide": "max(a.radius, 6) * 1.5",
+    "hopperLandingHint": "absent (owner direction supersedes prior review)",
+    "scale": "1.3 - 0.3 * progress",
+    "modes": ["normal", "zero", "frozen", "load"],
+    "audit": {
+      "errors": [],
+      "records": [
+        {
+          "label": "rock-0",
+          "markers": 7,
+          "segments": 84,
+          "geometry": [
+            {
+              "kind": "rock",
+              "center": [260, 130],
+              "progress": 0,
+              "scale": 1.3,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999996],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [317.41428930402043, 80.27294258580213],
+              "progress": 0,
+              "scale": 1.3,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999991, 9.000000000000002],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [260.61746455812033, 70.43733831062656],
+              "progress": 0,
+              "scale": 1.3,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999991, 9.000000000000002],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [238.17175001656045, 158.57529727270963],
+              "progress": 0,
+              "scale": 1.3,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [248.69882475912704, 183.1823339822589],
+              "progress": 0,
+              "scale": 1.3,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [242.55808822714152, 140.89849111423368],
+              "progress": 0,
+              "scale": 1.3,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [243.13007563239114, 203.74361521577447],
+              "progress": 0,
+              "scale": 1.3,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999991, 8.999999999999991],
+              "radiusContract": true
+            }
+          ],
+          "modesIdentical": ["normal", "zero", "frozen", "load"],
+          "hopperHintRemoved": false
+        },
+        {
+          "label": "rock-0.3",
+          "markers": 7,
+          "segments": 84,
+          "geometry": [
+            {
+              "kind": "rock",
+              "center": [260, 130],
+              "progress": 0.30037842417689586,
+              "scale": 1.2098864727469314,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999993, 9.000000000000005],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [317.41428930402043, 80.27294258580213],
+              "progress": 0.3017971368156084,
+              "scale": 1.2094608589553175,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999995, 8.999999999999995],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [260.61746455812033, 70.43733831062656],
+              "progress": 0.35561268749459407,
+              "scale": 1.193316193751622,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999995, 8.999999999999996],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [238.17175001656045, 158.57529727270963],
+              "progress": 0.3684340855652788,
+              "scale": 1.1894697743304163,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [9.00000000000001, 9.00000000000001],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [248.69882475912704, 183.1823339822589],
+              "progress": 0.290385880719773,
+              "scale": 1.2128842357840681,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [9.000000000000007, 9.000000000000007],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [242.55808822714152, 140.89849111423368],
+              "progress": 0.3424005984293913,
+              "scale": 1.1972798204711828,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [9.000000000000009, 9.000000000000009],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [243.13007563239114, 203.74361521577447],
+              "progress": 0.32724532452945776,
+              "scale": 1.2018264026411627,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [9.000000000000004, 9.000000000000004],
+              "radiusContract": true
+            }
+          ],
+          "modesIdentical": ["normal", "zero", "frozen", "load"],
+          "hopperHintRemoved": false
+        },
+        {
+          "label": "rock-0.9",
+          "markers": 4,
+          "segments": 48,
+          "geometry": [
+            {
+              "kind": "rock",
+              "center": [260, 130],
+              "progress": 0.9011352725306905,
+              "scale": 1.029659418240793,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [9.000000000000009, 8.999999999999995],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [317.41428930402043, 80.27294258580213],
+              "progress": 0.9053914104468277,
+              "scale": 1.0283825768659518,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [9.000000000000007, 8.999999999999995],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [248.69882475912704, 183.1823339822589],
+              "progress": 0.871157642159322,
+              "scale": 1.0386527073522034,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [9.000000000000002, 9.000000000000002],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [243.13007563239114, 203.74361521577447],
+              "progress": 0.9817359735883748,
+              "scale": 1.0054792079234876,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [9.000000000000012, 9.000000000000012],
+              "radiusContract": true
+            }
+          ],
+          "modesIdentical": ["normal", "zero", "frozen", "load"],
+          "hopperHintRemoved": false
+        },
+        {
+          "label": "rock-1",
+          "markers": 2,
+          "segments": 24,
+          "geometry": [
+            {
+              "kind": "rock",
+              "center": [260, 130],
+              "progress": 0.9972563682672975,
+              "scale": 1.0008230895198107,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999988, 9.000000000000002],
+              "radiusContract": true
+            },
+            {
+              "kind": "rock",
+              "center": [248.69882475912704, 183.1823339822589],
+              "progress": 0.9640811239896496,
+              "scale": 1.010775662803105,
+              "expectedHalfSize": [9, 9],
+              "actualUnscaledHalfSize": [8.999999999999996, 8.999999999999996],
+              "radiusContract": true
+            }
+          ],
+          "modesIdentical": ["normal", "zero", "frozen", "load"],
+          "hopperHintRemoved": false
+        },
+        {
+          "label": "naiwa_hopper-first",
+          "markers": 0,
+          "segments": 0,
+          "geometry": [],
+          "modesIdentical": ["normal", "zero", "frozen", "load"],
+          "hopperHintRemoved": true
+        },
+        {
+          "label": "naiwa_hopper-last",
+          "markers": 0,
+          "segments": 0,
+          "geometry": [],
+          "modesIdentical": ["normal", "zero", "frozen", "load"],
+          "hopperHintRemoved": true
+        },
+        {
+          "label": "naiwa_boss-first",
+          "markers": 1,
+          "segments": 12,
+          "geometry": [
+            {
+              "kind": "boss-hop",
+              "center": [260, 130],
+              "progress": 0,
+              "scale": 1.3,
+              "expectedHalfSize": [21, 21],
+              "actualUnscaledHalfSize": [21.000000000000007, 21.000000000000004],
+              "radiusContract": true
+            }
+          ],
+          "modesIdentical": ["normal", "zero", "frozen", "load"],
+          "hopperHintRemoved": false
+        },
+        {
+          "label": "naiwa_boss-last",
+          "markers": 1,
+          "segments": 12,
+          "geometry": [
+            {
+              "kind": "boss-hop",
+              "center": [259.99999999999994, 130],
+              "progress": 0.9791666666666676,
+              "scale": 1.0062499999999996,
+              "expectedHalfSize": [21, 21],
+              "actualUnscaledHalfSize": [20.99999999999999, 21],
+              "radiusContract": true
+            }
+          ],
+          "modesIdentical": ["normal", "zero", "frozen", "load"],
+          "hopperHintRemoved": false
+        }
+      ],
+      "children": 730,
+      "textures": 22,
+      "denseActors": 30,
+      "denseRocks": 7
+    }
   },
   "tests": [
     {
@@ -17,7 +305,7 @@
       "results": [
         {
           "status": "passed",
-          "duration": 2501,
+          "duration": 2359,
           "retry": 0
         }
       ]
@@ -30,7 +318,7 @@
       "results": [
         {
           "status": "passed",
-          "duration": 1640,
+          "duration": 1632,
           "retry": 0
         }
       ]
@@ -43,7 +331,7 @@
       "results": [
         {
           "status": "passed",
-          "duration": 2778,
+          "duration": 2557,
           "retry": 0
         }
       ]
@@ -56,7 +344,7 @@
       "results": [
         {
           "status": "passed",
-          "duration": 1863,
+          "duration": 1456,
           "retry": 0
         }
       ]
@@ -69,7 +357,7 @@
       "results": [
         {
           "status": "passed",
-          "duration": 17599,
+          "duration": 15654,
           "retry": 0
         }
       ]
@@ -82,7 +370,7 @@
       "results": [
         {
           "status": "passed",
-          "duration": 30142,
+          "duration": 28466,
           "retry": 0
         }
       ]
@@ -95,7 +383,7 @@
       "results": [
         {
           "status": "passed",
-          "duration": 19879,
+          "duration": 18022,
           "retry": 0
         }
       ]
@@ -108,7 +396,7 @@
       "results": [
         {
           "status": "passed",
-          "duration": 33830,
+          "duration": 31637,
           "retry": 0
         }
       ]
@@ -121,20 +409,20 @@
       "results": [
         {
           "status": "passed",
-          "duration": 2785,
+          "duration": 2819,
           "retry": 0
         }
       ]
     },
     {
       "file": "skillAnimation.spec.ts",
-      "title": "落点首步、早段、末段在零预算、冻结和读档下保持高对比四角",
+      "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
       "project": "desktop",
       "status": "expected",
       "results": [
         {
           "status": "passed",
-          "duration": 2404,
+          "duration": 2435,
           "retry": 0
         }
       ]
@@ -147,23 +435,27 @@
       "results": [
         {
           "status": "passed",
-          "duration": 2955,
+          "duration": 2613,
           "retry": 0
         }
       ]
     },
     {
       "file": "skillAnimation.spec.ts",
-      "title": "落点首步、早段、末段在零预算、冻结和读档下保持高对比四角",
+      "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
       "project": "mobile-landscape",
       "status": "expected",
       "results": [
         {
           "status": "passed",
-          "duration": 2481,
+          "duration": 2133,
           "retry": 0
         }
       ]
     }
+  ],
+  "limits": [
+    "WebKit/Safari/real devices not tested",
+    "No full E2E suite or FPS benchmark rerun; old results are historical"
   ]
 }

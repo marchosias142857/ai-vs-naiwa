@@ -49,7 +49,7 @@ export function drawSkillTell(g: GameObjects.Graphics, a: ActorView): void {
       stroke(g, x - cx * 8 - cy * 6, y - cy * 8 + cx * 6, x, y, alpha);
       stroke(g, x, y, x - cx * 8 + cy * 6, y - cy * 8 - cx * 6, alpha);
     }
-  } else if (a.move === 'hop' && a.stage === 'air') {
+  } else if (a.kind === 'naiwa_boss' && a.move === 'hop' && a.stage === 'air') {
     const art = a.kind === 'naiwa_boss' ? NAIGUAI_ART : MONSTER_ART[a.kind as keyof typeof MONSTER_ART];
     const offset = art?.shadowY === undefined ? a.radius : (art.shadowY - art.pivot.y) * art.scale;
     const scale = 1.3 - 0.3 * p;
@@ -61,7 +61,9 @@ export function drawSkillTell(g: GameObjects.Graphics, a: ActorView): void {
       a.radius * P.shadowHeight * scale,
       0.35 + 0.4 * p,
     );
-    landingBoundary(g, a.landX, a.landY + offset, a.radius * P.shadowWidth, a.radius * P.shadowHeight, p);
+    // 砸地范围围绕身体圆心，不随脚底影子偏移或压扁；蓄跳蛙按负责人要求不画落点提示。
+    const side = Math.max(a.radius, 6) * 3;
+    landingBoundary(g, a.landX, a.landY, side, side, p);
   } else if (a.move === 'fuse' && def.fuse) {
     const count = a.stageSpan - a.stageTime <= 0.15 ? 8 : 1 + Math.floor(p * 7);
     for (let i = 0; i < count; i++) {
@@ -109,7 +111,7 @@ export function landingShadow(
   g.fillStyle(DARK, alpha).fillEllipse(x, y, width, height);
 }
 
-/** 四角位于落点椭圆上，从 1.3 倍收到 1 倍；必要提示不申请 FxBudget。 */
+/** 四角框外接落点范围，从 1.3 倍收到 1 倍；细描边与短切角保持原生渲染精度。 */
 export function landingBoundary(
   g: GameObjects.Graphics,
   x: number,
@@ -117,20 +119,23 @@ export function landingBoundary(
   width: number,
   height: number,
   progress: number,
+  color = CREAM,
 ): void {
   const scale = 1.3 - 0.3 * Math.max(0, Math.min(1, progress));
-  const rx = (width / 2) * scale * Math.SQRT1_2;
-  const ry = (height / 2) * scale * Math.SQRT1_2;
+  const rx = (width / 2) * scale;
+  const ry = (height / 2) * scale;
+  const bevel = Math.min(rx, ry) * 0.08;
   for (let i = 0; i < 4; i++) {
     const sx = i % 2 ? 1 : -1;
     const sy = i < 2 ? -1 : 1;
     const cx = x + sx * rx,
       cy = y + sy * ry;
-    // 黑色底线兼顾浅色地砖；奶白线固定 0.9 透明度，不脉动、不变淡。
+    // 细深色底线兼顾浅色地砖；主线固定 0.9 透明度。切角仍触及 ±rx/ry。
     for (let layer = 0; layer < 2; layer++) {
-      g.lineStyle(layer ? 1.5 : 3.5, layer ? CREAM : DARK, 0.9);
-      g.lineBetween(cx - sx * rx * 0.5, cy, cx, cy);
-      g.lineBetween(cx, cy, cx, cy - sy * ry * 0.5);
+      g.lineStyle(layer ? 0.7 : 1.25, layer ? color : DARK, 0.9);
+      g.lineBetween(cx - sx * rx * 0.42, cy, cx - sx * bevel, cy);
+      g.lineBetween(cx - sx * bevel, cy, cx, cy - sy * bevel);
+      g.lineBetween(cx, cy - sy * bevel, cx, cy - sy * ry * 0.42);
     }
   }
 }
