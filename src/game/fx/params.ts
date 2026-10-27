@@ -94,3 +94,16 @@ export const RESUME_UI = {
   fill: 0x081b29,
   ring: 0x91f3e7,
 } as const;
+
+/** 图鉴专用 UI 输入；不改变战斗按钮映射。 */
+export const BESTIARY_UI = {
+  key: 'KeyI',
+  open: 2,
+  back: 1,
+  left: 14,
+  right: 15,
+  dragPixels: 8,
+  delay: 300,
+  repeat: 120,
+  scrollSpeed: 260,
+} as const;
