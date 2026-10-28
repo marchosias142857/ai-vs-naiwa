@@ -13,7 +13,7 @@
 落石候选耗尽会跳过且不抽 stagger，因此不能声称运行结果或 RNG 与未接线 main 始终相同。
 玩家武器继续走原有 LOS。
 
-## 本轮本地检查
+## 首次交付检查（复审前）
 
 Node 22；完整 `npm run check` 通过：59 文件 / 482 单测，Prettier 3.9.10、
 ESLint、TypeScript 与 Vite/PWA 构建全绿。入口包 1,669.57 kB / gzip 457.90 kB，
@@ -80,7 +80,9 @@ candidate 顺序执行。相同 seed=42、1920×1080 DPR1、标准 capacity-30x4
 每轮预热后重置计时，至少采样 240 个真实渲染帧；导出的每轮报告必须满足 30 怪、
 400 弹恒定。测量期间不并行运行其他浏览器测试。
 
-该配置含 Boss 等既有 7 类怪物，保留标准压力场景的无伤害/弹丸不消耗规则。
+该配置只含苇腿蛙、巨爪蛙、陶甲蛙、鼓腮蛙、菌冠蛙、角冲蛙和奶怪这 7 类怪物，
+保留标准压力场景的无伤害/弹丸不消耗规则。**不包含蓄跳蛙、负卵蛙或腹囊蛙**，
+因此未覆盖它们的跳跃截断、召唤落位和死亡分裂查询负载。
 StressRun 本身没有 HazardLayer，故报告覆盖新增几何/AI/导航与标准渲染的整体开销，
 不代表密集石块雨特效负载。实际石块雨碰撞与落点另由上述真实 DemoSession 测试验证。
 软件渲染的 FPS 不能外推为 Safari/iPhone 真机帧率，未做堆分配剖析或 30 分钟稳定性测试。
@@ -100,8 +102,97 @@ StressRun 本身没有 HazardLayer，故报告覆盖新增几何/AI/导航与标
 两对的 FPS/p95 差值方向不同，短样本中没有一致的性能退化信号；不据此宣称性能提升，
 也不能证明所有设备无开销。上述低 FPS 来自此软件渲染环境，本次未提供真机达标结论。
 
+## Claude 复审补充
+
+Claude review [5677147146](https://github.com/marchosias142857/ai-vs-naiwa/pull/127#pullrequestreview-5677147146)
+确认 head `7b35765d32cce4d840816a1914fcf3669d5f54af` 的生产接线与新增 Arcade 用例正确，无阻塞代码问题。
+本轮按建议补充剩余 E2E、main 整批执行对照和报告 head 标识；不改生产逻辑。
+
+原有 regressions / existing-regressions / performance 三份 JSON 的 `head` 指向可复现运行代码的 `7b35765`。原执行发生在提交前工作树，
+当时 checkout HEAD 为 `82fb32b`；`headProvenance` 明确说明该区别，原时间戳和测试结果保留。
+本次补测直接在已提交的 `7b35765` 上运行，运行时与测试源码保持干净；不能把旧结果说成又跑了一遍。
+
+补测方法：候选每次以一个剩余 spec 文件名筛选并启动独立 Playwright 进程，桌面 + 手机横屏 Chromium，
+`workers=1`、`retries=0`；main 在独立 checkout 重新构建原始生产包，不复制候选夹具，
+一次整批运行仓库原有的三个 project（含 WebKit）。首轮两组正确性测试并行，隔离复跑和第二轮 main 整批运行则独占执行；未将批次耗时用作性能对照。
+沿用测试断言和单项超时，只替换本地缓存的 Chromium 路径/SwiftShader 参数、端口及报告目录；
+额外记录逐项进度，另设连续 180 秒无测试进展的看门狗；整批预算首轮 20 分钟，main 独占复跑 40 分钟。
+未启用远端 CI。
+
+标准 Playwright 环境下，分文件命令为：
+
+```bash
+npx playwright test tests/e2e/entities.spec.ts --project=desktop --project=mobile-landscape --workers=1 --retries=0
+```
+
+将文件名依次替换为报告中的各文件；原始 main 整批命令为 `npx playwright test --workers=1 --retries=0`。
+仓库配置会先构建生产包；本地补测采用预先构建的包启动 preview，运行过程中未修改源码。
+
+### 候选剩余文件补测
+
+[remaining-regressions.json](production-geometry/remaining-regressions.json) 记录 22 个文件名筛选进程，
+覆盖 **162 个不同用例：首轮 143 通过、17 条件跳过、2 失败**。每次以一个 spec 文件名筛选；
+Playwright 子串匹配使 lifecycle/art 两批还包含图鉴生命周期/怪物美术，报告保留这 6 次额外执行，
+`totals` 按真实文件、用例、project 去重，`rawTotals` 则保留实际执行数量。
+
+Claude 指定的九个文件结果（均为桌面 + 手机横屏）：
+
+| spec         | 通过 | 条件跳过 | 失败 |
+| ------------ | ---: | -------: | ---: |
+| `entities`   |   46 |        0 |    0 |
+| `roomCamera` |    8 |        2 |    0 |
+| `combat`     |    5 |        1 |    0 |
+| `lifecycle`  |    6 |        0 |    0 |
+| `smoke`      |    4 |        0 |    0 |
+| `mobileFire` |    5 |        5 |    0 |
+| `aim`        |    2 |        2 |    0 |
+| `input`      |    5 |        1 |    0 |
+| `talents`    |    9 |        1 |    0 |
+
+另补齐 aimWheel、art、audio、bestiary、bestiaryLifecycle、debug、face、fxRender、
+hdPresentation、hub、monsterArt、skillAnimation、uiLayout。
+
+两项失败均为 bestiary 首个用例在末段等待 `#hub-altar` 显示时触及原有 30 秒测试/5 秒 expect 时限，
+发生于候选与 main 同时运行浏览器负载期间。保留首轮失败，停止其他浏览器批次后，仅隔离重跑
+这一个用例的两个 project：**2/2 通过**，桌面 14.251 秒、手机横屏 16.348 秒；源码、断言和单项超时
+均未修改，自动重试仍为 0。main 首轮同用例两端通过（21.841 / 29.968 秒）。结果符合环境负载下的
+时间波动，尚不能据此断定根因；不把首次失败改写为首次全绿。
+
+本轮 162 项与先前新增 16 项、既有 demo/save/resumeProduction/pwa/stress 60 项合并，并以仓库
+Playwright 清单核对，**238 个 Chromium 项目组合全部有记录；采用上述隔离复跑结果后为 220 通过、
+18 条件跳过**。旧的单跑图鉴和子串匹配重复项不累计。这里是跨批次覆盖，不是一次整套运行全绿；
+候选没有新增 WebKit/Safari/iPhone 验收。
+
+### 原始 main 整批对照
+
+第一轮与候选并行，因验证进程设置的 20 分钟整批预算中断：**151 通过、17 条件跳过、
+1 项被中断、59 项未执行**，见 [main-first-attempt.json](production-geometry/main-first-attempt.json)。
+Playwright 原始 stats 将后两类也计入 skipped，报告中的规范化 `totals` 单独列出，不能将其视为条件跳过。
+此轮没有断言失败，180 秒无进展看门狗未触发；两端 bestiaryLifecycle 均通过。
+
+第二轮仅运行原始 main，整批预算 40 分钟，单项超时与断言不变；实际约 19.5 分钟结束，
+见 [main-full-regressions.json](production-geometry/main-full-regressions.json)。全部 228 项得到终态：
+**Chromium 204 通过、18 条件跳过；WebKit 6 项在浏览器启动阶段失败**，均因主机缺少 GTK4、
+GStreamer 等系统库，未进入游戏断言。没有整批预算中断或无进展看门狗触发，不称三个 project 全绿。
+
+两轮 main 的 bestiaryLifecycle 在桌面和横屏都通过；本候选的分文件执行也通过。
+此前图鉴生命周期处的长期停滞仍未复现，不能认定为 main 的已有缺陷，因此没有基于未确认归因另开 Issue。
+首次交付的完整 `npm run check`（59 文件 / 482 单测）是同一运行时代码的历史结果；本次增量只改文档和报告，
+不把它写成新执行。最终新增文件另做格式与 diff 检查。
+
+### 性能边界与后续
+
+Claude 另外做了纯 sim 对照（非 GPT 本地复测）：同一压测房、30 怪、3600 步 × 3 轮，
+仅计 `world.step`，旧规则每步 0.030–0.065 ms，接线后 0.11–0.14 ms，provider 平均
+每步调用 8.5 次，sync 约占 0.03 ms。来源为上述 review，未取得原始计时文件；该结果
+与本地 SwiftShader FPS 分开记录，不外推手机耗时。约 19 FPS 的整体渲染报告对这一级
+sim 开销不够敏感，不能据此说几何开销可忽略。以后可让压力面板单独导出每步耗时；
+本 PR 不增加计时埋点，也不缓存同一步的 sync，以保留同一步内桶/石块变化的可见性。
+
+腹囊蛙墙角死亡分裂的真实 Arcade 用例仍作为非阻塞后续项，当前由单测覆盖。
+
 ## 状态与后续
 
-远端 CI 保持手动禁用；不合并，不改 main 或 Claude 分支。等待 Claude 交叉复审及
-负责人合并。#114 仍需目录/freezeV1/版本化存档、出生锚点、不规则轮廓物理和正式地图美术；
-#115–#119 未启动。WebKit/Safari/iPhone 未在本轮重新验证。
+远端 CI 保持手动禁用；不合并，不改 main 或 Claude 分支。Claude 已完成生产代码复审；补充验证记录供增量核对，
+由负责人合并。#114 仍需目录/freezeV1/版本化存档、出生锚点、不规则轮廓物理和正式地图美术；
+#115–#119 未启动。main 的 WebKit 尝试受上述系统库缺失阻断；没有 Safari/iPhone 真机新结果。

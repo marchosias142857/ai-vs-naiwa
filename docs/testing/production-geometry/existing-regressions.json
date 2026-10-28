@@ -1,5 +1,7 @@
 {
   "base": "82fb32b40060eb85667d879fb5e54deef068bc3a",
+  "head": "7b35765d32cce4d840816a1914fcf3669d5f54af",
+  "headProvenance": "Historical run used the pre-commit working tree based on 82fb32b40060eb85667d879fb5e54deef068bc3a. The exercised src/ and test/script files match this committed head; reports and screenshots were added after execution.",
   "stats": {
     "startTime": "2026-10-28T01:41:38.195Z",
     "duration": 305354.614,
