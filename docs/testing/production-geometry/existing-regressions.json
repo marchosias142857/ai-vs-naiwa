@@ -1,0 +1,315 @@
+{
+  "base": "82fb32b40060eb85667d879fb5e54deef068bc3a",
+  "head": "7b35765d32cce4d840816a1914fcf3669d5f54af",
+  "headProvenance": "Historical run used the pre-commit working tree based on 82fb32b40060eb85667d879fb5e54deef068bc3a. The exercised src/ and test/script files match this committed head; reports and screenshots were added after execution.",
+  "stats": {
+    "startTime": "2026-10-28T01:41:38.195Z",
+    "duration": 305354.614,
+    "expected": 59,
+    "skipped": 1,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "records": [
+    {
+      "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "同步保存 both，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "skipped"
+    },
+    {
+      "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "菜单兜底区分 updated，入口独立校验",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "菜单兜底区分 invalid，入口独立校验",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "菜单兜底区分 corrupt，入口独立校验",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "同步保存 both，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "菜单兜底区分 updated，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "菜单兜底区分 invalid，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "菜单兜底区分 corrupt，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+      "project": "mobile-landscape",
+      "status": "passed"
+    },
+    {
+      "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+      "project": "mobile-landscape",
+      "status": "passed"
+    }
+  ]
+}
