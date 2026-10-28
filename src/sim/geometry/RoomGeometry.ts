@@ -170,7 +170,8 @@ export class RoomGeometry implements GeometryQueries {
     for (const o of this.obstacles) {
       if (!(o.mask & mask)) continue;
       const s = o.shape;
-      if (s.type === 'circle') this.circle(from, to, radius + s.radius, s.x, s.y, o.kind, o.id, out, los);
+      if (s.type === 'circle')
+        this.accumulateCircle(from, to, radius + s.radius, s.x, s.y, o.kind, o.id, out, los);
       else this.edges(from, to, radius, s.points, o.kind, o.id, out, los);
     }
     out.distance *= out.t;
@@ -204,7 +205,10 @@ export class RoomGeometry implements GeometryQueries {
     out.kind = kind;
     out.id = id;
   }
-  private circle(
+  /** @internal Shared circle narrow phase for live slots; caller must first initialize/validate
+   * out via sweepCircle, then finalize distance/position after accumulating all circles.
+   */
+  accumulateCircle(
     a: Point,
     b: Point,
     r: number,
@@ -334,7 +338,7 @@ export class RoomGeometry implements GeometryQueries {
         continue;
       }
       // Only entry roots count: never report the far side of a capsule as an exit collision.
-      this.circle(
+      this.accumulateCircle(
         a,
         b,
         r,
