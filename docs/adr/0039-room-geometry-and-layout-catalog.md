@@ -1,5 +1,7 @@
 # 0039. 房间几何、模块素材与布局目录存档
 
+> 2026-10-28 负责人修订：每次更新可终止当前冒险并返回主界面；必须保留天赋点、已购天赋和未来局外资源。不再要求跨版本恢复战斗或从旧楼层入口续玩。下文旧档迁移、跨构建入口兜底及旧目录长期保留承诺只作原设计历史，后续以文末“更新策略修订”为准；运行时尚未切换此策略。
+
 - 状态：提议；AI 协调结论已确认并纳入，待负责人批准；未实施
 - 提出者：GPT（2026-10-27）
 - AI 协调依据：[Claude review 5674655741](https://github.com/marchosias142857/ai-vs-naiwa/pull/123#pullrequestreview-5674655741)，评审 head `d8ad4d717e9a221c73695fad7a66daf3e57c21b5`；结论为方向可以采用，下述规则已据此收敛
@@ -126,7 +128,7 @@ interface FloorRoomLayouts {
 
 入口检查点保存它所指向的那一层的完整清单，而非上一层、当前单房或“下次再抽”的占位。`chooseUpgrade()` 当前先 nextFloor/showRoom 再 checkpoint，实施时在新层入场前生成清单，再复制到检查点；完整快照中的 `entry` 与 `sim.run` 的 floor/catalog/全部 ID 必须一致。深拷贝数组，不能用共享引用让旧入口副本随当前状态改变。
 
-### 旧档迁移与恢复承诺
+### 旧档迁移与恢复承诺（原设计历史，已由更新策略修订取代）
 
 当前入口版本为 2（仍接受 1），完整快照版本为 2。提议升级入口和完整快照到 3，并保留独立的旧格式解析；存储写入成功才替换旧档。`parseSnapshot`/`saveFields` 的对象字段目前严格匹配，不能直接加可选字段放过未知内容；增加版本化字段表、已知目录/ID校验与跨记录校验，保持 zod/轻量解析一致。
 
@@ -210,3 +212,27 @@ freezeV1 单测还必须锁定迁移公式的前提：`DemoSession.root` 自 `ne
 本份只把寻路的完整圆占据和胶囊路径接到新查询：会绕开立桶与已落石，圆角净空更准确，物理墙体和图像未换。RoomDirector 的 isFree 与旧回退暂保留，待模板锚点及随机回退一起实施；旧 LOS 回调保留供尚未接线的 AI 使用。Claude 可从 main 开始 AI 接线，建议在 sim 的 options/host 用 `() => GeometryQueries` provider（测试可返回静态 RoomGeometry），生产接线时取 RoomArena.prepareGeometry，不能在 CombatWorld 构造时缓存一次视图后永久不刷新；game 层 import 不进入 sim。此 provider 建议供 Claude 协调/复审，GPT 本份不改 CombatWorldOptions、AiHost 或 EnemyAi。
 
 新目录/冻结 v1、存档模板 ID、RoomDirector 锚点、不规则房间物理、美术及 200 组合验收均仍待后续；当前不是地图重绘完成。寻路改变会影响后续战斗位置，不能宣称新旧构建战斗轨迹相同；仍保留既有跨构建入口兜底。
+
+### #127 合并后的 legacy_v1 冻结（2026-10-28）
+
+#127 已由负责人合入 main `0507bed534852429f73b8e05ff2ab4885dfaf735`。本步只落实提议 3 的冻结数据与选择函数：`data/roomTemplates/legacyV1.ts` 明确复制四主题的 14 个 plan、9 组旧布局、Boss 四柱、矩形 bounds、门规则、桶/地雷几何半径、四向门中心/入口和玩家/奖励/宝箱/出口交互锚点，递归冻结全部对象。坐标语义与旧 RoomArena 相同：boxes/traps 相对房间中心，ports/anchors 为世界坐标。每个主题的空房与四柱形式有各自稳定 ID；这些 ID 不新增游戏房间或改动抽样权重。普通/Boss 出生仍用既有 RoomDirector 随机流程，本步没有虚构固定 Boss 出生点或交付新出生锚点。
+
+`sim/dungeon/freezeV1.ts` 接受经过旧档校验的 seed/floor/按 ID 排列的 rooms，使用独立 Random 和冻结的 plan 顺序生成整层 ID 清单；固定非战斗空房与 Boss ID，不读可变 ROOM_THEMES。`legacyV1Template` 仅精确解析本目录 ID，未知值返回 null。清单每次独立分配，不修改输入或触碰当前战斗随机流。这个函数不是存档解析器，不能用它把未知版本或损坏字段降级成旧格式。
+
+`tests/fixtures/legacyV1/catalog.bytes.txt` 是固定字段/数组顺序的 UTF-8 JSON 字节基准，包含末尾 LF；单测直接比较 Buffer，不使用可由 `vitest -u` 自动更新的快照。修改冻结数据及基准须作为明确兼容性变更复审。当前数据与旧实现的等价检查是迁移前置保护；未来切换新目录时应将等价对照指向 legacy 适配路径，不能为新目录变化刷新此基准。
+
+本步没有生产入口导入上述模块，不修改 DungeonRunState、FloorCheckpoint、parseSnapshot/saveFields、存储键、SAVE_VERSION、WORLD_STEP、AI 或玩法数值。v3 解析/迁移及 dataHash、真实旧档 fixture、RoomDirector 出生锚点、实际按 ID 建房继续分步。新增验证直接读取真实 DemoSession.rebuildRoom 的 plan 与 Arcade bodies，并覆盖 root 状态及完整/入口重建；方法、结果与限制见[冻结目录验证](../testing/legacy-catalog.md)。
+
+### #128 复审补充：冻结障碍语义与 root 覆盖（2026-10-28）
+
+根据 Claude review 5677887656，22 个模板描述均显式冻结 `form`、`obstacle` 和 `mask`：empty/combat 为 wall，boss 为 pillar，现有静态阻挡掩码为 15。`legacyV1Template` 返回这些元数据；障碍 ID 按冻结种类和原数组顺序生成 `wall:i`/`pillar:i`，保留撞柱语义及同距排序前提。本次显式补齐字节基准，不改变 ID、坐标、选图权重或生产规则。浏览器 fixture 对每房真实 RoomArena 静态快照的 kind/id/mask 作对照。
+
+root 补测直接用 `new Random(seed)` 构造真实 RoomDirector，通过 DungeonRun.enter、普通房多波刷怪、nextFloor、Boss 刷怪及每波完整 sim 状态 save/load，断言 root 恒等 seed。测试用现有 debugKillEnemies 和尸体回收结束每波，不修改战斗实现，也不声称覆盖真实击杀操作或 Arcade 分裂碰撞。
+
+### 更新策略修订（负责人 2026-10-28 指令）
+
+每次更新强制返回主界面即可，不再承担跨版本恢复当前冒险、战斗或旧层入口的要求。天赋点、已购天赋及未来局外资源必须保全。后续存储工作以区分冒险状态与局外档案、更新失效范围、返回主界面和档案保全验证为重点；不再为跨版本续玩实现 v1/v2→v3 的局内迁移链，也不以恢复旧冒险为理由永久保留所有旧模板解析器。版本识别、严格字段校验和既有结算去重仍需保留；同版本恢复策略未被本次指令取消。
+
+上文提议 3、实施清单第 2/3/7 项及回退说明中与跨版本续玩有关的内容均由本段取代。稳定模板 ID、几何语义和 root 随机不变量仍用于目录接入与确定性验证。#128 保留已完成的冻结基础和本次评审修正；不将 freezeV1 接入生产迁移，不顺带改存档字段或线上行为。下一份实施前按新策略收敛目录/版本契约，并验证更新前后局外档案不受影响；本段是已确认要求，不是已实现或已通过的测试报告。
+
+负责人同日明确：后续代码优化可删除仅为旧版续战留下且最新版本不再使用的代码、测试和兼容分支，包括届时无调用的旧目录/迁移辅助。删除前核对当前依赖，保留当前版本仍需使用的逻辑及局外档案保护；这项清理不在 #128 实施，不以旧 ADR 的历史承诺阻止后续清理。

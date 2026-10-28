@@ -1,0 +1,3287 @@
+{
+  "reviewId": 5677887656,
+  "reviewedHead": "219d8826065ced3e5028bb39c0a9735a719d5f4b",
+  "base": "0507bed534852429f73b8e05ff2ab4885dfaf735",
+  "head": "81a2a77a0678a1eddafaa41bc3bd036347ec4df2",
+  "headProvenance": "Executed in the pre-commit worktree; the eight source files below match this committed head byte-for-byte. The following commit adds documentation/report only.",
+  "node": "22.23.4",
+  "browser": "Chromium 153.0.8010.0 via existing @sparticuz/chromium binary; SwiftShader",
+  "timeoutMs": 30000,
+  "workers": 1,
+  "retries": 0,
+  "sourceSha256": {
+    "src/data/roomTemplates/legacyV1.ts": "ef0ae9e3273d005ba48e78c6358ffb3e52373d2973ea40fecebf88c98856826e",
+    "src/sim/dungeon/freezeV1.ts": "39f7ce080115de150439bf51ea2e2e545383fdf875d2c4444aa319d812dbfa00",
+    "tests/unit/sim/freezeV1.test.ts": "9fe2742a4e33ae9a4e030b5d7468bc19cdd29c25161024a6d366ae7a2c6c4c65",
+    "tests/unit/sim/legacyRoot.test.ts": "e4ccad3c1a761f90b5705bace70f2cd877a8ac3843f13881164ea9231adaeac8",
+    "tests/fixtures/legacyV1/catalog.bytes.txt": "2fb55b95feb7213411df8156d97ca0fb53afbe669f96e5c96b5859d7fd611294",
+    "tests/fixtures/legacyCatalog.html": "dec951d3e48225509768d930a09f7d67f06d7ae72fc8914ed41363d86102a40f",
+    "tests/fixtures/legacyCatalog.ts": "ee3f3b3ad6dabcf0cab1eebc55590a1aaeed61806423eae21a8ae275d1dd3097",
+    "tests/e2e/legacyCatalog.spec.ts": "4299c942c09a2e857bd7dee8633d5571f5f3d4301c7d8816c9efc452b1fc2e86"
+  },
+  "check": {
+    "filesPassed": 61,
+    "testsPassed": 492,
+    "unitDurationSeconds": 3.32,
+    "format": true,
+    "lint": true,
+    "typecheck": true,
+    "build": true
+  },
+  "buildComparison": {
+    "base": "0507bed534852429f73b8e05ff2ab4885dfaf735",
+    "baselineProvenance": "Reused the independent main build retained from the initial PR128 verification; baseline was not rebuilt in this review round. Candidate is the fresh npm run check production build.",
+    "files": 27,
+    "added": [],
+    "removed": [],
+    "different": ["sw.js.map"],
+    "candidateSha256": {
+      "manifest.webmanifest": "283a7e75630bff0a50ecf157fd7743dbdbe5328b7d8f064e35505c78583c0e4c",
+      "sw.js.map": "52adda2db27af656dc04468c0eff1b829097c4523870404b031f608df782ca3c",
+      "sw.js": "81d405186ae4d43417349bfa8129bfe8488898bd909665cb3c5cb69e40619fb2",
+      "workbox-d8ed3718.js": "512a65321b7c375d112773f5b8bbe76110d7d11c17727676da84e55bd42c99f4",
+      "workbox-d8ed3718.js.map": "44eb690378a53e260b55463f049630f2c28991d9af9adc94b4ded04c07656e6a",
+      "index.html": "55e6adf6a1aa53a8a06b15a4421f851d9cee5db5979bf81539c30c017eccb776",
+      "icons/pwa_maskable_512.png": "5eb11389f447c02e8ab7acaada6e8f4ba30f04acb44a9826afc39b9df9ccf9c1",
+      "icons/pwa_192.png": "bc23104590e37979ce7f3f34e714ae1ca4fe01f8eb561d3f77d66269e23efeb0",
+      "icons/pwa_512.png": "5eb11389f447c02e8ab7acaada6e8f4ba30f04acb44a9826afc39b9df9ccf9c1",
+      "icons/placeholder.svg": "f146a1f7fdaf82446692c6b4ec16c602f9c4c8bbdf1485819b89854c541a8d48",
+      "assets/index-Bn43Sohp.js": "27d4ce6a23e4ee92745c39e850a7535427ff0d1ccbb3d75611ae1ee6e3f26320",
+      "assets/workbox-window.prod.es5-Bd17z0YL.js": "20f1903c1cdeaffd0932d3c39f6aff55cff8ebc19e391d8e5ef40f228049ed7c",
+      "assets/index-WdZzTa8z.css": "1d802e5235b5f09f04524c45f95fa5f2318c5fd237ab5605e97b58ce01e17815",
+      "assets/workbox-window.prod.es5-Bd17z0YL.js.map": "6ec88cd9fb8dbb88712069a421640f58321032593f25097d458cbc9f1cc6af7a",
+      "assets/index-Bn43Sohp.js.map": "6c83b2d5ae7eecdc667e3a6427597ee00cc44889f2b4adb0b19e745d5abfc584",
+      "assets/demo/title-confrontation-v1.webp": "7eccd03c9c6306f834fe5bde0bcbee1d8c05e5961005c54766f90bc4d821ae6b",
+      "assets/demo/enemies.png": "2d9421b9ab7931b41d6885004330a2776526e79a1c06ddc9bf8ec9a0aa82154a",
+      "assets/demo/rooms-v1.png": "5341ceb006d7a2b45b9bdfa630b5137ff91db67d17281fc8c878049f7c5a4b8f",
+      "assets/demo/weapons.png": "552f6b4b4e9477b9f83f983a3c835314550d68d14202b81cf12016cee58c3793",
+      "assets/demo/arsenal-v1.png": "73fc763478a5ab9369c1416868ff335c0145d10ee69e0899857fecb5e82249d9",
+      "assets/demo/naiguai-v4.png": "243a5ebb33f0cfacaf51f3d8fcaadd31528ca9861bf9374156eea852895c02bf",
+      "assets/demo/environment.png": "3d4b3a49745989781a3e6697fbb47f46e936a79887520178bd5065bb65533861",
+      "assets/demo/da-fei-yu-pixel-reactions-v1.png": "55016acf382f4bcc88b344b357279e22f689461d4473e993ee32d9f32879bf36",
+      "assets/demo/doors.png": "57105955ecca0d5c05478c8959f9d0e1ca767944ba353e1c213af2685173e849",
+      "assets/demo/da-fei-yu-pixel-v2.png": "5c4403dc7535f67f21ccef0da864e4042aaff4f24fcc68af90f0e9c9437731f7",
+      "assets/demo/talent-altar-v1.png": "07536b59a96f970918d0ad79366a91971d5f1cd88096b9533e492848afd9b937",
+      "assets/demo/monsters-v4.png": "2779cea86b9a00dc08026009b3774315fdc884c8f99954dbc2e4e28cc18b9321"
+    },
+    "sw.js.map": {
+      "differingFields": ["sources"],
+      "baseSources": ["../../../../tmp/1415df71d43d9cac5a139c0c366321c7/sw.js"],
+      "candidateSources": ["../../../../tmp/3082e650bf004afab0f837a7f5ae8d23/sw.js"]
+    }
+  },
+  "rootCoverage": {
+    "test": "tests/unit/sim/legacyRoot.test.ts",
+    "seeds": [0, 42, 12345, 4294967295],
+    "combatWavesPerSeed": 24,
+    "bossSpawnsPerSeed": 1,
+    "floorChangesPerSeed": 3,
+    "saveLoadPairsPerSeed": 25,
+    "path": "Real DungeonRun.enter/nextFloor and RoomDirector.step/save/load; real CombatWorld spawn/save/load; root checked at construction, entry, every director step, floor change and save/load. Enemy combat completed by existing debugKillEnemies and dead-actor reclamation, including split children. No world.step or Arcade battle claim."
+  },
+  "stats": {
+    "startTime": "2026-10-28T04:53:34.471Z",
+    "duration": 201632.801,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "observedTemplates": {
+    "legacy_v1/temple/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/temple/combat_2": {
+      "bodies": [
+        {
+          "x": 170,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 170,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        }
+      ],
+      "traps": [
+        {
+          "kind": "spikes",
+          "x": 204,
+          "y": 135,
+          "width": 16,
+          "height": 56,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 276,
+          "y": 135,
+          "width": 16,
+          "height": 56,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1.1
+        },
+        {
+          "kind": "weed",
+          "x": 240,
+          "y": 91,
+          "width": 48,
+          "height": 20,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/temple/combat_0": {
+      "bodies": [],
+      "traps": [
+        {
+          "kind": "weed",
+          "x": 176,
+          "y": 91,
+          "width": 56,
+          "height": 28,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "weed",
+          "x": 304,
+          "y": 179,
+          "width": 56,
+          "height": 28,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 240,
+          "y": 95,
+          "width": 48,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 240,
+          "y": 175,
+          "width": 48,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1.2
+        }
+      ],
+      "staticObstacles": []
+    },
+    "legacy_v1/temple/combat_1": {
+      "bodies": [
+        {
+          "x": 176,
+          "y": 99,
+          "width": 24,
+          "height": 24
+        },
+        {
+          "x": 304,
+          "y": 171,
+          "width": 24,
+          "height": 24
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 105,
+          "width": 90,
+          "height": 18,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "weed",
+          "x": 220,
+          "y": 175,
+          "width": 48,
+          "height": 24,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/temple/combat_4": {
+      "bodies": [
+        {
+          "x": 292,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 292,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        }
+      ],
+      "traps": [
+        {
+          "kind": "weed",
+          "x": 240,
+          "y": 135,
+          "width": 40,
+          "height": 28,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:4",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:5",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:6",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:7",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/wreck/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/wreck/combat_1": {
+      "bodies": [
+        {
+          "x": 184,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 184,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 135,
+          "width": 110,
+          "height": 20,
+          "radius": 0,
+          "angle": 3.141592653589793,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 200,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 280,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 140,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/wreck/combat_0": {
+      "bodies": [],
+      "traps": [
+        {
+          "kind": "barrel",
+          "x": 170,
+          "y": 90,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 310,
+          "y": 180,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 210,
+          "y": 187,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 270,
+          "y": 83,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 240,
+          "y": 135,
+          "width": 32,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": []
+    },
+    "legacy_v1/wreck/combat_2": {
+      "bodies": [
+        {
+          "x": 164,
+          "y": 83,
+          "width": 48,
+          "height": 12
+        },
+        {
+          "x": 146,
+          "y": 101,
+          "width": 12,
+          "height": 24
+        },
+        {
+          "x": 316,
+          "y": 187,
+          "width": 48,
+          "height": 12
+        },
+        {
+          "x": 334,
+          "y": 169,
+          "width": 12,
+          "height": 24
+        }
+      ],
+      "traps": [
+        {
+          "kind": "barrel",
+          "x": 224,
+          "y": 123,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 256,
+          "y": 123,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 240,
+          "y": 149,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 160,
+          "y": 175,
+          "width": 32,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 320,
+          "y": 95,
+          "width": 32,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/abyss/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/abyss/combat_3": {
+      "bodies": [
+        {
+          "x": 184,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 184,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        }
+      ],
+      "traps": [
+        {
+          "kind": "mine",
+          "x": 180,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 300,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 140,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 340,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 300,
+          "y": 73,
+          "width": 40,
+          "height": 14,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0.8
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/abyss/combat_0": {
+      "bodies": [],
+      "traps": [
+        {
+          "kind": "mine",
+          "x": 180,
+          "y": 95,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 300,
+          "y": 95,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 180,
+          "y": 175,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 300,
+          "y": 175,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 135,
+          "width": 24,
+          "height": 96,
+          "radius": 0,
+          "angle": 1.5707963267948966,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": []
+    },
+    "legacy_v1/abyss/combat_1": {
+      "bodies": [
+        {
+          "x": 170,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 170,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 89,
+          "width": 90,
+          "height": 18,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 181,
+          "width": 90,
+          "height": 18,
+          "radius": 0,
+          "angle": 3.141592653589793,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 240,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 140,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 340,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/milk/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/milk/boss": {
+      "bodies": [
+        {
+          "x": 164,
+          "y": 93,
+          "width": 22,
+          "height": 22
+        },
+        {
+          "x": 316,
+          "y": 93,
+          "width": 22,
+          "height": 22
+        },
+        {
+          "x": 164,
+          "y": 177,
+          "width": 22,
+          "height": 22
+        },
+        {
+          "x": 316,
+          "y": 177,
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "traps": [],
+      "staticObstacles": [
+        {
+          "id": "pillar:0",
+          "kind": "pillar",
+          "mask": 15
+        },
+        {
+          "id": "pillar:1",
+          "kind": "pillar",
+          "mask": 15
+        },
+        {
+          "id": "pillar:2",
+          "kind": "pillar",
+          "mask": 15
+        },
+        {
+          "id": "pillar:3",
+          "kind": "pillar",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/temple/combat_3": {
+      "bodies": [
+        {
+          "x": 240,
+          "y": 135,
+          "width": 28,
+          "height": 28
+        },
+        {
+          "x": 180,
+          "y": 95,
+          "width": 16,
+          "height": 16
+        },
+        {
+          "x": 300,
+          "y": 175,
+          "width": 16,
+          "height": 16
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 160,
+          "y": 135,
+          "width": 18,
+          "height": 100,
+          "radius": 0,
+          "angle": 1.5707963267948966,
+          "delay": 0
+        },
+        {
+          "kind": "current",
+          "x": 320,
+          "y": 135,
+          "width": 18,
+          "height": 100,
+          "radius": 0,
+          "angle": 4.71238898038469,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/wreck/combat_3": {
+      "bodies": [
+        {
+          "x": 170,
+          "y": 115,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 200,
+          "y": 180,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 220,
+          "y": 85,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 270,
+          "y": 165,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 295,
+          "y": 90,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 325,
+          "y": 175,
+          "width": 14,
+          "height": 14
+        }
+      ],
+      "traps": [
+        {
+          "kind": "barrel",
+          "x": 150,
+          "y": 85,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 330,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 234,
+          "y": 143,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 250,
+          "y": 107,
+          "width": 40,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0.6
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:4",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:5",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/abyss/combat_2": {
+      "bodies": [
+        {
+          "x": 292,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 292,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        }
+      ],
+      "traps": [
+        {
+          "kind": "mine",
+          "x": 240,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 160,
+          "y": 73,
+          "width": 40,
+          "height": 14,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 320,
+          "y": 197,
+          "width": 40,
+          "height": 14,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:4",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:5",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:6",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:7",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    }
+  },
+  "observedEntrancesEveryFloor": [
+    {
+      "id": "north",
+      "actual": {
+        "x": 240,
+        "y": 71
+      },
+      "expected": {
+        "x": 240,
+        "y": 71
+      }
+    },
+    {
+      "id": "east",
+      "actual": {
+        "x": 352,
+        "y": 135
+      },
+      "expected": {
+        "x": 352,
+        "y": 135
+      }
+    },
+    {
+      "id": "south",
+      "actual": {
+        "x": 240,
+        "y": 199
+      },
+      "expected": {
+        "x": 240,
+        "y": 199
+      }
+    },
+    {
+      "id": "west",
+      "actual": {
+        "x": 128,
+        "y": 135
+      },
+      "expected": {
+        "x": 128,
+        "y": 135
+      }
+    }
+  ],
+  "observedCenterEveryFloor": {
+    "x": 240,
+    "y": 135
+  },
+  "caseEncoding": "Each room record references observedTemplates by ID. All repeated bodies/traps/staticObstacles and floor entrance/center observations were checked equal before deduplication.",
+  "cases": [
+    {
+      "project": "desktop",
+      "title": "freezeV1 matches real DemoSession selection and root invariants: seed=0",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 25869,
+      "startTime": "2026-10-28T04:53:35.280Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 0,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/temple/combat_2",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/combat_0",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/combat_1",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 2,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 3,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 0,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 2,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/wreck/combat_2",
+              "form": "combat",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 0,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/combat_0",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 0,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/boss",
+              "form": "boss",
+              "root": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "title": "freezeV1 matches real DemoSession selection and root invariants: seed=42",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24401,
+      "startTime": "2026-10-28T04:54:02.053Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 42,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/temple/combat_2",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/temple/combat_3",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/temple/combat_3",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 42,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/combat_3",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 42,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/combat_0",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 42,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/boss",
+              "form": "boss",
+              "root": 42
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "title": "freezeV1 matches real DemoSession selection and root invariants: seed=12345",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24960,
+      "startTime": "2026-10-28T04:54:26.466Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 12345,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/temple/combat_2",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/combat_0",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/combat_1",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/combat_0",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 2,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/combat_1",
+              "form": "combat",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 12345,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/combat_3",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/wreck/combat_2",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 12345,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/combat_0",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/combat_2",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/combat_2",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 12345,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/boss",
+              "form": "boss",
+              "root": 12345
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "title": "freezeV1 matches real DemoSession selection and root invariants: seed=4294967295",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24034,
+      "startTime": "2026-10-28T04:54:51.437Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 4294967295,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/combat_0",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 3,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/temple/combat_3",
+              "form": "combat",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 4294967295,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/wreck/combat_2",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/combat_3",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/combat_3",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 4294967295,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/combat_2",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/combat_0",
+              "form": "combat",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 4294967295,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/boss",
+              "form": "boss",
+              "root": 4294967295
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "freezeV1 matches real DemoSession selection and root invariants: seed=0",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 25353,
+      "startTime": "2026-10-28T04:55:16.028Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 0,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/temple/combat_2",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/combat_0",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/combat_1",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 2,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 3,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 0,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 2,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/wreck/combat_2",
+              "form": "combat",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 0,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/combat_0",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 0,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/empty",
+              "form": "empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/boss",
+              "form": "boss",
+              "root": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "freezeV1 matches real DemoSession selection and root invariants: seed=42",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24087,
+      "startTime": "2026-10-28T04:55:42.132Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 42,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/temple/combat_2",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/temple/combat_3",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/temple/combat_3",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 42,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/combat_3",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 42,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/combat_0",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 42,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/empty",
+              "form": "empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/boss",
+              "form": "boss",
+              "root": 42
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "freezeV1 matches real DemoSession selection and root invariants: seed=12345",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24861,
+      "startTime": "2026-10-28T04:56:06.228Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 12345,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/temple/combat_2",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/combat_0",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/combat_1",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/combat_0",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 2,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/temple/combat_1",
+              "form": "combat",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 12345,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/combat_3",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/wreck/combat_2",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/combat_1",
+              "form": "combat",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 12345,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/combat_0",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/combat_2",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/combat_2",
+              "form": "combat",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 12345,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/empty",
+              "form": "empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/boss",
+              "form": "boss",
+              "root": 12345
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "title": "freezeV1 matches real DemoSession selection and root invariants: seed=4294967295",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24909,
+      "startTime": "2026-10-28T04:56:31.099Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 4294967295,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/combat_0",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 4,
+              "templateId": "legacy_v1/temple/combat_4",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 3,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 0,
+              "templateId": "legacy_v1/temple/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/temple/combat_3",
+              "form": "combat",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 4294967295,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 1,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/wreck/combat_2",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/combat_3",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/combat_3",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 3,
+              "templateId": "legacy_v1/wreck/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/wreck/combat_0",
+              "form": "combat",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 4294967295,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/combat_2",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "plan": 3,
+              "templateId": "legacy_v1/abyss/combat_3",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "plan": 1,
+              "templateId": "legacy_v1/abyss/combat_1",
+              "form": "combat",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "plan": 2,
+              "templateId": "legacy_v1/abyss/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "plan": 0,
+              "templateId": "legacy_v1/abyss/combat_0",
+              "form": "combat",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 4294967295,
+          "unchangedByFreeze": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/empty",
+              "form": "empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "plan": 0,
+              "templateId": "legacy_v1/milk/boss",
+              "form": "boss",
+              "root": 4294967295
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
