@@ -1,0 +1,451 @@
+{
+  "previousHead": "f2e89dffdbad730f4ae3b45a6434a51c20284c7c",
+  "runtimeCode": "3df2e55ce33dc04744e0e671305944be71073b9e",
+  "runtimeSrcTree": "72d9142a9f036534424867fa676f049a1d0365d6",
+  "testSourceSha256": "ed46509ad31061ecd93a801f962f9b7b9009fe42d9401f7e09c12abc7a6e390f",
+  "environment": "Node 22; @sparticuz/chromium 153.0.0; SwiftShader; desktop/Pixel 7 landscape; workers=1 retries=0",
+  "check": {
+    "files": 62,
+    "tests": 516,
+    "result": "passed"
+  },
+  "retainedOriginalFailureHUD": [
+    {
+      "batch": "foundations-initial-results",
+      "case": "demo-demo：右摇杆瞄准与-Arcade-命中击败-Boss，保持-RT-不跳过结算-desktop",
+      "energy": ["能量 0/200"],
+      "bossHP": ["奶怪 36/320"],
+      "source": "Playwright retained error-context.md"
+    },
+    {
+      "batch": "foundations-initial-results",
+      "case": "demo-demo：右摇杆瞄准与-Arcade-命中击败-Boss，保持-RT-不跳过结算-mobile-landscape",
+      "energy": ["能量 0/200"],
+      "bossHP": ["奶怪 36/320"],
+      "source": "Playwright retained error-context.md"
+    },
+    {
+      "batch": "foundations-fixes-results",
+      "case": "demo-demo：右摇杆瞄准与-Arcade-命中击败-Boss，保持-RT-不跳过结算-desktop",
+      "energy": [],
+      "bossHP": [],
+      "source": "Playwright retained error-context.md"
+    },
+    {
+      "batch": "foundations-fixes-results",
+      "case": "demo-demo：右摇杆瞄准与-Arcade-命中击败-Boss，保持-RT-不跳过结算-mobile-landscape",
+      "energy": ["能量 0/200"],
+      "bossHP": ["奶怪 20/320"],
+      "source": "Playwright retained error-context.md"
+    },
+    {
+      "batch": "foundations-results",
+      "case": "demo-demo：右摇杆瞄准与-Arcade-命中击败-Boss，保持-RT-不跳过结算-mobile-landscape",
+      "energy": ["能量 0/200"],
+      "bossHP": ["奶怪 26/320"],
+      "source": "Playwright retained error-context.md"
+    }
+  ],
+  "batches": [
+    {
+      "name": "followup-low-energy-results",
+      "stats": {
+        "startTime": "2026-10-28T12:37:00.963Z",
+        "duration": 78513.053,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "bossFollowupDiagnostic.spec.ts",
+          "title": "diagnostic：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 30007,
+          "exhaustion": [
+            {
+              "time": 3.866666666666658,
+              "x": 347.625,
+              "y": 135,
+              "energy": 0,
+              "weapon": "rifle_auto",
+              "status": "◆ 金币 40 · 第 4/4 层 · 战斗 · 第 1 波 · 剩余 1 · 冲刺 就绪\n自动步枪［绿色品质］\n奶怪 308/320"
+            }
+          ],
+          "errors": []
+        },
+        {
+          "file": "bossFollowupDiagnostic.spec.ts",
+          "title": "diagnostic：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "failed",
+          "durationMs": 44614,
+          "exhaustion": [
+            {
+              "time": 3.849999999999991,
+              "x": 349.125,
+              "y": 135,
+              "energy": 0,
+              "weapon": "rifle_auto",
+              "status": "◆ 金币 40 · 第 4/4 层 · 战斗 · 第 1 波 · 剩余 1 · 冲刺 就绪\n自动步枪［绿色品质］\n奶怪 305/320"
+            }
+          ],
+          "errors": [
+            "TimeoutError: page.waitForFunction: Timeout 34936ms exceeded.\n\n  76 |     await expect.poll(() => page.evaluate(() => window.__AVN__!.demo!.weapon)).toBe('pistol_basic');\n  77 |   }\n> 78 |   await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, { timeout: Math.max(1, deadline-Date.now()) });\n     |              ^\n  79 |   expect(await page.evaluate(() => window.__AVN__!.demo!.phase)).toBe('won');\n  80 |   expect(await page.evaluate(() => window.__AVN__!.demo!.kills)).toBe(51);\n  81 |   await expect(page.locator('#demo-hud h2')).toHaveText('通关成功');\n    at /workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/bossFollowupDiagnostic.spec.ts:78:14"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "followup-recovery-results",
+      "stats": {
+        "startTime": "2026-10-28T12:39:12.819Z",
+        "duration": 25562.966,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "bossFollowupDiagnostic.spec.ts",
+          "title": "diagnostic：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 23228,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "bossFollowupDiagnostic.spec.ts",
+          "title": "diagnostic：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "failed",
+          "durationMs": 2,
+          "exhaustion": [],
+          "errors": [
+            "Error: browserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /workspace/scratch/b82bcc13d770/verification-browser/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --ash-no-nudges --disable-domain-reliability --disable-print-preview --disk-cache-size=33554432 --no-default-browser-check --no-pings --font-render-hinting=none --disable-features=AudioServiceOutOfProcess,IsolateOrigins,site-per-process --enable-features=SharedArrayBuffer --ignore-gpu-blocklist --in-process-gpu --use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader --allow-running-insecure-content --disable-setuid-sandbox --disable-site-isolation-trials --disable-web-security --headless='shell' --no-sandbox --no-zygote --user-data-dir=/tmp/playwright_chromiumdev_profile-0QC7Wi --remote-debugging-pipe --no-startup-window\n<launched> pid=146\n[pid=146][err] [1028/053938.329111:ERROR:../net/base/address_tracker_linux.cc:224] Could not create NETLINK socket: Operation not permitted (1)\nCall log:\n\u001b[2m  - <launching> /workspace/scratch/b82bcc13d770/verification-browser/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --ash-no-nudges --disable-domain-reliability --disable-print-preview --disk-cache-size=33554432 --no-default-browser-check --no-pings --font-render-hinting=none --disable-features=AudioServiceOutOfProcess,IsolateOrigins,site-per-process --enable-features=SharedArrayBuffer --ignore-gpu-blocklist --in-process-gpu --use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader --allow-running-insecure-content --disable-setuid-sandbox --disable-site-isolation-trials --disable-web-security --headless='shell' --no-sandbox --no-zygote --user-data-dir=/tmp/playwright_chromiumdev_profile-0QC7Wi --remote-debugging-pipe --no-startup-window\u001b[22m\n\u001b[2m  - <launched> pid=146\u001b[22m\n\u001b[2m  - [pid=146][err] [1028/053938.329111:ERROR:../net/base/address_tracker_linux.cc:224] Could not create NETLINK socket: Operation not permitted (1)\u001b[22m\n\u001b[2m  - [pid=146] <gracefully close start>\u001b[22m\n\u001b[2m  - [pid=146] <kill>\u001b[22m\n\u001b[2m  - [pid=146] <will force kill>\u001b[22m\n\u001b[2m  - [pid=146] <process did exit: exitCode=null, signal=SIGSEGV>\u001b[22m\n\u001b[2m  - [pid=146] starting temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=146] finished temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=146] <gracefully close end>\u001b[22m\n"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "followup-recovery-mobile-results",
+      "stats": {
+        "startTime": "2026-10-28T12:40:33.828Z",
+        "duration": 77478.045,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "bossFollowupDiagnostic.spec.ts",
+          "title": "diagnostic：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 24273,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "bossFollowupDiagnostic.spec.ts",
+          "title": "diagnostic：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 24668,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "bossFollowupDiagnostic.spec.ts",
+          "title": "diagnostic：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 24144,
+          "exhaustion": [],
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "followup-final-results",
+      "stats": {
+        "startTime": "2026-10-28T12:42:59.156Z",
+        "duration": 189161.441,
+        "expected": 17,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 11428,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 13237,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2591,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 5195,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 7252,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "desktop",
+          "status": "failed",
+          "durationMs": 42683,
+          "exhaustion": [
+            {
+              "time": 23.616666666666607,
+              "energy": 0,
+              "weapon": "rifle_auto",
+              "status": "◆ 金币 40 · 第 4/4 层 · 战斗 · 第 1 波 · 剩余 1 · 冲刺 就绪\n自动步枪［绿色品质］\n奶怪 23/320"
+            }
+          ],
+          "errors": [
+            "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m51\u001b[39m\nReceived: \u001b[31m54\u001b[39m\n\n  280 |       });\n  281 |       expect(await page.evaluate(() => window.__AVN__!.demo!.phase)).toBe('won');\n> 282 |       expect(await page.evaluate(() => window.__AVN__!.demo!.kills)).toBe(51);\n      |                                                                      ^\n  283 |       await expect(page.locator('#demo-hud h2')).toHaveText('通关成功');\n  284 |       await page.screenshot({ path: info.outputPath('demo-victory.png'), scale: 'css' });\n  285 |       expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBeNull();\n    at /workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/demo.spec.ts:282:70"
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 11247,
+          "exhaustion": [
+            {
+              "time": 3.9333333333333242,
+              "energy": 0,
+              "weapon": "rifle_auto",
+              "status": "◆ 金币 40 · 第 4/4 层 · 战斗 · 第 1 波 · 剩余 1 · 冲刺 就绪\n自动步枪［绿色品质］\n奶怪 308/320"
+            }
+          ],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1938,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1776,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 10739,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 14254,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3479,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 6645,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 8681,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 25371,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 12915,
+          "exhaustion": [
+            {
+              "time": 3.9666666666666575,
+              "energy": 0,
+              "weapon": "rifle_auto",
+              "status": "◆ 金币 40 · 第 4/4 层 · 战斗 · 第 1 波 · 剩余 1 · 冲刺 就绪\n自动步枪［绿色品质］\n奶怪 308/320"
+            }
+          ],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2579,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2074,
+          "exhaustion": [],
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "followup-verified-results",
+      "stats": {
+        "startTime": "2026-10-28T12:47:15.799Z",
+        "duration": 94309.52799999999,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 22960,
+          "exhaustion": [],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 12660,
+          "exhaustion": [
+            {
+              "time": 3.8333333333333246,
+              "energy": 0,
+              "weapon": "rifle_auto",
+              "status": "◆ 金币 40 · 第 4/4 层 · 战斗 · 第 1 波 · 剩余 1 · 冲刺 就绪\n自动步枪［绿色品质］\n奶怪 308/320"
+            }
+          ],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 43474,
+          "exhaustion": [
+            {
+              "time": 23.59999999999994,
+              "energy": 0,
+              "weapon": "rifle_auto",
+              "status": "◆ 金币 40 · 第 4/4 层 · 战斗 · 第 1 波 · 剩余 1 · 冲刺 就绪\n自动步枪［绿色品质］\n奶怪 29/320"
+            }
+          ],
+          "errors": []
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11975,
+          "exhaustion": [
+            {
+              "time": 4.049999999999991,
+              "energy": 0,
+              "weapon": "rifle_auto",
+              "status": "◆ 金币 40 · 第 4/4 层 · 战斗 · 第 1 波 · 剩余 1 · 冲刺 就绪\n自动步枪［绿色品质］\n奶怪 305/320"
+            }
+          ],
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Production src/public/config/dependency inputs unchanged",
+    "Original 50-second test and 35-second post-screenshot total wait budget retained",
+    "Kills assertion now permits summoned enemies; victory/alive=0/enemies=[] required",
+    "Early 20-energy full-kill experiment exceeded deadline on mobile; retained but not shipped",
+    "One diagnostic browser startup SIGSEGV occurred before gameplay",
+    "No new whole-suite, WebKit, real-device or FPS validation"
+  ]
+}
