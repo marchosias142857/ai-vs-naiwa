@@ -1,0 +1,2634 @@
+{
+  "base": "60c35eb9812b7fb740af510d06bb954eeea3029a",
+  "testedCode": "3df2e55ce33dc04744e0e671305944be71073b9e",
+  "runtimeTree": "72d9142a9f036534424867fa676f049a1d0365d6",
+  "environment": "Node 22; Chromium via @sparticuz/chromium, SwiftShader; desktop + Pixel 7 landscape; 1 worker, retries=0; original assertions/timeouts",
+  "unit": {
+    "files": 62,
+    "tests": 516,
+    "check": "passed"
+  },
+  "batches": [
+    {
+      "name": "foundations-initial-results",
+      "stats": {
+        "startTime": "2026-10-28T06:09:00.467Z",
+        "duration": 658828.769,
+        "expected": 82,
+        "skipped": 1,
+        "unexpected": 5,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 8935,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 12222,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2360,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4812,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6772,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "desktop",
+          "status": "unexpected",
+          "results": [
+            {
+              "status": "failed",
+              "durationMs": 44386,
+              "errors": [
+                "TimeoutError: page.waitForFunction: Timeout 35000ms exceeded.\n\n  231 |   await page.waitForFunction(() => window.__AVN__!.demo!.enemies.length > 0);\n  232 |   await page.screenshot({ path: info.outputPath('demo-boss.png'), scale: 'css' });\n> 233 |   await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, { timeout: 35_000 });\n      |              ^\n  234 |   expect(await page.evaluate(() => window.__AVN__!.demo!.phase)).toBe('won');\n  235 |   expect(await page.evaluate(() => window.__AVN__!.demo!.kills)).toBe(51);\n  236 |   await expect(page.locator('#demo-hud h2')).toHaveText('通关成功');\n    at /workspace/scratch/b82bcc13d770/map-foundations/tests/e2e/demo.spec.ts:233:14"
+              ]
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1436,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1827,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 10333,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 12804,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2462,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5780,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6946,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "unexpected",
+          "results": [
+            {
+              "status": "failed",
+              "durationMs": 45057,
+              "errors": [
+                "TimeoutError: page.waitForFunction: Timeout 35000ms exceeded.\n\n  231 |   await page.waitForFunction(() => window.__AVN__!.demo!.enemies.length > 0);\n  232 |   await page.screenshot({ path: info.outputPath('demo-boss.png'), scale: 'css' });\n> 233 |   await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, { timeout: 35_000 });\n      |              ^\n  234 |   expect(await page.evaluate(() => window.__AVN__!.demo!.phase)).toBe('won');\n  235 |   expect(await page.evaluate(() => window.__AVN__!.demo!.kills)).toBe(51);\n  236 |   await expect(page.locator('#demo-hud h2')).toHaveText('通关成功');\n    at /workspace/scratch/b82bcc13d770/map-foundations/tests/e2e/demo.spec.ts:233:14"
+              ]
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1470,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1974,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23743,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23875,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 24389,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 24175,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 827,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23359,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23102,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23495,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 24159,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 867,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: pillar",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1032,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: boundary",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1174,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: near-wall",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1351,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: rain",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1753,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: brood",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1281,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: los",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1399,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: hop",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1098,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: fresh session restore sees the landed pool before the first step",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4765,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: pillar",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1029,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: boundary",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1163,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: near-wall",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1266,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: rain",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1734,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: brood",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1005,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: los",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1342,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: hop",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1019,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: fresh session restore sees the landed pool before the first step",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4867,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "pwa.spec.ts",
+          "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 8370,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "pwa.spec.ts",
+          "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 20875,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "pwa.spec.ts",
+          "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9370,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "pwa.spec.ts",
+          "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+          "project": "mobile-landscape",
+          "status": "unexpected",
+          "results": [
+            {
+              "status": "failed",
+              "durationMs": 25393,
+              "errors": [
+                "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#demo-menu-panel')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" locator('#demo-menu-panel') with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#demo-menu-panel')\u001b[22m\n\n\n  209 |   await page.getByRole('button', { name: '点击刷新' }).click();\n  210 |   await expect(page.locator('meta[name=\"pwa-test-version\"]')).toHaveAttribute('content', '3');\n> 211 |   await expect(page.locator('#demo-menu-panel')).toBeVisible();\n      |                                                  ^\n  212 |   await expect(page.locator('#continue-run')).toBeDisabled();\n  213 |   await expect(other.locator('meta[name=\"pwa-test-version\"]')).toHaveAttribute('content', '2');\n  214 | });\n    at /workspace/scratch/b82bcc13d770/map-foundations/tests/e2e/pwa.spec.ts:211:50"
+              ]
+            }
+          ]
+        },
+        {
+          "file": "resumeProduction.spec.ts",
+          "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 12273,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "resumeProduction.spec.ts",
+          "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 12302,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4725,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1219,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1091,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 both，BFCache 复用本局且监听不增长",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1175,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3326,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6292,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6203,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+          "project": "desktop",
+          "status": "skipped",
+          "results": [
+            {
+              "status": "skipped",
+              "durationMs": 632,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4423,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1489,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2364,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 updated，入口独立校验",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1226,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 invalid，入口独立校验",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 996,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 corrupt，入口独立校验",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 982,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1562,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 788,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1349,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4649,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1246,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1124,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 both，BFCache 复用本局且监听不增长",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 994,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2658,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5894,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6336,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6278,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5141,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1410,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2147,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 updated，入口独立校验",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1271,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 invalid，入口独立校验",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1306,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 corrupt，入口独立校验",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1160,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1349,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 911,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1538,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "stress.spec.ts",
+          "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 25360,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "stress.spec.ts",
+          "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9175,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "stress.spec.ts",
+          "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 25125,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "stress.spec.ts",
+          "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9498,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+          "project": "desktop",
+          "status": "unexpected",
+          "results": [
+            {
+              "status": "failed",
+              "durationMs": 3740,
+              "errors": [
+                "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[2m    \"avn.future.currency\": \"{\\\"pearls\\\":99}\",\u001b[22m\n\u001b[32m-   \"avn.profile.v2\": \"{\\\"version\\\":2,\\\"runs\\\":4,\\\"wins\\\":1,\\\"bestFloor\\\":4,\\\"kills\\\":100,\\\"earned\\\":123,\\\"talents\\\":{\\\"vitality\\\":2},\\\"settled\\\":[]}\",\u001b[39m\n\u001b[32m-   \"avn.profile.v2.backup\": \"backup bytes\",\u001b[39m\n\u001b[31m+   \"avn.profile.v2\": \"{\\\"version\\\":2,\\\"runs\\\":4,\\\"wins\\\":1,\\\"bestFloor\\\":4,\\\"kills\\\":100,\\\"earned\\\":123,\\\"talents\\\":{},\\\"settled\\\":[]}\",\u001b[39m\n\u001b[31m+   \"avn.profile.v2.backup\": \"{\\\"version\\\":2,\\\"runs\\\":4,\\\"wins\\\":1,\\\"bestFloor\\\":4,\\\"kills\\\":100,\\\"earned\\\":123,\\\"talents\\\":{\\\"vitality\\\":2},\\\"settled\\\":[]}\",\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  37 |       (keys) => Object.fromEntries(keys.map((k) => [k, localStorage.getItem(k)])),\n  38 |       Object.keys(preserved),\n> 39 |     ),\n     |     ^\n  40 |   ).toEqual(preserved);\n  41 | });\n  42 |\n    at /workspace/scratch/b82bcc13d770/map-foundations/tests/e2e/updateBoundary.spec.ts:39:5"
+              ]
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+          "project": "mobile-landscape",
+          "status": "unexpected",
+          "results": [
+            {
+              "status": "failed",
+              "durationMs": 4353,
+              "errors": [
+                "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 2\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[2m    \"avn.future.currency\": \"{\\\"pearls\\\":99}\",\u001b[22m\n\u001b[32m-   \"avn.profile.v2\": \"{\\\"version\\\":2,\\\"runs\\\":4,\\\"wins\\\":1,\\\"bestFloor\\\":4,\\\"kills\\\":100,\\\"earned\\\":123,\\\"talents\\\":{\\\"vitality\\\":2},\\\"settled\\\":[]}\",\u001b[39m\n\u001b[32m-   \"avn.profile.v2.backup\": \"backup bytes\",\u001b[39m\n\u001b[31m+   \"avn.profile.v2\": \"{\\\"version\\\":2,\\\"runs\\\":4,\\\"wins\\\":1,\\\"bestFloor\\\":4,\\\"kills\\\":100,\\\"earned\\\":123,\\\"talents\\\":{},\\\"settled\\\":[]}\",\u001b[39m\n\u001b[31m+   \"avn.profile.v2.backup\": \"{\\\"version\\\":2,\\\"runs\\\":4,\\\"wins\\\":1,\\\"bestFloor\\\":4,\\\"kills\\\":100,\\\"earned\\\":123,\\\"talents\\\":{\\\"vitality\\\":2},\\\"settled\\\":[]}\",\u001b[39m\n\u001b[2m  }\u001b[22m\n\n  37 |       (keys) => Object.fromEntries(keys.map((k) => [k, localStorage.getItem(k)])),\n  38 |       Object.keys(preserved),\n> 39 |     ),\n     |     ^\n  40 |   ).toEqual(preserved);\n  41 | });\n  42 |\n    at /workspace/scratch/b82bcc13d770/map-foundations/tests/e2e/updateBoundary.spec.ts:39:5"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "foundations-fixes-results",
+      "stats": {
+        "startTime": "2026-10-28T06:23:24.731Z",
+        "duration": 93014.67599999999,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "desktop",
+          "status": "unexpected",
+          "results": [
+            {
+              "status": "failed",
+              "durationMs": 2,
+              "errors": [
+                "Error: browserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /workspace/scratch/4c41e386915b/verification-browser/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --ash-no-nudges --disable-domain-reliability --disable-print-preview --disk-cache-size=33554432 --no-default-browser-check --no-pings --font-render-hinting=none --disable-features=AudioServiceOutOfProcess,IsolateOrigins,site-per-process --enable-features=SharedArrayBuffer --ignore-gpu-blocklist --in-process-gpu --use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader --allow-running-insecure-content --disable-setuid-sandbox --disable-site-isolation-trials --disable-web-security --headless='shell' --no-sandbox --no-zygote --user-data-dir=/tmp/playwright_chromiumdev_profile-lczan0 --remote-debugging-pipe --no-startup-window\n<launched> pid=92\n[pid=92][err] [1027/232325.769454:ERROR:../net/base/address_tracker_linux.cc:224] Could not create NETLINK socket: Operation not permitted (1)\nCall log:\n\u001b[2m  - <launching> /workspace/scratch/4c41e386915b/verification-browser/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --ash-no-nudges --disable-domain-reliability --disable-print-preview --disk-cache-size=33554432 --no-default-browser-check --no-pings --font-render-hinting=none --disable-features=AudioServiceOutOfProcess,IsolateOrigins,site-per-process --enable-features=SharedArrayBuffer --ignore-gpu-blocklist --in-process-gpu --use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader --allow-running-insecure-content --disable-setuid-sandbox --disable-site-isolation-trials --disable-web-security --headless='shell' --no-sandbox --no-zygote --user-data-dir=/tmp/playwright_chromiumdev_profile-lczan0 --remote-debugging-pipe --no-startup-window\u001b[22m\n\u001b[2m  - <launched> pid=92\u001b[22m\n\u001b[2m  - [pid=92][err] [1027/232325.769454:ERROR:../net/base/address_tracker_linux.cc:224] Could not create NETLINK socket: Operation not permitted (1)\u001b[22m\n\u001b[2m  - [pid=92] <gracefully close start>\u001b[22m\n\u001b[2m  - [pid=92] <kill>\u001b[22m\n\u001b[2m  - [pid=92] <will force kill>\u001b[22m\n\u001b[2m  - [pid=92] <process did exit: exitCode=null, signal=SIGSEGV>\u001b[22m\n\u001b[2m  - [pid=92] starting temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=92] finished temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=92] <gracefully close end>\u001b[22m\n"
+              ]
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "unexpected",
+          "results": [
+            {
+              "status": "failed",
+              "durationMs": 44177,
+              "errors": [
+                "TimeoutError: page.waitForFunction: Timeout 35000ms exceeded.\n\n  231 |   await page.waitForFunction(() => window.__AVN__!.demo!.enemies.length > 0);\n  232 |   await page.screenshot({ path: info.outputPath('demo-boss.png'), scale: 'css' });\n> 233 |   await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, { timeout: 35_000 });\n      |              ^\n  234 |   expect(await page.evaluate(() => window.__AVN__!.demo!.phase)).toBe('won');\n  235 |   expect(await page.evaluate(() => window.__AVN__!.demo!.kills)).toBe(51);\n  236 |   await expect(page.locator('#demo-hud h2')).toHaveText('通关成功');\n    at /workspace/scratch/b82bcc13d770/map-foundations/tests/e2e/demo.spec.ts:233:14"
+              ]
+            }
+          ]
+        },
+        {
+          "file": "pwa.spec.ts",
+          "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 19302,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "pwa.spec.ts",
+          "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 19727,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2569,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2486,
+              "errors": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "foundations-baseline-results",
+      "stats": {
+        "startTime": "2026-10-28T06:26:44.475Z",
+        "duration": 51831.309,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23856,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 24883,
+              "errors": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "foundations-diagnostic-results",
+      "stats": {
+        "startTime": "2026-10-28T06:29:50.334Z",
+        "duration": 24998.672000000002,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "bossDiagnostic.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23048,
+              "errors": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "foundations-results",
+      "stats": {
+        "startTime": "2026-10-28T06:34:12.800Z",
+        "duration": 660446.354,
+        "expected": 94,
+        "skipped": 1,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9003,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 12435,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2459,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5353,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 7607,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23541,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1947,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1680,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 10471,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 12951,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2401,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5173,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 7377,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "unexpected",
+          "results": [
+            {
+              "status": "failed",
+              "durationMs": 44986,
+              "errors": [
+                "TimeoutError: page.waitForFunction: Timeout 35000ms exceeded.\n\n  231 |   await page.waitForFunction(() => window.__AVN__!.demo!.enemies.length > 0);\n  232 |   await page.screenshot({ path: info.outputPath('demo-boss.png'), scale: 'css' });\n> 233 |   await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, { timeout: 35_000 });\n      |              ^\n  234 |   expect(await page.evaluate(() => window.__AVN__!.demo!.phase)).toBe('won');\n  235 |   expect(await page.evaluate(() => window.__AVN__!.demo!.kills)).toBe(51);\n  236 |   await expect(page.locator('#demo-hud h2')).toHaveText('通关成功');\n    at /workspace/scratch/b82bcc13d770/map-foundations/tests/e2e/demo.spec.ts:233:14"
+              ]
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1486,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2015,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 24016,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23646,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 24842,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 25004,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1137,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 24324,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23371,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23659,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 23743,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1063,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: pillar",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1100,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: boundary",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1335,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: near-wall",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1440,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: rain",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1682,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: brood",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1132,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: los",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1431,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: hop",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1063,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: fresh session restore sees the landed pool before the first step",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4974,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: pillar",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1165,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: boundary",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1298,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: near-wall",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1419,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: rain",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1901,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: brood",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1100,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: los",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1380,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: hop",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1126,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "title": "production geometry: fresh session restore sees the landed pool before the first step",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5233,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "pwa.spec.ts",
+          "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 8874,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "pwa.spec.ts",
+          "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 22473,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "pwa.spec.ts",
+          "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 10376,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "pwa.spec.ts",
+          "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 20118,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "resumeProduction.spec.ts",
+          "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 13084,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "resumeProduction.spec.ts",
+          "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 12144,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4581,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1643,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1353,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 both，BFCache 复用本局且监听不增长",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1337,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2883,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6412,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6235,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+          "project": "desktop",
+          "status": "skipped",
+          "results": [
+            {
+              "status": "skipped",
+              "durationMs": 914,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5386,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1773,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3064,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 updated，入口独立校验",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1667,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 invalid，入口独立校验",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1248,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 corrupt，入口独立校验",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1051,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1489,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 829,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1726,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4550,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1264,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 935,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "同步保存 both，BFCache 复用本局且监听不增长",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 957,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2608,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6697,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6707,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 7332,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5197,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1538,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2413,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 updated，入口独立校验",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1415,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 invalid，入口独立校验",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1038,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "菜单兜底区分 corrupt，入口独立校验",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1328,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1495,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 727,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "save.spec.ts",
+          "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1459,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "stress.spec.ts",
+          "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 27537,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "stress.spec.ts",
+          "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9993,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "stress.spec.ts",
+          "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 24837,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "stress.spec.ts",
+          "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9342,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3121,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "production graybox screenshot floor 1",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1649,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "production graybox screenshot floor 2",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2007,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "production graybox screenshot floor 3",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1850,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "production graybox screenshot floor 4",
+          "project": "desktop",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1791,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3231,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "production graybox screenshot floor 1",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 1761,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "production graybox screenshot floor 2",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2013,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "production graybox screenshot floor 3",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2285,
+              "errors": []
+            }
+          ]
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "title": "production graybox screenshot floor 4",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2217,
+              "errors": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "foundations-boss-final-results",
+      "stats": {
+        "startTime": "2026-10-28T06:45:48.646Z",
+        "duration": 26002.31,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "demo.spec.ts",
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 24269,
+              "errors": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Selected 8 specs, not entire E2E suite",
+    "Final batch mobile Boss timeout; unchanged isolated rerun passed; root cause not established",
+    "No WebKit/Safari/iPhone or FPS ABAB results"
+  ]
+}
