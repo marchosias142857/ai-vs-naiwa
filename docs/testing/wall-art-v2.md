@@ -4,45 +4,47 @@
 
 ## 本批结果与边界
 
-负责人要求采用长方体底座加顶部装饰。本次沿实际轮廓外侧放置 8×8 模块，墙顶向上投影 6，按 y/x 绘制：横向并排保留底座，纵向由后一个顶部盖住前一个底座。凹凸角与四向门复用同一素材，不旋转整张正面。门框背后保留墙体，视觉洞口半宽 12，避免四向门 PNG 的透明边角露出黑缝；这不是对门触发半宽 18 或碰撞的修改。
+墙体使用专门生成的 wall-model-v12，和 blocks-v2 障碍分开。按负责人最新意见去掉大裂纹、明显破损和醒目重复图案，以门的细节密度、材质与描边为参考。负责人已接受此稿并授权接入。原 PNG 是完整相连的新模型，顶部以浅纹区分下部，适度简化噪点并略加强像素感，外轮廓平直、没有浓黑框。没有用旧素材拼接；原图视觉比例是近似值，运行时以最近邻采样组装成 80×80 顶部 +80×96 墙身，严格保证墙身（顶部另算）高/宽为 1.2。实心底色与方形裁剪保证顶部外轮廓整齐，装饰不越界。没有旋转正面图片：8×8 世界单位的墙块沿实际物理轮廓外侧按 y/x 排序，横向显示完整底座，纵向由后画的顶部覆盖此前墙身，转角使用同一模块。
 
-新增四主题安静地板与独立长方体障碍的两张原始 PNG、对应无损 WebP、完整提示词和可重复导出脚本。地板镜像重复使边缘像素匹配；四主题分别使用石材、木板、玄武岩、石灰岩。已有苔藓、珊瑚、灯具仅烘焙在边缘。机关平齐边沿不作为障碍；水流、海草材质重复间距增至 32，地刺仍为 16。障碍按完整块填满原尺寸，消除半块端点。
+门位完整留空，不在门后垫墙块。上下门保留 doors-v1 原模型、40×30 尺寸与原 origin；左右门接入新生成的 side-doors-v2 开/锁状态，13×38、向轮廓外偏 6，使门柱对齐墙带。未来 45° 墙不设门。当前只有已有 19 房型、普通层 8 房，更多布局留 #115；现有渲染器明确拒绝斜边和偏离 8 单位网格的轮廓。
 
-顺带落实旧复审的资源检查项：模块门不再依赖旧 ART.doors；宝箱/出口分别检查物件图集，缺失时保留灰盒。没有更改 AI、武器数值、桶/障碍/角色碰撞、房型、锚点或 RNG。仍是现有 19 个房型，普通层 8 房；更多房型和 45° 排列留 #115。新增单测明确拒绝当前网格之外的轮廓。
+新增地板、独立障碍、专用墙体组件、侧门共四张原始 PNG 及对应无损 WebP、提示词和可重复导出脚本。地板以镜像重复匹配边缘，奶池地板降低亮度，区分奶白 Boss 提示。机关使用平齐边沿；水流/海草重复间距 32、地刺 16；障碍按完整块排列。单独墙顶摆件已移除，避免破坏正方形外轮廓，门体自带灯具保留。
 
-本次只改表现层，上一轮独立面积证据继续适用，不能算重新测量：计入未破桶与玩家半径 6，前三主题合法中心连通面积均不低于 legacy_v1，奶池/Boss 为 100%，19 房型单连通。完整原始面积与 79,200 次出生采样见[历史记录](modular-map-art.md)。外墙位置与 `f386549` 相同，因此没有这次画面复修新引入的武器碰墙距离变化；#132/#133 已接受的弹跳耗次数、回旋镖折返、光束止墙行为仍保留。
+落实旧复审资源检查项：模块门不依赖旧 ART.doors；宝箱/出口检查物件图集，缺失时保留灰盒。没有更改 AI、武器数值、桶/障碍/角色碰撞、房型、锚点或 RNG。本次房间物理数据与 `f386549` 相同，先前面积与 79,200 次出生采样证据继续适用，不能记成新测量。旧记录见 [modular-map-art.md](modular-map-art.md)。#132/#133 已接受的弹跳耗次数、回旋镖折返、光束止墙行为保留，本次画面修订没有再次移动物理外墙。
 
 ## 实际截图
 
-均为浏览器直接保存，没有后期补画。`production` 是正式游戏入口 `?scene=Game&seed=42&god=1&floor=N` 的正常摄影机；`room/door/corner` 是同一生产 DemoSession、RoomArena 和模板的验收夹具，整房摄影机倍率 4.25、近景 12，只为检查衔接，没有改变生产倍率。密集场景含真实角色、弹体、机关及危险提示，手机横屏是浏览器模拟而非真机。
+均由浏览器直接保存，没有后期补画。`production` 为正式入口 `?scene=Game&seed=42&god=1&floor=N`、正常摄影机；其余整房/近景使用同一生产 DemoSession、RoomArena 和模板的验收夹具，整房倍率 4.25、近景 12，仅用于检查衔接，未改变生产倍率。手机横屏是浏览器模拟，不是真机。所有截图需与本目录 verification.json 的候选资源摘要对应。
 
-| 主题 | 整房                                | 门洞                                | 转角                                    | 正常游戏入口                                    | 密集横屏                                            |
-| ---- | ----------------------------------- | ----------------------------------- | --------------------------------------- | ----------------------------------------------- | --------------------------------------------------- |
-| 石殿 | [room](wall-art-v2/temple-room.png) | [door](wall-art-v2/temple-door.png) | [corner](wall-art-v2/temple-corner.png) | [production](wall-art-v2/temple-production.png) | [dense-mobile](wall-art-v2/temple-dense-mobile.png) |
-| 沉船 | [room](wall-art-v2/wreck-room.png)  | [door](wall-art-v2/wreck-door.png)  | [corner](wall-art-v2/wreck-corner.png)  | [production](wall-art-v2/wreck-production.png)  | [dense-mobile](wall-art-v2/wreck-dense-mobile.png)  |
-| 深渊 | [room](wall-art-v2/abyss-room.png)  | [door](wall-art-v2/abyss-door.png)  | [corner](wall-art-v2/abyss-corner.png)  | [production](wall-art-v2/abyss-production.png)  | [dense-mobile](wall-art-v2/abyss-dense-mobile.png)  |
-| 奶池 | [room](wall-art-v2/milk-room.png)   | [door](wall-art-v2/milk-door.png)   | [corner](wall-art-v2/milk-corner.png)   | [production](wall-art-v2/milk-production.png)   | [dense-mobile](wall-art-v2/milk-dense-mobile.png)   |
+| 主题 | 整房                                | 上下原门                            | 转角                                    | 新侧门开                                 | 新侧门锁                                     | 正常游戏                                        | 密集横屏                                     |
+| ---- | ----------------------------------- | ----------------------------------- | --------------------------------------- | ---------------------------------------- | -------------------------------------------- | ----------------------------------------------- | -------------------------------------------- |
+| 石殿 | [room](wall-art-v2/temple-room.png) | [door](wall-art-v2/temple-door.png) | [corner](wall-art-v2/temple-corner.png) | [open](wall-art-v2/temple-side-open.png) | [locked](wall-art-v2/temple-side-locked.png) | [production](wall-art-v2/temple-production.png) | [dense](wall-art-v2/temple-dense-mobile.png) |
+| 沉船 | [room](wall-art-v2/wreck-room.png)  | [door](wall-art-v2/wreck-door.png)  | [corner](wall-art-v2/wreck-corner.png)  | [open](wall-art-v2/wreck-side-open.png)  | [locked](wall-art-v2/wreck-side-locked.png)  | [production](wall-art-v2/wreck-production.png)  | [dense](wall-art-v2/wreck-dense-mobile.png)  |
+| 深渊 | [room](wall-art-v2/abyss-room.png)  | [door](wall-art-v2/abyss-door.png)  | [corner](wall-art-v2/abyss-corner.png)  | [open](wall-art-v2/abyss-side-open.png)  | [locked](wall-art-v2/abyss-side-locked.png)  | [production](wall-art-v2/abyss-production.png)  | [dense](wall-art-v2/abyss-dense-mobile.png)  |
+| 奶池 | [room](wall-art-v2/milk-room.png)   | [door](wall-art-v2/milk-door.png)   | [corner](wall-art-v2/milk-corner.png)   | [open](wall-art-v2/milk-side-open.png)   | [locked](wall-art-v2/milk-side-locked.png)   | [production](wall-art-v2/milk-production.png)   | [dense](wall-art-v2/milk-dense-mobile.png)   |
 
 ## 自动检查
 
-结果数据见 [verification.json](wall-art-v2/verification.json)。完整检查涵盖格式、ESLint、TypeScript、64 个文件 / 521 项单测、构建和 PWA。浏览器检查包含两个 Chromium 项目（桌面与手机横屏）：四主题正常入口、800 个组合布局、墙体像素检查、生产几何/危险区恢复、缺素材回退、密集场景、镜头、PWA 离线及更新、同版本战斗续玩。WebKit 仍因现有环境不可用而未运行。
+结果见 [verification.json](wall-art-v2/verification.json)。`npm run check`：格式、ESLint、TypeScript、64 个文件 / 522 项单测、构建和 PWA 通过。浏览器结果以该 JSON 最终记录为准，涵盖桌面和手机横屏 Chromium：四主题正常入口、800 个组合布局、墙体像素检查、生产几何/危险区恢复、缺素材回退、密集场景、镜头、PWA 离线与更新、同版本战斗续玩。WebKit 未在此环境运行。
 
-墙体检查比较每主题 2,304 个顶部像素；检查横向底座、纵向覆盖、镜像地板接缝、门框底部覆盖、四向开口，以及真实轮廓与深凹口夹具外侧超过 7,000 个点。纯函数检查整块占地在物理轮廓外、顺序稳定、反转多边形仍一致。`negative-control.json` 仅将渲染器替换回未经修改的旧 `f386549`，验证新像素检查能识别旧表现，工作树源文件未替换。
+每主题对比 9,216 个顶部像素，并检查完整横向墙身、纵向覆盖、镜像地板接缝、门位没有墙块、四向开口，以及真实轮廓和深凹口夹具外侧超过 7,000 个点。纯函数检查整块占地在物理轮廓外、排序稳定、反向多边形一致。[negative-control.json](wall-art-v2/negative-control.json) 只通过 Vite 插件替换回旧 `f386549` 渲染器，其余为当前素材、数据和探针；验证能识别旧渲染器，不是未经修改的旧版本性能或画面基准。
 
-过程中的失败如实保留：首次墙块占地测试采样离边界 0.01，落在既有接触容差 0.02 内；改为距离 0.125 的内部探针。首次完整浏览器轮次为 58 通过、2 跳过、2 失败，两项均是每测试连续烘焙 800 房超过默认 30 秒；保留全部断言并将该批量测试单独设为 120 秒，重新执行。近景还发现侧门透明角露底，随后缩小视觉清空范围并补门框覆盖断言；本目录截图来自修复后版本。
+过程失败保留：首次占地探针离边界 0.01，落入既有 0.02 接触容差，改用 0.125 内部探针。第一次浏览器批次 58 通过、2 跳过、2 失败，均为一次连续烘焙 800 房超默认 30 秒；保留全部断言，仅该批量用例预算改 120 秒。中间轮次 59 通过、2 跳过、1 失败：桌面续玩测试在暂停落盘前飞行弹体已撞墙，保存前置断言失败；测试改为从入口朝房间内部真实开火，保留飞行弹体、原局快照一致与倒计时冻结的断言。期间的瘦高、过粗、裂纹过密草稿及门后垫墙方案均被负责人修订，不作为最终截图或当前规格。
 
 ## 资源与性能
 
-5 张运行时 WebP 共 7,378,730 字节；较旧 3 图集增加 2,716,010 字节。每张 <2 MiB，PNG 与 WebP 解码 RGBA 逐像素相同；导出临时文件放在 public 之外，防止半写文件进入离线清单。新增 PNG/WebP 使用网页文件选择器原样上传，远端 Git blob SHA 和字节数需与本地一致。
+中间 v4 轮次另有 8 个素材加载测试失败：监听器文件名写死 v2，漏计新版墙体（实际已加载），修订为按 MAP_ART.sources 核对全部 7 图集；其余 62 通过、2 条件跳过。v11 检查在文档 Prettier 阶段停止，未进入代码/浏览器检查；不计为通过。最终 v12 结果单独记录。
 
-仍只有一张 1312×928 CanvasTexture、16 个障碍槽位；新离屏墙层占约 4.65 MiB CPU 像素内存，微型模块缓存约 28 KiB。两张新源图解码合计约 12 MiB，旧资源仍预加载；不能把传输字节数当作显存用量。每次换房重绘并上传整张画布，新增素材与地板重复仍可能带来采样闪烁和换房卡顿。
+七张运行时 WebP 共 9,270,626 字节，比初版三张增加 4,607,906 字节。每张 <2 MiB，PNG/WebP 解码 RGBA 逐像素相同。导出临时文件放在 public 外，避免半写文件进入离线清单。图片通过网页文件选择器原样上传，远端 Git blob SHA / 字节数与本地核对。
 
-[performance.json](wall-art-v2/performance.json) 使用原生产 StressRun 在旧 `f386549` 与候选之间做 ABAB：1920×1080、DPR 1、seed 42、30 怪 + 400 弹、每段至少 240 渲染帧，不并行运行浏览器测试。两侧都有模块美术，保持原有固定压力场景。它不含 HazardLayer，也不是四主题全部机关与真机 FPS；原始帧率、p95、draw calls、对象数量和预缓存精确字节均保留。
+为避免墙体的细像素在烘焙中损失，密度由 4 提高为每世界单位 8 像素：一张 2624×1856 CanvasTexture、同尺寸离屏墙层和四个 80×176 模块缓存，仍为 1 个地面 Image +16 个障碍槽位，无新增每帧逻辑。每个大画布 RGBA 像素约 18.58 MiB（此前各约 4.65 MiB），四模块约 220 KiB；CPU 暂存与 GPU 纹理可能各保留一份，不能将画布字节数当作整个进程或显存实测。四主题镜像地板和机关边沿 pattern 缓存最多另约 16.25 MiB（旧密度对应约 4.06 MiB）；四张新增图集解码约 24.0 MiB，旧资源仍预加载。换房仍整幅重绘并上传，画质提升有明确内存与上传成本。
 
-## 仍待确认
+[performance.json](wall-art-v2/performance.json) 为旧 `f386549` 与本候选的 ABAB：1920×1080、DPR 1、seed 42、30 怪 +400 弹、每段 ≥240 渲染帧，无其他浏览器测试并行。两侧运行原生产 StressRun，包含几何/AI/导航及常规渲染；不含 HazardLayer，不代表四主题机关密集场景或手机 FPS。原始 FPS、p95、draw calls、对象数量与预缓存精确字节均保留。800 房组合用例另记录每主题批量耗时；它含桥接调用与连续烘焙，不能等同单次真实换房延迟。
 
-- 画面是否达到已接受 v2 参考图的方向，由负责人看本次实际截图和试玩确认；不把自动化通过写成画面已验收。
-- 真机移动时障碍、机关、桶、地雷是否闪烁，密集战斗帧率和换房上传卡顿；WebKit / Safari 仍需实际设备验证。
-- 旧复审已指出奖励安全回退取 y/x 首个候选，三个房型可能落在左上角；本批未改锚点，最近合法候选建议仍待后续处理。
-- 桶显示 18×23、身体直径 14 及 hit 帧纵横比仍沿用；没有修改 Claude #119 校准的身体。
-- 同版本恢复首帧 stageView 的旧矩形 clamp、旧素材清理、导出目标密度仍待后续优化，本批不声称已解决。
+## 仍待负责人/后续确认
+
+- 美术是否达到已确认概念图的方向，由负责人看实际截图与试玩确认；自动化通过不等于美术验收。
+- 真机移动时障碍、机关、桶、地雷是否闪烁，密集战斗帧率、提高画布密度后的内存与换房卡顿；WebKit / Safari 需实际设备。
+- 安全回退仍取 y/x 首个候选，三个房型奖励可能落在左上角；最近合法候选建议未在本批处理。
+- 桶显示 18×23、身体直径 14 及 hit 帧纵横比未改，保留 Claude #119 身体校准。
+- 同版本恢复首帧 stageView 的旧矩形 clamp、旧素材清理及其他图集的导出目标密度仍待后续优化。

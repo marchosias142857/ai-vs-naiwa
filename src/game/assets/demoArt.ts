@@ -28,7 +28,7 @@ export function weaponTexture(id: WeaponId): string {
 /** 命名帧只切 Texture 坐标，不复制图片像素；全部图集进入 PWA 预缓存。 */
 export function preloadDemoArt(scene: Scene): void {
   const base = `${import.meta.env.BASE_URL}assets/demo/`;
-  for (const kind of ['terrain', 'doors', 'objects', 'ground', 'blocks'] as const)
+  for (const kind of ['terrain', 'doors', 'objects', 'ground', 'blocks', 'walls', 'sideDoors'] as const)
     scene.load.image(MAP_ART.textures[kind], `${base}${MAP_ART.sources[kind]}`);
   for (const art of Object.values(CHARACTER_ART)) {
     scene.load.image(art.texture, `${base}${art.source}`);

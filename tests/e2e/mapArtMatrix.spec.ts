@@ -71,14 +71,14 @@ test('cuboid tops stay upright; vertical rows hide bases, corners stay opaque an
   for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
     const report = await page.evaluate((t) => window.wallArtProbe(t), theme);
     await info.attach(theme, { body: JSON.stringify(report), contentType: 'application/json' });
-    expect(report.samples).toBe(2304);
+    expect(report.samples).toBe(9216);
     expect(report.topDifferences, theme).toBe(0);
     expect(report.baseDifferences, theme).toBe(0);
     expect(report.verticalDifferences, theme).toBe(0);
     expect(report.seams, theme).toBe(0);
     expect(report.coverage).toBeGreaterThan(7000);
     expect(report.holes, theme).toBe(0);
-    expect(report.jambHoles, theme).toBe(0);
+    expect(report.doorWallPixels, theme).toBe(0);
     expect(report.openPorts, theme).toBe(5);
   }
 });

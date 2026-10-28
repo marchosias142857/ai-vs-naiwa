@@ -73,7 +73,7 @@ class ArtScene extends Scene {
     super('ArtMatrix');
   }
   preload() {
-    for (const kind of ['terrain', 'doors', 'objects', 'ground', 'blocks'] as const)
+    for (const kind of ['terrain', 'doors', 'objects', 'ground', 'blocks', 'walls', 'sideDoors'] as const)
       this.load.image(MAP_ART.textures[kind], `/assets/demo/${MAP_ART.sources[kind]}`);
   }
   create() {
@@ -115,7 +115,10 @@ class ArtScene extends Scene {
       const texture = this.textures.get('modular-ground:ArtMatrix') as Textures.CanvasTexture;
       const pixels = () => texture.context.getImageData(0, 0, texture.width, texture.height).data;
       const pixel = (data: Uint8ClampedArray, x: number, y: number) => {
-        const index = (Math.floor((y - T + 20) * d) * texture.width + Math.floor((x - L + 20) * d)) * 4;
+        const index =
+          (Math.floor((y - T + (texture.height / d - B.height) / 2) * d) * texture.width +
+            Math.floor((x - L + (texture.width / d - B.width) / 2) * d)) *
+          4;
         return data.slice(index, index + 4).join(',');
       };
       art.show(theme, [], rectangle);
@@ -127,8 +130,8 @@ class ArtScene extends Scene {
       // cover earlier bases; the exposed bases along the north/south rows stay identical too.
       let baseDifferences = 0,
         verticalDifferences = 0;
-      for (let i = 0; i < 32; i++)
-        for (let j = 4; j < 28; j++) {
+      for (let i = 0; i < w * d; i++)
+        for (let j = d; j < (w - 1) * d; j++) {
           const u = (i + 0.5) / d,
             v = (j + 0.5) / d;
           const reference = pixel(data, L + 64 + u, T - w - h + v);
@@ -142,8 +145,8 @@ class ArtScene extends Scene {
           }
           if (pixel(data, L - w + u, T + 72 - h + v) !== reference) verticalDifferences++;
         }
-      for (let i = 0; i < 32; i++)
-        for (let j = 0; j < h * d; j++) {
+      for (let i = 0; i < w * d; i++)
+        for (let j = 0; j + 0.5 < h * d; j++) {
           const u = (i + 0.5) / d,
             v = (j + 0.5) / d;
           if (pixel(data, L + 64 + u, T - h + v) !== pixel(data, L + 40 + u, D + w - h + v))
@@ -152,8 +155,8 @@ class ArtScene extends Scene {
       // A 64-world-unit source cell uses a mirrored repeat: there must be no pixel jump at a seam.
       for (let i = 0; i < 80; i++) {
         const p = 160 + (i + 0.5) / d;
-        if (pixel(data, 128 - 0.125, p) !== pixel(data, 128 + 0.125, p)) seams++;
-        if (pixel(data, p, 128 - 0.125) !== pixel(data, p, 128 + 0.125)) seams++;
+        if (pixel(data, 128 - 0.5 / d, p) !== pixel(data, 128 + 0.5 / d, p)) seams++;
+        if (pixel(data, p, 128 - 0.5 / d) !== pixel(data, p, 128 + 0.5 / d)) seams++;
       }
       const floor = ['temple', 'wreck', 'abyss', 'milk'].indexOf(theme) + 1;
       const template = resolveRoomTemplate(
@@ -163,7 +166,7 @@ class ArtScene extends Scene {
       )!;
       let holes = 0,
         coverage = 0,
-        jambHoles = 0,
+        doorWallPixels = 0,
         openPorts = 0;
       for (const room of [compileRoom(template), rooms[199]!]) {
         art.show(theme, [], room, [], room.ports);
@@ -182,7 +185,9 @@ class ArtScene extends Scene {
             if (
               inside(x, y) ||
               room.ports.some((p) =>
-                p.direction.x ? Math.abs(y - p.center.y) < 19 : Math.abs(x - p.center.x) < 19,
+                p.direction.x
+                  ? Math.abs(y - p.center.y) < MAP_ART.doorSize.vertical[1] / 2 + 1
+                  : Math.abs(x - p.center.x) < MAP_ART.doorSize.horizontal[0] / 2 + 1,
               )
             )
               continue;
@@ -198,12 +203,12 @@ class ArtScene extends Scene {
             }
           }
         for (const p of room.ports) {
-          // The atlas has transparent corners: retain opaque wall behind both jamb ends.
-          for (const tangent of [-16, 16])
+          // The existing door model owns its entire reserved span; no wall may remain behind it.
+          for (const tangent of [-18, -12, 0, 12, 18])
             for (const normal of [1, 4, 7]) {
               const x = p.center.x + p.direction.x * normal + p.direction.y * tangent;
               const y = p.center.y + p.direction.y * normal + p.direction.x * tangent;
-              if (!pixel(data, x + 0.125, y + 0.125).endsWith(',255')) jambHoles++;
+              if (!pixel(data, x + 0.125, y + 0.125).endsWith(',0')) doorWallPixels++;
             }
           if (
             pixel(
@@ -223,7 +228,7 @@ class ArtScene extends Scene {
         samples,
         holes,
         coverage,
-        jambHoles,
+        doorWallPixels,
         openPorts,
       };
     };
@@ -240,7 +245,7 @@ declare global {
       samples: number;
       holes: number;
       coverage: number;
-      jambHoles: number;
+      doorWallPixels: number;
       openPorts: number;
     };
     modularArt: (theme: 'temple' | 'wreck' | 'abyss' | 'milk') => {

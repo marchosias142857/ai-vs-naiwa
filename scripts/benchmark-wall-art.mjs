@@ -115,7 +115,7 @@ try {
       {
         baseline: baselineHead,
         method:
-          'ABAB; real production builds; unchanged standard StressRun capacity profile with 7 enemy kinds including boss. Fixed seed 42; measured and asserted 30 enemies + 400 bullets; 1920x1080 DPR1; >=240 render frames after warm-up; no concurrent browser tests. StressRun has no HazardLayer, so this measures geometry/AI/navigation plus normal rendering, not dense rain VFX or every theme. Both revisions render modular room art. Baseline is the rejected f386549 wall renderer; candidate uses upright cuboid wall modules sorted by y/x, ground-v2 and blocks-v2. No concurrent browser tests. Software renderer is not phone FPS.',
+          'ABAB; real production builds; unchanged standard StressRun capacity profile with 7 enemy kinds including boss. Fixed seed 42; measured and asserted 30 enemies + 400 bullets; 1920x1080 DPR1; >=240 render frames after warm-up; no concurrent browser tests. StressRun has no HazardLayer, so this measures geometry/AI/navigation plus normal rendering, not dense rain VFX or every theme. Both revisions render modular room art. Baseline is the rejected f386549 wall renderer; candidate uses upright cuboid wall modules sorted by y/x, ground-v2, blocks-v2, approved connected wall-model-v12, side-doors-v2 and an 8-pixel/world-unit room bake. No concurrent browser tests. Software renderer is not phone FPS.',
         bundles,
         reports,
       },

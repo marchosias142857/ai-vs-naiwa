@@ -63,5 +63,31 @@
     "sourceSha256": "8681ac76c4a931eac75a1ad8e9e3a73cc2c306c6340a72edf1dc28dca1a41eef",
     "runtimeSha256": "bbb40175dbd30379095f56ae81909577b81e4942a62775821fb7777a99258a96",
     "decodedRGBAIdentical": true
+  },
+  {
+    "name": "walls",
+    "sourceFile": "wall-model-v12.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sourceBytes": 1720140,
+    "runtimeBytes": 1110044,
+    "sourceSha256": "c920e30782a473bd883846f346a941abbddf3bdbad561714e10b94c9fc098bb2",
+    "runtimeSha256": "c8ecd33057e8d687042c171c0b5987850bd76baa8b3fb882306aac71726b3d8c",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "sideDoors",
+    "sourceFile": "side-doors-v2.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "sourceBytes": 1048670,
+    "runtimeBytes": 781852,
+    "sourceSha256": "a17988a2c06195d64418d725b538119dc7d861462a2177eff58801a7ddd74e29",
+    "runtimeSha256": "cf29038d9c539ccf3f1146311a03027bbfc4ced4be008d357970c5bb39cc65c8",
+    "decodedRGBAIdentical": true
   }
 ]

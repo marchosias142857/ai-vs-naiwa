@@ -9,7 +9,7 @@ import type { Point } from '../../sim/geometry/RoomGeometry';
 import type { RoomArt } from './RoomArt';
 
 const B = MODULAR_V2.bounds,
-  PAD = 20;
+  PAD = MAP_ART.canvasPadding;
 const LEFT = B.x - PAD,
   TOP = B.y - PAD;
 const WIDTH = B.width + PAD * 2,
@@ -123,11 +123,9 @@ export class ModularRoomArt implements RoomArt {
         MAP_ART.wallWidth,
         MAP_ART.wallWidth + MAP_ART.wallHeight,
       );
-    this.decor(wall, theme, boundary, ports);
     for (const p of ports) {
-      const h = MAP_ART.doorOpeningHalfWidth;
-      const w = p.direction.x ? PAD * 2 : h * 2;
-      const height = p.direction.y ? PAD * 2 : h * 2;
+      const w = p.direction.x ? PAD * 2 : MAP_ART.doorSize.horizontal[0];
+      const height = p.direction.y ? PAD * 2 : MAP_ART.doorSize.vertical[1];
       wall.clearRect(p.center.x - w / 2, p.center.y - height / 2, w, height);
     }
     // Clear openings on the staging layer, preserving the floor beneath raised tops and doors.
@@ -163,58 +161,34 @@ export class ModularRoomArt implements RoomArt {
   private wallModule(theme: RoomTheme['art']): HTMLCanvasElement {
     const cached = this.modules.get(theme);
     if (cached) return cached;
-    const d = MAP_ART.density,
-      size = MAP_ART.wallWidth,
-      height = MAP_ART.wallHeight;
+    const size = MAP_ART.wallPixels,
+      faceHeight = MAP_ART.wallFacePixels;
     const canvas = document.createElement('canvas');
-    canvas.width = size * d;
-    canvas.height = (size + height) * d;
+    canvas.width = size;
+    canvas.height = size + faceHeight;
     const c = canvas.getContext('2d')!;
     c.imageSmoothingEnabled = false;
     c.fillStyle = MAP_ART.wallBacking[theme];
     c.fillRect(0, 0, canvas.width, canvas.height);
-    const frame = MAP_ART.frames[`${theme}_obstacle`];
-    const source = this.scene.textures.get(MAP_ART.textures.blocks).getSourceImage() as HTMLImageElement;
-    const top = MAP_ART.blockTopDepth[theme];
-    // Authored cap and frontal base stay upright. Their projection sizes are independent.
-    c.drawImage(
-      source,
-      frame[0],
-      frame[1] + top,
-      frame[2],
-      frame[3] - top,
-      0,
-      size * d,
-      size * d,
-      height * d,
-    );
-    c.drawImage(source, frame[0], frame[1], frame[2], top, 0, 0, size * d, size * d);
+    const source = this.scene.textures.get(MAP_ART.textures.walls).getSourceImage() as HTMLImageElement;
+    // Normalize the cap and body regions of the connected wall model to an exact 80×80 cap and 80×96 body.
+    // Square opaque bounds keep all ornament inside the cap; nearest sampling preserves pixels.
+    for (const part of ['top', 'face'] as const) {
+      const frame = MAP_ART.frames[`${theme}_wall_${part}`];
+      c.drawImage(
+        source,
+        frame[0],
+        frame[1],
+        frame[2],
+        frame[3],
+        0,
+        part === 'top' ? 0 : size,
+        size,
+        part === 'top' ? size : faceHeight,
+      );
+    }
     this.modules.set(theme, canvas);
     return canvas;
-  }
-
-  private decor(
-    c: CanvasRenderingContext2D,
-    theme: RoomTheme['art'],
-    boundary: readonly Point[],
-    ports: CompiledRoom['ports'],
-  ): void {
-    const source = this.scene.textures.get(MAP_ART.textures.objects).getSourceImage() as HTMLImageElement;
-    const frame = MAP_ART.frames[theme === 'abyss' ? 'coral' : theme === 'temple' ? 'moss' : 'lantern'];
-    // Fixed, layout-derived decoration on the wall only; no RNG consumption, colliders or scene objects.
-    for (let i = 0; i < boundary.length; i++) {
-      const a = boundary[i]!,
-        b = boundary[(i + 1) % boundary.length]!;
-      const length = Math.hypot(b.x - a.x, b.y - a.y);
-      for (let distance = 28; distance < length - 16; distance += 64) {
-        const x = a.x + ((b.x - a.x) * distance) / length + ((b.y - a.y) / length) * 5;
-        const y = a.y + ((b.y - a.y) * distance) / length - ((b.x - a.x) / length) * 5 - MAP_ART.wallHeight;
-        if (ports.some((p) => Math.hypot(p.center.x - x, p.center.y - y) < 28)) continue;
-        const w = theme === 'abyss' ? 13 : theme === 'temple' ? 14 : 4;
-        const h = (w * frame[3]) / frame[2];
-        c.drawImage(source, frame[0], frame[1], frame[2], frame[3], x - w / 2, y - h / 2, w, h);
-      }
-    }
   }
 
   private pattern(theme: RoomTheme['art'], part: 'floor' | 'cap' | 'face'): CanvasPattern {

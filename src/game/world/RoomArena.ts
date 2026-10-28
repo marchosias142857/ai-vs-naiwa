@@ -249,11 +249,17 @@ export class RoomArena {
       if (door) {
         if (this.modularArt) {
           door
-            .setTexture(MAP_ART.textures.doors, `${this.theme}_${port.id}_${run.locked ? 'locked' : 'open'}`)
-            .setDisplaySize(dx ? 24 : 40, dx ? 38 : 30)
+            .setTexture(
+              dx ? MAP_ART.textures.sideDoors : MAP_ART.textures.doors,
+              `${this.theme}_${port.id}_${run.locked ? 'locked' : 'open'}`,
+            )
+            .setDisplaySize(
+              dx ? MAP_ART.doorSize.vertical[0] : MAP_ART.doorSize.horizontal[0],
+              dx ? MAP_ART.doorSize.vertical[1] : MAP_ART.doorSize.horizontal[1],
+            )
             .setAngle(0)
             .setOrigin(0.5, dy < 0 ? 0.8 : dy > 0 ? 0.2 : 0.5)
-            .setPosition(x, y)
+            .setPosition(x + dx * MAP_ART.sideDoorOffset, y)
             .setVisible(true);
           continue;
         }

@@ -34,7 +34,10 @@ it('provides distinct four-direction door states and all trap states without rot
     expect(
       new Set(frames.map((name) => JSON.stringify(MAP_ART.frames[name as keyof typeof MAP_ART.frames]))).size,
     ).toBe(8);
-    for (const name of frames) expect(mapFrameTexture(name)).toBe(MAP_ART.textures.doors);
+    for (const name of frames)
+      expect(mapFrameTexture(name)).toBe(
+        /_(east|west)_/.test(name) ? MAP_ART.textures.sideDoors : MAP_ART.textures.doors,
+      );
   }
   for (const frame of [
     'spikes_idle',
@@ -49,4 +52,16 @@ it('provides distinct four-direction door states and all trap states without rot
     'mine_lit',
   ])
     expect(MAP_ART.frames).toHaveProperty(frame);
+});
+
+it('uses dedicated pixel wall parts with a square cap and a 1.2 body ratio, preserving north/south door models', () => {
+  expect(MAP_ART.wallPixels).toBe(80);
+  expect(MAP_ART.wallFacePixels).toBe(96);
+  expect(MAP_ART.wallHeight / MAP_ART.wallWidth).toBe(1.2);
+  expect(MAP_ART.doorSize).toEqual({ horizontal: [40, 30], vertical: [13, 38] });
+  for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
+    expect(mapFrameTexture(`${theme}_wall_top`)).toBe(MAP_ART.textures.walls);
+    expect(mapFrameTexture(`${theme}_wall_face`)).toBe(MAP_ART.textures.walls);
+    expect(MAP_ART.textures.walls).not.toBe(mapFrameTexture(`${theme}_obstacle`));
+  }
 });

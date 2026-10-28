@@ -86,6 +86,7 @@ class GeometryScene extends Scene {
         run.roomId = run.map.rooms
           .filter((r) => r.kind === (floor === 4 ? 'boss' : 'combat'))
           .sort((a, b) => b.links.length - a.links.length)[0]!.id;
+        run.phase = focus === 'side-locked' ? 'fighting' : 'exploring';
         arena.show(
           run,
           `modular_v2/${theme}/${floor === 4 ? 'boss' : floor === 3 ? 'combat_1' : 'combat_0'}`,
@@ -94,7 +95,11 @@ class GeometryScene extends Scene {
         session.update();
         const adjacent =
           run.map.rooms[
-            run.room.links.find((id) => run.map.rooms[id]!.y < run.room.y) ?? run.room.links[0]!
+            run.room.links.find((id) =>
+              focus.startsWith('side')
+                ? run.map.rooms[id]!.x !== run.room.x
+                : run.map.rooms[id]!.y < run.room.y,
+            ) ?? run.room.links[0]!
           ]!;
         const port = arena.port(adjacent.x - run.room.x, adjacent.y - run.room.y);
         const corner =
@@ -106,18 +111,22 @@ class GeometryScene extends Scene {
         this.cameras.main
           .setZoom(focus === 'room' ? 4.25 : 12)
           .centerOn(
-            focus === 'room' ? 240 : focus === 'door' ? port.center.x : corner.x,
-            focus === 'room' ? 135 : focus === 'door' ? port.center.y : corner.y,
+            focus === 'room' ? 240 : focus !== 'corner' ? port.center.x : corner.x,
+            focus === 'room' ? 135 : focus !== 'corner' ? port.center.y : corner.y,
           );
+        const visibleDoors = this.children.list.filter(
+          (o) =>
+            o.type === 'Image' &&
+            [MAP_ART.textures.doors, MAP_ART.textures.sideDoors].some(
+              (key) => key === (o as unknown as { texture: { key: string } }).texture.key,
+            ) &&
+            (o as unknown as { visible: boolean }).visible,
+        ) as unknown as Array<{ texture: { key: string }; frame: { name: string } }>;
         return {
           theme,
-          doors: this.children.list.filter(
-            (o) =>
-              o.type === 'Image' &&
-              (o as unknown as { texture: { key: string }; visible: boolean }).texture.key ===
-                MAP_ART.textures.doors &&
-              (o as unknown as { visible: boolean }).visible,
-          ).length,
+          doors: visibleDoors.length,
+          sideDoors: visibleDoors.filter((o) => o.texture.key === MAP_ART.textures.sideDoors).length,
+          lockedDoors: visibleDoors.filter((o) => o.frame.name.endsWith('_locked')).length,
           expectedDoors: run.room.links.length,
         };
       },
@@ -300,8 +309,8 @@ declare global {
     productionGeometry: {
       walls: (
         floor: number,
-        focus: 'room' | 'door' | 'corner',
-      ) => { theme: string; doors: number; expectedDoors: number };
+        focus: 'room' | 'door' | 'corner' | 'side-open' | 'side-locked',
+      ) => { theme: string; doors: number; sideDoors: number; lockedDoors: number; expectedDoors: number };
       showcase: (floor: number) => {
         theme: string;
         rocks: number;

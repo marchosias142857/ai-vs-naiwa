@@ -11,10 +11,11 @@ ROOT = Path(__file__).resolve().parents[2]
 SOURCE = Path(__file__).resolve().parent / 'sources'
 frames = {}
 reports = []
-for name in ['terrain', 'doors', 'objects', 'ground', 'blocks']:
-    version = 'v2' if name in ['ground', 'blocks'] else 'v1'
-    source = SOURCE / f'{name}-{version}.png'
-    output = ROOT / 'public/assets/demo' / f'map-{name}-{version}.webp'
+for name in ['terrain', 'doors', 'objects', 'ground', 'blocks', 'walls', 'sideDoors']:
+    version = 'v2' if name in ['ground', 'blocks', 'walls', 'sideDoors'] else 'v1'
+    asset = 'wall-model-v12' if name == 'walls' else 'side-doors-v2' if name == 'sideDoors' else f'{name}-{version}'
+    source = SOURCE / f'{asset}.png'
+    output = ROOT / 'public/assets/demo' / f'map-{asset}.webp'
     im = Image.open(source).convert('RGBA')
     # Stage outside public: incomplete files must never enter a concurrent PWA build.
     with TemporaryDirectory(prefix='naiwa-map-export-') as directory:
@@ -29,7 +30,33 @@ for name in ['terrain', 'doors', 'objects', 'ground', 'blocks']:
                     'sourceSha256': hashlib.sha256(source.read_bytes()).hexdigest(),
                     'runtimeSha256': hashlib.sha256(output.read_bytes()).hexdigest(),
                     'decodedRGBAIdentical': True})
-    if name == 'blocks':
+    if name == 'walls':
+        # Four newly painted, connected models in a 2x2 atlas. Keep original PNG intact.
+        # Measured top/body regions are normalized by the renderer to exact 80x80 + 80x96.
+        for i, theme in enumerate(['temple', 'wreck', 'abyss', 'milk']):
+            x = (i % 2) * im.width // 2
+            row = i // 2
+            top, join, bottom = (0, 248, 496) if row == 0 else (496, 727, im.height)
+            for part, y, end in [('top', top, join), ('face', join, bottom)]:
+                cell = im.crop((x, y, x + im.width // 2, end))
+                box = cell.getchannel('A').point(lambda a: 255 if a > 16 else 0).getbbox()
+                assert box
+                l, t, r, b = box
+                frames[f'{theme}_wall_{part}'] = [x + l, y + t, r - l, b - t]
+    elif name == 'sideDoors':
+        ys = [0, 310, 622, 930, im.height]
+        for row, theme in enumerate(['temple', 'wreck', 'abyss', 'milk']):
+            for col in range(4):
+                x = col * im.width // 4
+                y = ys[row]
+                cell = im.crop((x, y, (col + 1) * im.width // 4, ys[row + 1]))
+                box = cell.getchannel('A').point(lambda a: 255 if a > 16 else 0).getbbox()
+                assert box
+                l, t, r, b = box
+                direction = 'east' if col < 2 else 'west'
+                state = 'open' if col % 2 == 0 else 'locked'
+                frames[f'{theme}_{direction}_{state}'] = [x + l, y + t, r - l, b - t]
+    elif name == 'blocks':
         for i, theme in enumerate(['temple', 'wreck', 'abyss', 'milk']):
             x, y = (i % 2) * im.width // 2, (i // 2) * im.height // 2
             cell = im.crop((x, y, x + im.width // 2, y + im.height // 2))
