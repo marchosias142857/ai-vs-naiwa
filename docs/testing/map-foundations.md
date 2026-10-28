@@ -1,6 +1,6 @@
 # #114 三项基础交付验证
 
-基线 main `60c35eb`（#131 合并）。本批连续实施更新存档边界、模板锚点/RoomDirector、非矩形灰盒物理；契约见 [ADR 0040](../adr/0040-map-foundations.md)。运行代码为 `3df2e55ce33dc04744e0e671305944be71073b9e`；其后增加测试、文档、报告和截图，已审 head `8524de6` 的 src tree 仍为 `72d9142a9f036534424867fa676f049a1d0365d6`。Claude review 5683888966 确认代码无阻塞，本次更正文档；线上灰盒替换仍待负责人确认，PR 保持 Draft。
+基线 main `60c35eb`（#131 合并）。本批连续实施更新存档边界、模板锚点/RoomDirector、非矩形灰盒物理；契约见 [ADR 0040](../adr/0040-map-foundations.md)。运行代码为 `3df2e55ce33dc04744e0e671305944be71073b9e`；其后增加测试、文档、报告和截图，已审 head `8524de6` 的 src tree 仍为 `72d9142a9f036534424867fa676f049a1d0365d6`。Claude review 5683888966 确认代码无阻塞，文档修正已完成；负责人于 2026-10-28 接受线上灰盒过渡，可按 AGENTS 取消 Draft，交负责人合并。
 
 首轮 88 项 Chromium：82 通过、1 桌面竖屏条件跳过、5 失败。两个 Boss 击杀时限失败；PWA 横屏项目在测试切到竖屏之后重载，启动仍被横屏遮罩挡住；两个档案保护样本使用了不存在的 vitality 天赋 ID，在新局读档时触发了既有损坏修复。后两类修正测试样本/操作顺序，不放宽断言或超时。初始结果保留，不写成全绿。
 
@@ -10,7 +10,7 @@
 
 ## 限制与线上行为
 
-本批为灰盒，正式地图美术未接入。`DemoSession` 无条件以 `new RoomArena(scene, bridge, false, true)` 关闭 RoomArt：**本 PR 合并后，main 自动部署会把线上全部地牢房间（包括 Boss 房）的地板、墙体和装饰门画面替换为灰盒，直到正式模块美术上线；并非仅调试参数可见。** 负责人尚未确认接受线上灰盒过渡；若不接受，备选是新轮廓先只在调试参数下启用，当前代码尚未实现该备选。
+本批为灰盒，正式地图美术未接入。`DemoSession` 无条件以 `new RoomArena(scene, bridge, false, true)` 关闭 RoomArt：**本 PR 合并后，main 自动部署会把线上全部地牢房间（包括 Boss 房）的地板、墙体和装饰门画面替换为灰盒，直到正式模块美术上线；并非仅调试参数可见。** 负责人于 2026-10-28 明确回复“接受”，批准线上灰盒过渡，保持当前生产路径；不实施仅调试参数启用新轮廓的备选。该决定不等于正式美术或真机性能验收。
 
 外墙加入 `RoomArena.lineOfSight → traceStaticSegment` 后，经 `CombatWorld.los → Arsenal` 影响特殊弹体穿墙判断和光束 reach，也影响枪口检查与近战命中。**武器行为确有变化**：弹跳弹在外墙消耗反弹次数、回旋镖更早折返、光束停在墙上。Claude 的 sim 对照中，玩家 `(340,135)` 朝东开火时，main 的 `bubble_bouncer` 飞到 x=696、`fin_boomerang` 飞到 x=463.7、`lantern_beam` 长 260，均穿墙；本 PR 分别反弹、折返、光束缩至 19.6。Claude 作为武器机制负责人接受这是顺带修复 main 旧 bug，本次不改代码；负责人试玩应留意贴外墙时的弹跳次数、回旋镖手感和光束长度。对照来源为 review 5683888966，不是 GPT 本次新跑的结果。
 
@@ -61,7 +61,7 @@
 
 [Review 5683888966](https://github.com/marchosias142857/ai-vs-naiwa/pull/132#pullrequestreview-5683888966) 审查 head `8524de6b2b3bc89b94be95f0a9b53d264fa88633`、base main `60c35eb`，结论代码无阻塞。Claude 已核对 RoomDirector 锚点回退、pending/RNG 保留、更新只清局内键及 AI 几何规则；精确 canOccupy 使 400 种子中 14 个 Boss 出生点变化，seed 42 不变。上述核对及其单测结果为 Claude 独立证据，不冒充 GPT 新执行。
 
-本次仅修改 ADR、验证记录、ROADMAP 和 PR/Issue 说明，删除不准确的武器行为不变表述，补充线上灰盒替换的实际影响。仅做 Markdown 格式、diff 和代码树一致性检查；未重跑单测、E2E、sim 对照或性能，不将前述 516 单测及浏览器结果写成本次执行。线上灰盒过渡待负责人明确确认，确认后才按 AGENTS 改为 Ready for review，仍由负责人合并。
+文档修正提交 `3b630ff` 仅修改 ADR、验证记录、ROADMAP 和 PR/Issue 说明，删除不准确的武器行为不变表述，补充线上灰盒替换的实际影响。仅做 Markdown 格式、diff 和代码树一致性检查；未重跑单测、E2E、sim 对照或性能，不将前述 516 单测及浏览器结果写成本次执行。负责人随后明确接受线上灰盒过渡，本次同步 AGENTS、ADR、验证记录、ROADMAP 和 PR/Issue 中的确认状态，运行代码与测试仍不变；按现有授权改为 Ready for review，仍由负责人合并。
 
 非阻塞建议登记如下，本次未改代码或补跑实验：
 
