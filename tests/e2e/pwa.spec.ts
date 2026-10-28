@@ -157,6 +157,7 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
 
 test('连续发布只提示更新，稍后及另一标签页均不强制刷新', async ({ page, context, isMobile }, info) => {
   test.setTimeout(60_000);
+  const initialViewport = page.viewportSize()!;
   await page.goto(`${url}?scene=Game&seed=42`);
   await page.waitForFunction(() => window.__AVN__?.scene === 'Game' && navigator.serviceWorker.controller);
   const other = await context.newPage();
@@ -169,6 +170,7 @@ test('连续发布只提示更新，稍后及另一标签页均不强制刷新',
       configFile: resolve('vite.config.ts'),
       build: { outDir: next, emptyOutDir: true },
       logLevel: 'silent',
+      define: { __APP_RELEASE__: JSON.stringify(`pwa-test-release-${version}`) },
       plugins: [
         {
           name: 'test-version',
@@ -195,6 +197,8 @@ test('连续发布只提示更新，稍后及另一标签页均不强制刷新',
   await expect(page.locator('meta[name="pwa-test-version"]')).toHaveCount(0);
   await other.getByRole('button', { name: '点击刷新' }).click();
   await expect(other.locator('meta[name="pwa-test-version"]')).toHaveAttribute('content', '2');
+  await expect(other.locator('#demo-menu-panel')).toBeVisible();
+  await expect(other.locator('#continue-run')).toBeDisabled();
   await expect(page.locator('#pwa-update')).toBeVisible();
   await expect(page.locator('meta[name="pwa-test-version"]')).toHaveCount(0);
   expect(await page.evaluate(() => window.__AVN__?.seed)).toBe(42);
@@ -205,5 +209,8 @@ test('连续发布只提示更新，稍后及另一标签页均不强制刷新',
   await expect(page.locator('#pwa-update')).toBeVisible();
   await page.getByRole('button', { name: '点击刷新' }).click();
   await expect(page.locator('meta[name="pwa-test-version"]')).toHaveAttribute('content', '3');
+  await page.setViewportSize(initialViewport);
+  await expect(page.locator('#demo-menu-panel')).toBeVisible();
+  await expect(page.locator('#continue-run')).toBeDisabled();
   await expect(other.locator('meta[name="pwa-test-version"]')).toHaveAttribute('content', '2');
 });

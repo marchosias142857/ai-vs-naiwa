@@ -173,7 +173,7 @@ describe('恢复分支与同步存储', () => {
     expect(decodeRun(value).kind).toBe('full');
     expect(decodeRun({ ...value, sim: null })).toMatchObject({ notice: 'invalid' });
     expect(decodeRun({ ...value, meta: { ...value.meta, build: 'old' } }, accept)).toMatchObject({
-      kind: 'entry',
+      kind: 'none',
       notice: 'updated',
     });
     expect(decodeRun({ ...value, meta: { ...value.meta, dataHash: 'old' } }, accept)).toMatchObject({
@@ -252,4 +252,39 @@ describe('恢复分支与同步存储', () => {
     });
     expect(readSavedRun()).toEqual({ kind: 'none' });
   });
+});
+
+it('boot ends changed-build adventures while preserving every profile/resource byte', async () => {
+  const { prepareRunVersion, BUILD_KEY } = await import('../../../src/game/save/runStorage');
+  const values = new Map<string, string>([
+    [BUILD_KEY, JSON.stringify('old-release')],
+    [RUN_KEY, JSON.stringify(envelope(sample()))],
+    [CHECKPOINT_KEY, JSON.stringify(sample().entry)],
+    ['avn.profile.v2', '{"earned":99,"talents":{"thick_scales":2}}'],
+    ['avn.profile.v2.backup', 'backup-verbatim'],
+    ['avn.future.resource', '{"pearls":123}'],
+  ]);
+  const protectedValues = [...values].filter(([k]) => k.includes('profile') || k.includes('future'));
+  vi.stubGlobal('localStorage', {
+    getItem: (k: string) => values.get(k) ?? null,
+    setItem: (k: string, v: string) => values.set(k, v),
+    removeItem: (k: string) => values.delete(k),
+  });
+  expect(prepareRunVersion()).toBe(true);
+  expect(readSavedRun()).toEqual({ kind: 'none', notice: 'updated' });
+  expect(values.has(RUN_KEY)).toBe(false);
+  expect(values.has(CHECKPOINT_KEY)).toBe(false);
+  for (const [key, value] of protectedValues) expect(values.get(key)).toBe(value);
+  expect(prepareRunVersion()).toBe(false);
+  const state = sample();
+  expect(writeSavedRun(state)).toBe(true);
+  expect(prepareRunVersion()).toBe(false);
+  expect(readSavedRun(() => state.sim).kind).toBe('full');
+  // Pre-policy installations with a standalone, unversioned entrance cannot resume across release.
+  values.delete(BUILD_KEY);
+  values.delete(RUN_KEY);
+  values.set(CHECKPOINT_KEY, JSON.stringify(state.entry));
+  expect(prepareRunVersion()).toBe(true);
+  expect(values.has(CHECKPOINT_KEY)).toBe(false);
+  expect(prepareRunVersion()).toBe(false);
 });

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "modular_v2/wreck/combat_1",
+    "radius": 6,
+    "cellSize": 0.5,
+    "interiorArea": 45824,
+    "footprintFreeFraction": 0.9312587290502793,
+    "reachableCenterArea": 32646.25,
+    "relativeToEmptyCenters": 0.8039364164696612,
+    "relativeToInterior": 0.7124268942039106,
+    "components": 1
+  },
+  {
+    "id": "modular_v2/wreck/combat_1",
+    "radius": 9,
+    "cellSize": 0.5,
+    "interiorArea": 45824,
+    "footprintFreeFraction": 0.9312587290502793,
+    "reachableCenterArea": 27369.75,
+    "relativeToEmptyCenters": 0.718017498065244,
+    "relativeToInterior": 0.5972798097067039,
+    "components": 1
+  },
+  {
+    "id": "modular_v2/wreck/combat_1",
+    "radius": 8,
+    "cellSize": 0.5,
+    "interiorArea": 45824,
+    "footprintFreeFraction": 0.9312587290502793,
+    "reachableCenterArea": 29102.75,
+    "relativeToEmptyCenters": 0.7474029559433466,
+    "relativeToInterior": 0.6350984200418994,
+    "components": 1
+  }
+]

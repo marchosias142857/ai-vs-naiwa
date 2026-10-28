@@ -1,3 +1,4 @@
+import type { Anchor } from '../dungeon/compileRoom';
 import { BALANCE } from '../../data/balance';
 import { ENEMIES, type EnemyId } from '../../data/enemies';
 import { ENCOUNTERS } from '../../data/loot';
@@ -35,6 +36,7 @@ export class RoomDirector {
     private readonly bounds: Rect,
     private readonly isFree: (x: number, y: number, radius: number) => boolean,
     private readonly maxActors = DEFAULT_MAX_ACTORS,
+    private readonly spawnAnchors: () => readonly Anchor[] = () => [],
   ) {
     this.floor = run.floor;
     const floorRng = rng.fork(`encounters:${this.floor}`);
@@ -75,7 +77,10 @@ export class RoomDirector {
     this.pending += this.run.spawnCount;
     if (!this.pending) return;
     const count = Math.min(this.pending, Math.max(0, this.maxActors - this.world.actors.length));
+    let spawned = 0;
     for (let i = 0; i < count; i++) {
+      const kindsBefore = this.kinds.snapshot,
+        positionsBefore = this.positions.snapshot;
       const floor = ENCOUNTERS.floors[Math.min(this.run.floor - 1, ENCOUNTERS.floors.length - 1)]!;
       const kind: EnemyId = this.run.room.kind === 'boss' ? 'naiwa_boss' : this.kinds.pick(floor);
       const radius = ENEMIES[kind].radius,
@@ -95,10 +100,28 @@ export class RoomDirector {
         }
         if (d >= BALANCE.spawnMinDistance) break;
       }
-      // 地图适配层保留角落安全出生区域，有限重试失败时使用固定角落。
+      if (best < 0) {
+        let bestId = '';
+        for (const anchor of this.spawnAnchors()) {
+          if (!this.isFree(anchor.x, anchor.y, radius)) continue;
+          const distance = Math.hypot(anchor.x - p.x, anchor.y - p.y);
+          if (distance > best || (distance === best && anchor.id < bestId)) {
+            best = distance;
+            bestId = anchor.id;
+            bx = anchor.x;
+            by = anchor.y;
+          }
+        }
+      }
+      if (best < 0) {
+        this.kinds.restore(kindsBefore);
+        this.positions.restore(positionsBefore);
+        break;
+      }
       this.world.spawnEnemy(kind, bx, by);
+      spawned++;
     }
-    this.pending -= count;
-    this.run.alive = alive + count + this.pending;
+    this.pending -= spawned;
+    this.run.alive = alive + spawned + this.pending;
   }
 }

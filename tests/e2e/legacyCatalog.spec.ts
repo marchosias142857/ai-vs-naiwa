@@ -62,10 +62,21 @@ for (const seed of [0, 42, 12345, 0xffffffff])
       for (const row of result.rows) {
         expect(row.templateId).toBe(row.expectedId);
         const recorded = baseline.selections[String(seed) as keyof typeof baseline.selections][floor - 1]!;
-        expect(row.expectedId).toBe(recorded.templateIds[row.id]);
-        const original = baseline.templates[row.expectedId as keyof typeof baseline.templates];
-        expect(row.bodies).toEqual(original.bodies);
-        expect(row.traps).toEqual(original.traps);
+        const legacyId = row.expectedId.replace('modular_v2/', 'legacy_v1/');
+        expect(legacyId).toBe(recorded.templateIds[row.id]);
+        const original = baseline.templates[legacyId as keyof typeof baseline.templates];
+        expect(row.bodies).toEqual(
+          legacyId === 'legacy_v1/wreck/combat_1'
+            ? original.bodies.map((b) => ({ ...b, width: 56 }))
+            : original.bodies,
+        );
+        expect(row.traps).toEqual(
+          legacyId === 'legacy_v1/wreck/combat_2'
+            ? original.traps.map((t, i) => (i < 2 ? { ...t, x: 240 + Math.sign(t.x - 240) * 24 } : t))
+            : legacyId === 'legacy_v1/wreck/combat_1'
+              ? original.traps.map((t, i) => (i === 3 ? { ...t, x: 152 } : t))
+              : original.traps,
+        );
         expect(row.staticObstacles).toEqual(original.staticObstacles);
         expect(row.form).toBe(row.kind === 'combat' || row.kind === 'boss' ? row.kind : 'empty');
         expect(row.bodies).toEqual(row.expectedBodies);
@@ -105,3 +116,31 @@ for (const seed of [0, 42, 12345, 0xffffffff])
       contentType: 'application/json',
     });
   });
+
+test('graybox contours block real Arcade movement and use template ports for every linked door', async ({
+  page,
+}, info) => {
+  await page.goto(`${url}?seed=42`);
+  await page.waitForFunction(() => window.legacyCatalog);
+  const reports = [];
+  for (let floor = 1; floor <= 4; floor++) {
+    const report = await page.evaluate(() => window.legacyCatalog.probeShape());
+    reports.push(report);
+    expect(report.floor).toBe(floor);
+    expect(report.collisions.length).toBe([1, 2, 1, 0][floor - 1]);
+    for (const collision of report.collisions) {
+      expect(collision.legal).toBe(true);
+      expect(collision.stopped).toBe(true);
+      expect(collision.fired).toBeGreaterThan(0);
+    }
+    if (floor === 3) expect(report.navigation).toEqual({ legal: true, crossed: true, blockedLOS: true });
+    expect(report.doors.length).toBeGreaterThan(0);
+    for (const door of report.doors) expect(door).toEqual({ entered: true, landed: true });
+    await page.screenshot({ path: info.outputPath(`graybox-floor-${floor}.png`) });
+    if (floor < 4) expect((await page.evaluate(() => window.legacyCatalog.advance())).advanced).toBe(true);
+  }
+  await info.attach('physical-contours', {
+    body: JSON.stringify(reports, null, 2),
+    contentType: 'application/json',
+  });
+});

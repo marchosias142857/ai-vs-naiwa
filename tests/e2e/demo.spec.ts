@@ -162,90 +162,142 @@ test('demo：语言与反馈设置持久保存，英文游戏与暂停菜单可�
   await page.screenshot({ path: info.outputPath('demo-english.png'), scale: 'css' });
 });
 
-test('demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算', async ({ page }, info) => {
-  test.setTimeout(50_000);
-  const errors: string[] = [];
-  page.on('pageerror', (e) => errors.push(e.message));
-  await installPad(page);
-  await page.goto('/?god=1');
-  await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
-  await page.evaluate(() =>
-    localStorage.setItem(
-      'avn.floor.v1',
-      JSON.stringify({
-        version: 1,
-        seed: 42,
-        floor: 4,
-        upgrades: ['power', 'power', 'power'],
-        secondary: 'rifle_auto',
-        equipped: 'rifle_auto',
-        hp: 6,
-        armor: 5,
-        energy: 200,
-        coins: 40,
-        kills: 50,
-        roomsCleared: 12,
-        elapsed: 200,
-      }),
-    ),
-  );
-  await page.reload();
-  await page.locator('#continue-run').click();
-  await page.waitForFunction(() => window.__AVN__?.demo?.floor === 4);
-  const door = await page.evaluate(() => window.__AVN__!.demo!.links[0]!);
-  const key = door.dx > 0 ? 'd' : door.dx < 0 ? 'a' : door.dy > 0 ? 's' : 'w';
-  await page.keyboard.down(key);
-  await page.waitForFunction(() => window.__AVN__!.demo!.kind === 'boss');
-  await page.keyboard.up(key);
-  // 玩家没有自动瞄准（ADR 0020）：每帧把右摇杆推向最近的敌人，从身体中心对准碰撞圆心。
-  await page.evaluate(() => {
-    const aim = () => {
-      const demo = window.__AVN__?.demo,
-        pad = window as PadWindow;
-      if (!demo || demo.settled) {
-        pad.setPadAxes!([0, 0, 0, 0]);
+for (const energy of [200, 20])
+  test(
+    energy === 200
+      ? 'demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算'
+      : 'demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击',
+    async ({ page }, info) => {
+      test.setTimeout(50_000);
+      const errors: string[] = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+      await installPad(page);
+      await page.goto('/?god=1');
+      await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
+      await page.evaluate(
+        (energy) =>
+          localStorage.setItem(
+            'avn.floor.v1',
+            JSON.stringify({
+              version: 1,
+              seed: 42,
+              floor: 4,
+              upgrades: ['power', 'power', 'power'],
+              secondary: 'rifle_auto',
+              equipped: 'rifle_auto',
+              hp: 6,
+              armor: 5,
+              energy,
+              coins: 40,
+              kills: 50,
+              roomsCleared: 12,
+              elapsed: 200,
+            }),
+          ),
+        energy,
+      );
+      await page.reload();
+      await page.locator('#continue-run').click();
+      await page.waitForFunction(() => window.__AVN__?.demo?.floor === 4);
+      const door = await page.evaluate(() => window.__AVN__!.demo!.links[0]!);
+      const key = door.dx > 0 ? 'd' : door.dx < 0 ? 'a' : door.dy > 0 ? 's' : 'w';
+      await page.keyboard.down(key);
+      await page.waitForFunction(() => window.__AVN__!.demo!.kind === 'boss');
+      await page.keyboard.up(key);
+      // 玩家没有自动瞄准（ADR 0020）：每帧把右摇杆推向最近的敌人，从身体中心对准碰撞圆心。
+      await page.evaluate(() => {
+        const aim = () => {
+          const demo = window.__AVN__?.demo,
+            pad = window as PadWindow;
+          if (!demo || demo.settled) {
+            pad.setPadAxes!([0, 0, 0, 0]);
+            return;
+          }
+          let dx = 0,
+            dy = 0,
+            best = Infinity;
+          for (const e of demo.enemies) {
+            const x = e.x - demo.x,
+              y = e.y - demo.y,
+              d = Math.hypot(x, y);
+            // 目标恰好在枪口原点时跳过，避免把 NaN 写进模拟手柄。
+            if (d > 0 && d < best) {
+              best = d;
+              dx = x / d;
+              dy = y / d;
+            }
+          }
+          pad.setPadAxes!([0, 0, dx, dy]);
+          requestAnimationFrame(aim);
+        };
+        requestAnimationFrame(aim);
+      });
+      await padButton(page, 7, true);
+      await page.waitForFunction(() => window.__AVN__!.demo!.alive > 0);
+      await expect(page.locator('.demo-status')).toContainText('奶怪');
+      await page.waitForFunction(() => window.__AVN__!.demo!.enemies.length > 0);
+      await page.screenshot({ path: info.outputPath('demo-boss.png'), scale: 'css' });
+      // 固定站在入口射击会把部分子弹打在柱/落石上，200 能量不保证直接击杀。
+      // 按正常玩家操作换回免费手枪，保留同一个 35 秒总等待预算与通关/结算检查。
+      const deadline = Date.now() + 35_000;
+      await page.waitForFunction(
+        () => window.__AVN__!.demo!.settled || window.__AVN__!.demo!.energy === 0,
+        undefined,
+        { timeout: 35_000 },
+      );
+      if (!(await page.evaluate(() => window.__AVN__!.demo!.settled))) {
+        await info.attach('rifle-exhausted', {
+          body: JSON.stringify(
+            await page.evaluate(() => ({
+              time: window.__AVN__!.demo!.time,
+              energy: window.__AVN__!.demo!.energy,
+              weapon: window.__AVN__!.demo!.weapon,
+              status: document.querySelector('.demo-status')?.textContent,
+            })),
+          ),
+          contentType: 'application/json',
+        });
+        // 低能量用例先排空已发射弹体，确保后续增长来自手枪，避免残弹假阳性。
+        if (energy === 20) {
+          await page.waitForFunction(() => window.__AVN__!.demo!.bullets === 0);
+          expect(await page.evaluate(() => window.__AVN__!.demo!.weapon)).toBe('rifle_auto');
+        }
+        await padButton(page, INPUT_UI.gamepad.swap, true);
+        await padButton(page, INPUT_UI.gamepad.swap, false);
+        await page.waitForFunction(() => window.__AVN__!.demo!.weapon === 'pistol_basic');
+      }
+      if (energy === 20) {
+        expect(await page.evaluate(() => window.__AVN__!.demo!.settled)).toBe(false);
+        await page.waitForFunction(() => window.__AVN__!.demo!.bullets > 0);
+        expect(await page.evaluate(() => window.__AVN__!.demo!.energy)).toBe(0);
+        expect(await page.evaluate(() => window.__AVN__!.demo!.weapon)).toBe('pistol_basic');
+        await padButton(page, 7, false);
+        expect(errors).toEqual([]);
         return;
       }
-      let dx = 0,
-        dy = 0,
-        best = Infinity;
-      for (const e of demo.enemies) {
-        const x = e.x - demo.x,
-          y = e.y - demo.y,
-          d = Math.hypot(x, y);
-        // 目标恰好在枪口原点时跳过，避免把 NaN 写进模拟手柄。
-        if (d > 0 && d < best) {
-          best = d;
-          dx = x / d;
-          dy = y / d;
-        }
-      }
-      pad.setPadAxes!([0, 0, dx, dy]);
-      requestAnimationFrame(aim);
-    };
-    requestAnimationFrame(aim);
-  });
-  await padButton(page, 7, true);
-  await page.waitForFunction(() => window.__AVN__!.demo!.alive > 0);
-  await expect(page.locator('.demo-status')).toContainText('奶怪');
-  await page.waitForFunction(() => window.__AVN__!.demo!.enemies.length > 0);
-  await page.screenshot({ path: info.outputPath('demo-boss.png'), scale: 'css' });
-  await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, { timeout: 35_000 });
-  expect(await page.evaluate(() => window.__AVN__!.demo!.phase)).toBe('won');
-  expect(await page.evaluate(() => window.__AVN__!.demo!.kills)).toBe(51);
-  await expect(page.locator('#demo-hud h2')).toHaveText('通关成功');
-  await page.screenshot({ path: info.outputPath('demo-victory.png'), scale: 'css' });
-  expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBeNull();
-  await padButton(page, 7, false);
-  await page.locator('#demo-menu').click();
-  await page.waitForFunction(() => window.__AVN__?.scene === 'Hub');
-  await expect(page.locator('#demo-hud')).toHaveCount(0);
-  await page.keyboard.press('Escape');
-  await page.locator('#pause-menu').click();
-  await expect(page.locator('#continue-run')).toBeDisabled();
-  await expect(page.locator('#demo-actions')).toHaveCount(0);
-  expect(errors).toEqual([]);
-});
+      await page.waitForFunction(() => window.__AVN__!.demo!.settled, undefined, {
+        timeout: Math.max(1, deadline - Date.now()),
+      });
+      expect(await page.evaluate(() => window.__AVN__!.demo!.phase)).toBe('won');
+      const completed = await page.evaluate(() => window.__AVN__!.demo!);
+      // 较长战斗中 Boss 会召唤小怪，合法击杀数可能超过入口 50 + Boss 1。
+      expect(completed.kills).toBeGreaterThanOrEqual(51);
+      expect(completed.alive).toBe(0);
+      expect(completed.enemies).toEqual([]);
+      await expect(page.locator('#demo-hud h2')).toHaveText('通关成功');
+      await page.screenshot({ path: info.outputPath('demo-victory.png'), scale: 'css' });
+      expect(await page.evaluate(() => localStorage.getItem('avn.floor.v1'))).toBeNull();
+      await padButton(page, 7, false);
+      await page.locator('#demo-menu').click();
+      await page.waitForFunction(() => window.__AVN__?.scene === 'Hub');
+      await expect(page.locator('#demo-hud')).toHaveCount(0);
+      await page.keyboard.press('Escape');
+      await page.locator('#pause-menu').click();
+      await expect(page.locator('#continue-run')).toBeDisabled();
+      await expect(page.locator('#demo-actions')).toHaveCount(0);
+      expect(errors).toEqual([]);
+    },
+  );
 
 test('demo：存储被禁用仍可开局，明确显示未保存状态', async ({ page }) => {
   await page.addInitScript(() => {

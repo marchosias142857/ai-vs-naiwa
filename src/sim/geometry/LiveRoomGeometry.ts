@@ -103,6 +103,12 @@ export class LiveRoomGeometry implements GeometryQueries {
         return false;
     return true;
   }
+  /** Legacy muzzle/melee adapter: CombatWorld owns dynamic-object hit handling separately.
+   * Include the true contour without treating a landed rock around the shooter as an inner wall.
+   */
+  traceStaticSegment(from: Point, to: Point, mask: number, out: GeometryHit): void {
+    this.room.traceSegment(from, to, mask, out);
+  }
   traceSegment(from: Point, to: Point, mask: number, out: GeometryHit): void {
     this.sweepCircle(from, to, 0, mask, out);
   }

@@ -241,13 +241,13 @@ for (const kind of ['updated', 'invalid', 'corrupt'] as const) {
     await page.addInitScript((value) => localStorage.setItem('avn.run.v2', value), changed);
     await page.reload();
     const notice = {
-      updated: '游戏已更新，从本层入口继续',
+      updated: '游戏已更新，旧冒险已结束；天赋与局外资源已保留',
       invalid: '存档异常，从本层入口继续',
       corrupt: '存档已损坏，无法继续',
     };
     await expect(page.locator('#save-notice')).toHaveText(notice[kind]);
     await page.screenshot({ path: info.outputPath(`save-${kind}.png`), scale: 'css' });
-    if (kind === 'corrupt') await expect(page.locator('#continue-run')).toBeDisabled();
+    if (kind === 'corrupt' || kind === 'updated') await expect(page.locator('#continue-run')).toBeDisabled();
     else {
       await page.keyboard.press('Enter');
       await page.waitForFunction(() => window.__AVN__?.demo?.room === 0);

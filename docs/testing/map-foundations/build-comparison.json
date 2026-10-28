@@ -1,0 +1,16 @@
+{
+  "builds": [
+    {
+      "name": "foundations-baseline",
+      "gameJSBytes": 1673203,
+      "gzip9Bytes": 452154
+    },
+    {
+      "name": "map-foundations",
+      "gameJSBytes": 1678378,
+      "gzip9Bytes": 453875
+    }
+  ],
+  "publicFileCount": 16,
+  "publicBytesEqual": true
+}

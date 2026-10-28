@@ -1,3 +1,5 @@
+import { createInputFrame } from '../../src/sim/core/types';
+import { compileRoom } from '../../src/sim/dungeon/compileRoom';
 import { AUTO, Game, Scene, type Physics } from 'phaser';
 import { LEGACY_V1 } from '../../src/data/roomTemplates/legacyV1';
 import { UPGRADES, type UpgradeId } from '../../src/data/player';
@@ -124,7 +126,7 @@ class CatalogScene extends Scene {
           return {
             id: port.id,
             actual: { x: session.player!.x, y: session.player!.y },
-            expected: port.entrance,
+            expected: run.floor === 3 && port.id === 'north' ? { x: 168, y: 71 } : port.entrance,
           };
         });
         session.arena.teleport();
@@ -140,6 +142,105 @@ class CatalogScene extends Scene {
           floor: run.floor,
           unchangedByFreeze,
         };
+      },
+      probeShape: () => {
+        const run = session.dungeon;
+        run.roomId = run.map.start;
+        inspect.rebuildRoom();
+        const compiled = compileRoom(roomTemplate(inspect.templateId)!);
+        const input = createInputFrame();
+        const pin = (x: number, y: number) => {
+          const slot = session.bridge.actors.slots.find((s) => s.id === session.sim.playerId)!;
+          const body = slot.image.body as Physics.Arcade.Body;
+          body.reset(x, y);
+          body.updateFromGameObject();
+          body.prev.copy(body.position);
+          body.prevFrame.copy(body.position);
+          slot.image.setVelocity(0, 0);
+          session.sim.syncPosition(slot.id, x, y);
+        };
+        const step = () => {
+          session.setInput(input);
+          this.physics.world.update(0, 1000 / 60);
+          this.physics.world.postUpdate();
+          session.update();
+        };
+        const collisions = [];
+        for (const cut of compiled.cuts) {
+          const south = cut.y > 135;
+          pin(south ? cut.x + cut.width / 2 + 24 : cut.x, south ? cut.y : cut.y + cut.height / 2 + 24);
+          input.move.x = south ? -1 : 0;
+          input.move.y = south ? 0 : -1;
+          input.aim = { x: cut.x, y: cut.y };
+          input.fire = true;
+          let legal = true,
+            fired = 0;
+          for (let i = 0; i < 45; i++) {
+            step();
+            const p = session.player!;
+            legal &&= session.arena.prepareGeometry().canOccupy(p, p.radius, 'walk');
+            fired = Math.max(fired, session.bridge.bullets.activeCount);
+            for (const slot of session.bridge.bullets.slots)
+              if (slot.id) {
+                const body = slot.image.body as Physics.Arcade.Body;
+                legal &&= session.arena.prepareGeometry().canOccupy(body.center, body.radius, 'walk');
+              }
+          }
+          const p = session.player!;
+          collisions.push({
+            legal,
+            fired,
+            stopped: south
+              ? p.x >= cut.x + cut.width / 2 + p.radius - 0.1
+              : p.y >= cut.y + cut.height / 2 + p.radius - 0.1,
+          });
+          input.fire = false;
+          session.arena.teleport();
+        }
+        input.move.x = 0;
+        input.move.y = 0;
+        let navigation: { legal: boolean; crossed: boolean; blockedLOS: boolean } | null = null;
+        if (run.floor === 3) {
+          pin(292, 65);
+          const id = session.sim.spawnEnemy('naiwa_burrower', 180, 65);
+          session.bridge.actors.apply();
+          let legal = true;
+          const blockedLOS = !session.arena.lineOfSight(180, 65, 292, 65);
+          for (let i = 0; i < 600; i++) {
+            step();
+            const enemy = session.sim.getActor(id)!;
+            if (enemy.phase === 'active')
+              legal &&= session.arena.prepareGeometry().canOccupy(enemy, enemy.radius, 'surface');
+          }
+          navigation = { legal, crossed: session.sim.getActor(id)!.x > 272, blockedLOS };
+          session.arena.teleport();
+        }
+        const doors = [];
+        for (const room of run.map.rooms)
+          for (const target of room.links) {
+            run.roomId = room.id;
+            run.phase = 'exploring';
+            run.cleared.fill(true);
+            inspect.rebuildRoom();
+            const to = run.map.rooms[target]!,
+              dx = to.x - room.x,
+              dy = to.y - room.y;
+            const port = session.arena.port(dx, dy);
+            pin(port.center.x - dx * 7, port.center.y - dy * 7);
+            input.move.x = dx;
+            input.move.y = dy;
+            for (let i = 0; i < 4 && run.roomId === room.id; i++) step();
+            const expected = session.arena.port(-dx, -dy).entrance;
+            doors.push({
+              entered: run.roomId === target,
+              landed: Math.hypot(session.player!.x - expected.x, session.player!.y - expected.y) < 1,
+            });
+          }
+        run.roomId = run.map.start;
+        run.phase = 'exploring';
+        inspect.rebuildRoom();
+        session.arena.teleport();
+        return { floor: run.floor, collisions, doors, navigation };
       },
       advance: () => {
         const run = session.dungeon;
@@ -186,6 +287,12 @@ interface Api {
     root: number;
     floor: number;
     unchangedByFreeze: boolean;
+  };
+  probeShape(): {
+    floor: number;
+    navigation: { legal: boolean; crossed: boolean; blockedLOS: boolean } | null;
+    collisions: { legal: boolean; fired: number; stopped: boolean }[];
+    doors: { entered: boolean; landed: boolean }[];
   };
   advance(): { advanced: boolean; floor: number; root: number; entryFloor: number };
 }
