@@ -75,17 +75,6 @@ export class ModularRoomArt implements RoomArt {
     c.clip();
     c.fillStyle = this.pattern(theme);
     c.fillRect(LEFT, TOP, WIDTH, HEIGHT);
-    // Keep cream boss indicators distinct from the sanctuary's limestone floor.
-    c.fillStyle = theme === 'milk' ? 'rgba(0,0,0,0.28)' : 'rgba(0,0,0,0.12)';
-    c.fillRect(LEFT, TOP, WIDTH, HEIGHT);
-    this.path(c, boundary);
-    c.lineJoin = 'miter';
-    c.strokeStyle = 'rgba(3,8,14,0.26)';
-    c.lineWidth = 8;
-    c.stroke();
-    c.strokeStyle = 'rgba(3,8,14,0.32)';
-    c.lineWidth = 3;
-    c.stroke();
     for (const t of traps) {
       if (!t.width || !t.height) continue;
       const x = 240 + t.x - t.width / 2,
@@ -220,28 +209,37 @@ export class ModularRoomArt implements RoomArt {
     const width = MAP_ART.floorTile,
       height = width;
     const canvas = document.createElement('canvas');
-    const mirrored = true;
     const cellWidth = width * MAP_ART.density,
       cellHeight = height * MAP_ART.density;
-    canvas.width = cellWidth * (mirrored ? 2 : 1);
-    canvas.height = cellHeight * (mirrored ? 2 : 1);
+    canvas.width = cellWidth;
+    canvas.height = cellHeight;
     const context = canvas.getContext('2d')!;
     context.imageSmoothingEnabled = false;
     const source = this.scene.textures.get(MAP_ART.textures.ground).getSourceImage() as HTMLImageElement;
-    context.drawImage(source, frame[0], frame[1], frame[2], frame[3], 0, 0, cellWidth, cellHeight);
-    if (mirrored) {
-      // Matched edge pixels remove the hard atlas-repeat seam without blurred blending.
-      context.save();
-      context.translate(cellWidth * 2, 0);
-      context.scale(-1, 1);
-      context.drawImage(canvas, 0, 0, cellWidth, cellHeight, 0, 0, cellWidth, cellHeight);
-      context.restore();
-      context.save();
-      context.translate(0, cellHeight * 2);
-      context.scale(1, -1);
-      context.drawImage(canvas, 0, 0, canvas.width, cellHeight, 0, 0, canvas.width, cellHeight);
-      context.restore();
-    }
+    // Wrap complete unequal pavers across both texture edges. Repetition continues the
+    // very same brick and grout instead of reflecting it or joining two source borders.
+    const d = MAP_ART.density,
+      grout = MAP_ART.floorGroutPixels;
+    context.fillStyle = MAP_ART.floorGrout[theme];
+    context.fillRect(0, 0, cellWidth, cellHeight);
+    MAP_ART.floorPavers.forEach(([x, y, w, h], i) => {
+      const [sx, sy, sw, sh] = MAP_ART.floorFaceSamples[i % MAP_ART.floorFaceSamples.length]!;
+      const px = (x + MAP_ART.floorPhase[0]) % width,
+        py = (y + MAP_ART.floorPhase[1]) % height;
+      for (const dx of [0, -cellWidth])
+        for (const dy of [0, -cellHeight])
+          context.drawImage(
+            source,
+            frame[0] + sx * frame[2],
+            frame[1] + sy * frame[3],
+            sw * frame[2],
+            sh * frame[3],
+            px * d + grout / 2 + dx,
+            py * d + grout / 2 + dy,
+            w * d - grout,
+            h * d - grout,
+          );
+    });
     const pattern = this.texture.context.createPattern(canvas, 'repeat')!;
     pattern.setTransform(new DOMMatrix().scale(1 / MAP_ART.density));
     this.patterns.set(name, pattern);

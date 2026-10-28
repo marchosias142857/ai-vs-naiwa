@@ -1,15 +1,15 @@
 [
   {
     "name": "ground",
-    "sourceFile": "ground-v3.png",
+    "sourceFile": "ground-v4.png",
     "size": [
       1254,
       1254
     ],
-    "sourceBytes": 1602882,
-    "runtimeBytes": 1220048,
-    "sourceSha256": "c9aa8e4afda7c5d81a30d559f158389d2b09501daf32a955eeaa6d253100c193",
-    "runtimeSha256": "a0fb670f2042df1d72bf39bcb6ba2143dd2977b881edf579f4a1f20c6a3ac03b",
+    "sourceBytes": 1654533,
+    "runtimeBytes": 1290100,
+    "sourceSha256": "00e65c759aea00847007b81e14893f92fd2cae826d49a741c9c69131be487647",
+    "runtimeSha256": "b5ea8417ab9e2386cb8e4e88418acfd6017191209c6a87485dfd2ace1339d034",
     "decodedRGBAIdentical": true
   },
   {
