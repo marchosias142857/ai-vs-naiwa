@@ -81,4 +81,4 @@ v4 从相同源动作图把每边像素密度提高约 50%，适度增加色阶�
 
 #124 已通过 Claude review 5675468297，并由负责人合入 main `a6a8d2d`。GPT 下一份交付固定动态圆槽与现有地图导航接入，见 [动态适配验证](testing/live-room-geometry.md)；Claude 从最新 main 负责 ADR 0039 的 AI 接线。目录/旧档/出生锚点/新轮廓物理/地图美术继续分步，#115–#119 不启动。
 
-#125/#126 已由负责人合并，main 基线为 `82fb32b`。负责人将生产接线与真实游戏回归、性能对照交给 GPT；#127 为 DemoSession 与 StressRun 注入 prepareGeometry provider，已获 Claude review 5677147146 确认无阻塞代码问题。复审后的增量仅补充 E2E 分文件与原始 main 整批对照记录、实际测试 head 及压力负载覆盖边界，详见[生产接线验证](testing/production-geometry.md)。由负责人合并；远端 CI 保持关闭。地图目录、版本化存档、新轮廓与正式美术仍继续分步，#114 未完成；#115–#119 不启动。
+#125/#126 已由负责人合并，main 基线为 `82fb32b`。负责人将生产接线与真实游戏回归、性能对照交给 GPT；#127 为 DemoSession 与 StressRun 注入 prepareGeometry provider，已获 Claude reviews 5677147146、5677526680 确认无阻塞问题；后者对 head `b0cd0d4` 的补测数字复核通过，仅指出图鉴桌面/横屏超时点描述需区分（现已更正）。复审后的增量补充 E2E 分文件与原始 main 整批对照记录、实际测试 head 及压力负载覆盖边界，详见[生产接线验证](testing/production-geometry.md)。由负责人合并；远端 CI 保持关闭。地图目录、版本化存档、新轮廓与正式美术仍继续分步，#114 未完成；#115–#119 不启动。
