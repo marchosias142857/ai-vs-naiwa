@@ -192,8 +192,8 @@ export class HazardLayer {
           .setFrame(milk ? 'hazard_milk' : 'hazard_poison')
           .setPosition(z.x, z.y)
           .setDisplaySize(z.radius * (milk ? 2.2 : 2), z.radius * (milk ? 1.5 : 2))
-          .setAlpha((milk ? H.milkAlpha : H.poisonAlpha) * fade);
-        continue;
+          .setAlpha((milk ? H.milkAlpha : H.poisonArtAlpha) * fade);
+        if (milk) continue;
       }
       if (z.kind === 'milk') {
         g.fillStyle(H.milkColor, H.milkAlpha * fade).fillEllipse(z.x, z.y, z.radius * 2.2, z.radius * 1.5);
@@ -201,7 +201,7 @@ export class HazardLayer {
         g.fillEllipse(z.x - z.radius * 0.35, z.y - z.radius * 0.2, z.radius * 0.6, 3);
         continue;
       }
-      g.fillStyle(H.poisonColor, H.poisonAlpha * fade).fillCircle(z.x, z.y, z.radius);
+      if (!art) g.fillStyle(H.poisonColor, H.poisonAlpha * fade).fillCircle(z.x, z.y, z.radius);
       g.lineStyle(1, H.poisonRim, 0.6 * fade).strokeCircle(z.x, z.y, z.radius);
       // 冒泡：位置由时间与区域坐标决定，不用随机。
       for (let k = 0; k < H.bubbles; k++) {
