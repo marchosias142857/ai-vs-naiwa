@@ -7,7 +7,7 @@ import report from '../../art-src/maps/export-report.json' with { type: 'json' }
 it('keeps every module frame inside its source and every lossless runtime asset within PWA budget', () => {
   for (const row of report) {
     const name = row.name as keyof typeof MAP_ART.sources;
-    const source = readFileSync(`art-src/maps/sources/${name}-v1.png`);
+    const source = readFileSync(`art-src/maps/sources/${row.sourceFile}`);
     const runtime = `public/assets/demo/${MAP_ART.sources[name]}`;
     expect([source.readUInt32BE(16), source.readUInt32BE(20)]).toEqual(row.size);
     expect(createHash('sha256').update(source).digest('hex')).toBe(row.sourceSha256);

@@ -63,11 +63,16 @@ export class RoomArena {
     this.art = graybox ? null : createRoomArt(scene, true);
     this.modularArt = !!this.art && scene.textures.exists(MAP_ART.textures.doors);
     this.graphics = scene.add.graphics().setDepth(DEPTH.floor + 1);
-    if (this.art && scene.textures.exists(ART.doors))
+    if (this.art && (this.modularArt || scene.textures.exists(ART.doors)))
       for (let i = 0; i < 4; i++)
         this.doors.push(
           scene.add
-            .image(0, 0, ART.doors, 'open')
+            .image(
+              0,
+              0,
+              this.modularArt ? MAP_ART.textures.doors : ART.doors,
+              this.modularArt ? 'temple_north_open' : 'open',
+            )
             .setDisplaySize(64, 40)
             .setDepth(DEPTH.floor + 2)
             .setVisible(false),

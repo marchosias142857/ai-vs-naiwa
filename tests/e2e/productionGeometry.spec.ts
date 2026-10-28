@@ -94,3 +94,32 @@ for (const floor of [1, 2, 3, 4])
     await page.screenshot({ path: info.outputPath(`map-dense-${floor}.png`), scale: 'css' });
     await info.attach('dense-scene', { body: JSON.stringify(report), contentType: 'application/json' });
   });
+
+for (const floor of [1, 2, 3, 4])
+  test(`map wall review: floor ${floor}`, async ({ page }, info) => {
+    const errors: string[] = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    await page.goto(url + '/?missing=legacy-doors');
+    await page.waitForFunction(() => window.productionGeometry);
+    for (const focus of ['room', 'door', 'corner'] as const) {
+      const report = await page.evaluate(
+        ({ floor, focus }) => window.productionGeometry.walls(floor, focus),
+        { floor, focus },
+      );
+      expect(report.doors).toBe(report.expectedDoors);
+      await page.screenshot({ path: info.outputPath(`wall-${floor}-${focus}.png`), scale: 'css' });
+    }
+    expect(errors).toEqual([]);
+  });
+
+test('map object atlas missing uses graybox without missing object frames', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  page.on('console', (message) => {
+    if (/missing|not found/i.test(message.text()) && /texture|frame/i.test(message.text()))
+      errors.push(message.text());
+  });
+  await page.goto(url + '/?missing=objects');
+  await page.waitForFunction(() => window.productionGeometry);
+  expect(errors).toEqual([]);
+});

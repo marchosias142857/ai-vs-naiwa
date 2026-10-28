@@ -42,16 +42,43 @@ test.afterAll(async () => {
   if (directory) await rm(directory, { recursive: true, force: true });
 });
 test('200 connected layouts per theme reuse the same art and fixed scene objects', async ({ page }, info) => {
+  // This intentionally bakes 800 rooms synchronously; software WebGL exceeds the default 30 seconds.
+  test.setTimeout(120_000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto(url);
   await page.waitForFunction(() => window.modularArt);
   for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
+    const started = performance.now();
     const report = await page.evaluate((t) => window.modularArt(t), theme);
+    await info.attach(`${theme}-batch`, {
+      body: JSON.stringify({ ...report, millisecondsFor200Rooms: performance.now() - started }),
+      contentType: 'application/json',
+    });
     expect(report.unique).toBe(200);
     expect(report.allConnected).toBe(true);
     expect(report.after).toEqual(report.before);
     await page.screenshot({ path: info.outputPath(`matrix-${theme}.png`) });
   }
   expect(errors).toEqual([]);
+});
+
+test('cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open', async ({
+  page,
+}, info) => {
+  await page.goto(url);
+  await page.waitForFunction(() => window.wallArtProbe);
+  for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
+    const report = await page.evaluate((t) => window.wallArtProbe(t), theme);
+    await info.attach(theme, { body: JSON.stringify(report), contentType: 'application/json' });
+    expect(report.samples).toBe(2304);
+    expect(report.topDifferences, theme).toBe(0);
+    expect(report.baseDifferences, theme).toBe(0);
+    expect(report.verticalDifferences, theme).toBe(0);
+    expect(report.seams, theme).toBe(0);
+    expect(report.coverage).toBeGreaterThan(7000);
+    expect(report.holes, theme).toBe(0);
+    expect(report.jambHoles, theme).toBe(0);
+    expect(report.openPorts, theme).toBe(5);
+  }
 });

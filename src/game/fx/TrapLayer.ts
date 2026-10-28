@@ -150,7 +150,8 @@ export class TrapLayer {
 
   private fieldFrame(field: GameObjects.TileSprite, name: MapFrame): void {
     const frame = MAP_ART.frames[name];
-    field.setFrame(name).setTileScale(MAP_ART.fieldTile / frame[2], MAP_ART.fieldTile / frame[3]);
+    const size = name === 'current' || name === 'weed' ? MAP_ART.naturalFieldTile : MAP_ART.fieldTile;
+    field.setFrame(name).setTileScale(size / frame[2], size / frame[3]);
   }
 
   private drawProp(prop: GameObjects.Image, t: TrapView): void {

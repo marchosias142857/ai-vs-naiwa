@@ -5,27 +5,43 @@ from pathlib import Path
 import hashlib
 import json
 from PIL import Image
+from tempfile import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = Path(__file__).resolve().parent / 'sources'
 frames = {}
 reports = []
-for name in ['terrain', 'doors', 'objects']:
-    source = SOURCE / f'{name}-v1.png'
-    output = ROOT / 'public/assets/demo' / f'map-{name}-v1.webp'
+for name in ['terrain', 'doors', 'objects', 'ground', 'blocks']:
+    version = 'v2' if name in ['ground', 'blocks'] else 'v1'
+    source = SOURCE / f'{name}-{version}.png'
+    output = ROOT / 'public/assets/demo' / f'map-{name}-{version}.webp'
     im = Image.open(source).convert('RGBA')
-    temporary = output.with_suffix('.tmp.webp')
-    im.save(temporary, lossless=True, exact=True, method=6)
-    decoded = Image.open(temporary).convert('RGBA')
-    assert decoded.tobytes() == im.tobytes(), 'Encoding changed pixels'
-    assert temporary.stat().st_size < 2 * 1024 * 1024, 'PWA single-file budget'
-    temporary.replace(output)  # Never expose a partially encoded runtime file.
-    reports.append({'name': name, 'size': im.size, 'sourceBytes': source.stat().st_size,
+    # Stage outside public: incomplete files must never enter a concurrent PWA build.
+    with TemporaryDirectory(prefix='naiwa-map-export-') as directory:
+        temporary = Path(directory) / output.name
+        im.save(temporary, lossless=True, exact=True, method=6)
+        decoded = Image.open(temporary).convert('RGBA')
+        assert decoded.tobytes() == im.tobytes(), 'Encoding changed pixels'
+        assert temporary.stat().st_size < 2 * 1024 * 1024, 'PWA single-file budget'
+        temporary.replace(output)
+    reports.append({'name': name, 'sourceFile': source.name, 'size': im.size, 'sourceBytes': source.stat().st_size,
                     'runtimeBytes': output.stat().st_size,
                     'sourceSha256': hashlib.sha256(source.read_bytes()).hexdigest(),
                     'runtimeSha256': hashlib.sha256(output.read_bytes()).hexdigest(),
                     'decodedRGBAIdentical': True})
-    if name == 'terrain':
+    if name == 'blocks':
+        for i, theme in enumerate(['temple', 'wreck', 'abyss', 'milk']):
+            x, y = (i % 2) * im.width // 2, (i // 2) * im.height // 2
+            cell = im.crop((x, y, x + im.width // 2, y + im.height // 2))
+            box = cell.getchannel('A').point(lambda a: 255 if a > 16 else 0).getbbox()
+            assert box
+            l, t, r, b = box
+            frames[f'{theme}_obstacle'] = [x + l, y + t, r - l, b - t]
+    elif name == 'ground':
+        for i, theme in enumerate(['temple', 'wreck', 'abyss', 'milk']):
+            frames[f'{theme}_ground'] = [(i % 2) * im.width // 2, (i // 2) * im.height // 2,
+                                         im.width // 2, im.height // 2]
+    elif name == 'terrain':
         xs = [0, 313, 627, 941, 1254]
         ys = [0, 315, 630, 928, 1254]
         for col, theme in enumerate(['temple', 'wreck', 'abyss', 'milk']):

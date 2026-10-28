@@ -15,6 +15,9 @@ import { EventBus } from '../../src/sim/core/EventBus';
 import type { GameEvents } from '../../src/sim/core/events';
 import { createInputFrame } from '../../src/sim/core/types';
 import { createGeometryHit, GeometryMask } from '../../src/sim/geometry/RoomGeometry';
+import { ART } from '../../src/game/assets/demoArt';
+import { MAP_ART } from '../../src/data/mapArt';
+import { DemoObjects } from '../../src/game/world/DemoObjects';
 
 /** Real DemoSession, physics, art and pooled hazards. Only starting arrangements are fixtures.
  * No injected geometry provider, fake AI stages, velocities, actions or collision callbacks.
@@ -29,6 +32,9 @@ class GeometryScene extends Scene {
   create(data?: { restored?: SessionSnapshot }): void {
     createPlaceholderTextures(this);
     installDemoArt(this);
+    const missing = new URLSearchParams(location.search).get('missing');
+    if (missing === 'legacy-doors') this.textures.remove(ART.doors);
+    if (missing === 'objects') this.textures.remove(MAP_ART.textures.objects);
     this.physics.disableUpdate();
     this.scene.launch(InputScene.KEY, { demo: true });
     const ui = this.scene.get(InputScene.KEY) as InputScene;
@@ -37,6 +43,7 @@ class GeometryScene extends Scene {
       runId: 'production-geometry-fixture',
     });
     const { sim, bridge, arena } = session;
+    new DemoObjects(this, session).update();
     const input = createInputFrame();
     const actions: GameEvents['enemy:acted'][] = [];
     const shots: number[] = [];
@@ -73,6 +80,47 @@ class GeometryScene extends Scene {
     const player = sim.playerId!;
     this.cameras.main.setZoom(RENDER_SCALE * 1.5).centerOn(B.x + B.width / 2, B.y + B.height / 2);
     window.productionGeometry = {
+      walls: (floor, focus) => {
+        const run = new DungeonRun(42, new EventBus(), floor);
+        const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
+        run.roomId = run.map.rooms
+          .filter((r) => r.kind === (floor === 4 ? 'boss' : 'combat'))
+          .sort((a, b) => b.links.length - a.links.length)[0]!.id;
+        arena.show(
+          run,
+          `modular_v2/${theme}/${floor === 4 ? 'boss' : floor === 3 ? 'combat_1' : 'combat_0'}`,
+        );
+        bridge.actors.apply();
+        session.update();
+        const adjacent =
+          run.map.rooms[
+            run.room.links.find((id) => run.map.rooms[id]!.y < run.room.y) ?? run.room.links[0]!
+          ]!;
+        const port = arena.port(adjacent.x - run.room.x, adjacent.y - run.room.y);
+        const corner =
+          floor === 3
+            ? { x: 208, y: 71 }
+            : floor === 4
+              ? { x: 376, y: 47 }
+              : { x: floor === 1 ? 336 : 352, y: 71 };
+        this.cameras.main
+          .setZoom(focus === 'room' ? 4.25 : 12)
+          .centerOn(
+            focus === 'room' ? 240 : focus === 'door' ? port.center.x : corner.x,
+            focus === 'room' ? 135 : focus === 'door' ? port.center.y : corner.y,
+          );
+        return {
+          theme,
+          doors: this.children.list.filter(
+            (o) =>
+              o.type === 'Image' &&
+              (o as unknown as { texture: { key: string }; visible: boolean }).texture.key ===
+                MAP_ART.textures.doors &&
+              (o as unknown as { visible: boolean }).visible,
+          ).length,
+          expectedDoors: run.room.links.length,
+        };
+      },
       showcase: (floor) => {
         const run = new DungeonRun(42, new EventBus(), floor);
         const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
@@ -250,6 +298,10 @@ class GeometryScene extends Scene {
 declare global {
   interface Window {
     productionGeometry: {
+      walls: (
+        floor: number,
+        focus: 'room' | 'door' | 'corner',
+      ) => { theme: string; doors: number; expectedDoors: number };
       showcase: (floor: number) => {
         theme: string;
         rocks: number;

@@ -36,6 +36,8 @@ export class DemoObjects {
             .setDepth(DEPTH.floorDecals + 1)
             .setVisible(false),
         );
+    }
+    if (scene.textures.exists(MAP_ART.textures.objects)) {
       this.chest = scene.add
         .image(B.x + B.width / 2, B.y + B.height / 2 - 15, MAP_ART.textures.objects, 'chest_open')
         .setDisplaySize(24, 25)

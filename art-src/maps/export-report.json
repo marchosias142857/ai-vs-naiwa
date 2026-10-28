@@ -1,6 +1,7 @@
 [
   {
     "name": "terrain",
+    "sourceFile": "terrain-v1.png",
     "size": [
       1254,
       1254
@@ -13,6 +14,7 @@
   },
   {
     "name": "doors",
+    "sourceFile": "doors-v1.png",
     "size": [
       1536,
       1024
@@ -25,6 +27,7 @@
   },
   {
     "name": "objects",
+    "sourceFile": "objects-v1.png",
     "size": [
       1254,
       1254
@@ -33,6 +36,32 @@
     "runtimeBytes": 940436,
     "sourceSha256": "80fcb57d24a9a2ba3e72b2ed43450548d3f2cc7d1676dcf61310f2519fc0c4f3",
     "runtimeSha256": "107a67087df3cfd755f92091598a1e4cbb89a6619cb15fdd10deca0e9cc502ca",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "ground",
+    "sourceFile": "ground-v2.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "sourceBytes": 2800033,
+    "runtimeBytes": 1901304,
+    "sourceSha256": "6d72f5e32875635e8959223b8f9bcbeaa9f9f1ea26da45f08f71293eb0904fb7",
+    "runtimeSha256": "bf5ae80a51c15bae9b91dc005793c7f4ae154756730896601ccc9aef42bb4940",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "blocks",
+    "sourceFile": "blocks-v2.png",
+    "size": [
+      1374,
+      1145
+    ],
+    "sourceBytes": 1145647,
+    "runtimeBytes": 814706,
+    "sourceSha256": "8681ac76c4a931eac75a1ad8e9e3a73cc2c306c6340a72edf1dc28dca1a41eef",
+    "runtimeSha256": "bbb40175dbd30379095f56ae81909577b81e4942a62775821fb7777a99258a96",
     "decodedRGBAIdentical": true
   }
 ]

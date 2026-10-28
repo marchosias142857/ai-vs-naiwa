@@ -64,4 +64,12 @@ export const MAP_ART_FRAMES = {
   lantern: [440, 971, 76, 192],
   moss: [672, 1015, 226, 148],
   coral: [1003, 988, 171, 175],
+  temple_ground: [0, 0, 627, 627],
+  wreck_ground: [627, 0, 627, 627],
+  abyss_ground: [0, 627, 627, 627],
+  milk_ground: [627, 627, 627, 627],
+  temple_obstacle: [201, 134, 398, 371],
+  wreck_obstacle: [782, 136, 397, 370],
+  abyss_obstacle: [199, 638, 403, 371],
+  milk_obstacle: [783, 640, 396, 369],
 } as const satisfies Record<string, readonly [number, number, number, number]>;
