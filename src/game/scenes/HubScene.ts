@@ -7,6 +7,7 @@ import { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
 import { createInputFrame } from '../../sim/core/types';
 import { ART } from '../assets/demoArt';
+import { MAP_ART } from '../../data/mapArt';
 import { configureCamera } from '../configureCamera';
 import { RoomCamera } from '../RoomCamera';
 import { setTestHooks } from '../testHooks';
@@ -35,8 +36,8 @@ export class HubScene extends Scene {
     configureCamera(this);
     createRoomArt(this);
     this.add
-      .image(HUB.door.x, HUB.door.y, ART.doors, 'open')
-      .setDisplaySize(52, 39)
+      .image(HUB.door.x, HUB.door.y, MAP_ART.textures.doors, 'temple_north_open')
+      .setDisplaySize(40, 30)
       .setDepth(DEPTH.floorDecals);
     this.add
       .image(HUB.altar.x, HUB.altar.y - 10, ART.altar)

@@ -29,3 +29,19 @@
 - 本图仅存于 `art-src/`，不进运行时包或 Workbox 预缓存；大于 2 MiB 的概念源图不能直接当作生产 PNG。
 
 下一步由 GPT 完成地图几何/旧档兼容 ADR、模块资产与接入，按[接入审计](../../docs/design/map-redesign-audit.md)验证后交 Claude 复审；负责人做游戏内与真机验收并合并。#114 仍进行中，#115–#119 按顺序排队。
+
+## 生产模块 v1（2026-10-28，待画面验收）
+
+以下为概念图方向的生产接入，前述“尚未实现”描述保留作概念阶段历史。由内置 imagegen 为本项目生成，没有下载外部素材；不把概念图认可写成新素材已经获负责人确认。
+
+| 原图 | 内容 | 运行时 | 字节数 |
+| --- | --- | --- | ---: |
+| `sources/terrain-v1.png` | 四主题地板、墙顶、墙面、障碍材质共 16 帧 | `map-terrain-v1.webp` | 2,061,738 |
+| `sources/doors-v1.png` | 四主题 × 四方向 × 开/锁，共 32 帧 | `map-doors-v1.webp` | 1,660,546 |
+| `sources/objects-v1.png` | 地刺三态、水流、海草、桶三态、地雷两态、宝箱两态、水晶及装饰 | `map-objects-v1.webp` | 940,436 |
+
+原图原样保存，完整提示词在 [modular-v1.json](prompts/modular-v1.json)。`python art-src/maps/export_modules.py` 仅导出无损 WebP 和帧矩形元数据，不重画、不缩放源图；每张重解码后比较 RGBA 字节。尺寸、摘要与逐像素相同结果见 [export-report.json](export-report.json)。帧数据生成后按仓库 Prettier 格式化。
+
+实际组合无需逐房新图：地板平铺，墙带/内外角沿物理 polygon 裁剪，四向门按 port 定位，水流/海草/地刺足迹带主题底座，障碍复用 16 个槽。灯具、苔藓及珊瑚已包含在门体的边缘装饰，单独装饰帧保留在图集中，当前未另放场景摆件。宝箱按现有入房即开箱流程显示开态；闭态为素材储备，不新增开箱机制。
+
+三张运行时图共 4,662,720 字节，全部进入 Workbox 清单；原图不进运行时。旧地图图片本批不删除。实际面积、渲染、离线与性能证据见 [模块接入记录](../../docs/testing/modular-map-art.md) 与 [ADR 0041](../../docs/adr/0041-modular-map-art.md)。

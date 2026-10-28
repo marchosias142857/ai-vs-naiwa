@@ -17,6 +17,7 @@ export interface BoundaryBox {
   readonly height: number;
 }
 export interface CompiledRoom {
+  readonly bounds: Readonly<{ x: number; y: number; width: number; height: number }>;
   readonly boundary: readonly Point[];
   readonly cuts: readonly BoundaryBox[];
   readonly obstacles: readonly GeometryObstacle[];
@@ -31,14 +32,22 @@ export interface CompiledRoom {
 }
 /** Compiles once when entering a room; the polygon and Arcade infill share one contour table. */
 export function compileRoom(t: RoomTemplate): CompiledRoom {
-  const b = LEGACY_V1.bounds,
-    cx = b.x + b.width / 2,
-    cy = b.y + b.height / 2;
+  const origin = LEGACY_V1.bounds,
+    cx = origin.x + origin.width / 2,
+    cy = origin.y + origin.height / 2;
   const shape = t.id.startsWith('modular_v2/') ? MODULAR_V2.shapes[t.theme] : MODULAR_V2.shapes.milk;
-  const boundary = shape.points.map(([x, y]) => ({ x: b.x + x, y: b.y + y }));
+  const boundary = shape.points.map(([x, y]) => ({ x: origin.x + x, y: origin.y + y }));
+  const x = Math.min(...boundary.map((p) => p.x)),
+    y = Math.min(...boundary.map((p) => p.y));
+  const b = {
+    x,
+    y,
+    width: Math.max(...boundary.map((p) => p.x)) - x,
+    height: Math.max(...boundary.map((p) => p.y)) - y,
+  };
   const cuts = shape.cuts.map(([x, y, width, height]) => ({
-    x: b.x + x + width / 2,
-    y: b.y + y + height / 2,
+    x: origin.x + x + width / 2,
+    y: origin.y + y + height / 2,
     width,
     height,
   }));
@@ -105,15 +114,22 @@ export function compileRoom(t: RoomTemplate): CompiledRoom {
       if (geometry.canOccupy({ x, y }, maxSpawnRadius, 'spawn'))
         spawns.push({ id: `spawn:${String(spawns.length).padStart(3, '0')}`, x, y });
   if (!spawns.length) throw new RangeError('no safe spawn anchors');
-  const ports = LEGACY_V1.ports.map((p) =>
-    p.id === 'north'
-      ? {
-          ...p,
-          center: { x: b.x + shape.northX, y: b.y },
-          entrance: { x: b.x + shape.northX, y: b.y + LEGACY_V1.doorRules.entranceInset },
-        }
-      : p,
-  );
+  const ports = LEGACY_V1.ports.map((p) => {
+    const dx = p.direction.x,
+      dy = p.direction.y;
+    const center = {
+      x: dx ? cx + (dx * b.width) / 2 : p.id === 'north' ? origin.x + shape.northX : cx,
+      y: dy ? cy + (dy * b.height) / 2 : cy,
+    };
+    return {
+      ...p,
+      center,
+      entrance: {
+        x: center.x - dx * LEGACY_V1.doorRules.entranceInset,
+        y: center.y - dy * LEGACY_V1.doorRules.entranceInset,
+      },
+    };
+  });
   for (const p of ports)
     if (!geometry.canOccupy(p.entrance, maxSpawnRadius, 'spawn')) throw new RangeError('blocked port');
   const safe = (point: Point, reward = false): Point => {
@@ -133,6 +149,7 @@ export function compileRoom(t: RoomTemplate): CompiledRoom {
     return fallback;
   };
   return {
+    bounds: b,
     boundary,
     cuts,
     obstacles,

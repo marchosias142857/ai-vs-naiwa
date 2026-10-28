@@ -79,3 +79,18 @@ test('production geometry: fresh session restore sees the landed pool before the
   await page.waitForFunction(() => window.productionGeometry.restored);
   expect(await page.evaluate(() => window.productionGeometry.rockPresent())).toBe(true);
 });
+
+for (const floor of [1, 2, 3, 4])
+  test(`map art dense showcase: floor ${floor}`, async ({ page }, info) => {
+    const errors: string[] = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    await page.goto(url);
+    await page.waitForFunction(() => window.productionGeometry);
+    const report = await page.evaluate((f) => window.productionGeometry.showcase(f), floor);
+    expect(report.actors).toBeGreaterThan(20);
+    expect(report.rocks).toBe(7);
+    expect(report.bullets).toBeGreaterThan(0);
+    expect(errors).toEqual([]);
+    await page.screenshot({ path: info.outputPath(`map-dense-${floor}.png`), scale: 'css' });
+    await info.attach('dense-scene', { body: JSON.stringify(report), contentType: 'application/json' });
+  });

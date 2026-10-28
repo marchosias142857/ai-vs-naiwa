@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test';
 import { GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
-import { GRAYBOX_BOUNDS as B } from '../../src/game/world/graybox';
+import { CHARACTERS } from '../../src/data/characters';
+import { compileRoom } from '../../src/sim/dungeon/compileRoom';
+import { roomTemplate } from '../../src/sim/dungeon/roomCatalog';
+const room = compileRoom(roomTemplate('modular_v2/temple/empty')!);
 import type { DemoProbe } from '../../src/game/testHooks';
 import { worldToScreen } from './helpers/camera';
 import { startAdventure } from './helpers/town';
@@ -89,7 +92,7 @@ test('真实移动到四个墙角时人物持续居中，房间外露出黑色�
     await page.waitForFunction(() => (window.__AVN__?.demo?.camera.zoom ?? 0) >= 6);
     // 对角走向墙角，不穿过四边中央的门；只发送真实移动输入，不写 sim 坐标。
     const result = await page.evaluate(
-      ({ dx, dy, bounds }) =>
+      ({ dx, dy, corner }) =>
         new Promise<{ maxError: number; samples: number; state: DemoProbe }>((resolve, reject) => {
           const keys = [dx < 0 ? 'KeyA' : 'KeyD', dy < 0 ? 'KeyW' : 'KeyS'];
           const start = window.__AVN__!.demo!;
@@ -114,9 +117,7 @@ test('真实移动到四个墙角时人物持续居中，房间外露出黑色�
             if (d.x !== lastX || d.y !== lastY) stableSince = d.time;
             lastX = d.x;
             lastY = d.y;
-            const atCorner =
-              (dx < 0 ? d.x <= bounds.x + 16 : d.x >= bounds.x + bounds.width - 16) &&
-              (dy < 0 ? d.y <= bounds.y + 16 : d.y >= bounds.y + bounds.height - 16);
+            const atCorner = Math.abs(d.x - corner.x) < 0.1 && Math.abs(d.y - corner.y) < 0.1;
             if (d.room !== start.room || performance.now() > deadline) {
               release();
               reject(new Error(`未在原房间走到墙角：${d.room}, ${d.x}, ${d.y}`));
@@ -127,7 +128,17 @@ test('真实移动到四个墙角时人物持续居中，房间外露出黑色�
           };
           requestAnimationFrame(sample);
         }),
-      { dx, dy, bounds: B },
+      {
+        dx,
+        dy,
+        // The north-east diagonal reaches the cut's left jamb, not the old rectangle corner.
+        corner: {
+          x:
+            (dx < 0 ? room.bounds.x : dy < 0 ? room.boundary[1]!.x : room.bounds.x + room.bounds.width) -
+            dx * CHARACTERS.ai_proto.radius,
+          y: (dy < 0 ? room.bounds.y : room.bounds.y + room.bounds.height) - dy * CHARACTERS.ai_proto.radius,
+        },
+      },
     );
     expect(result.samples).toBeGreaterThan(10);
     expect(result.maxError).toBeLessThanOrEqual(0.51);
@@ -153,8 +164,7 @@ test('跟随真实移动，接近门时完整显示门口，切房后玩家仍�
   await page.waitForFunction(() => (window.__AVN__?.demo?.camera.zoom ?? 0) >= 6);
   const initial = await page.evaluate(() => window.__AVN__!.demo!);
   const door = initial.links[0]!;
-  const x = B.x + B.width / 2 + (door.dx * B.width) / 2;
-  const y = B.y + B.height / 2 + (door.dy * B.height) / 2;
+  const { x, y } = room.ports.find((p) => p.direction.x === door.dx && p.direction.y === door.dy)!.center;
   const key = door.dx > 0 ? 'KeyD' : door.dx < 0 ? 'KeyA' : door.dy > 0 ? 'KeyS' : 'KeyW';
   // 浏览器内在接近门时松开，避免测试协议延迟使角色提前跨房。
   await page.evaluate(

@@ -6,6 +6,7 @@ import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { LEGACY_V1 } from '../../src/data/roomTemplates/legacyV1';
+import { MODULAR_V2 } from '../../src/data/roomTemplates/modularV2';
 import type {} from '../fixtures/legacyCatalog';
 
 let directory: string, url: string, server: ReturnType<typeof createServer>;
@@ -57,7 +58,7 @@ for (const seed of [0, 42, 12345, 0xffffffff])
       expect(result.floor).toBe(floor);
       expect(result.rows).toHaveLength(floor === 4 ? 2 : 8);
       expect(result.unchangedByFreeze).toBe(true);
-      expect(result.bounds).toEqual(LEGACY_V1.bounds);
+      expect(result.bounds).toEqual(floor === 4 ? LEGACY_V1.bounds : MODULAR_V2.bounds);
       expect(result.center).toEqual(LEGACY_V1.anchors.player);
       for (const row of result.rows) {
         expect(row.templateId).toBe(row.expectedId);
@@ -127,6 +128,10 @@ test('graybox contours block real Arcade movement and use template ports for eve
     const report = await page.evaluate(() => window.legacyCatalog.probeShape());
     reports.push(report);
     expect(report.floor).toBe(floor);
+    if (floor < 4) {
+      expect(report.expansion?.legal).toBe(true);
+      expect(report.expansion?.x).toBeCloseTo(102, 1);
+    } else expect(report.expansion).toBeNull();
     expect(report.collisions.length).toBe([1, 2, 1, 0][floor - 1]);
     for (const collision of report.collisions) {
       expect(collision.legal).toBe(true);

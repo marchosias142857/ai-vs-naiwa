@@ -1,0 +1,38 @@
+[
+  {
+    "name": "terrain",
+    "size": [
+      1254,
+      1254
+    ],
+    "sourceBytes": 2767824,
+    "runtimeBytes": 2061738,
+    "sourceSha256": "0a8d3df240051530d74a7f4b2bc1c30fc09f429e23fc11e2c15135997bdde4e9",
+    "runtimeSha256": "d5f8f6148cb1ab07294e5ac9641e197dec82d104a4a38e809884d97a3001282a",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "doors",
+    "size": [
+      1536,
+      1024
+    ],
+    "sourceBytes": 2296001,
+    "runtimeBytes": 1660546,
+    "sourceSha256": "ca470cb36aa815e0f363fce6ded69fecc0567c32d5af6af2c3f32914a9e4a476",
+    "runtimeSha256": "82c6a7803a3f751f7ea72977834c225d6f4bbca3c708fc263be81e9897a5a78b",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "objects",
+    "size": [
+      1254,
+      1254
+    ],
+    "sourceBytes": 1245161,
+    "runtimeBytes": 940436,
+    "sourceSha256": "80fcb57d24a9a2ba3e72b2ed43450548d3f2cc7d1676dcf61310f2519fc0c4f3",
+    "runtimeSha256": "107a67087df3cfd755f92091598a1e4cbb89a6619cb15fdd10deca0e9cc502ca",
+    "decodedRGBAIdentical": true
+  }
+]

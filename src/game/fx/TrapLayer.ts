@@ -2,10 +2,9 @@ import { Physics } from 'phaser';
 import type { GameObjects, Scene } from 'phaser';
 import { DEPTH, DEPTH_Y_SORT } from '../../config';
 import { BALANCE } from '../../data/balance';
-import { ROOM_ART_SCALE } from '../../data/roomArt';
+import { MAP_ART, type MapFrame } from '../../data/mapArt';
 import { TRAP_RULES } from '../../data/traps';
 import type { CombatWorld, TrapView } from '../../sim/combat/api';
-import { ART } from '../assets/demoArt';
 import type { CombatBridge } from '../world/CombatBridge';
 import type { RoomArena } from '../world/RoomArena';
 import { newBarrelBody, syncBarrelBody, type BarrelBody } from './barrelBody';
@@ -33,19 +32,24 @@ export class TrapLayer {
     private readonly bridge: CombatBridge,
     private readonly arena: RoomArena,
   ) {
-    this.enabled = scene.textures.exists(ART.rooms);
+    this.enabled = scene.textures.exists(MAP_ART.textures.objects);
     this.group = scene.physics.add.staticGroup();
     for (let i = 0; i < BALANCE.trapCapacity; i++) {
       const frame = this.enabled ? 'weed' : undefined;
       this.fields.push(
         scene.add
-          .tileSprite(0, 0, 1, 1, this.enabled ? ART.rooms : '__DEFAULT', frame)
+          .tileSprite(0, 0, 1, 1, this.enabled ? MAP_ART.textures.objects : '__DEFAULT', frame)
           .setDepth(DEPTH.floorDecals)
           .setVisible(false),
       );
       this.props.push(
         scene.add
-          .image(0, 0, this.enabled ? ART.rooms : '__DEFAULT', this.enabled ? 'mine' : undefined)
+          .image(
+            0,
+            0,
+            this.enabled ? MAP_ART.textures.objects : '__DEFAULT',
+            this.enabled ? 'mine' : undefined,
+          )
           .setVisible(false),
       );
       const body = this.group.create(0, 0, '__DEFAULT') as Physics.Arcade.Image;
@@ -122,48 +126,64 @@ export class TrapLayer {
       // 预警时在两张图之间闪，刺出前一眼能看出来。
       const blink = t.state === 'warn' && Math.floor(this.time * F.warnBlink) % 2 === 0;
       const frame = t.state === 'on' ? 'spikes_on' : blink ? 'spikes_warn' : 'spikes_idle';
-      field.setFrame(frame).setSize(t.width, t.height).setTileScale(ROOM_ART_SCALE, ROOM_ART_SCALE);
+      this.fieldFrame(field, frame);
+      field.setSize(t.width, t.height);
       field.setTilePosition(0, 0);
       return;
     }
     if (t.kind === 'current') {
-      // 贴图里的箭头朝右；竖直的水流把贴图转 90 度，宽高对调后正好盖住区域。
+      // 水纹沿贴图横轴滚动；竖直水流旋转 90 度，宽高对调后仍覆盖真实区域。
       const vertical = Math.abs(Math.sin(t.angle)) > 0.5;
+      this.fieldFrame(field, 'current');
       field
-        .setFrame('current')
         .setSize(vertical ? t.height : t.width, vertical ? t.width : t.height)
         .setRotation(t.angle)
-        .setTileScale(ROOM_ART_SCALE, ROOM_ART_SCALE)
         .setAlpha(F.currentAlpha)
-        .setTilePosition((-this.time * TRAP_RULES.current.speed) / ROOM_ART_SCALE, 0);
+        .setTilePosition((-this.time * TRAP_RULES.current.speed) / field.tileScaleX, 0);
       return;
     }
+    this.fieldFrame(field, 'weed');
     field
-      .setFrame('weed')
       .setSize(t.width, t.height)
-      .setTileScale(ROOM_ART_SCALE, ROOM_ART_SCALE)
-      .setTilePosition(Math.sin(this.time * F.weedSway) * F.weedSwayPixels, 0);
+      .setTilePosition((Math.sin(this.time * F.weedSway) * F.weedSwayPixels * 0.5) / field.tileScaleX, 0);
+  }
+
+  private fieldFrame(field: GameObjects.TileSprite, name: MapFrame): void {
+    const frame = MAP_ART.frames[name];
+    field.setFrame(name).setTileScale(MAP_ART.fieldTile / frame[2], MAP_ART.fieldTile / frame[3]);
   }
 
   private drawProp(prop: GameObjects.Image, t: TrapView): void {
-    prop.setVisible(true).setPosition(t.x, t.y).setScale(ROOM_ART_SCALE).setAlpha(1);
+    prop.setVisible(true).setPosition(t.x, t.y).setOrigin(0.5).setAlpha(1);
     if (t.kind === 'mine') {
       const lit = t.state === 'fuse' && Math.floor(this.time * F.fuseBlink) % 2 === 0;
-      prop.setFrame(lit ? 'mine_lit' : 'mine').setDepth(DEPTH.floorDecals + 1);
+      prop
+        .setFrame(lit ? 'mine_lit' : 'mine')
+        .setDisplaySize(15, 15)
+        .setDepth(DEPTH.floorDecals + 1);
       // 爆炸后重新布设：先很淡，快布设好时长回原样。
       if (t.state === 'idle') {
         const k = Math.min(1, t.time / TRAP_RULES.mine.rearm);
-        prop.setAlpha(F.rearmAlpha + (1 - F.rearmAlpha) * k * k).setScale(ROOM_ART_SCALE * (0.4 + 0.6 * k));
+        prop
+          .setAlpha(F.rearmAlpha + (1 - F.rearmAlpha) * k * k)
+          .setDisplaySize(15 * (0.4 + 0.6 * k), 15 * (0.4 + 0.6 * k));
       }
       return;
     }
     if (t.state === 'broken') {
-      prop.setFrame('barrel_broken').setDepth(DEPTH.floorDecals + 1);
+      prop
+        .setFrame('barrel_broken')
+        .setDisplaySize(21, 13)
+        .setDepth(DEPTH.floorDecals + 1);
       return;
     }
     const cracked = t.hp <= TRAP_RULES.barrel.hp / 2;
     // 鱼雷桶和角色一样按脚底 y 排序，绕到桶后面会被挡住。
-    prop.setFrame(cracked ? 'barrel_hit' : 'barrel').setDepth(DEPTH.actors + (t.y + t.radius) * DEPTH_Y_SORT);
+    prop
+      .setFrame(cracked ? 'barrel_hit' : 'barrel')
+      .setDisplaySize(18, 23)
+      .setOrigin(0.5, 0.65)
+      .setDepth(DEPTH.actors + (t.y + t.radius) * DEPTH_Y_SORT);
   }
 
   private readonly destroy = (): void => {

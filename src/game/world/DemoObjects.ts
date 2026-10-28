@@ -1,5 +1,6 @@
 import { ART, weaponTexture } from '../assets/demoArt';
 import { WEAPON_ART } from '../../data/art';
+import { MAP_ART } from '../../data/mapArt';
 import type { GameObjects, Scene } from 'phaser';
 import { t } from '../../i18n/t';
 import { COLORS, DEPTH } from '../../config';
@@ -36,11 +37,11 @@ export class DemoObjects {
             .setVisible(false),
         );
       this.chest = scene.add
-        .image(B.x + B.width / 2, B.y + B.height / 2 - 15, ART.environment, 'chest_open')
+        .image(B.x + B.width / 2, B.y + B.height / 2 - 15, MAP_ART.textures.objects, 'chest_open')
         .setDisplaySize(24, 25)
         .setDepth(DEPTH.floorDecals);
       this.exitArt = scene.add
-        .image(B.x + B.width / 2, B.y + B.height / 2, ART.environment, 'crystal')
+        .image(B.x + B.width / 2, B.y + B.height / 2, MAP_ART.textures.objects, 'crystal')
         .setDisplaySize(28, 30)
         .setDepth(DEPTH.floorDecals);
     }

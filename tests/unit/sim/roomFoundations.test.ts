@@ -29,7 +29,7 @@ for (const theme of LEGACY_V1.themes)
     it(`validates area, connected clearance and anchors: ${id}`, () => {
       const t = roomTemplate(id)!,
         c = compileRoom(t),
-        b = LEGACY_V1.bounds;
+        b = c.bounds;
       const barrels = t.traps
         .filter((p) => p.kind === 'barrel')
         .map((p, i) => ({
@@ -40,6 +40,24 @@ for (const theme of LEGACY_V1.themes)
         }));
       const q = new RoomGeometry(c.boundary, [...c.obstacles, ...barrels], 0),
         empty = new RoomGeometry(c.boundary, [], 0);
+      // Compare with the frozen pre-#132 rectangle AND its original obstacles/barrels.
+      const oldTemplate = roomTemplate(desc.id)!,
+        oldRoom = compileRoom(oldTemplate);
+      const old = new RoomGeometry(
+        oldRoom.boundary,
+        [
+          ...oldRoom.obstacles,
+          ...oldTemplate.traps
+            .filter((p) => p.kind === 'barrel')
+            .map((p, i) => ({
+              id: `old-barrel:${i}`,
+              kind: 'barrel' as const,
+              mask: 15,
+              shape: { type: 'circle' as const, x: 240 + p.x, y: 135 + p.y, radius: 7 },
+            })),
+        ],
+        0,
+      );
       const h = createGeometryHit();
       // 2-unit cell centres: footprint area is reported separately from body-centre clearance.
       const step = Number(process.env.ROOM_CELL_SIZE ?? 2),
@@ -55,7 +73,9 @@ for (const theme of LEGACY_V1.themes)
       for (const radius of radii) {
         let area = 0,
           free = 0,
-          baseline = 0;
+          baseline = 0,
+          legacyFree = 0,
+          legacyCenters = 0;
         const cells = new Set<number>();
         for (let row = 0; row < rows; row++)
           for (let col = 0; col < cols; col++) {
@@ -64,6 +84,8 @@ for (const theme of LEGACY_V1.themes)
             if (q.canOccupy(p, 0, 'walk')) free++;
             if (empty.canOccupy(p, radius + CONTACT_EPSILON, 'walk')) baseline++;
             if (q.canOccupy(p, radius + CONTACT_EPSILON, 'walk')) cells.add(row * cols + col);
+            if (old.canOccupy(p, 0, 'walk')) legacyFree++;
+            if (old.canOccupy(p, radius + CONTACT_EPSILON, 'walk')) legacyCenters++;
           }
         expect(free / area).toBeGreaterThanOrEqual(0.8);
         const queue = [cells.values().next().value!],
@@ -95,6 +117,10 @@ for (const theme of LEGACY_V1.themes)
           }
         }
         expect(reached.size).toBe(cells.size);
+        expect(free).toBeGreaterThanOrEqual(legacyFree);
+        // Count all old legal centres, even disconnected pockets: the new connected area
+        // must exceed this stricter baseline, not merely an arbitrarily chosen component.
+        expect(reached.size).toBeGreaterThanOrEqual(legacyCenters);
         if (radius === 6) expect(reached.size / baseline).toBeGreaterThanOrEqual(0.8);
         measurements.push({
           id,
@@ -103,6 +129,11 @@ for (const theme of LEGACY_V1.themes)
           interiorArea: area * step * step,
           footprintFreeFraction: free / area,
           reachableCenterArea: reached.size * step * step,
+          legacyFootprintArea: legacyFree * step * step,
+          footprintArea: free * step * step,
+          legacyCenterArea: legacyCenters * step * step,
+          footprintRelativeToLegacy: free / legacyFree,
+          centersRelativeToLegacy: reached.size / legacyCenters,
           relativeToEmptyCenters: reached.size / baseline,
           relativeToInterior: reached.size / area,
           components: 1,

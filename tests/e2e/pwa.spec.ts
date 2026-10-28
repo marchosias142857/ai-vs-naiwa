@@ -140,6 +140,24 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
       expect(file.size).toBeLessThan(300 * 1024);
     }
   }
+  const modules = await reopened.evaluate(async () =>
+    Promise.all(
+      ['terrain', 'doors', 'objects'].map(async (kind) => {
+        const response = await fetch(`assets/demo/map-${kind}-v1.webp`);
+        const blob = await response.blob();
+        const bitmap = await createImageBitmap(blob);
+        const report = { ok: response.ok, type: blob.type, size: blob.size, width: bitmap.width };
+        bitmap.close();
+        return report;
+      }),
+    ),
+  );
+  for (const file of modules) {
+    expect(file.ok).toBe(true);
+    expect(file.type).toBe('image/webp');
+    expect(file.size).toBeLessThan(2 * 1024 * 1024);
+    expect(file.width).toBeGreaterThan(1000);
+  }
   expect(await reopened.evaluate(() => window.__AVN__?.seed)).toBe(7);
   await expect(reopened.locator('#game canvas')).toBeVisible();
   await reopened.screenshot({ path: info.outputPath('pwa-offline.png') });

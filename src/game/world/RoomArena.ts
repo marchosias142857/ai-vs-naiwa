@@ -10,6 +10,8 @@ import type { TrapLayoutInput } from '../../sim/combat/api';
 import { LiveRoomGeometry } from '../../sim/geometry/LiveRoomGeometry';
 import { createGeometryHit, GeometryMask, type GeometryQueries } from '../../sim/geometry/RoomGeometry';
 import { ART } from '../assets/demoArt';
+import { MAP_ART } from '../../data/mapArt';
+import type { RoomTheme } from '../../data/schema/traps';
 import { NavigationGrid } from '../../sim/dungeon/NavigationGrid';
 import type { Vec2 } from '../../sim/core/types';
 import type { GameObjects, Physics, Scene } from 'phaser';
@@ -37,6 +39,8 @@ const ROOM_BOUNDARY = [
 /** 房间切换复用固定的内墙池。门口跨越判定由 DungeonRun 校验连接与锁门状态。 */
 export class RoomArena {
   private readonly art: RoomArt | null;
+  private readonly modularArt: boolean;
+  private theme: RoomTheme['art'] = 'temple';
   private room: CompiledRoom | null = null;
   private readonly boundarySlots: Physics.Arcade.Image[] = [];
   private readonly navigation: NavigationGrid;
@@ -56,7 +60,8 @@ export class RoomArena {
     reflectBullets = false,
     graybox = false,
   ) {
-    this.art = graybox ? null : createRoomArt(scene);
+    this.art = graybox ? null : createRoomArt(scene, true);
+    this.modularArt = !!this.art && scene.textures.exists(MAP_ART.textures.doors);
     this.graphics = scene.add.graphics().setDepth(DEPTH.floor + 1);
     if (this.art && scene.textures.exists(ART.doors))
       for (let i = 0; i < 4; i++)
@@ -80,7 +85,7 @@ export class RoomArena {
       this.boundarySlots.push(image);
     }
     this.geometry = new LiveRoomGeometry(ROOM_BOUNDARY, [], bridge.sim);
-    this.navigation = new NavigationGrid(B, this.canWalk, this.pathClear);
+    this.navigation = new NavigationGrid(MODULAR_V2.bounds, this.canWalk, this.pathClear);
     this.colliders = [
       scene.physics.add.collider(bridge.actors.group, this.walls),
       reflectBullets
@@ -107,6 +112,8 @@ export class RoomArena {
         throw new RangeError('missing linked port');
     }
     this.room = room;
+    this.theme = template.theme;
+    this.bridge.setRoomBounds(room.bounds);
     for (let i = 0; i < this.boundarySlots.length; i++) {
       const image = this.boundarySlots[i]!,
         box = room.cuts[i];
@@ -120,7 +127,18 @@ export class RoomArena {
         .refreshBody()
         .setAlpha(0);
     }
-    this.art?.show(template.theme, template.boxes);
+    this.art?.show(
+      template.theme,
+      template.boxes,
+      room,
+      template.traps,
+      room.ports.filter((p) =>
+        run.room.links.some((id) => {
+          const to = run.map.rooms[id]!;
+          return p.direction.x === to.x - run.room.x && p.direction.y === to.y - run.room.y;
+        }),
+      ),
+    );
     this.setBoxes(template.boxes, template.obstacle, template.mask);
     // 每层每个房间的编号唯一；同一房间重建（存档恢复）时 sim 保留机关进行中的状态。
     this.placeTraps(run.floor * DUNGEON.gridSize ** 2 + run.roomId, template.traps);
@@ -150,7 +168,9 @@ export class RoomArena {
   }
   /** 压测也复用正式房间的墙体、视线与导航缓存。 */
   setLayout(layout: number): void {
-    this.setBoxes(ROOM_LAYOUTS[layout % ROOM_LAYOUTS.length]!);
+    const boxes = ROOM_LAYOUTS[layout % ROOM_LAYOUTS.length]!;
+    this.art?.show('temple', boxes);
+    this.setBoxes(boxes);
   }
   private setBoxes(boxes: readonly Box[], kind: 'wall' | 'pillar' = 'wall', mask = 15): void {
     // 新主题的内墙由 RoomArt 平铺障碍块画出来，这里的墙体只保留碰撞。
@@ -207,7 +227,8 @@ export class RoomArena {
       g.closePath();
       g.fillStyle(COLORS.floor).fillPath();
       g.lineStyle(2, COLORS.wall).strokePath();
-    } else g.lineStyle(1, 0x647d80).strokeRect(B.x - 1, B.y - 1, B.width + 2, B.height + 2);
+    } else if (!this.modularArt)
+      g.lineStyle(1, 0x647d80).strokeRect(B.x - 1, B.y - 1, B.width + 2, B.height + 2);
     const room = run.room,
       h = ROOM_RULES.doorHalfWidth;
     for (const door of this.doors) door.setVisible(false);
@@ -221,6 +242,16 @@ export class RoomArena {
         y = port.center.y;
       const door = this.doors[doorIndex++];
       if (door) {
+        if (this.modularArt) {
+          door
+            .setTexture(MAP_ART.textures.doors, `${this.theme}_${port.id}_${run.locked ? 'locked' : 'open'}`)
+            .setDisplaySize(dx ? 24 : 40, dx ? 38 : 30)
+            .setAngle(0)
+            .setOrigin(0.5, dy < 0 ? 0.8 : dy > 0 ? 0.2 : 0.5)
+            .setPosition(x, y)
+            .setVisible(true);
+          continue;
+        }
         door
           .setTexture(ART.doors, run.locked ? 'locked' : 'open')
           .setDisplaySize(64, 40)

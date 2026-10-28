@@ -7,7 +7,7 @@ import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import type { SessionSnapshot } from '../../src/game/save/RunSnapshot';
 import { DemoSession } from '../../src/game/systems/DemoSession';
 import { InputScene } from '../../src/game/ui/InputScene';
-import { GRAYBOX_BOUNDS } from '../../src/game/world/graybox';
+import type { GRAYBOX_BOUNDS } from '../../src/game/world/graybox';
 import { EventBus } from '../../src/sim/core/EventBus';
 import type { Random } from '../../src/sim/core/Random';
 import { selectRoomLayouts, roomTemplate } from '../../src/sim/dungeon/roomCatalog';
@@ -126,7 +126,13 @@ class CatalogScene extends Scene {
           return {
             id: port.id,
             actual: { x: session.player!.x, y: session.player!.y },
-            expected: run.floor === 3 && port.id === 'north' ? { x: 168, y: 71 } : port.entrance,
+            expected:
+              run.floor === 4
+                ? port.entrance
+                : {
+                    x: run.floor === 3 && port.id === 'north' ? 168 : port.entrance.x + port.direction.x * 8,
+                    y: port.entrance.y + port.direction.y * 8,
+                  },
           };
         });
         session.arena.teleport();
@@ -136,7 +142,12 @@ class CatalogScene extends Scene {
           rows,
           entrances,
           center,
-          bounds: GRAYBOX_BOUNDS,
+          bounds: {
+            x: this.physics.world.bounds.x,
+            y: this.physics.world.bounds.y,
+            width: this.physics.world.bounds.width,
+            height: this.physics.world.bounds.height,
+          },
           checkpoint,
           root: inspect.root.snapshot,
           floor: run.floor,
@@ -199,13 +210,26 @@ class CatalogScene extends Scene {
         }
         input.move.x = 0;
         input.move.y = 0;
+        let expansion: { x: number; legal: boolean } | null = null;
+        if (run.floor < 4) {
+          pin(122, 100);
+          input.move.x = -1;
+          for (let i = 0; i < 45; i++) step();
+          expansion = {
+            x: session.player!.x,
+            legal: session.arena.prepareGeometry().canOccupy(session.player!, session.player!.radius, 'walk'),
+          };
+          input.move.x = 0;
+          session.arena.teleport();
+        }
         let navigation: { legal: boolean; crossed: boolean; blockedLOS: boolean } | null = null;
         if (run.floor === 3) {
-          pin(292, 65);
+          // Keep the target beyond the burrower stand-off radius on the far side of the shallower notch.
+          pin(320, 65);
           const id = session.sim.spawnEnemy('naiwa_burrower', 180, 65);
           session.bridge.actors.apply();
           let legal = true;
-          const blockedLOS = !session.arena.lineOfSight(180, 65, 292, 65);
+          const blockedLOS = !session.arena.lineOfSight(180, 65, 320, 65);
           for (let i = 0; i < 600; i++) {
             step();
             const enemy = session.sim.getActor(id)!;
@@ -240,7 +264,7 @@ class CatalogScene extends Scene {
         run.phase = 'exploring';
         inspect.rebuildRoom();
         session.arena.teleport();
-        return { floor: run.floor, collisions, doors, navigation };
+        return { floor: run.floor, collisions, doors, navigation, expansion };
       },
       advance: () => {
         const run = session.dungeon;
@@ -289,6 +313,7 @@ interface Api {
     unchangedByFreeze: boolean;
   };
   probeShape(): {
+    expansion: { x: number; legal: boolean } | null;
     floor: number;
     navigation: { legal: boolean; crossed: boolean; blockedLOS: boolean } | null;
     collisions: { legal: boolean; fired: number; stopped: boolean }[];

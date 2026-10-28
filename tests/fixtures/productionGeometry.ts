@@ -1,3 +1,4 @@
+import { DungeonRun } from '../../src/sim/run/DungeonRun';
 import { AUTO, Game, Scene, Scale, type Physics } from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
 import { BOSS_ROOM_LAYOUT } from '../../src/data/layouts';
@@ -72,6 +73,48 @@ class GeometryScene extends Scene {
     const player = sim.playerId!;
     this.cameras.main.setZoom(RENDER_SCALE * 1.5).centerOn(B.x + B.width / 2, B.y + B.height / 2);
     window.productionGeometry = {
+      showcase: (floor) => {
+        const run = new DungeonRun(42, new EventBus(), floor);
+        const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
+        run.roomId = run.map.rooms.find((r) => r.kind === (floor === 4 ? 'boss' : 'combat'))!.id;
+        arena.show(
+          run,
+          `modular_v2/${theme}/${floor === 4 ? 'boss' : floor === 3 ? 'combat_1' : 'combat_0'}`,
+        );
+        const candidates = arena.spawnAnchors();
+        const kinds = ['naiwa_scout', 'naiwa_turret', 'naiwa_burrower', 'naiwa_tank'] as const;
+        for (let i = 0; i < 30; i++) {
+          const p = candidates[i % candidates.length]!;
+          sim.spawnEnemy(kinds[i % kinds.length]!, p.x, p.y);
+        }
+        for (let i = 0; i < 7; i++) {
+          const p = candidates[candidates.length - 1 - i]!;
+          Object.assign(sim.rocks[i]!, {
+            active: true,
+            slot: i,
+            landed: true,
+            x: p.x,
+            y: p.y,
+            radius: 9,
+            time: 10,
+            fall: 1,
+            life: 60,
+            damage: 1,
+          });
+        }
+        bridge.actors.apply();
+        input.aim = { x: 340, y: 135 };
+        input.fire = true;
+        for (let i = 0; i < 180; i++) step();
+        session.update();
+        return {
+          theme,
+          rocks: sim.rocks.filter((r) => r.active).length,
+          actors: sim.actors.filter((a) => a.team === 'enemy' && a.phase !== 'dead').length,
+          traps: sim.traps.filter((t) => t.active).map((t) => ({ kind: t.kind, state: t.state })),
+          bullets: bridge.bullets.activeCount,
+        };
+      },
       restored: !!data?.restored,
       restore: (state) => this.scene.restart({ restored: state }),
       rockSave: () => {
@@ -207,6 +250,13 @@ class GeometryScene extends Scene {
 declare global {
   interface Window {
     productionGeometry: {
+      showcase: (floor: number) => {
+        theme: string;
+        rocks: number;
+        actors: number;
+        traps: { kind: string; state: string }[];
+        bullets: number;
+      };
       restored: boolean;
       restore: (state: SessionSnapshot) => void;
       rockSave: () => SessionSnapshot;

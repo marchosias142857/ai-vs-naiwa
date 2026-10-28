@@ -66,7 +66,12 @@ function harness() {
     },
   } as unknown as Scene;
   const sim = createCombatWorld({ seed: 42, bus: new EventBus() });
-  const bridge = { sim, actors: { group: {} }, bullets: { group: {} } } as unknown as CombatBridge;
+  const bridge = {
+    sim,
+    setRoomBounds: () => {},
+    actors: { group: {} },
+    bullets: { group: {} },
+  } as unknown as CombatBridge;
   return { sim, arena: new RoomArena(scene, bridge) };
 }
 const cx = B.x + B.width / 2,

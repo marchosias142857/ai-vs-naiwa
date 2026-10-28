@@ -8,6 +8,7 @@ import type { WeaponId } from '../../data/weapons';
 import { CHARACTER_ART, DEFAULT_CHARACTER_ART, characterTexture } from '../../data/characterArt';
 import { ENEMIES } from '../../data/enemies';
 import { MONSTER_TEXTURES, enemyAnimation, monsterFrame } from '../../data/enemyArt';
+import { MAP_ART, mapFrameTexture } from '../../data/mapArt';
 
 export const ART = {
   hero: DEFAULT_CHARACTER_ART.texture,
@@ -27,6 +28,8 @@ export function weaponTexture(id: WeaponId): string {
 /** 命名帧只切 Texture 坐标，不复制图片像素；全部图集进入 PWA 预缓存。 */
 export function preloadDemoArt(scene: Scene): void {
   const base = `${import.meta.env.BASE_URL}assets/demo/`;
+  for (const kind of ['terrain', 'doors', 'objects'] as const)
+    scene.load.image(MAP_ART.textures[kind], `${base}${MAP_ART.sources[kind]}`);
   for (const art of Object.values(CHARACTER_ART)) {
     scene.load.image(art.texture, `${base}${art.source}`);
     if (art.reactionTexture !== art.texture)
@@ -46,6 +49,8 @@ export function preloadDemoArt(scene: Scene): void {
     if (used.has(name as keyof typeof MONSTER_TEXTURES)) scene.load.image(t.key, `${base}${t.source}`);
 }
 export function installDemoArt(scene: Scene): void {
+  for (const key of Object.values(MAP_ART.textures))
+    if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Textures.FilterMode.NEAREST);
   // 仅游戏图集保留像素边缘；画布与文字仍按完整渲染分辨率绘制。
   for (const key of [
     ART.weapons,
@@ -62,6 +67,7 @@ export function installDemoArt(scene: Scene): void {
     if (scene.textures.exists(atlas) && !scene.textures.get(atlas).has(name))
       scene.textures.get(atlas).add(name, 0, ...rect);
   };
+  for (const [name, rect] of Object.entries(MAP_ART.frames)) add(mapFrameTexture(name), name, rect);
   for (const art of Object.values(CHARACTER_ART)) {
     for (const key of [art.texture, art.reactionTexture])
       if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Textures.FilterMode.NEAREST);
