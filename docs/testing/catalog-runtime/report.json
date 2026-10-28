@@ -1,0 +1,4289 @@
+{
+  "base": "2150898a9c5d8e3cfb0e19211c1878a2fe609bd8",
+  "codeHead": "8a47d5541445eeab9f992957c4c2d2792b213a46",
+  "headProvenance": "Executed in the pre-commit worktree. The changed source/test files below match codeHead byte-for-byte; base identifies all unchanged code. The subsequent commit adds documentation/report only.",
+  "sourceSha256": {
+    "src/data/layouts.ts": "f0f3bfb57ec76e49bc3fd0a259c2e319476e30ca08250ca210f1930325f0e681",
+    "src/data/roomTemplates/legacyV1.ts": "96ce5c6b28fe00fb778b466f57b3ed846d64004673eded9f499879e093254d2a",
+    "src/data/traps.ts": "6b124a825dd46767cd01c03f9e0576c42e545bc9ed07ab15d00ce242cf71dc0d",
+    "src/game/save/version.ts": "f254ca4f96307588f41291b421c3dfec3b94b2292ce1efe8d3b989e314593151",
+    "src/game/systems/DemoSession.ts": "26185214cd75cd6887d202bde1cabf59d6e0d2cf8c0fedd1bc30056b261f548b",
+    "src/game/world/RoomArena.ts": "62260dec683a7eee4824e0df44a440f1968e2ca2b1a455ce4ae6728f60fbadfc",
+    "src/sim/dungeon/roomCatalog.ts": "112ae47756aa191bb59bdad3778376b442ecda856a1e1b9c970b39524eb53925",
+    "tests/e2e/legacyCatalog.spec.ts": "d21800ce508846ea1d1b10238586cdfe28a26746951e3c2476a73cbc51a64027",
+    "tests/fixtures/legacyCatalog.ts": "d46a3769593b8c4ca3033246e4ca3119f37e578e587a33cc6623162752c7315c",
+    "tests/fixtures/legacyV1/production-baseline.json": "005107a5182ab56fe4bf3326b7fb778e8aa33ec59e360ead611f98c9a0e8915f",
+    "tests/fixtures/room.ts": "530d00d725eedcba2367329b07092440443df21195c8d070ca85c3eddd8e23a9",
+    "tests/unit/game/roomGeometryAdapter.test.ts": "ecc37198d7d19a1383e3a530fd8c8729b31c335e6197c0f7d1c6a745dd54455f",
+    "tests/unit/sim/roomCatalog.test.ts": "1809ec2afdf2c39ed970b6d54a53c3c7b82bd40f1a77dc03432c9bde5d72d887",
+    "package-lock.json": "f3ebe53b54e9217c1706fa119e88ec432c30f14347ef0199049c5b26a9066283",
+    "playwright.config.ts": "6dfc50f88dd194d96906450044994be6717a7a8163ebd7de02f4b1b1ec94568a",
+    "tests/unit/sim/legacyRoot.test.ts": "e4ccad3c1a761f90b5705bace70f2cd877a8ac3843f13881164ea9231adaeac8",
+    "tests/fixtures/legacyV1/catalog.bytes.txt": "2fb55b95feb7213411df8156d97ca0fb53afbe669f96e5c96b5859d7fd611294",
+    "tests/e2e/pwa.spec.ts": "e4c5c5dfa1db82d1332a0309f5b38f7ce1559eb9daf3f39bc52af20fda099e1a",
+    "tests/e2e/stress.spec.ts": "8e0421d2221804be5fe883d9d8aeb065a85bb6615f2bbe50b6dea9d722366996",
+    "tests/e2e/entities.spec.ts": "697612bcc4521b5734b2b2a00bca932423b8aea95b5fbf0c0349c1bd71ffc593",
+    "tests/e2e/demo.spec.ts": "2df4a19831627fb6a284a6b53ccfac0c80448cde41f35e99a606c9d04238b79c",
+    "tests/e2e/resumeProduction.spec.ts": "d3217f14be62a055d458fef11041b4af3574a3fdfa53b541299ac90b7ceb9132",
+    "tests/e2e/productionGeometry.spec.ts": "a0b8528d76a380474c2c5f65121e289cebf325ba0bb7c9ca41c825ed4802b63d"
+  },
+  "deletedPaths": ["src/sim/dungeon/freezeV1.ts", "tests/unit/sim/freezeV1.test.ts"],
+  "environment": {
+    "node": "22.23.4",
+    "chromium": "153.0.8010.0",
+    "launchPackage": "@sparticuz/chromium 153.0.0",
+    "renderer": "SwiftShader",
+    "projects": ["desktop", "mobile-landscape"],
+    "workers": 1,
+    "retries": 0,
+    "timeouts": "Repository test timeouts unchanged (30s default, existing per-spec overrides).",
+    "externalConfigSha256": "744bc97cce59200ca0aa7756e20c926227bc1a942adc44b9536c0996616da406",
+    "externalConfig": "import base from './catalog-runtime/playwright.config.ts';\nimport chromium from '/workspace/scratch/4c41e386915b/verification-tools/node_modules/@sparticuz/chromium/build/index.js';\nconst root = '/workspace/scratch/b82bcc13d770';\nconst launchOptions = {\n  executablePath: '/workspace/scratch/4c41e386915b/verification-browser/chromium',\n  env: { ...process.env, FONTCONFIG_FILE: '/workspace/scratch/4c41e386915b/verification-browser/fontconfig.conf' },\n  args: chromium.args.filter(arg => arg !== '--single-process'),\n};\nexport default {\n  ...base,\n  testDir: `${root}/catalog-runtime/tests/e2e`,\n  outputDir: `${root}/catalog-results`,\n  workers: 1,\n  retries: 0,\n  reporter: [['list'], ['json', { outputFile: `${root}/catalog-results.json` }]],\n  projects: base.projects.filter(p => p.name !== 'webkit-mobile').map(p => ({ ...p, use: { ...p.use, launchOptions } })),\n  webServer: { cwd: '/workspace/scratch/b82bcc13d770/catalog-runtime', ...base.webServer, command: 'node node_modules/vite/bin/vite.js preview --port 4173 --strictPort', reuseExistingServer: false },\n};\n"
+  },
+  "check": {
+    "command": "npm run check",
+    "startTime": "2026-10-28T05:36:19.692873+00:00",
+    "durationSeconds": 24.585,
+    "exitCode": 0,
+    "testFilesPassed": 61,
+    "unitTestsPassed": 494,
+    "unitSummary": "Test Files  61 passed (61)\nTests  494 passed (494)\nDuration  3.49s (tests 58%, import 26%, transform 14%, worker 2%)"
+  },
+  "preflightIssues": [
+    {
+      "stage": "test discovery",
+      "cause": "Node 22 requires JSON import attributes",
+      "resolution": "Added with { type: 'json' } to the baseline JSON import; test list then loaded 52 cases.",
+      "gameAssertionsExecuted": false
+    },
+    {
+      "stage": "preview startup",
+      "cause": "External config resolved webServer command from parent cwd; Vite module not found.",
+      "resolution": "Set external webServer.cwd to the candidate worktree; no repository runtime, assertions, timeouts or retry changes.",
+      "gameAssertionsExecuted": false
+    }
+  ],
+  "historicalBaseline": {
+    "path": "tests/fixtures/legacyV1/production-baseline.json",
+    "sourceHead": "81a2a77a0678a1eddafaa41bc3bd036347ec4df2",
+    "sourceReport": "docs/testing/legacy-catalog/review-5677887656.json",
+    "sourceReportSha256": "0482a70f84af42938befa7e0117eebead1fca6d667d3e05a62f5e1d371137b4f",
+    "seedCount": 4,
+    "recordedSelections": 104,
+    "observedTemplates": 18,
+    "provenance": "Exact extraction of PR128 passed observations; not regenerated with the new selector. Claude 3007-seed results are not GPT results for this step."
+  },
+  "buildComparison": {
+    "catalog-baseline": {
+      "js": "index-Bn43Sohp.js",
+      "bytes": 1669570,
+      "gzipBytes": 451297,
+      "files": 27,
+      "precacheEntries": 20,
+      "precacheBytes": 11818590,
+      "assets": {
+        "assets/demo/title-confrontation-v1.webp": "7eccd03c9c6306f834fe5bde0bcbee1d8c05e5961005c54766f90bc4d821ae6b",
+        "assets/demo/enemies.png": "2d9421b9ab7931b41d6885004330a2776526e79a1c06ddc9bf8ec9a0aa82154a",
+        "assets/demo/rooms-v1.png": "5341ceb006d7a2b45b9bdfa630b5137ff91db67d17281fc8c878049f7c5a4b8f",
+        "assets/demo/weapons.png": "552f6b4b4e9477b9f83f983a3c835314550d68d14202b81cf12016cee58c3793",
+        "assets/demo/arsenal-v1.png": "73fc763478a5ab9369c1416868ff335c0145d10ee69e0899857fecb5e82249d9",
+        "assets/demo/naiguai-v4.png": "243a5ebb33f0cfacaf51f3d8fcaadd31528ca9861bf9374156eea852895c02bf",
+        "assets/demo/environment.png": "3d4b3a49745989781a3e6697fbb47f46e936a79887520178bd5065bb65533861",
+        "assets/demo/da-fei-yu-pixel-reactions-v1.png": "55016acf382f4bcc88b344b357279e22f689461d4473e993ee32d9f32879bf36",
+        "assets/demo/doors.png": "57105955ecca0d5c05478c8959f9d0e1ca767944ba353e1c213af2685173e849",
+        "assets/demo/da-fei-yu-pixel-v2.png": "5c4403dc7535f67f21ccef0da864e4042aaff4f24fcc68af90f0e9c9437731f7",
+        "assets/demo/talent-altar-v1.png": "07536b59a96f970918d0ad79366a91971d5f1cd88096b9533e492848afd9b937",
+        "assets/demo/monsters-v4.png": "2779cea86b9a00dc08026009b3774315fdc884c8f99954dbc2e4e28cc18b9321"
+      }
+    },
+    "catalog-runtime": {
+      "js": "index-eLS-dYIi.js",
+      "bytes": 1673203,
+      "gzipBytes": 452154,
+      "files": 27,
+      "precacheEntries": 20,
+      "precacheBytes": 11822223,
+      "assets": {
+        "assets/demo/title-confrontation-v1.webp": "7eccd03c9c6306f834fe5bde0bcbee1d8c05e5961005c54766f90bc4d821ae6b",
+        "assets/demo/enemies.png": "2d9421b9ab7931b41d6885004330a2776526e79a1c06ddc9bf8ec9a0aa82154a",
+        "assets/demo/rooms-v1.png": "5341ceb006d7a2b45b9bdfa630b5137ff91db67d17281fc8c878049f7c5a4b8f",
+        "assets/demo/weapons.png": "552f6b4b4e9477b9f83f983a3c835314550d68d14202b81cf12016cee58c3793",
+        "assets/demo/arsenal-v1.png": "73fc763478a5ab9369c1416868ff335c0145d10ee69e0899857fecb5e82249d9",
+        "assets/demo/naiguai-v4.png": "243a5ebb33f0cfacaf51f3d8fcaadd31528ca9861bf9374156eea852895c02bf",
+        "assets/demo/environment.png": "3d4b3a49745989781a3e6697fbb47f46e936a79887520178bd5065bb65533861",
+        "assets/demo/da-fei-yu-pixel-reactions-v1.png": "55016acf382f4bcc88b344b357279e22f689461d4473e993ee32d9f32879bf36",
+        "assets/demo/doors.png": "57105955ecca0d5c05478c8959f9d0e1ca767944ba353e1c213af2685173e849",
+        "assets/demo/da-fei-yu-pixel-v2.png": "5c4403dc7535f67f21ccef0da864e4042aaff4f24fcc68af90f0e9c9437731f7",
+        "assets/demo/talent-altar-v1.png": "07536b59a96f970918d0ad79366a91971d5f1cd88096b9533e492848afd9b937",
+        "assets/demo/monsters-v4.png": "2779cea86b9a00dc08026009b3774315fdc884c8f99954dbc2e4e28cc18b9321"
+      }
+    },
+    "method": "Fresh independent main 2150898 build and candidate build with the same existing dependencies. gzip level 9 via Python, not Vite gzip-size. All 16 public files and 12 built demo assets are byte-identical."
+  },
+  "stats": {
+    "startTime": "2026-10-28T05:28:00.479Z",
+    "duration": 498876.47099999996,
+    "expected": 52,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "project": "desktop",
+      "file": "demo.spec.ts",
+      "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 12494,
+      "startTime": "2026-10-28T05:28:01.525Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "demo.spec.ts",
+      "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 2628,
+      "startTime": "2026-10-28T05:28:14.102Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "demo.spec.ts",
+      "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24186,
+      "startTime": "2026-10-28T05:28:16.748Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "demo.spec.ts",
+      "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 15577,
+      "startTime": "2026-10-28T05:32:06.701Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "demo.spec.ts",
+      "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 2856,
+      "startTime": "2026-10-28T05:32:22.344Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "demo.spec.ts",
+      "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 25589,
+      "startTime": "2026-10-28T05:32:25.229Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "entities.spec.ts",
+      "title": "真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中心一致",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 721,
+      "startTime": "2026-10-28T05:28:41.075Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "entities.spec.ts",
+      "title": "真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1068,
+      "startTime": "2026-10-28T05:28:42.737Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "entities.spec.ts",
+      "title": "出口升级界面可买补给，再选择升级进入下一层",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1057,
+      "startTime": "2026-10-28T05:28:43.822Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "entities.spec.ts",
+      "title": "真实 Arcade 中追击怪绕过内墙接近玩家",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 601,
+      "startTime": "2026-10-28T05:28:44.889Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "entities.spec.ts",
+      "title": "楼层入口继续与不中断推进得到相同升级候选",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1773,
+      "startTime": "2026-10-28T05:28:45.507Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "entities.spec.ts",
+      "title": "满级天赋四个出口按钮均可选；换层保留 runId 和天赋并完整通关",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1240,
+      "startTime": "2026-10-28T05:28:47.294Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "entities.spec.ts",
+      "title": "真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中心一致",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 712,
+      "startTime": "2026-10-28T05:32:51.033Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "entities.spec.ts",
+      "title": "真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1109,
+      "startTime": "2026-10-28T05:32:52.637Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "entities.spec.ts",
+      "title": "出口升级界面可买补给，再选择升级进入下一层",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1077,
+      "startTime": "2026-10-28T05:32:53.761Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "entities.spec.ts",
+      "title": "真实 Arcade 中追击怪绕过内墙接近玩家",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 567,
+      "startTime": "2026-10-28T05:32:54.850Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "entities.spec.ts",
+      "title": "楼层入口继续与不中断推进得到相同升级候选",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1827,
+      "startTime": "2026-10-28T05:32:55.427Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "entities.spec.ts",
+      "title": "满级天赋四个出口按钮均可选；换层保留 runId 和天赋并完整通关",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1224,
+      "startTime": "2026-10-28T05:32:57.264Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 25132,
+      "startTime": "2026-10-28T05:28:48.565Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 0,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_2",
+              "expectedId": "legacy_v1/temple/combat_2",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_0",
+              "expectedId": "legacy_v1/temple/combat_0",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_1",
+              "expectedId": "legacy_v1/temple/combat_1",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 0,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_2",
+              "expectedId": "legacy_v1/wreck/combat_2",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 0,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_0",
+              "expectedId": "legacy_v1/abyss/combat_0",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 0,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/milk/empty",
+              "expectedId": "legacy_v1/milk/empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "form": "boss",
+              "templateId": "legacy_v1/milk/boss",
+              "expectedId": "legacy_v1/milk/boss",
+              "root": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 23940,
+      "startTime": "2026-10-28T05:29:14.368Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 42,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_2",
+              "expectedId": "legacy_v1/temple/combat_2",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_3",
+              "expectedId": "legacy_v1/temple/combat_3",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_3",
+              "expectedId": "legacy_v1/temple/combat_3",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 42,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_3",
+              "expectedId": "legacy_v1/wreck/combat_3",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 42,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_0",
+              "expectedId": "legacy_v1/abyss/combat_0",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 42,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/milk/empty",
+              "expectedId": "legacy_v1/milk/empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "form": "boss",
+              "templateId": "legacy_v1/milk/boss",
+              "expectedId": "legacy_v1/milk/boss",
+              "root": 42
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24666,
+      "startTime": "2026-10-28T05:29:38.315Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 12345,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_2",
+              "expectedId": "legacy_v1/temple/combat_2",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_0",
+              "expectedId": "legacy_v1/temple/combat_0",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_1",
+              "expectedId": "legacy_v1/temple/combat_1",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_0",
+              "expectedId": "legacy_v1/temple/combat_0",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_1",
+              "expectedId": "legacy_v1/temple/combat_1",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 12345,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_3",
+              "expectedId": "legacy_v1/wreck/combat_3",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_2",
+              "expectedId": "legacy_v1/wreck/combat_2",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 12345,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_0",
+              "expectedId": "legacy_v1/abyss/combat_0",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_2",
+              "expectedId": "legacy_v1/abyss/combat_2",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_2",
+              "expectedId": "legacy_v1/abyss/combat_2",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 12345,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/milk/empty",
+              "expectedId": "legacy_v1/milk/empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "form": "boss",
+              "templateId": "legacy_v1/milk/boss",
+              "expectedId": "legacy_v1/milk/boss",
+              "root": 12345
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24635,
+      "startTime": "2026-10-28T05:30:02.991Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 4294967295,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_0",
+              "expectedId": "legacy_v1/temple/combat_0",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_3",
+              "expectedId": "legacy_v1/temple/combat_3",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 4294967295,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_2",
+              "expectedId": "legacy_v1/wreck/combat_2",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_3",
+              "expectedId": "legacy_v1/wreck/combat_3",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_3",
+              "expectedId": "legacy_v1/wreck/combat_3",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 4294967295,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_2",
+              "expectedId": "legacy_v1/abyss/combat_2",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_0",
+              "expectedId": "legacy_v1/abyss/combat_0",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 4294967295,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/milk/empty",
+              "expectedId": "legacy_v1/milk/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "form": "boss",
+              "templateId": "legacy_v1/milk/boss",
+              "expectedId": "legacy_v1/milk/boss",
+              "root": 4294967295
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 25044,
+      "startTime": "2026-10-28T05:32:58.521Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 0,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_2",
+              "expectedId": "legacy_v1/temple/combat_2",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_0",
+              "expectedId": "legacy_v1/temple/combat_0",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_1",
+              "expectedId": "legacy_v1/temple/combat_1",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 0,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_2",
+              "expectedId": "legacy_v1/wreck/combat_2",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 0,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 0
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_0",
+              "expectedId": "legacy_v1/abyss/combat_0",
+              "root": 0
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 0
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 0
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 0
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 0
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 0
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 0,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/milk/empty",
+              "expectedId": "legacy_v1/milk/empty",
+              "root": 0
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "form": "boss",
+              "templateId": "legacy_v1/milk/boss",
+              "expectedId": "legacy_v1/milk/boss",
+              "root": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 25147,
+      "startTime": "2026-10-28T05:33:24.169Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 42,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_2",
+              "expectedId": "legacy_v1/temple/combat_2",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_3",
+              "expectedId": "legacy_v1/temple/combat_3",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_3",
+              "expectedId": "legacy_v1/temple/combat_3",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 42,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_3",
+              "expectedId": "legacy_v1/wreck/combat_3",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 42,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 42
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_0",
+              "expectedId": "legacy_v1/abyss/combat_0",
+              "root": 42
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 42
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 42
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 42
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 42
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 42
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 42,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/milk/empty",
+              "expectedId": "legacy_v1/milk/empty",
+              "root": 42
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "form": "boss",
+              "templateId": "legacy_v1/milk/boss",
+              "expectedId": "legacy_v1/milk/boss",
+              "root": 42
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24532,
+      "startTime": "2026-10-28T05:33:49.324Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 12345,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_2",
+              "expectedId": "legacy_v1/temple/combat_2",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_0",
+              "expectedId": "legacy_v1/temple/combat_0",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_1",
+              "expectedId": "legacy_v1/temple/combat_1",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_0",
+              "expectedId": "legacy_v1/temple/combat_0",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_1",
+              "expectedId": "legacy_v1/temple/combat_1",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 12345,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_3",
+              "expectedId": "legacy_v1/wreck/combat_3",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_2",
+              "expectedId": "legacy_v1/wreck/combat_2",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_1",
+              "expectedId": "legacy_v1/wreck/combat_1",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 12345,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 12345
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_0",
+              "expectedId": "legacy_v1/abyss/combat_0",
+              "root": 12345
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_2",
+              "expectedId": "legacy_v1/abyss/combat_2",
+              "root": 12345
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_2",
+              "expectedId": "legacy_v1/abyss/combat_2",
+              "root": 12345
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 12345
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 12345
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 12345
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 12345,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/milk/empty",
+              "expectedId": "legacy_v1/milk/empty",
+              "root": 12345
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "form": "boss",
+              "templateId": "legacy_v1/milk/boss",
+              "expectedId": "legacy_v1/milk/boss",
+              "root": 12345
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 24037,
+      "startTime": "2026-10-28T05:34:13.863Z",
+      "errors": [],
+      "floors": [
+        {
+          "floor": 1,
+          "root": 4294967295,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_0",
+              "expectedId": "legacy_v1/temple/combat_0",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_4",
+              "expectedId": "legacy_v1/temple/combat_4",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/temple/empty",
+              "expectedId": "legacy_v1/temple/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/temple/combat_3",
+              "expectedId": "legacy_v1/temple/combat_3",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 2,
+          "root": 4294967295,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_2",
+              "expectedId": "legacy_v1/wreck/combat_2",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_3",
+              "expectedId": "legacy_v1/wreck/combat_3",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_3",
+              "expectedId": "legacy_v1/wreck/combat_3",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/wreck/empty",
+              "expectedId": "legacy_v1/wreck/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/wreck/combat_0",
+              "expectedId": "legacy_v1/wreck/combat_0",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 3,
+          "root": 4294967295,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 4294967295
+            },
+            {
+              "id": 2,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_2",
+              "expectedId": "legacy_v1/abyss/combat_2",
+              "root": 4294967295
+            },
+            {
+              "id": 3,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_3",
+              "expectedId": "legacy_v1/abyss/combat_3",
+              "root": 4294967295
+            },
+            {
+              "id": 4,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_1",
+              "expectedId": "legacy_v1/abyss/combat_1",
+              "root": 4294967295
+            },
+            {
+              "id": 5,
+              "kind": "exit",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 6,
+              "kind": "chest",
+              "form": "empty",
+              "templateId": "legacy_v1/abyss/empty",
+              "expectedId": "legacy_v1/abyss/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 7,
+              "kind": "combat",
+              "form": "combat",
+              "templateId": "legacy_v1/abyss/combat_0",
+              "expectedId": "legacy_v1/abyss/combat_0",
+              "root": 4294967295
+            }
+          ]
+        },
+        {
+          "floor": 4,
+          "root": 4294967295,
+          "unchangedBySelection": true,
+          "rows": [
+            {
+              "id": 0,
+              "kind": "start",
+              "form": "empty",
+              "templateId": "legacy_v1/milk/empty",
+              "expectedId": "legacy_v1/milk/empty",
+              "root": 4294967295
+            },
+            {
+              "id": 1,
+              "kind": "boss",
+              "form": "boss",
+              "templateId": "legacy_v1/milk/boss",
+              "expectedId": "legacy_v1/milk/boss",
+              "root": 4294967295
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "project": "desktop",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: pillar",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1458,
+      "startTime": "2026-10-28T05:30:27.650Z",
+      "errors": [],
+      "measurements": {
+        "pillar": {
+          "errors": [],
+          "checked": 1,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "lunge",
+              "x": 125,
+              "y": 93,
+              "angle": 0
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "stun",
+              "x": 139,
+              "y": 93,
+              "angle": 0
+            }
+          ],
+          "shots": 0
+        }
+      }
+    },
+    {
+      "project": "desktop",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: boundary",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1568,
+      "startTime": "2026-10-28T05:30:31.191Z",
+      "errors": [],
+      "measurements": {
+        "boundary": {
+          "errors": [],
+          "checked": 1,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "lunge",
+              "x": 125,
+              "y": 93,
+              "angle": 0
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "crash",
+              "x": 362,
+              "y": 93,
+              "angle": 0
+            }
+          ],
+          "shots": 3
+        }
+      }
+    },
+    {
+      "project": "desktop",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: near-wall",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1871,
+      "startTime": "2026-10-28T05:30:32.771Z",
+      "errors": [],
+      "measurements": {
+        "near-wall": {
+          "errors": [],
+          "checked": 1,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "lunge",
+              "x": 144,
+              "y": 61,
+              "angle": 0
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "stun",
+              "x": 206,
+              "y": 61,
+              "angle": 0
+            }
+          ],
+          "shots": 0
+        }
+      }
+    },
+    {
+      "project": "desktop",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: rain",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 2454,
+      "startTime": "2026-10-28T05:30:34.671Z",
+      "errors": [],
+      "measurements": {
+        "rain": {
+          "errors": [],
+          "checked": 12,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "lunge",
+              "x": 177.21588180626486,
+              "y": 121.5420125322182,
+              "angle": 0.13019386672568067
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "crash",
+              "x": 362,
+              "y": 146.4254003148903,
+              "angle": 0.13019386672568067
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "lunge",
+              "x": 362,
+              "y": 172.34913294487436,
+              "angle": -2.7141932058605693
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "crash",
+              "x": 118,
+              "y": 61,
+              "angle": -2.7141932058605693
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "rain",
+              "x": 177.1231670268477,
+              "y": 121.46748188286716,
+              "angle": 0.130790062134514
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "hop",
+              "x": 177.1231670268477,
+              "y": 121.46748188286716,
+              "angle": 0.130790062134514
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "land",
+              "x": 246.62984788663525,
+              "y": 131.7974699923529,
+              "angle": 0.130790062134514
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "spin",
+              "x": 193.45295544416695,
+              "y": 108.15199815264397,
+              "angle": 0.30079980991118355
+            }
+          ],
+          "shots": 19
+        }
+      }
+    },
+    {
+      "project": "desktop",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: brood",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1263,
+      "startTime": "2026-10-28T05:30:37.142Z",
+      "errors": [],
+      "measurements": {
+        "brood": {
+          "errors": [],
+          "checked": 2,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_brood",
+              "action": "summon",
+              "x": 112,
+              "y": 55,
+              "angle": 0.5328438876193887
+            }
+          ],
+          "shots": 0
+        }
+      }
+    },
+    {
+      "project": "desktop",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: los",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1684,
+      "startTime": "2026-10-28T05:30:38.414Z",
+      "errors": [],
+      "measurements": {
+        "los": {
+          "errors": [],
+          "checked": 6,
+          "actions": [],
+          "shots": 9
+        }
+      }
+    },
+    {
+      "project": "desktop",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: hop",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1476,
+      "startTime": "2026-10-28T05:30:40.114Z",
+      "errors": [],
+      "measurements": {
+        "hop": {
+          "errors": [],
+          "checked": 1,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_hopper",
+              "action": "hop",
+              "x": 160,
+              "y": 135,
+              "angle": 0
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_hopper",
+              "action": "land",
+              "x": 204,
+              "y": 135,
+              "angle": 0
+            }
+          ],
+          "shots": 1
+        }
+      }
+    },
+    {
+      "project": "desktop",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: fresh session restore sees the landed pool before the first step",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 5685,
+      "startTime": "2026-10-28T05:30:41.614Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: pillar",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1140,
+      "startTime": "2026-10-28T05:34:37.931Z",
+      "errors": [],
+      "measurements": {
+        "pillar": {
+          "errors": [],
+          "checked": 1,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "lunge",
+              "x": 125,
+              "y": 93,
+              "angle": 0
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "stun",
+              "x": 139,
+              "y": 93,
+              "angle": 0
+            }
+          ],
+          "shots": 0
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: boundary",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1411,
+      "startTime": "2026-10-28T05:34:41.475Z",
+      "errors": [],
+      "measurements": {
+        "boundary": {
+          "errors": [],
+          "checked": 1,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "lunge",
+              "x": 125,
+              "y": 93,
+              "angle": 0
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "crash",
+              "x": 362,
+              "y": 93,
+              "angle": 0
+            }
+          ],
+          "shots": 3
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: near-wall",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1975,
+      "startTime": "2026-10-28T05:34:42.897Z",
+      "errors": [],
+      "measurements": {
+        "near-wall": {
+          "errors": [],
+          "checked": 1,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "lunge",
+              "x": 144,
+              "y": 61,
+              "angle": 0
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "stun",
+              "x": 206,
+              "y": 61,
+              "angle": 0
+            }
+          ],
+          "shots": 0
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: rain",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 2131,
+      "startTime": "2026-10-28T05:34:44.882Z",
+      "errors": [],
+      "measurements": {
+        "rain": {
+          "errors": [],
+          "checked": 12,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "lunge",
+              "x": 177.21588180626486,
+              "y": 121.5420125322182,
+              "angle": 0.13019386672568067
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "crash",
+              "x": 362,
+              "y": 146.4254003148903,
+              "angle": 0.13019386672568067
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "lunge",
+              "x": 362,
+              "y": 172.34913294487436,
+              "angle": -2.7141932058605693
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "crash",
+              "x": 118,
+              "y": 61,
+              "angle": -2.7141932058605693
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "rain",
+              "x": 177.1231670268477,
+              "y": 121.46748188286716,
+              "angle": 0.130790062134514
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "hop",
+              "x": 177.1231670268477,
+              "y": 121.46748188286716,
+              "angle": 0.130790062134514
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "land",
+              "x": 246.62984788663525,
+              "y": 131.7974699923529,
+              "angle": 0.130790062134514
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_boss",
+              "action": "spin",
+              "x": 193.45295544416695,
+              "y": 108.15199815264397,
+              "angle": 0.30079980991118355
+            }
+          ],
+          "shots": 19
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: brood",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1121,
+      "startTime": "2026-10-28T05:34:47.021Z",
+      "errors": [],
+      "measurements": {
+        "brood": {
+          "errors": [],
+          "checked": 2,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_brood",
+              "action": "summon",
+              "x": 112,
+              "y": 55,
+              "angle": 0.5328438876193887
+            }
+          ],
+          "shots": 0
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: los",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1634,
+      "startTime": "2026-10-28T05:34:48.149Z",
+      "errors": [],
+      "measurements": {
+        "los": {
+          "errors": [],
+          "checked": 6,
+          "actions": [],
+          "shots": 9
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: hop",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 1076,
+      "startTime": "2026-10-28T05:34:49.804Z",
+      "errors": [],
+      "measurements": {
+        "hop": {
+          "errors": [],
+          "checked": 1,
+          "actions": [
+            {
+              "id": 2,
+              "kind": "naiwa_hopper",
+              "action": "hop",
+              "x": 160,
+              "y": 135,
+              "angle": 0
+            },
+            {
+              "id": 2,
+              "kind": "naiwa_hopper",
+              "action": "land",
+              "x": 204,
+              "y": 135,
+              "angle": 0
+            }
+          ],
+          "shots": 1
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: fresh session restore sees the landed pool before the first step",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 5529,
+      "startTime": "2026-10-28T05:34:50.891Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "pwa.spec.ts",
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 9402,
+      "startTime": "2026-10-28T05:30:47.353Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "pwa.spec.ts",
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 19199,
+      "startTime": "2026-10-28T05:30:56.766Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "pwa.spec.ts",
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 11500,
+      "startTime": "2026-10-28T05:34:56.463Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "pwa.spec.ts",
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 20856,
+      "startTime": "2026-10-28T05:35:07.974Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "resumeProduction.spec.ts",
+      "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 12206,
+      "startTime": "2026-10-28T05:31:15.996Z",
+      "errors": []
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "resumeProduction.spec.ts",
+      "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 13980,
+      "startTime": "2026-10-28T05:35:28.867Z",
+      "errors": []
+    },
+    {
+      "project": "desktop",
+      "file": "stress.spec.ts",
+      "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 27159,
+      "startTime": "2026-10-28T05:31:28.220Z",
+      "errors": [],
+      "measurements": {
+        "stress-report": {
+          "version": 1,
+          "capturedAt": "2026-10-28T05:31:50.762Z",
+          "profile": "capacity-30x400",
+          "seed": 42,
+          "url": "http://localhost:4173/?stress=1&seed=42",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": [1280, 720],
+          "dpr": 1,
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "drawCallsAvailable": true,
+          "renderer": "WebKit WebGL",
+          "bundle": "http://localhost:4173/assets/index-eLS-dYIi.js",
+          "frames": 124,
+          "seconds": 7.24389999999851,
+          "averageFps": 17.117850881434794,
+          "minFrameFps": 6.788866259472046,
+          "minSecondFps": 15.981949797942507,
+          "p95Ms": 107,
+          "worstMs": 147.29999999701977,
+          "drawAverage": 9,
+          "drawMax": 9,
+          "actorMin": 30,
+          "bulletMin": 400,
+          "peakBullets": 400,
+          "peakFx": 0,
+          "minChildren": 823,
+          "maxChildren": 823,
+          "load": {
+            "ready": true,
+            "actors": 30,
+            "bullets": 400,
+            "effects": 0,
+            "children": 823,
+            "simSeconds": 18.85000000000021
+          }
+        }
+      }
+    },
+    {
+      "project": "desktop",
+      "file": "stress.spec.ts",
+      "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 9927,
+      "startTime": "2026-10-28T05:31:55.389Z",
+      "errors": [],
+      "measurements": {
+        "stress-report": {
+          "version": 1,
+          "capturedAt": "2026-10-28T05:32:01.577Z",
+          "profile": "combat-mixed",
+          "seed": 42,
+          "url": "http://localhost:4173/?stress=combat&seed=42",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": [1280, 720],
+          "dpr": 1,
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "drawCallsAvailable": true,
+          "renderer": "WebKit WebGL",
+          "bundle": "http://localhost:4173/assets/index-eLS-dYIi.js",
+          "frames": 123,
+          "seconds": 4.09729999999702,
+          "averageFps": 30.01976911626912,
+          "minFrameFps": 6.8493150684931505,
+          "minSecondFps": 25.09168114256439,
+          "p95Ms": 74,
+          "worstMs": 146,
+          "drawAverage": 9,
+          "drawMax": 9,
+          "actorMin": 28,
+          "bulletMin": 0,
+          "peakBullets": 33,
+          "peakFx": 15,
+          "minChildren": 823,
+          "maxChildren": 823,
+          "load": {
+            "ready": true,
+            "actors": 29,
+            "bullets": 23,
+            "effects": 4,
+            "children": 823,
+            "simSeconds": 2.2333333333333303
+          }
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "stress.spec.ts",
+      "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 25391,
+      "startTime": "2026-10-28T05:35:42.866Z",
+      "errors": [],
+      "measurements": {
+        "stress-report": {
+          "version": 1,
+          "capturedAt": "2026-10-28T05:36:04.549Z",
+          "profile": "capacity-30x400",
+          "seed": 42,
+          "url": "http://localhost:4173/?stress=1&seed=42",
+          "userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Mobile Safari/537.36",
+          "viewport": [863, 360],
+          "dpr": 2.625,
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "drawCallsAvailable": true,
+          "renderer": "WebKit WebGL",
+          "bundle": "http://localhost:4173/assets/index-eLS-dYIi.js",
+          "frames": 125,
+          "seconds": 6.692799999997019,
+          "averageFps": 18.676786994987996,
+          "minFrameFps": 6.968641114982578,
+          "minSecondFps": 16.57243127308044,
+          "p95Ms": 95,
+          "worstMs": 143.5,
+          "drawAverage": 20,
+          "drawMax": 23,
+          "actorMin": 30,
+          "bulletMin": 400,
+          "peakBullets": 400,
+          "peakFx": 1,
+          "minChildren": 823,
+          "maxChildren": 823,
+          "load": {
+            "ready": true,
+            "actors": 30,
+            "bullets": 400,
+            "effects": 0,
+            "children": 823,
+            "simSeconds": 18.333333333333574
+          }
+        }
+      }
+    },
+    {
+      "project": "mobile-landscape",
+      "file": "stress.spec.ts",
+      "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 9791,
+      "startTime": "2026-10-28T05:36:08.267Z",
+      "errors": [],
+      "measurements": {
+        "stress-report": {
+          "version": 1,
+          "capturedAt": "2026-10-28T05:36:14.214Z",
+          "profile": "combat-mixed",
+          "seed": 42,
+          "url": "http://localhost:4173/?stress=combat&seed=42",
+          "userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Mobile Safari/537.36",
+          "viewport": [863, 360],
+          "dpr": 2.625,
+          "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "drawCallsAvailable": true,
+          "renderer": "WebKit WebGL",
+          "bundle": "http://localhost:4173/assets/index-eLS-dYIi.js",
+          "frames": 129,
+          "seconds": 3.8543999999985097,
+          "averageFps": 33.46824408469538,
+          "minFrameFps": 6.37348629676234,
+          "minSecondFps": 26.462805057220134,
+          "p95Ms": 63,
+          "worstMs": 156.90000000596046,
+          "drawAverage": 20.2015503875969,
+          "drawMax": 24,
+          "actorMin": 27,
+          "bulletMin": 0,
+          "peakBullets": 36,
+          "peakFx": 15,
+          "minChildren": 823,
+          "maxChildren": 823,
+          "load": {
+            "ready": true,
+            "actors": 27,
+            "bullets": 18,
+            "effects": 5,
+            "children": 823,
+            "simSeconds": 2.3999999999999964
+          }
+        }
+      }
+    }
+  ],
+  "observedTemplates": {
+    "legacy_v1/temple/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/temple/combat_2": {
+      "bodies": [
+        {
+          "x": 170,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 170,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        }
+      ],
+      "traps": [
+        {
+          "kind": "spikes",
+          "x": 204,
+          "y": 135,
+          "width": 16,
+          "height": 56,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 276,
+          "y": 135,
+          "width": 16,
+          "height": 56,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1.1
+        },
+        {
+          "kind": "weed",
+          "x": 240,
+          "y": 91,
+          "width": 48,
+          "height": 20,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/temple/combat_0": {
+      "bodies": [],
+      "traps": [
+        {
+          "kind": "weed",
+          "x": 176,
+          "y": 91,
+          "width": 56,
+          "height": 28,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "weed",
+          "x": 304,
+          "y": 179,
+          "width": 56,
+          "height": 28,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 240,
+          "y": 95,
+          "width": 48,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 240,
+          "y": 175,
+          "width": 48,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1.2
+        }
+      ],
+      "staticObstacles": []
+    },
+    "legacy_v1/temple/combat_1": {
+      "bodies": [
+        {
+          "x": 176,
+          "y": 99,
+          "width": 24,
+          "height": 24
+        },
+        {
+          "x": 304,
+          "y": 171,
+          "width": 24,
+          "height": 24
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 105,
+          "width": 90,
+          "height": 18,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "weed",
+          "x": 220,
+          "y": 175,
+          "width": 48,
+          "height": 24,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/temple/combat_4": {
+      "bodies": [
+        {
+          "x": 292,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 292,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        }
+      ],
+      "traps": [
+        {
+          "kind": "weed",
+          "x": 240,
+          "y": 135,
+          "width": 40,
+          "height": 28,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:4",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:5",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:6",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:7",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/wreck/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/wreck/combat_1": {
+      "bodies": [
+        {
+          "x": 184,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 184,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 135,
+          "width": 110,
+          "height": 20,
+          "radius": 0,
+          "angle": 3.141592653589793,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 200,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 280,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 140,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/wreck/combat_0": {
+      "bodies": [],
+      "traps": [
+        {
+          "kind": "barrel",
+          "x": 170,
+          "y": 90,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 310,
+          "y": 180,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 210,
+          "y": 187,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 270,
+          "y": 83,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 240,
+          "y": 135,
+          "width": 32,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": []
+    },
+    "legacy_v1/wreck/combat_2": {
+      "bodies": [
+        {
+          "x": 164,
+          "y": 83,
+          "width": 48,
+          "height": 12
+        },
+        {
+          "x": 146,
+          "y": 101,
+          "width": 12,
+          "height": 24
+        },
+        {
+          "x": 316,
+          "y": 187,
+          "width": 48,
+          "height": 12
+        },
+        {
+          "x": 334,
+          "y": 169,
+          "width": 12,
+          "height": 24
+        }
+      ],
+      "traps": [
+        {
+          "kind": "barrel",
+          "x": 224,
+          "y": 123,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 256,
+          "y": 123,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 240,
+          "y": 149,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 160,
+          "y": 175,
+          "width": 32,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 320,
+          "y": 95,
+          "width": 32,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/abyss/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/abyss/combat_3": {
+      "bodies": [
+        {
+          "x": 184,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 184,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        }
+      ],
+      "traps": [
+        {
+          "kind": "mine",
+          "x": 180,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 300,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 140,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 340,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 300,
+          "y": 73,
+          "width": 40,
+          "height": 14,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0.8
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/abyss/combat_0": {
+      "bodies": [],
+      "traps": [
+        {
+          "kind": "mine",
+          "x": 180,
+          "y": 95,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 300,
+          "y": 95,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 180,
+          "y": 175,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 300,
+          "y": 175,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 135,
+          "width": 24,
+          "height": 96,
+          "radius": 0,
+          "angle": 1.5707963267948966,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": []
+    },
+    "legacy_v1/abyss/combat_1": {
+      "bodies": [
+        {
+          "x": 170,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 170,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 89,
+          "width": 90,
+          "height": 18,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 181,
+          "width": 90,
+          "height": 18,
+          "radius": 0,
+          "angle": 3.141592653589793,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 240,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 140,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 340,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/milk/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/milk/boss": {
+      "bodies": [
+        {
+          "x": 164,
+          "y": 93,
+          "width": 22,
+          "height": 22
+        },
+        {
+          "x": 316,
+          "y": 93,
+          "width": 22,
+          "height": 22
+        },
+        {
+          "x": 164,
+          "y": 177,
+          "width": 22,
+          "height": 22
+        },
+        {
+          "x": 316,
+          "y": 177,
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "traps": [],
+      "staticObstacles": [
+        {
+          "id": "pillar:0",
+          "kind": "pillar",
+          "mask": 15
+        },
+        {
+          "id": "pillar:1",
+          "kind": "pillar",
+          "mask": 15
+        },
+        {
+          "id": "pillar:2",
+          "kind": "pillar",
+          "mask": 15
+        },
+        {
+          "id": "pillar:3",
+          "kind": "pillar",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/temple/combat_3": {
+      "bodies": [
+        {
+          "x": 240,
+          "y": 135,
+          "width": 28,
+          "height": 28
+        },
+        {
+          "x": 180,
+          "y": 95,
+          "width": 16,
+          "height": 16
+        },
+        {
+          "x": 300,
+          "y": 175,
+          "width": 16,
+          "height": 16
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 160,
+          "y": 135,
+          "width": 18,
+          "height": 100,
+          "radius": 0,
+          "angle": 1.5707963267948966,
+          "delay": 0
+        },
+        {
+          "kind": "current",
+          "x": 320,
+          "y": 135,
+          "width": 18,
+          "height": 100,
+          "radius": 0,
+          "angle": 4.71238898038469,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/wreck/combat_3": {
+      "bodies": [
+        {
+          "x": 170,
+          "y": 115,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 200,
+          "y": 180,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 220,
+          "y": 85,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 270,
+          "y": 165,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 295,
+          "y": 90,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 325,
+          "y": 175,
+          "width": 14,
+          "height": 14
+        }
+      ],
+      "traps": [
+        {
+          "kind": "barrel",
+          "x": 150,
+          "y": 85,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 330,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 234,
+          "y": 143,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 250,
+          "y": 107,
+          "width": 40,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0.6
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:4",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:5",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/abyss/combat_2": {
+      "bodies": [
+        {
+          "x": 292,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 292,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        }
+      ],
+      "traps": [
+        {
+          "kind": "mine",
+          "x": 240,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 160,
+          "y": 73,
+          "width": 40,
+          "height": 14,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 320,
+          "y": 197,
+          "width": 40,
+          "height": 14,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:4",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:5",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:6",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:7",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Selected 52 Chromium project cases, not the entire suite.",
+    "No new baseline browser run; main independently rebuilt only.",
+    "Stress measurements are functional smoke data, not ABAB or phone performance acceptance.",
+    "No WebKit, Safari/iPhone, sim-step timing or new map art acceptance.",
+    "Cross-version reset-to-menu/profile preservation policy is not implemented by this PR."
+  ],
+  "remoteCI": {
+    "observed": "Disabled manually",
+    "method": "Read-only GitHub CI workflow page",
+    "enableOrRerunPerformed": false
+  }
+}

@@ -236,3 +236,15 @@ root 补测直接用 `new Random(seed)` 构造真实 RoomDirector，通过 Dunge
 上文提议 3、实施清单第 2/3/7 项及回退说明中与跨版本续玩有关的内容均由本段取代。稳定模板 ID、几何语义和 root 随机不变量仍用于目录接入与确定性验证。#128 保留已完成的冻结基础和本次评审修正；不将 freezeV1 接入生产迁移，不顺带改存档字段或线上行为。下一份实施前按新策略收敛目录/版本契约，并验证更新前后局外档案不受影响；本段是已确认要求，不是已实现或已通过的测试报告。
 
 负责人同日明确：后续代码优化可删除仅为旧版续战留下且最新版本不再使用的代码、测试和兼容分支，包括届时无调用的旧目录/迁移辅助。删除前核对当前依赖，保留当前版本仍需使用的逻辑及局外档案保护；这项清理不在 #128 实施，不以旧 ADR 的历史承诺阻止后续清理。
+
+### #128 合并后：legacy_v1 转为首个正式运行目录（2026-10-28）
+
+#128 经 Claude review 5677997818 通过并由负责人合并，基线 main `2150898a9c5d8e3cfb0e19211c1878a2fe609bd8`。取消跨版本续战后，`legacy_v1` 的本步定位是**现行矩形房间的正式目录**，而不是待实现的旧档迁移副本。`data/roomTemplates/legacyV1.ts` 为布局和机关摆放的唯一手写来源；删除 layouts.ts/traps.ts 中重复的字面量，ROOM_LAYOUTS/BOSS_ROOM_LAYOUT/ROOM_THEMES 只作为灰盒、压力和现有校验调用的只读兼容视图。共享对象均深冻结，不再维持两份可独立编辑的旧数据。此前“无共享引用”的隔离测试随此决定改为不可变视图测试，固定字节基准仍保留且不变。
+
+选择器更名为 `sim/dungeon/roomCatalog.ts` 的 `selectRoomLayouts`，接受合法 uint32 seed、floor 和按 ID 排列的生成房间。DemoSession 在首次建房/换层时生成并缓存整层 ID 清单；同构建恢复使用同一目录和种子重建相同清单。本步清单不是序列化字段，未修改 DungeonRunState、FloorCheckpoint、snapshot/schema/saveFields 或存储键。仍用独立 Random 的既有 layout 标签，root 不抽数，非战斗/Boss 仍选固定 ID，不增加单局房间或改变权重。
+
+`roomTemplate` 精确解析 ID；生产 `resolveRoomTemplate` 另校验楼层主题与生成房型：start/chest/exit 对应 empty，combat/boss 各自匹配。未知 ID、错主题或错房型在 RoomArena 变更画面、几何和机关之前拒绝，不回退到任意布局。RoomArena 使用目录的 boxes/traps/obstacle/mask 建房，保留 `wall:i`/`pillar:i`、mask 15 和原坐标。现阶段仍使用既有矩形 bounds/门物理适配器，出生锚点和任意轮廓编译继续另步实施。
+
+SAVE_VERSION.dataHash 改为包含完整 LEGACY_V1 与 TRAP_RULES，覆盖主题、机关、门/锚点及障碍语义；原来仅列 ROOM_LAYOUTS 的遗漏在此补齐。dataHash 的变化是预期行为，不代表已实现新更新策略：现有 runStorage 跨构建/摘要不匹配时仍有入口兜底，本步没有修改它或局外档案。下一步须落实更新后结束旧冒险、返回主界面并保全天赋/局外资源的边界，随后再改变房间轮廓。当前同构建完整恢复和入口恢复仍须通过。
+
+测试将 #128 真实 DemoSession/Arcade 记录提取为独立固定基线，当前浏览器逐房比较实际选中 ID、静态 bodies、机关及几何 kind/id/mask，避免生产与断言共同改用目录后只形成自我对照。历史记录不重生成，Claude 的 3007 种子对照也不冒充本轮 GPT 结果。具体验证与限制见[正式目录接入](../testing/catalog-runtime.md)。`legacy_v1` 以后若完全退出当前版本调用，仍按负责人要求评估清理，不承诺永久保留它或旧档解析器。
