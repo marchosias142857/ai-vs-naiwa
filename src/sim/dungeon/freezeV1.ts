@@ -30,11 +30,11 @@ export function freezeV1(
       case 'combat':
         return theme.plans[root.fork(`layout:${floor}:${room.id}`).int(0, theme.plans.length - 1)]!.id;
       case 'boss':
-        return theme.bossId;
+        return theme.boss.id;
       case 'start':
       case 'chest':
       case 'exit':
-        return theme.emptyId;
+        return theme.empty.id;
       default:
         throw new RangeError('invalid legacy room kind');
     }
@@ -46,6 +46,9 @@ export function freezeV1(
 export interface LegacyTemplate {
   readonly id: string;
   readonly theme: RoomTheme['art'];
+  readonly form: 'empty' | 'combat' | 'boss';
+  readonly obstacle: 'wall' | 'pillar';
+  readonly mask: number;
   readonly boxes: readonly Readonly<RoomLayouts[number][number]>[];
   readonly traps: readonly Readonly<TrapPlacement>[];
 }
@@ -53,10 +56,15 @@ export interface LegacyTemplate {
 /** Exact ID lookup. Unknown IDs never silently select another template. */
 export function legacyV1Template(id: string): LegacyTemplate | null {
   for (const theme of LEGACY_V1.themes) {
-    if (id === theme.emptyId) return { id, theme: theme.art, boxes: LEGACY_V1.layouts[0], traps: [] };
-    if (id === theme.bossId) return { id, theme: theme.art, boxes: LEGACY_V1.bossLayout, traps: [] };
+    if (id === theme.empty.id)
+      return { ...theme.empty, theme: theme.art, boxes: LEGACY_V1.layouts[0], traps: [] };
+    if (id === theme.boss.id)
+      return { ...theme.boss, theme: theme.art, boxes: LEGACY_V1.bossLayout, traps: [] };
     const plan = theme.plans.find((p) => p.id === id);
-    if (plan) return { id, theme: theme.art, boxes: LEGACY_V1.layouts[plan.layout]!, traps: plan.traps };
+    if (plan) {
+      const { form, obstacle, mask, layout, traps } = plan;
+      return { id, theme: theme.art, form, obstacle, mask, boxes: LEGACY_V1.layouts[layout]!, traps };
+    }
   }
   return null;
 }

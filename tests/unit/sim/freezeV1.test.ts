@@ -19,6 +19,9 @@ it('copies the current plans, geometry and door rules with no shared references'
   expect(LEGACY_V1.layouts).toEqual(ROOM_LAYOUTS);
   expect(LEGACY_V1.bossLayout).toEqual(BOSS_ROOM_LAYOUT);
   expect(LEGACY_V1.trapRadii).toEqual({ mine: TRAP_RULES.mine.radius, barrel: TRAP_RULES.barrel.radius });
+  const { x, y, width, height } = LEGACY_V1.bounds;
+  for (const point of Object.values(LEGACY_V1.anchors))
+    expect(point).toEqual({ x: x + width / 2, y: y + height / 2 });
   expect(LEGACY_V1.doorRules).toEqual({
     doorHalfWidth: ROOM_RULES.doorHalfWidth,
     entranceInset: ROOM_RULES.entranceInset,
@@ -47,9 +50,19 @@ it('is deeply frozen, with unique stable IDs and strict lookup', () => {
     }
   };
   visit(LEGACY_V1);
-  const ids = LEGACY_V1.themes.flatMap((t) => [t.emptyId, t.bossId, ...t.plans.map((p) => p.id)]);
+  const ids = LEGACY_V1.themes.flatMap((t) => [t.empty.id, t.boss.id, ...t.plans.map((p) => p.id)]);
   expect(new Set(ids).size).toBe(22);
-  for (const id of ids) expect(legacyV1Template(id)?.id).toBe(id);
+  for (const theme of LEGACY_V1.themes) {
+    for (const descriptor of [theme.empty, theme.boss, ...theme.plans]) {
+      expect(legacyV1Template(descriptor.id)).toMatchObject({
+        id: descriptor.id,
+        theme: theme.art,
+        form: descriptor.form,
+        obstacle: descriptor.form === 'boss' ? 'pillar' : 'wall',
+        mask: 15,
+      });
+    }
+  }
   for (const id of ['', 'temple/combat_0', 'legacy_v1/temple/combat_99', '__proto__'])
     expect(legacyV1Template(id)).toBeNull();
   expect(Reflect.set(LEGACY_V1.bounds, 'x', 999)).toBe(false);
@@ -85,6 +98,7 @@ it('returns independent floor manifests without mutating map progress', () => {
       run.map.rooms.forEach((room) => {
         const template = legacyV1Template(first.templateIds[room.id]!)!;
         expect(template.theme).toBe(LEGACY_V1.themes[floor - 1]!.art);
+        expect(template.form).toBe(room.kind === 'combat' || room.kind === 'boss' ? room.kind : 'empty');
         if (room.kind === 'boss') expect(template.boxes).toEqual(BOSS_ROOM_LAYOUT);
         else if (room.kind !== 'combat') expect(template).toMatchObject({ boxes: [], traps: [] });
       });

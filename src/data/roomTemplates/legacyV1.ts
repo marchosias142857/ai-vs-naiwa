@@ -342,11 +342,14 @@ export const LEGACY_V1 = freeze({
   themes: [
     {
       art: 'temple',
-      emptyId: 'legacy_v1/temple/empty',
-      bossId: 'legacy_v1/temple/boss',
+      empty: { id: 'legacy_v1/temple/empty', form: 'empty', obstacle: 'wall', mask: 15 },
+      boss: { id: 'legacy_v1/temple/boss', form: 'boss', obstacle: 'pillar', mask: 15 },
       plans: [
         {
           id: 'legacy_v1/temple/combat_0',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 0,
           traps: [
             {
@@ -382,6 +385,9 @@ export const LEGACY_V1 = freeze({
         },
         {
           id: 'legacy_v1/temple/combat_1',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 1,
           traps: [
             {
@@ -403,6 +409,9 @@ export const LEGACY_V1 = freeze({
         },
         {
           id: 'legacy_v1/temple/combat_2',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 3,
           traps: [
             {
@@ -431,6 +440,9 @@ export const LEGACY_V1 = freeze({
         },
         {
           id: 'legacy_v1/temple/combat_3',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 4,
           traps: [
             {
@@ -453,6 +465,9 @@ export const LEGACY_V1 = freeze({
         },
         {
           id: 'legacy_v1/temple/combat_4',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 6,
           traps: [
             {
@@ -468,11 +483,14 @@ export const LEGACY_V1 = freeze({
     },
     {
       art: 'wreck',
-      emptyId: 'legacy_v1/wreck/empty',
-      bossId: 'legacy_v1/wreck/boss',
+      empty: { id: 'legacy_v1/wreck/empty', form: 'empty', obstacle: 'wall', mask: 15 },
+      boss: { id: 'legacy_v1/wreck/boss', form: 'boss', obstacle: 'pillar', mask: 15 },
       plans: [
         {
           id: 'legacy_v1/wreck/combat_0',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 0,
           traps: [
             {
@@ -506,6 +524,9 @@ export const LEGACY_V1 = freeze({
         },
         {
           id: 'legacy_v1/wreck/combat_1',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 5,
           traps: [
             {
@@ -535,6 +556,9 @@ export const LEGACY_V1 = freeze({
         },
         {
           id: 'legacy_v1/wreck/combat_2',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 7,
           traps: [
             {
@@ -571,6 +595,9 @@ export const LEGACY_V1 = freeze({
         },
         {
           id: 'legacy_v1/wreck/combat_3',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 8,
           traps: [
             {
@@ -602,11 +629,14 @@ export const LEGACY_V1 = freeze({
     },
     {
       art: 'abyss',
-      emptyId: 'legacy_v1/abyss/empty',
-      bossId: 'legacy_v1/abyss/boss',
+      empty: { id: 'legacy_v1/abyss/empty', form: 'empty', obstacle: 'wall', mask: 15 },
+      boss: { id: 'legacy_v1/abyss/boss', form: 'boss', obstacle: 'pillar', mask: 15 },
       plans: [
         {
           id: 'legacy_v1/abyss/combat_0',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 0,
           traps: [
             {
@@ -641,6 +671,9 @@ export const LEGACY_V1 = freeze({
         },
         {
           id: 'legacy_v1/abyss/combat_1',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 3,
           traps: [
             {
@@ -678,6 +711,9 @@ export const LEGACY_V1 = freeze({
         },
         {
           id: 'legacy_v1/abyss/combat_2',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 6,
           traps: [
             {
@@ -704,6 +740,9 @@ export const LEGACY_V1 = freeze({
         },
         {
           id: 'legacy_v1/abyss/combat_3',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 5,
           traps: [
             {
@@ -740,11 +779,14 @@ export const LEGACY_V1 = freeze({
     },
     {
       art: 'milk',
-      emptyId: 'legacy_v1/milk/empty',
-      bossId: 'legacy_v1/milk/boss',
+      empty: { id: 'legacy_v1/milk/empty', form: 'empty', obstacle: 'wall', mask: 15 },
+      boss: { id: 'legacy_v1/milk/boss', form: 'boss', obstacle: 'pillar', mask: 15 },
       plans: [
         {
           id: 'legacy_v1/milk/combat_0',
+          form: 'combat',
+          obstacle: 'wall',
+          mask: 15,
           layout: 0,
           traps: [],
         },

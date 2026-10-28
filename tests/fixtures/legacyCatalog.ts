@@ -9,6 +9,7 @@ import { GRAYBOX_BOUNDS } from '../../src/game/world/graybox';
 import { EventBus } from '../../src/sim/core/EventBus';
 import type { Random } from '../../src/sim/core/Random';
 import { freezeV1, legacyV1Template } from '../../src/sim/dungeon/freezeV1';
+import type { GeometryObstacle } from '../../src/sim/geometry/RoomGeometry';
 
 // Actual session, selector and Arcade bodies. Fixture changes room IDs directly to enumerate
 // the whole catalog; it does not claim to test walking through doors or new map visuals.
@@ -35,6 +36,8 @@ class CatalogScene extends Scene {
     // Observe production private state; never substitute its selector or RNG.
     const inspect = session as unknown as { root: Random; layout: number; rebuildRoom(): void };
     const slots = (session.arena as unknown as { slots: Physics.Arcade.Image[] }).slots;
+    const cx = LEGACY_V1.bounds.x + LEGACY_V1.bounds.width / 2;
+    const cy = LEGACY_V1.bounds.y + LEGACY_V1.bounds.height / 2;
     const rootAtCreate = inspect.root.snapshot;
     window.legacyCatalog = {
       generation: (window.legacyCatalog?.generation ?? 0) + 1,
@@ -57,8 +60,8 @@ class CatalogScene extends Scene {
             room.kind === 'combat'
               ? theme.plans[inspect.layout]!.id
               : room.kind === 'boss'
-                ? theme.bossId
-                : theme.emptyId;
+                ? theme.boss.id
+                : theme.empty.id;
           const bodies = slots
             .filter((s) => s.body?.enable)
             .map((s) => ({
@@ -68,10 +71,20 @@ class CatalogScene extends Scene {
               height: s.body!.height,
             }));
           const expectedBodies = template.boxes.map((b) => ({
-            x: 240 + b.x,
-            y: 135 + b.y,
+            x: cx + b.x,
+            y: cy + b.y,
             width: b.width,
             height: b.height,
+          }));
+          // Read the actual immutable static snapshot, without replacing setRoom or its inputs.
+          const geometry = session.arena.prepareGeometry() as unknown as {
+            room: { obstacles: readonly GeometryObstacle[] };
+          };
+          const staticObstacles = geometry.room.obstacles.map(({ id, kind, mask }) => ({ id, kind, mask }));
+          const expectedObstacles = template.boxes.map((_, i) => ({
+            id: `${template.obstacle}:${i}`,
+            kind: template.obstacle,
+            mask: template.mask,
           }));
           const traps = session.sim.save().traps.map((t) => ({
             kind: t.kind,
@@ -85,8 +98,8 @@ class CatalogScene extends Scene {
           }));
           const expectedTraps = template.traps.map((t) => ({
             kind: t.kind,
-            x: 240 + t.x,
-            y: 135 + t.y,
+            x: cx + t.x,
+            y: cy + t.y,
             width: t.width ?? 0,
             height: t.height ?? 0,
             radius: t.kind === 'barrel' || t.kind === 'mine' ? LEGACY_V1.trapRadii[t.kind] : 0,
@@ -98,9 +111,12 @@ class CatalogScene extends Scene {
             kind: room.kind,
             plan: inspect.layout,
             templateId: template.id,
+            form: template.form,
             expectedId,
             bodies,
             expectedBodies,
+            staticObstacles,
+            expectedObstacles,
             traps,
             expectedTraps,
             root: inspect.root.snapshot,
@@ -160,9 +176,12 @@ interface Api {
       kind: string;
       plan: number;
       templateId: string;
+      form: string;
       expectedId: string;
       bodies: unknown[];
       expectedBodies: unknown[];
+      staticObstacles: unknown[];
+      expectedObstacles: unknown[];
       traps: unknown[];
       expectedTraps: unknown[];
       root: number;

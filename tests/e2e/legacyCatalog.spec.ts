@@ -60,7 +60,9 @@ for (const seed of [0, 42, 12345, 0xffffffff])
       expect(result.center).toEqual(LEGACY_V1.anchors.player);
       for (const row of result.rows) {
         expect(row.templateId).toBe(row.expectedId);
+        expect(row.form).toBe(row.kind === 'combat' || row.kind === 'boss' ? row.kind : 'empty');
         expect(row.bodies).toEqual(row.expectedBodies);
+        expect(row.staticObstacles).toEqual(row.expectedObstacles);
         expect(row.traps).toEqual(row.expectedTraps);
         expect(row.root).toBe(seed);
       }
