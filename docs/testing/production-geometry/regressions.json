@@ -1,0 +1,461 @@
+{
+  "base": "82fb32b40060eb85667d879fb5e54deef068bc3a",
+  "stats": {
+    "startTime": "2026-10-28T01:40:49.961Z",
+    "duration": 40088.111,
+    "expected": 16,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "records": [
+    {
+      "title": "production geometry: pillar",
+      "project": "desktop",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 1,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "lunge",
+            "x": 125,
+            "y": 93,
+            "angle": 0
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "stun",
+            "x": 139,
+            "y": 93,
+            "angle": 0
+          }
+        ],
+        "shots": 0
+      }
+    },
+    {
+      "title": "production geometry: boundary",
+      "project": "desktop",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 1,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "lunge",
+            "x": 125,
+            "y": 93,
+            "angle": 0
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "crash",
+            "x": 362,
+            "y": 93,
+            "angle": 0
+          }
+        ],
+        "shots": 3
+      }
+    },
+    {
+      "title": "production geometry: near-wall",
+      "project": "desktop",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 1,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "lunge",
+            "x": 144,
+            "y": 61,
+            "angle": 0
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "stun",
+            "x": 206,
+            "y": 61,
+            "angle": 0
+          }
+        ],
+        "shots": 0
+      }
+    },
+    {
+      "title": "production geometry: rain",
+      "project": "desktop",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 12,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "lunge",
+            "x": 177.21588180626486,
+            "y": 121.5420125322182,
+            "angle": 0.13019386672568067
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "crash",
+            "x": 362,
+            "y": 146.4254003148903,
+            "angle": 0.13019386672568067
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "lunge",
+            "x": 362,
+            "y": 172.34913294487436,
+            "angle": -2.7141932058605693
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "crash",
+            "x": 118,
+            "y": 61,
+            "angle": -2.7141932058605693
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "rain",
+            "x": 177.1231670268477,
+            "y": 121.46748188286716,
+            "angle": 0.130790062134514
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "hop",
+            "x": 177.1231670268477,
+            "y": 121.46748188286716,
+            "angle": 0.130790062134514
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "land",
+            "x": 246.62984788663525,
+            "y": 131.7974699923529,
+            "angle": 0.130790062134514
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "spin",
+            "x": 193.45295544416695,
+            "y": 108.15199815264397,
+            "angle": 0.30079980991118355
+          }
+        ],
+        "shots": 19
+      }
+    },
+    {
+      "title": "production geometry: brood",
+      "project": "desktop",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 2,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_brood",
+            "action": "summon",
+            "x": 112,
+            "y": 55,
+            "angle": 0.5328438876193887
+          }
+        ],
+        "shots": 0
+      }
+    },
+    {
+      "title": "production geometry: los",
+      "project": "desktop",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 6,
+        "actions": [],
+        "shots": 9
+      }
+    },
+    {
+      "title": "production geometry: hop",
+      "project": "desktop",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 1,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_hopper",
+            "action": "hop",
+            "x": 160,
+            "y": 135,
+            "angle": 0
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_hopper",
+            "action": "land",
+            "x": 204,
+            "y": 135,
+            "angle": 0
+          }
+        ],
+        "shots": 1
+      }
+    },
+    {
+      "title": "production geometry: fresh session restore sees the landed pool before the first step",
+      "project": "desktop",
+      "status": "passed"
+    },
+    {
+      "title": "production geometry: pillar",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 1,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "lunge",
+            "x": 125,
+            "y": 93,
+            "angle": 0
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "stun",
+            "x": 139,
+            "y": 93,
+            "angle": 0
+          }
+        ],
+        "shots": 0
+      }
+    },
+    {
+      "title": "production geometry: boundary",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 1,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "lunge",
+            "x": 125,
+            "y": 93,
+            "angle": 0
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "crash",
+            "x": 362,
+            "y": 93,
+            "angle": 0
+          }
+        ],
+        "shots": 3
+      }
+    },
+    {
+      "title": "production geometry: near-wall",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 1,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "lunge",
+            "x": 144,
+            "y": 61,
+            "angle": 0
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "stun",
+            "x": 206,
+            "y": 61,
+            "angle": 0
+          }
+        ],
+        "shots": 0
+      }
+    },
+    {
+      "title": "production geometry: rain",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 12,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "lunge",
+            "x": 177.21588180626486,
+            "y": 121.5420125322182,
+            "angle": 0.13019386672568067
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "crash",
+            "x": 362,
+            "y": 146.4254003148903,
+            "angle": 0.13019386672568067
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "lunge",
+            "x": 362,
+            "y": 172.34913294487436,
+            "angle": -2.7141932058605693
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "crash",
+            "x": 118,
+            "y": 61,
+            "angle": -2.7141932058605693
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "rain",
+            "x": 177.1231670268477,
+            "y": 121.46748188286716,
+            "angle": 0.130790062134514
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "hop",
+            "x": 177.1231670268477,
+            "y": 121.46748188286716,
+            "angle": 0.130790062134514
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "land",
+            "x": 246.62984788663525,
+            "y": 131.7974699923529,
+            "angle": 0.130790062134514
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_boss",
+            "action": "spin",
+            "x": 193.45295544416695,
+            "y": 108.15199815264397,
+            "angle": 0.30079980991118355
+          }
+        ],
+        "shots": 19
+      }
+    },
+    {
+      "title": "production geometry: brood",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 2,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_brood",
+            "action": "summon",
+            "x": 112,
+            "y": 55,
+            "angle": 0.5328438876193887
+          }
+        ],
+        "shots": 0
+      }
+    },
+    {
+      "title": "production geometry: los",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 6,
+        "actions": [],
+        "shots": 9
+      }
+    },
+    {
+      "title": "production geometry: hop",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "result": {
+        "errors": [],
+        "checked": 1,
+        "actions": [
+          {
+            "id": 2,
+            "kind": "naiwa_hopper",
+            "action": "hop",
+            "x": 160,
+            "y": 135,
+            "angle": 0
+          },
+          {
+            "id": 2,
+            "kind": "naiwa_hopper",
+            "action": "land",
+            "x": 204,
+            "y": 135,
+            "angle": 0
+          }
+        ],
+        "shots": 1
+      }
+    },
+    {
+      "title": "production geometry: fresh session restore sees the landed pool before the first step",
+      "project": "mobile-landscape",
+      "status": "passed"
+    }
+  ]
+}

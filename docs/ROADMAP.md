@@ -80,3 +80,5 @@ v4 从相同源动作图把每边像素密度提高约 50%，适度增加色阶�
 #114 进展（2026-10-27）：负责人已合并 #122/#123；首份纯 sim 几何查询实现与测试见 [验证记录](testing/geometry-queries.md)，已随 #124 合并。该份只交付独立接口；地图美术/目录存档/RoomDirector/AI 接线仍分步推进，后续队列不启动。
 
 #124 已通过 Claude review 5675468297，并由负责人合入 main `a6a8d2d`。GPT 下一份交付固定动态圆槽与现有地图导航接入，见 [动态适配验证](testing/live-room-geometry.md)；Claude 从最新 main 负责 ADR 0039 的 AI 接线。目录/旧档/出生锚点/新轮廓物理/地图美术继续分步，#115–#119 不启动。
+
+#125/#126 已由负责人合并，main 基线为 `82fb32b`。负责人将生产接线与真实游戏回归、性能对照交给 GPT；本分支为 DemoSession 与 StressRun 注入 prepareGeometry provider，完成后交 Claude 复审。详见[生产接线验证](testing/production-geometry.md)。地图目录、版本化存档、新轮廓与正式美术仍继续分步，#114 未完成；#115–#119 不启动。

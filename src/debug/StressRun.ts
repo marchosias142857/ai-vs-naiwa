@@ -58,6 +58,7 @@ export class StressRun {
       maxBullets: fixed ? BULLETS : POOL_SIZES.bullets,
       navigation: (x, y, tx, ty, radius, out) => this.arena?.steer(x, y, tx, ty, radius, out) ?? false,
       lineOfSight: (x, y, tx, ty) => this.arena?.lineOfSight(x, y, tx, ty) ?? true,
+      geometry: () => this.arena?.prepareGeometry() ?? null,
     });
     this.sim.spawnPlayer('ai_proto', B.x + B.width / 2, B.y + B.height / 2);
     this.sim.takeWeapon('ring_staff');
