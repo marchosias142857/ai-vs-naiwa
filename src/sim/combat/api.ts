@@ -10,6 +10,7 @@ import type { TrapKind } from '../../data/schema/traps';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
 import type { EntityId, InputFrame, Seed, Team, Vec2 } from '../core/types';
+import type { GeometryQueries } from '../geometry/RoomGeometry';
 import { createCombatWorldImpl } from './CombatWorld';
 
 /**
@@ -262,6 +263,13 @@ export interface CombatWorldOptions {
   playerRules?: Readonly<PlayerRules>;
   /** 房间内边界（ADR 0030）：石块落点限制在其中，冲撞贴到边界算撞墙而不是撞柱。不传时以玩家为中心取点。 */
   bounds?: { x: number; y: number; width: number; height: number };
+  /**
+   * 房间几何查询的提供者（ADR 0039）。怪物 AI 每次决策调用一次取当前视图：起跳落点、视线、
+   * 舌击、冲撞分类、召唤与落石的合法位置都用它。返回的对象只在本次调用期间使用，不缓存；
+   * 生产环境由地图层先同步动态桶与落石再返回（`RoomArena.prepareGeometry`）。
+   * 不传或返回 null 时保持 ADR 0030 的旧矩形规则。
+   */
+  geometry?: () => GeometryQueries | null;
 }
 
 /**

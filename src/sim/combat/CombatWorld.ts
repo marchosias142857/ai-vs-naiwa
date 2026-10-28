@@ -14,6 +14,7 @@ import type { UpgradeDef } from '../../data/schema/player';
 import { WEAPONS, type WeaponId } from '../../data/weapons';
 import { createBrain, resetBrain, type EnemyBrain } from '../ai/brain';
 import { EnemyAi, type AiHost } from '../ai/EnemyAi';
+import { createGeometryHit, GeometryMask } from '../geometry/RoomGeometry';
 import type { EnemyAction } from '../core/events';
 import type { EventBus } from '../core/EventBus';
 import type { GameEvents } from '../core/events';
@@ -518,7 +519,7 @@ class CombatWorldImpl implements CombatWorld {
   private playerSlow = 1;
   private readonly aiHost: AiHost = {
     actors: this.actors,
-    lineOfSight: (x1, y1, x2, y2) => this.los(x1, y1, x2, y2),
+    lineOfSight: (x1, y1, x2, y2) => this.aiLos(x1, y1, x2, y2),
     shoot: (e, attack, angle) => this.enemyShoot(e as Actor, attack, angle),
     explode: (e, radius, damage) =>
       this.explodeAt(e.x, e.y, radius, damage, e.team, e.id, EXPLOSION_KNOCKBACK),
@@ -535,6 +536,7 @@ class CombatWorldImpl implements CombatWorld {
     selfDestruct: (e) => this.damage(e as Actor, e.hp, false, 0, 0, null),
     act: (e, action, angle) => this.emitAct(e as Actor, action, angle),
     random: () => this.aiRng.next(),
+    geometry: () => this.geometryOf?.() ?? null,
   };
   private readonly arsenalHost: ArsenalHost = {
     actors: this.actors,
@@ -586,6 +588,12 @@ class CombatWorldImpl implements CombatWorld {
   private fireSlow = 1;
   private readonly lineOfSight: LineOfSight;
   private readonly navigation: CombatWorldOptions['navigation'];
+  /** 房间几何提供者（ADR 0039）；每次查询前取当前视图，不缓存。 */
+  private readonly geometryOf: CombatWorldOptions['geometry'];
+  /** 几何查询的复用输入输出，避免战斗中分配。 */
+  private readonly geoHit = createGeometryHit();
+  private readonly geoFrom = { x: 0, y: 0 };
+  private readonly geoTo = { x: 0, y: 0 };
   private readonly route = { x: 0, y: 0 };
   readonly resources: PlayerResources;
   secondaryWeapon: WeaponId | null = null;
@@ -629,6 +637,7 @@ class CombatWorldImpl implements CombatWorld {
     this.godMode = options.godMode ?? false;
     this.lineOfSight = options.lineOfSight ?? alwaysVisible;
     this.navigation = options.navigation;
+    this.geometryOf = options.geometry;
     this.result = { bulletSpawns: this.spawns, playerDead: false };
     this.fireCtx = { x: 0, y: 0, aim: 0, weapon: WEAPONS.pistol_basic, rng: this.spreadRng };
     // 预热：子弹记录与输出对象一次建好，开火时只复用。
@@ -1766,7 +1775,13 @@ class CombatWorldImpl implements CombatWorld {
         distance = source.radius + def.radius + 2;
       let x = source.x + Math.cos(angle) * distance,
         y = source.y + Math.sin(angle) * distance;
-      if (!this.los(source.x, source.y, x, y)) {
+      // ADR 0039 规则 5：有房间几何时按子体完整身体检查；不合法就和原来一样退回施法者位置，数量与抽数不变。
+      const geo = this.geometryOf?.();
+      if (
+        geo
+          ? !geo.canOccupy(this.point(this.geoTo, x, y), def.radius, 'spawn')
+          : !this.los(source.x, source.y, x, y)
+      ) {
         x = source.x;
         y = source.y;
       }
@@ -1799,11 +1814,13 @@ class CombatWorldImpl implements CombatWorld {
       rock = def.rock;
     if (!rock) return;
     const b = this.bounds;
+    const geo = this.geometryOf?.();
     for (let i = 0; i < count; i++) {
       const slot = this.rocks.find((r) => !r.active);
       if (!slot) return;
       let x = target.x,
-        y = target.y;
+        y = target.y,
+        legal = false;
       for (let attempt = 0; attempt < ROCK_ATTEMPTS; attempt++) {
         const angle = this.aiRng.next() * Math.PI * 2,
           distance = i === 0 && attempt === 0 ? 0 : this.aiRng.next() * spread;
@@ -1813,14 +1830,21 @@ class CombatWorldImpl implements CombatWorld {
           x = Math.min(b.x + b.width - rock.radius, Math.max(b.x + rock.radius, x));
           y = Math.min(b.y + b.height - rock.radius, Math.max(b.y + rock.radius, y));
         }
+        // ADR 0039 规则 6：有房间几何时用完整石块足迹代替十字视线检查。
         if (
           Math.hypot(x - e.x, y - e.y) > e.radius + rock.radius + 4 &&
-          this.lineOfSight(x - rock.radius, y, x + rock.radius, y) &&
-          this.lineOfSight(x, y - rock.radius, x, y + rock.radius) &&
+          (geo
+            ? geo.canOccupy(this.point(this.geoTo, x, y), rock.radius, 'rock')
+            : this.lineOfSight(x - rock.radius, y, x + rock.radius, y) &&
+              this.lineOfSight(x, y - rock.radius, x, y + rock.radius)) &&
           !this.rocks.some((r) => r.active && Math.hypot(r.x - x, r.y - y) < r.radius + rock.radius)
-        )
+        ) {
+          legal = true;
           break;
+        }
       }
+      // 旧规则用尽尝试后仍用最后一个候选；有几何时跳过这一块，也不再抽它的错开时长。
+      if (geo && !legal) continue;
       slot.active = true;
       slot.landed = false;
       slot.x = x;
@@ -1846,6 +1870,19 @@ class CombatWorldImpl implements CombatWorld {
         this.emitAct(e, 'shatter', angle, r.x, r.y);
       }
     if (rock) return true;
+    const geo = this.geometryOf?.();
+    if (geo) {
+      // ADR 0039 规则 4：沿冲撞方向找第一个阻挡，外轮廓（含凹口、锁门）只停下，内墙、柱、桶会晕；
+      // 同距时外轮廓优先。都没碰到（例如被别的身体挡住）维持原来的默认：晕。
+      geo.sweepCircle(
+        this.point(this.geoFrom, e.x, e.y),
+        this.point(this.geoTo, e.x + Math.cos(angle) * CRASH_REACH, e.y + Math.sin(angle) * CRASH_REACH),
+        e.radius,
+        GeometryMask.walk,
+        this.geoHit,
+      );
+      return !(this.geoHit.hit && this.geoHit.kind === 'boundary');
+    }
     const b = this.bounds;
     if (b) {
       const m = e.radius + CRASH_REACH;
@@ -1872,7 +1909,7 @@ class CombatWorldImpl implements CombatWorld {
       const t = Math.max(0, Math.min(length, (a.x - e.x) * dx + (a.y - e.y) * dy));
       const px = e.x + dx * t,
         py = e.y + dy * t;
-      if (Math.hypot(a.x - px, a.y - py) > a.radius + width / 2 || !this.los(e.x, e.y, a.x, a.y)) continue;
+      if (Math.hypot(a.x - px, a.y - py) > a.radius + width / 2 || !this.aiLos(e.x, e.y, a.x, a.y)) continue;
       this.damage(a, damage, false, -dx, -dy, e.id);
       if (a.phase === 'active' && pull > 0)
         this.knockBack(a, -dx, -dy, Math.min(pull, Math.max(0, t - e.radius)));
@@ -1946,6 +1983,29 @@ class CombatWorldImpl implements CombatWorld {
     for (const t of this.trapSystem.traps)
       if (standingBarrel(t) && segmentDistance(t.x, t.y, x1, y1, x2, y2) < t.radius) return false;
     return true;
+  }
+
+  /**
+   * 怪物视线（ADR 0039 规则 3）：远程射程判断、舌击命中都用它。有房间几何时走 traceSegment 的 LOS 掩码，
+   * 凹口外的房外区域也会挡住；室内水只挡身体不挡视线。没有几何时与 `los` 完全相同。
+   * 玩家武器仍用 `los`，属于武器机制，另行迁移。
+   */
+  private aiLos(x1: number, y1: number, x2: number, y2: number): boolean {
+    const geo = this.geometryOf?.();
+    if (!geo) return this.los(x1, y1, x2, y2);
+    geo.traceSegment(
+      this.point(this.geoFrom, x1, y1),
+      this.point(this.geoTo, x2, y2),
+      GeometryMask.LOS,
+      this.geoHit,
+    );
+    return !this.geoHit.hit;
+  }
+
+  private point(out: { x: number; y: number }, x: number, y: number): { x: number; y: number } {
+    out.x = x;
+    out.y = y;
+    return out;
   }
 
   private applyVelocity(actor: Actor): void {
