@@ -9,7 +9,7 @@ import { TrapLayer } from '../fx/TrapLayer';
 import { Physics, Scenes } from 'phaser';
 import type { Scene } from 'phaser';
 import { POOL_SIZES } from '../../config';
-import { roomTheme } from '../../data/traps';
+import { selectRoomLayouts, type FloorRoomLayouts } from '../../sim/dungeon/roomCatalog';
 import { BALANCE } from '../../data/balance';
 import { PLAYER_RULES, UPGRADES, type UpgradeId } from '../../data/player';
 import { ROOM_RULES } from '../../data/rooms';
@@ -52,7 +52,8 @@ export class DemoSession {
   private readonly root: Random;
   private interact = false;
   private endTime = 0;
-  private layout = 0;
+  private roomLayouts: FloorRoomLayouts | null = null;
+  private templateId = '';
   private drawnRevision = -1;
 
   constructor(
@@ -328,11 +329,11 @@ export class DemoSession {
   }
   /** 恢复只重建几何与绘制，不 enterRoom / teleport / claim。 */
   private rebuildRoom(): void {
-    // 战斗房从本层主题的方案里选一个（内墙 + 机关，ADR 0032）。
-    this.layout = this.root
-      .fork(`layout:${this.dungeon.floor}:${this.dungeon.roomId}`)
-      .int(0, roomTheme(this.dungeon.floor).plans.length - 1);
-    this.arena.show(this.dungeon, this.layout);
+    // 一层只选一次；同构建恢复重新推导相同清单，重建房间不再按数组下标重抽。
+    if (this.roomLayouts?.floor !== this.dungeon.floor)
+      this.roomLayouts = selectRoomLayouts(this.seed, this.dungeon.floor, this.dungeon.map.rooms);
+    this.templateId = this.roomLayouts.templateIds[this.dungeon.roomId]!;
+    this.arena.show(this.dungeon, this.templateId);
     this.drawnRevision = this.dungeon.revision;
   }
   /** 本帧物理后发布位置，保持 #28 的鼠标瞄准顺序。 */

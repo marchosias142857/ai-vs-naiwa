@@ -5,7 +5,8 @@ import { BALANCE } from '../../data/balance';
 import { CHARACTERS } from '../../data/characters';
 import { DUNGEON } from '../../data/dungeon';
 import { ENEMIES } from '../../data/enemies';
-import { ROOM_LAYOUTS } from '../../data/layouts';
+import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
+import { TRAP_RULES } from '../../data/traps';
 import { ENCOUNTERS, LOOT_RULES } from '../../data/loot';
 import { NAVIGATION } from '../../data/navigation';
 import { PLAYER_RULES, UPGRADES } from '../../data/player';
@@ -27,7 +28,8 @@ export const SAVE_VERSION = {
       CHARACTERS,
       DUNGEON,
       ENEMIES,
-      ROOM_LAYOUTS,
+      LEGACY_V1,
+      TRAP_RULES,
       ENCOUNTERS,
       LOOT_RULES,
       NAVIGATION,

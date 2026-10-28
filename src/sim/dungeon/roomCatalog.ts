@@ -4,21 +4,21 @@ import type { RoomTheme, TrapPlacement } from '../../data/schema/traps';
 import { Random } from '../core/Random';
 import type { DungeonRoom } from './generate';
 
-/** Prepared layout manifest for a validated old floor; not yet a v3 save field. */
-export interface LegacyFloorLayouts {
+/** Derived floor selection for this build; not a serialized save field. */
+export interface FloorRoomLayouts {
   readonly catalogId: 'legacy_v1';
   readonly floor: number;
   readonly templateIds: readonly string[];
 }
 
-/** Reproduce the old plan selection using only frozen data and a private RNG.
- * Call after old-format validation; no events, input mutation or live random streams.
+/** Select every room once per floor from the active immutable catalog.
+ * Uses a private RNG: no events, input mutation or live random-stream consumption.
  */
-export function freezeV1(
+export function selectRoomLayouts(
   seed: number,
   floor: number,
   rooms: readonly Pick<DungeonRoom, 'id' | 'kind'>[],
-): LegacyFloorLayouts {
+): FloorRoomLayouts {
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new RangeError('invalid legacy seed');
   if (!Number.isInteger(floor) || floor < 1 || floor > LEGACY_V1.themes.length)
     throw new RangeError('invalid legacy floor');
@@ -43,7 +43,7 @@ export function freezeV1(
 }
 
 /** Resolved legacy geometry, with the same relative coordinates as the old RoomArena input. */
-export interface LegacyTemplate {
+export interface RoomTemplate {
   readonly id: string;
   readonly theme: RoomTheme['art'];
   readonly form: 'empty' | 'combat' | 'boss';
@@ -54,7 +54,7 @@ export interface LegacyTemplate {
 }
 
 /** Exact ID lookup. Unknown IDs never silently select another template. */
-export function legacyV1Template(id: string): LegacyTemplate | null {
+export function roomTemplate(id: string): RoomTemplate | null {
   for (const theme of LEGACY_V1.themes) {
     if (id === theme.empty.id)
       return { ...theme.empty, theme: theme.art, boxes: LEGACY_V1.layouts[0], traps: [] };
@@ -67,4 +67,22 @@ export function legacyV1Template(id: string): LegacyTemplate | null {
     }
   }
   return null;
+}
+
+/** Validate an exact template against its generated room before any game-side mutation. */
+export function resolveRoomTemplate(
+  id: string,
+  floor: number,
+  kind: DungeonRoom['kind'],
+): RoomTemplate | null {
+  if (!Number.isInteger(floor) || floor < 1 || floor > LEGACY_V1.themes.length) return null;
+  const template = roomTemplate(id);
+  const form =
+    kind === 'boss' || kind === 'combat'
+      ? kind
+      : kind === 'start' || kind === 'chest' || kind === 'exit'
+        ? 'empty'
+        : null;
+  if (!template || template.theme !== LEGACY_V1.themes[floor - 1]!.art || template.form !== form) return null;
+  return template;
 }

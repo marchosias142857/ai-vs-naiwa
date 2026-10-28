@@ -8,7 +8,7 @@ import { InputScene } from '../../src/game/ui/InputScene';
 import { GRAYBOX_BOUNDS } from '../../src/game/world/graybox';
 import { EventBus } from '../../src/sim/core/EventBus';
 import type { Random } from '../../src/sim/core/Random';
-import { freezeV1, legacyV1Template } from '../../src/sim/dungeon/freezeV1';
+import { selectRoomLayouts, roomTemplate } from '../../src/sim/dungeon/roomCatalog';
 import type { GeometryObstacle } from '../../src/sim/geometry/RoomGeometry';
 
 // Actual session, selector and Arcade bodies. Fixture changes room IDs directly to enumerate
@@ -34,7 +34,7 @@ class CatalogScene extends Scene {
       { runId: 'legacy-catalog-fixture' },
     );
     // Observe production private state; never substitute its selector or RNG.
-    const inspect = session as unknown as { root: Random; layout: number; rebuildRoom(): void };
+    const inspect = session as unknown as { root: Random; templateId: string; rebuildRoom(): void };
     const slots = (session.arena as unknown as { slots: Physics.Arcade.Image[] }).slots;
     const cx = LEGACY_V1.bounds.x + LEGACY_V1.bounds.width / 2;
     const cy = LEGACY_V1.bounds.y + LEGACY_V1.bounds.height / 2;
@@ -48,20 +48,15 @@ class CatalogScene extends Scene {
       inspectFloor: () => {
         const run = session.dungeon;
         const before = session.save();
-        const manifest = freezeV1(seed, run.floor, run.map.rooms);
+        const manifest = selectRoomLayouts(seed, run.floor, run.map.rooms);
         const unchangedByFreeze = JSON.stringify(before) === JSON.stringify(session.save());
         const rows = run.map.rooms.map((room) => {
           run.roomId = room.id;
           inspect.rebuildRoom();
-          const template = legacyV1Template(manifest.templateIds[room.id]!)!;
-          const theme = LEGACY_V1.themes[run.floor - 1]!;
-          // Expected plan comes from the actual production rebuildRoom, not a second copy of its formula.
-          const expectedId =
-            room.kind === 'combat'
-              ? theme.plans[inspect.layout]!.id
-              : room.kind === 'boss'
-                ? theme.boss.id
-                : theme.empty.id;
+          const template = roomTemplate(manifest.templateIds[room.id]!)!;
+          // Observe the ID actually passed by DemoSession to RoomArena. The spec separately
+          // checks PR128's recorded selections and geometry, independent of this selector.
+          const expectedId = inspect.templateId;
           const bodies = slots
             .filter((s) => s.body?.enable)
             .map((s) => ({
@@ -109,7 +104,6 @@ class CatalogScene extends Scene {
           return {
             id: room.id,
             kind: room.kind,
-            plan: inspect.layout,
             templateId: template.id,
             form: template.form,
             expectedId,
@@ -174,7 +168,6 @@ interface Api {
     rows: {
       id: number;
       kind: string;
-      plan: number;
       templateId: string;
       form: string;
       expectedId: string;
