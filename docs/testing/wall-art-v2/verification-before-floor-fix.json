@@ -1,0 +1,2743 @@
+{
+  "candidateImplementation": "85ce6787cf89a02c73dfd39e052d17919f7e94a9",
+  "candidateSrcTree": "cce8d91ccc1b733503b22bc0c5746dd1ccf67637",
+  "candidatePublicTree": "aab5d2ba2e01e27a9f529dcba5124cd6fad8270f",
+  "baseMain": "0ea5e721bf2329276f262a2c4e72643437be5f0a",
+  "oldReviewHead": "f3865490d928ad1056e0c3ff1f08101ec58ae0c4",
+  "acceptedSource": "wall-model-v12.png",
+  "fullCheck": {
+    "unitFiles": 64,
+    "unitTests": 522,
+    "format": true,
+    "eslint": true,
+    "typescript": true,
+    "build": true,
+    "logSha256": "f2c030e59572247f1b7c49ce7c99f2b17df5f5ff607876d95cea96e517eb67c0"
+  },
+  "browser": {
+    "projects": ["desktop", "mobile-landscape"],
+    "engine": "Chromium / SwiftShader",
+    "webKitRun": false,
+    "physicalPhoneRun": false,
+    "stats": {
+      "startTime": "2026-10-28T19:42:50.721Z",
+      "duration": 737650.433,
+      "expected": 70,
+      "skipped": 2,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "tests": [
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3956,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4239,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4474,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4275,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3547,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4684,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4149,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4240,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "200 connected layouts per theme reuse the same art and fixed scene objects",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 117356,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple-batch",
+            "data": {
+              "unique": 200,
+              "allConnected": true,
+              "before": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "after": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "millisecondsFor200Rooms": 107.32768099999885
+            }
+          },
+          {
+            "name": "wreck-batch",
+            "data": {
+              "unique": 200,
+              "allConnected": true,
+              "before": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "after": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "millisecondsFor200Rooms": 106.75615300000209
+            }
+          },
+          {
+            "name": "abyss-batch",
+            "data": {
+              "unique": 200,
+              "allConnected": true,
+              "before": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "after": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "millisecondsFor200Rooms": 107.35331799999403
+            }
+          },
+          {
+            "name": "milk-batch",
+            "data": {
+              "unique": 200,
+              "allConnected": true,
+              "before": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "after": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "millisecondsFor200Rooms": 102.15440700000909
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3983,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12516,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12208,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "200 connected layouts per theme reuse the same art and fixed scene objects",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 118111,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple-batch",
+            "data": {
+              "unique": 200,
+              "allConnected": true,
+              "before": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "after": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "millisecondsFor200Rooms": 98.37555800000337
+            }
+          },
+          {
+            "name": "wreck-batch",
+            "data": {
+              "unique": 200,
+              "allConnected": true,
+              "before": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "after": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "millisecondsFor200Rooms": 144.72140699999727
+            }
+          },
+          {
+            "name": "abyss-batch",
+            "data": {
+              "unique": 200,
+              "allConnected": true,
+              "before": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "after": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "millisecondsFor200Rooms": 90.71142399999371
+            }
+          },
+          {
+            "name": "milk-batch",
+            "data": {
+              "unique": 200,
+              "allConnected": true,
+              "before": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "after": {
+                "objects": 17,
+                "textures": [
+                  "__DEFAULT",
+                  "__MISSING",
+                  "__NORMAL",
+                  "__WHITE",
+                  "map_blocks_v2",
+                  "map_doors_v1",
+                  "map_ground_v2",
+                  "map_objects_v1",
+                  "map_side_doors_v2",
+                  "map_terrain_v1",
+                  "map_wall_model_v12",
+                  "modular-ground:ArtMatrix"
+                ]
+              },
+              "millisecondsFor200Rooms": 91.72079700000177
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3786,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12516,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12208,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: pillar",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 2683,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "pillar",
+            "data": {
+              "errors": [],
+              "checked": 1,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "lunge",
+                  "x": 125,
+                  "y": 93,
+                  "angle": 0
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "stun",
+                  "x": 139,
+                  "y": 93,
+                  "angle": 0
+                }
+              ],
+              "shots": 0
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: boundary",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 2861,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "boundary",
+            "data": {
+              "errors": [],
+              "checked": 1,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "lunge",
+                  "x": 125,
+                  "y": 93,
+                  "angle": 0
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "crash",
+                  "x": 370,
+                  "y": 93,
+                  "angle": 0
+                }
+              ],
+              "shots": 3
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: near-wall",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4083,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "near-wall",
+            "data": {
+              "errors": [],
+              "checked": 1,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "lunge",
+                  "x": 144,
+                  "y": 61,
+                  "angle": 0
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "stun",
+                  "x": 206,
+                  "y": 61,
+                  "angle": 0
+                }
+              ],
+              "shots": 0
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: rain",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4047,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "rain",
+            "data": {
+              "errors": [],
+              "checked": 12,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "lunge",
+                  "x": 177.21588180626486,
+                  "y": 121.5420125322182,
+                  "angle": 0.13019386672568067
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "crash",
+                  "x": 370,
+                  "y": 147.50728674022392,
+                  "angle": 0.13019386672568067
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "lunge",
+                  "x": 370,
+                  "y": 147.50728674022392,
+                  "angle": -3.003507199272605
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "crash",
+                  "x": 110,
+                  "y": 111.69117704479937,
+                  "angle": -3.003507199272605
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "rain",
+                  "x": 176.89516481055313,
+                  "y": 121.53639056878208,
+                  "angle": 0.1298470396241102
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "hop",
+                  "x": 176.89516481055313,
+                  "y": 121.53639056878208,
+                  "angle": 0.1298470396241102
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "land",
+                  "x": 246.63531900115206,
+                  "y": 131.83004465241788,
+                  "angle": 0.1298470396241102
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "spin",
+                  "x": 193.45348440777647,
+                  "y": 108.15217946706584,
+                  "angle": 0.3007996283762721
+                }
+              ],
+              "shots": 20
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: brood",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 2543,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "brood",
+            "data": {
+              "errors": [],
+              "checked": 2,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_brood",
+                  "action": "summon",
+                  "x": 112,
+                  "y": 55,
+                  "angle": 0.5328438876193887
+                }
+              ],
+              "shots": 0
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: los",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3167,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "los",
+            "data": {
+              "errors": [],
+              "checked": 6,
+              "actions": [],
+              "shots": 9
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: hop",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 2499,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "hop",
+            "data": {
+              "errors": [],
+              "checked": 1,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_hopper",
+                  "action": "hop",
+                  "x": 160,
+                  "y": 135,
+                  "angle": 0
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_hopper",
+                  "action": "land",
+                  "x": 204,
+                  "y": 135,
+                  "angle": 0
+                }
+              ],
+              "shots": 1
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: fresh session restore sees the landed pool before the first step",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 11657,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3851,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "temple",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 74
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4537,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "wreck",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 62
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4931,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "abyss",
+              "rocks": 7,
+              "actors": 29,
+              "traps": [
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "armed"
+                }
+              ],
+              "bullets": 51
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4744,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "milk",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [],
+              "bullets": 34
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 9024,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 8775,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 8772,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 10028,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map object atlas missing uses graybox without missing object frames",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 2528,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: pillar",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 2132,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "pillar",
+            "data": {
+              "errors": [],
+              "checked": 1,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "lunge",
+                  "x": 125,
+                  "y": 93,
+                  "angle": 0
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "stun",
+                  "x": 139,
+                  "y": 93,
+                  "angle": 0
+                }
+              ],
+              "shots": 0
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: boundary",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 2949,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "boundary",
+            "data": {
+              "errors": [],
+              "checked": 1,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "lunge",
+                  "x": 125,
+                  "y": 93,
+                  "angle": 0
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "crash",
+                  "x": 370,
+                  "y": 93,
+                  "angle": 0
+                }
+              ],
+              "shots": 3
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: near-wall",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3465,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "near-wall",
+            "data": {
+              "errors": [],
+              "checked": 1,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "lunge",
+                  "x": 144,
+                  "y": 61,
+                  "angle": 0
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "stun",
+                  "x": 206,
+                  "y": 61,
+                  "angle": 0
+                }
+              ],
+              "shots": 0
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: rain",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3328,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "rain",
+            "data": {
+              "errors": [],
+              "checked": 12,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "lunge",
+                  "x": 177.21588180626486,
+                  "y": 121.5420125322182,
+                  "angle": 0.13019386672568067
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "crash",
+                  "x": 370,
+                  "y": 147.50728674022392,
+                  "angle": 0.13019386672568067
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "lunge",
+                  "x": 370,
+                  "y": 147.50728674022392,
+                  "angle": -3.003507199272605
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "crash",
+                  "x": 110,
+                  "y": 111.69117704479937,
+                  "angle": -3.003507199272605
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "rain",
+                  "x": 176.89516481055313,
+                  "y": 121.53639056878208,
+                  "angle": 0.1298470396241102
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "hop",
+                  "x": 176.89516481055313,
+                  "y": 121.53639056878208,
+                  "angle": 0.1298470396241102
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "land",
+                  "x": 246.63531900115206,
+                  "y": 131.83004465241788,
+                  "angle": 0.1298470396241102
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_boss",
+                  "action": "spin",
+                  "x": 193.45348440777647,
+                  "y": 108.15217946706584,
+                  "angle": 0.3007996283762721
+                }
+              ],
+              "shots": 20
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: brood",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 2369,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "brood",
+            "data": {
+              "errors": [],
+              "checked": 2,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_brood",
+                  "action": "summon",
+                  "x": 112,
+                  "y": 55,
+                  "angle": 0.5328438876193887
+                }
+              ],
+              "shots": 0
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: los",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 2731,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "los",
+            "data": {
+              "errors": [],
+              "checked": 6,
+              "actions": [],
+              "shots": 9
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: hop",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 2410,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "hop",
+            "data": {
+              "errors": [],
+              "checked": 1,
+              "actions": [
+                {
+                  "id": 2,
+                  "kind": "naiwa_hopper",
+                  "action": "hop",
+                  "x": 160,
+                  "y": 135,
+                  "angle": 0
+                },
+                {
+                  "id": 2,
+                  "kind": "naiwa_hopper",
+                  "action": "land",
+                  "x": 204,
+                  "y": 135,
+                  "angle": 0
+                }
+              ],
+              "shots": 1
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "production geometry: fresh session restore sees the landed pool before the first step",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 11293,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3532,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "temple",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 74
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3935,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "wreck",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 62
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4068,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "abyss",
+              "rocks": 7,
+              "actors": 29,
+              "traps": [
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "armed"
+                }
+              ],
+              "bullets": 51
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3716,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "milk",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [],
+              "bullets": 34
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 7494,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 7268,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 7365,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 6984,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map object atlas missing uses graybox without missing object frames",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 2308,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 13654,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 28123,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 15360,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 30036,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "resumeProduction.spec.ts",
+        "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 15100,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "resumeProduction.spec.ts",
+        "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 15488,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "title": "不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 9375,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "title": "真实移动到四个墙角时人物持续居中，房间外露出黑色背景",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 31946,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "centered-camera-edges",
+            "data": [
+              {
+                "name": "north-west",
+                "maxError": 0.4817100367706644,
+                "samples": 125,
+                "state": {
+                  "camera": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 1920,
+                    "height": 1080,
+                    "zoom": 6,
+                    "scrollX": -58,
+                    "scrollY": -45
+                  },
+                  "meleeActive": false,
+                  "visual": {
+                    "frame": "run_0",
+                    "texture": "demo_hero",
+                    "source": "blob:http://localhost:4173/23eafbe6-818f-4f6e-9055-70b35b466757",
+                    "sourceWidth": 1536,
+                    "sourceHeight": 1024,
+                    "x": 101.93066666666667,
+                    "y": 45.06666666666666,
+                    "flipX": false,
+                    "depth": 30.0045,
+                    "face": {
+                      "visible": true,
+                      "x": 98.66666666666667,
+                      "y": 41.666666666666664,
+                      "width": 6.732,
+                      "height": 3.74
+                    },
+                    "weapon": {
+                      "x": 97.71466666666667,
+                      "y": 46.834666666666664,
+                      "flipY": true,
+                      "angle": -2.356194490192345,
+                      "depth": 30.00449,
+                      "visible": true
+                    }
+                  },
+                  "floor": 1,
+                  "room": 0,
+                  "kind": "start",
+                  "phase": "exploring",
+                  "settled": false,
+                  "locked": false,
+                  "wave": 0,
+                  "alive": 0,
+                  "kills": 0,
+                  "x": 102,
+                  "y": 45,
+                  "hp": 6,
+                  "armor": 5,
+                  "energy": 200,
+                  "weapon": "pistol_basic",
+                  "skill": 0,
+                  "offers": [],
+                  "links": [
+                    {
+                      "id": 1,
+                      "dx": 0,
+                      "dy": -1
+                    }
+                  ],
+                  "bullets": 0,
+                  "children": 1002,
+                  "time": 2.533333333333329,
+                  "resumeRemaining": 0,
+                  "physicsPaused": false,
+                  "enemies": []
+                },
+                "backgroundPoint": {
+                  "x": 358,
+                  "y": 288
+                }
+              },
+              {
+                "name": "north-east",
+                "maxError": 0.4817100367706644,
+                "samples": 101,
+                "state": {
+                  "camera": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 1920,
+                    "height": 1080,
+                    "zoom": 6,
+                    "scrollX": 170,
+                    "scrollY": -45
+                  },
+                  "meleeActive": false,
+                  "visual": {
+                    "frame": "run_6",
+                    "texture": "demo_hero",
+                    "source": "blob:http://localhost:4173/9b85f602-19d6-41f3-b555-2d23d377a087",
+                    "sourceWidth": 1536,
+                    "sourceHeight": 1024,
+                    "x": 330.0693333333333,
+                    "y": 45.06666666666666,
+                    "flipX": true,
+                    "depth": 30.0045,
+                    "face": {
+                      "visible": true,
+                      "x": 326.6013333333333,
+                      "y": 41.666666666666664,
+                      "width": 6.732,
+                      "height": 3.74
+                    },
+                    "weapon": {
+                      "x": 334.2853333333333,
+                      "y": 46.834666666666664,
+                      "flipY": false,
+                      "angle": -0.7853981633974492,
+                      "depth": 30.00449,
+                      "visible": true
+                    }
+                  },
+                  "floor": 1,
+                  "room": 0,
+                  "kind": "start",
+                  "phase": "exploring",
+                  "settled": false,
+                  "locked": false,
+                  "wave": 0,
+                  "alive": 0,
+                  "kills": 0,
+                  "x": 330,
+                  "y": 45,
+                  "hp": 6,
+                  "armor": 5,
+                  "energy": 200,
+                  "weapon": "pistol_basic",
+                  "skill": 0,
+                  "offers": [],
+                  "links": [
+                    {
+                      "id": 1,
+                      "dx": 0,
+                      "dy": -1
+                    }
+                  ],
+                  "bullets": 0,
+                  "children": 1002,
+                  "time": 1.7833333333333319,
+                  "resumeRemaining": 0,
+                  "physicsPaused": false,
+                  "enemies": []
+                },
+                "backgroundPoint": {
+                  "x": 922,
+                  "y": 288
+                }
+              },
+              {
+                "name": "south-west",
+                "maxError": 0.48171003677009594,
+                "samples": 129,
+                "state": {
+                  "camera": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 1920,
+                    "height": 1080,
+                    "zoom": 6,
+                    "scrollX": -58,
+                    "scrollY": 135
+                  },
+                  "meleeActive": false,
+                  "visual": {
+                    "frame": "run_0",
+                    "texture": "demo_hero",
+                    "source": "blob:http://localhost:4173/157a726f-7694-4f05-b33a-76271dfa76c1",
+                    "sourceWidth": 1536,
+                    "sourceHeight": 1024,
+                    "x": 101.93066666666667,
+                    "y": 225.06666666666666,
+                    "flipX": false,
+                    "depth": 30.0225,
+                    "face": {
+                      "visible": true,
+                      "x": 98.66666666666667,
+                      "y": 221.66666666666666,
+                      "width": 6.732,
+                      "height": 3.74
+                    },
+                    "weapon": {
+                      "x": 97.71466666666667,
+                      "y": 226.83466666666666,
+                      "flipY": true,
+                      "angle": 2.356194490192344,
+                      "depth": 30.02251,
+                      "visible": true
+                    }
+                  },
+                  "floor": 1,
+                  "room": 0,
+                  "kind": "start",
+                  "phase": "exploring",
+                  "settled": false,
+                  "locked": false,
+                  "wave": 0,
+                  "alive": 0,
+                  "kills": 0,
+                  "x": 102,
+                  "y": 225,
+                  "hp": 6,
+                  "armor": 5,
+                  "energy": 200,
+                  "weapon": "pistol_basic",
+                  "skill": 0,
+                  "offers": [],
+                  "links": [
+                    {
+                      "id": 1,
+                      "dx": 0,
+                      "dy": -1
+                    }
+                  ],
+                  "bullets": 0,
+                  "children": 1002,
+                  "time": 2.5166666666666626,
+                  "resumeRemaining": 0,
+                  "physicsPaused": false,
+                  "enemies": []
+                },
+                "backgroundPoint": {
+                  "x": 358,
+                  "y": 432
+                }
+              },
+              {
+                "name": "south-east",
+                "maxError": 0.48171003677009594,
+                "samples": 125,
+                "state": {
+                  "camera": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 1920,
+                    "height": 1080,
+                    "zoom": 6,
+                    "scrollX": 218,
+                    "scrollY": 135
+                  },
+                  "meleeActive": false,
+                  "visual": {
+                    "frame": "run_0",
+                    "texture": "demo_hero",
+                    "source": "blob:http://localhost:4173/c6bb33d4-4077-4ecf-8023-cc45f0bcd32d",
+                    "sourceWidth": 1536,
+                    "sourceHeight": 1024,
+                    "x": 378.0693333333333,
+                    "y": 225.06666666666666,
+                    "flipX": true,
+                    "depth": 30.0225,
+                    "face": {
+                      "visible": true,
+                      "x": 374.6013333333333,
+                      "y": 221.66666666666666,
+                      "width": 6.732,
+                      "height": 3.74
+                    },
+                    "weapon": {
+                      "x": 382.2853333333333,
+                      "y": 226.83466666666666,
+                      "flipY": false,
+                      "angle": 0.7853981633974492,
+                      "depth": 30.02251,
+                      "visible": true
+                    }
+                  },
+                  "floor": 1,
+                  "room": 0,
+                  "kind": "start",
+                  "phase": "exploring",
+                  "settled": false,
+                  "locked": false,
+                  "wave": 0,
+                  "alive": 0,
+                  "kills": 0,
+                  "x": 378,
+                  "y": 225,
+                  "hp": 6,
+                  "armor": 5,
+                  "energy": 200,
+                  "weapon": "pistol_basic",
+                  "skill": 0,
+                  "offers": [],
+                  "links": [
+                    {
+                      "id": 1,
+                      "dx": 0,
+                      "dy": -1
+                    }
+                  ],
+                  "bullets": 0,
+                  "children": 1002,
+                  "time": 2.5666666666666624,
+                  "resumeRemaining": 0,
+                  "physicsPaused": false,
+                  "enemies": []
+                },
+                "backgroundPoint": {
+                  "x": 922,
+                  "y": 432
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "title": "跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 6752,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "title": "移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 6105,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "title": "主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动",
+        "project": "desktop",
+        "status": "skipped",
+        "milliseconds": 825,
+        "retry": 0,
+        "annotations": [
+          {
+            "type": "skip",
+            "location": {
+              "file": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/roomCamera.spec.ts",
+              "line": 265,
+              "column": 8
+            }
+          }
+        ],
+        "attachments": []
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "title": "不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 11046,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "title": "真实移动到四个墙角时人物持续居中，房间外露出黑色背景",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 38712,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "centered-camera-edges",
+            "data": [
+              {
+                "name": "north-west",
+                "maxError": 0.5,
+                "samples": 118,
+                "state": {
+                  "camera": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 2589,
+                    "height": 1080,
+                    "zoom": 8.5,
+                    "scrollX": -50.23529411764706,
+                    "scrollY": -18.470588235294116
+                  },
+                  "meleeActive": false,
+                  "visual": {
+                    "frame": "run_1",
+                    "texture": "demo_hero",
+                    "source": "blob:http://localhost:4173/dfae3dbf-af95-4c98-87c5-f08c4e61e98d",
+                    "sourceWidth": 1536,
+                    "sourceHeight": 1024,
+                    "x": 101.96988235294117,
+                    "y": 45.04705882352941,
+                    "flipX": false,
+                    "depth": 30.0045,
+                    "face": {
+                      "visible": true,
+                      "x": 98.70588235294117,
+                      "y": 41.64705882352941,
+                      "width": 6.732,
+                      "height": 3.74
+                    },
+                    "weapon": {
+                      "x": 97.75388235294118,
+                      "y": 46.81505882352941,
+                      "flipY": true,
+                      "angle": -2.356194490192345,
+                      "depth": 30.00449,
+                      "visible": true
+                    }
+                  },
+                  "floor": 1,
+                  "room": 0,
+                  "kind": "start",
+                  "phase": "exploring",
+                  "settled": false,
+                  "locked": false,
+                  "wave": 0,
+                  "alive": 0,
+                  "kills": 0,
+                  "x": 102,
+                  "y": 45,
+                  "hp": 6,
+                  "armor": 5,
+                  "energy": 200,
+                  "weapon": "pistol_basic",
+                  "skill": 0,
+                  "offers": [],
+                  "links": [
+                    {
+                      "id": 1,
+                      "dx": 0,
+                      "dy": -1
+                    }
+                  ],
+                  "bullets": 0,
+                  "children": 1002,
+                  "time": 2.533333333333329,
+                  "resumeRemaining": 0,
+                  "physicsPaused": false,
+                  "enemies": []
+                },
+                "backgroundPoint": {
+                  "x": 242,
+                  "y": 144
+                }
+              },
+              {
+                "name": "north-east",
+                "maxError": 0.5,
+                "samples": 101,
+                "state": {
+                  "camera": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 2589,
+                    "height": 1080,
+                    "zoom": 8.5,
+                    "scrollX": 177.76470588235293,
+                    "scrollY": -18.470588235294116
+                  },
+                  "meleeActive": false,
+                  "visual": {
+                    "frame": "run_6",
+                    "texture": "demo_hero",
+                    "source": "blob:http://localhost:4173/1426ca18-328a-46cc-934d-b5ba24892ed1",
+                    "sourceWidth": 1536,
+                    "sourceHeight": 1024,
+                    "x": 330.03011764705883,
+                    "y": 45.04705882352941,
+                    "flipX": true,
+                    "depth": 30.0045,
+                    "face": {
+                      "visible": true,
+                      "x": 326.5621176470588,
+                      "y": 41.64705882352941,
+                      "width": 6.732,
+                      "height": 3.74
+                    },
+                    "weapon": {
+                      "x": 334.24611764705884,
+                      "y": 46.81505882352941,
+                      "flipY": false,
+                      "angle": -0.7853981633974492,
+                      "depth": 30.00449,
+                      "visible": true
+                    }
+                  },
+                  "floor": 1,
+                  "room": 0,
+                  "kind": "start",
+                  "phase": "exploring",
+                  "settled": false,
+                  "locked": false,
+                  "wave": 0,
+                  "alive": 0,
+                  "kills": 0,
+                  "x": 330,
+                  "y": 45,
+                  "hp": 6,
+                  "armor": 5,
+                  "energy": 200,
+                  "weapon": "pistol_basic",
+                  "skill": 0,
+                  "offers": [],
+                  "links": [
+                    {
+                      "id": 1,
+                      "dx": 0,
+                      "dy": -1
+                    }
+                  ],
+                  "bullets": 0,
+                  "children": 1002,
+                  "time": 1.7666666666666653,
+                  "resumeRemaining": 0,
+                  "physicsPaused": false,
+                  "enemies": []
+                },
+                "backgroundPoint": {
+                  "x": 621,
+                  "y": 144
+                }
+              },
+              {
+                "name": "south-west",
+                "maxError": 0.5,
+                "samples": 117,
+                "state": {
+                  "camera": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 2589,
+                    "height": 1080,
+                    "zoom": 8.5,
+                    "scrollX": -50.23529411764706,
+                    "scrollY": 161.52941176470588
+                  },
+                  "meleeActive": false,
+                  "visual": {
+                    "frame": "run_0",
+                    "texture": "demo_hero",
+                    "source": "blob:http://localhost:4173/9062424c-e31c-4011-bd02-e2ae05a1b6ec",
+                    "sourceWidth": 1536,
+                    "sourceHeight": 1024,
+                    "x": 101.96988235294117,
+                    "y": 225.04705882352943,
+                    "flipX": false,
+                    "depth": 30.0225,
+                    "face": {
+                      "visible": true,
+                      "x": 98.70588235294117,
+                      "y": 221.64705882352942,
+                      "width": 6.732,
+                      "height": 3.74
+                    },
+                    "weapon": {
+                      "x": 97.75388235294118,
+                      "y": 226.81505882352943,
+                      "flipY": true,
+                      "angle": 2.356194490192344,
+                      "depth": 30.02251,
+                      "visible": true
+                    }
+                  },
+                  "floor": 1,
+                  "room": 0,
+                  "kind": "start",
+                  "phase": "exploring",
+                  "settled": false,
+                  "locked": false,
+                  "wave": 0,
+                  "alive": 0,
+                  "kills": 0,
+                  "x": 102,
+                  "y": 225,
+                  "hp": 6,
+                  "armor": 5,
+                  "energy": 200,
+                  "weapon": "pistol_basic",
+                  "skill": 0,
+                  "offers": [],
+                  "links": [
+                    {
+                      "id": 1,
+                      "dx": 0,
+                      "dy": -1
+                    }
+                  ],
+                  "bullets": 0,
+                  "children": 1002,
+                  "time": 2.499999999999996,
+                  "resumeRemaining": 0,
+                  "physicsPaused": false,
+                  "enemies": []
+                },
+                "backgroundPoint": {
+                  "x": 242,
+                  "y": 216
+                }
+              },
+              {
+                "name": "south-east",
+                "maxError": 0.5,
+                "samples": 123,
+                "state": {
+                  "camera": {
+                    "x": 0,
+                    "y": 0,
+                    "width": 2589,
+                    "height": 1080,
+                    "zoom": 8.5,
+                    "scrollX": 225.76470588235293,
+                    "scrollY": 161.52941176470588
+                  },
+                  "meleeActive": false,
+                  "visual": {
+                    "frame": "run_0",
+                    "texture": "demo_hero",
+                    "source": "blob:http://localhost:4173/39441019-32ee-4865-a42e-e899d047e44c",
+                    "sourceWidth": 1536,
+                    "sourceHeight": 1024,
+                    "x": 378.03011764705883,
+                    "y": 225.04705882352943,
+                    "flipX": true,
+                    "depth": 30.0225,
+                    "face": {
+                      "visible": true,
+                      "x": 374.5621176470588,
+                      "y": 221.64705882352942,
+                      "width": 6.732,
+                      "height": 3.74
+                    },
+                    "weapon": {
+                      "x": 382.24611764705884,
+                      "y": 226.81505882352943,
+                      "flipY": false,
+                      "angle": 0.7853981633974492,
+                      "depth": 30.02251,
+                      "visible": true
+                    }
+                  },
+                  "floor": 1,
+                  "room": 0,
+                  "kind": "start",
+                  "phase": "exploring",
+                  "settled": false,
+                  "locked": false,
+                  "wave": 0,
+                  "alive": 0,
+                  "kills": 0,
+                  "x": 378,
+                  "y": 225,
+                  "hp": 6,
+                  "armor": 5,
+                  "energy": 200,
+                  "weapon": "pistol_basic",
+                  "skill": 0,
+                  "offers": [],
+                  "links": [
+                    {
+                      "id": 1,
+                      "dx": 0,
+                      "dy": -1
+                    }
+                  ],
+                  "bullets": 0,
+                  "children": 1002,
+                  "time": 2.4833333333333294,
+                  "resumeRemaining": 0,
+                  "physicsPaused": false,
+                  "enemies": []
+                },
+                "backgroundPoint": {
+                  "x": 621,
+                  "y": 216
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "title": "跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 6524,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "title": "移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击",
+        "project": "mobile-landscape",
+        "status": "skipped",
+        "milliseconds": 1188,
+        "retry": 0,
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "触控轮盘有独立多指实弹测试",
+            "location": {
+              "file": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/roomCamera.spec.ts",
+              "line": 222,
+              "column": 8
+            }
+          }
+        ],
+        "attachments": []
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "title": "主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 8050,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4308,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "title": "production graybox screenshot floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3574,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "title": "production graybox screenshot floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3839,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "title": "production graybox screenshot floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4230,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "title": "production graybox screenshot floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4485,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 5078,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "title": "production graybox screenshot floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3760,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "title": "production graybox screenshot floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4284,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "title": "production graybox screenshot floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3988,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "title": "production graybox screenshot floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4599,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      }
+    ],
+    "rawReportSha256": "6599ca156a142e646eb36e16b4e10aef600d250413bc2f4f2422243780971314"
+  },
+  "screenshots": [
+    {
+      "path": "docs/testing/wall-art-v2/temple-room.png",
+      "bytes": 885310,
+      "sha256": "509ec50e95fc9e4e1e11f991377e922c907e4eedbae5659577172e1c2494fae3",
+      "gitBlob": "adcb30ee1883e39feef4fb348a48d6609d717d99"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-door.png",
+      "bytes": 713456,
+      "sha256": "e80bfa14ea81499c3e0e4b759242d79e3f6d9475f09c016c7396c6ad83be7b31",
+      "gitBlob": "b01c10741559cd3772cd3a0d4ca276b9beb564e9"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-corner.png",
+      "bytes": 941290,
+      "sha256": "ac608ba06c35bb8162ba73e13e04cef97b0b1cd67028dae5f1dccc81e8f07fd1",
+      "gitBlob": "5e70d142564edd94dbe79e15259c211a55629a82"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-side-open.png",
+      "bytes": 810008,
+      "sha256": "ceb2b728a81aa47462c0da6b03155e9602292a11a6f7a0ae242a93537ce8c020",
+      "gitBlob": "5afa7d931e6733957beccb68b40d0e4bf78aca07"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-side-locked.png",
+      "bytes": 810462,
+      "sha256": "0e4588906d31f24f8e160a8ac6032bcfe88e48cfa7097403b6d574268fda19bc",
+      "gitBlob": "86584696a9f73b895b383fb7f9b0b9a579da915e"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-production.png",
+      "bytes": 938096,
+      "sha256": "e0c63db7f7858aa7fac36c11ab354137c9ec3bb1889430df8e16f9c674ec8c6c",
+      "gitBlob": "47120b1a9ee6c7645c8e12f3d8fac8ed6b719a6c"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-dense-mobile.png",
+      "bytes": 390364,
+      "sha256": "7e4adbc9f21ec0d85393c8ded2d06cd751a26ee8bf810eb7b6a3d301f6a1005b",
+      "gitBlob": "359d2dac54ef0e7613038cea456ba554477d7338"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-room.png",
+      "bytes": 755666,
+      "sha256": "29671c1911f6ff7d73dac23a9c94d65cc08688bd81105f3f5c1fcc097f0d2876",
+      "gitBlob": "4b7e1bce414d4bd0ec9cac332ed0f80a2ece7b27"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-door.png",
+      "bytes": 620525,
+      "sha256": "ceff4ee81c660984c76595ad7cd6c23f2d95a899037527394a2b8cc23bde07e9",
+      "gitBlob": "a71d2e1198b191ed4b0b6a8fa1a5d47762dc5ce1"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-corner.png",
+      "bytes": 757971,
+      "sha256": "883bae8229064d9d248e5a4cba0f2c56d5b5a2c15f2c18214e611c8464aba54f",
+      "gitBlob": "3d570920ffeb579d86e71e07eab46e532abddeca"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-side-open.png",
+      "bytes": 702971,
+      "sha256": "9a5ff2fd240b54089633e7b25560ea9ccbf270490762ac346b676d6265a48193",
+      "gitBlob": "b4610f04e6639e3b2f16ef78e077638fd873a8da"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-side-locked.png",
+      "bytes": 704740,
+      "sha256": "265c8ab7c754780eacf00e59933316633936f3765eb72143dc990d9d0c2953e2",
+      "gitBlob": "118b15393796a5e3bb5c4a08941616b68ca5c8ff"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-production.png",
+      "bytes": 778838,
+      "sha256": "5aba1f8ec09513bbf52288c89c8b31e0d1d0bc2a4fd57fd21878e3bcfe610182",
+      "gitBlob": "c3da499814ea5be3deb56c0200b36fdb021bca2b"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-dense-mobile.png",
+      "bytes": 351398,
+      "sha256": "e01e653d7483cefb8a0c22e30516a4056758f4dd09310a781212bfab6e31687a",
+      "gitBlob": "cbef5f8af493b2232f7f928cf2e5ffd72e0b17aa"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-room.png",
+      "bytes": 856506,
+      "sha256": "f3c24bfe136c5722e4f192aecd53bab6adb0d4851cc9b93c566498cd1450fcb3",
+      "gitBlob": "5d11bb49b6dc0d9760f2664b459390bec227135f"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-door.png",
+      "bytes": 736681,
+      "sha256": "6b0a17320b16be86a060475546bfe5a2179dc34595b07e07d0d44bd05349baa0",
+      "gitBlob": "2634337efc6bef2437e0ff9d20301d6b69a27e97"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-corner.png",
+      "bytes": 1051325,
+      "sha256": "2bbf6273fcbf1c246abe8d1864d0ffca486fa06fe592a4e080cf86c864f7a1df",
+      "gitBlob": "e2e43e91e2da674a0d2e9540f46276bda81c8884"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-side-open.png",
+      "bytes": 835708,
+      "sha256": "5afb038ec012708f62608df8a287898744d8b3c022a8b6f6da2c87192c3f1d8e",
+      "gitBlob": "2c639c6a0f5b75963be50d412e1ad24d19c142d0"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-side-locked.png",
+      "bytes": 836147,
+      "sha256": "2a2c75a050fd24cfde33cad81c8d0822b663d595b554a7cee2489dbaa12c3bd6",
+      "gitBlob": "ec9fe5d08ebc99a840f2cd0846de26878a3309cc"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-production.png",
+      "bytes": 948187,
+      "sha256": "8ae92f2ef38174bbf7c000e8ad6aeb9b435e80b4180425c0f1d5f8e030dd71c5",
+      "gitBlob": "ccb92b346d004fed98d099f2dd6a803ddcc60925"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-dense-mobile.png",
+      "bytes": 390502,
+      "sha256": "75a0bdcf2129aeb710833d9e80bb989f6d2c34c1e9e7ff786ada9338f1f09eef",
+      "gitBlob": "13b17f48bb20609370c640a39723a6552957c8c0"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-room.png",
+      "bytes": 739163,
+      "sha256": "b1167bee6980c82ecb6c526c94ceaa8f8b6524daa411f2fa32c6edc3bbcd9bd4",
+      "gitBlob": "612d362cf98b96f4fa74364c475ea6f56168852d"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-door.png",
+      "bytes": 862612,
+      "sha256": "fdc96f8f9dfb4a8aa3c5dbaa393ad266bac1cf91b86648866267ad1c58b7b991",
+      "gitBlob": "80bc5516b8a092d39531f883c8e62d99b68c0e7e"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-corner.png",
+      "bytes": 471600,
+      "sha256": "89be0621b17388de5e41ecaf9c9f3927ade1b3c736126f3f7e5de5931973e3c1",
+      "gitBlob": "1fde7d8960a5dc56435b4103cb080b8de7ad8928"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-side-open.png",
+      "bytes": 862612,
+      "sha256": "fdc96f8f9dfb4a8aa3c5dbaa393ad266bac1cf91b86648866267ad1c58b7b991",
+      "gitBlob": "80bc5516b8a092d39531f883c8e62d99b68c0e7e"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-side-locked.png",
+      "bytes": 864666,
+      "sha256": "77f7a7eec3416cce7eebe6470579b71433b0fdf4dfd9f4497f51f4f28b89d158",
+      "gitBlob": "f403dfc8b288aedb8da3a4e5f4a0e105ee97853f"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-production.png",
+      "bytes": 895788,
+      "sha256": "b6de3d65e7e73795da3e255184e33d0c0e6589fb234a9c7cbdc3b2389125bf3e",
+      "gitBlob": "08748c939e702a16532f0943b02a4dbc0e4e9189"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-dense-mobile.png",
+      "bytes": 354245,
+      "sha256": "e63eee0b315511975d0ca2f0209324fa21e301fc36b320f2717e178aacf02ced",
+      "gitBlob": "059f6b66f32138abb015b6a85140d62b27f9e1f2"
+    }
+  ],
+  "resources": [
+    {
+      "path": "art-src/maps/sources/terrain-v1.png",
+      "bytes": 2767824,
+      "gitBlob": "afefddbbe419b9b40a20a005e5561f0da49ae798"
+    },
+    {
+      "path": "public/assets/demo/map-terrain-v1.webp",
+      "bytes": 2061738,
+      "gitBlob": "55ee2c2f6257d6e96aebcee7d1e839668fff375f"
+    },
+    {
+      "path": "art-src/maps/sources/doors-v1.png",
+      "bytes": 2296001,
+      "gitBlob": "181b1407a76606249f9edcc9a2c872de754eb08d"
+    },
+    {
+      "path": "public/assets/demo/map-doors-v1.webp",
+      "bytes": 1660546,
+      "gitBlob": "200543fc2bfb3e468f13e0a53eca9c76cfb526c3"
+    },
+    {
+      "path": "art-src/maps/sources/objects-v1.png",
+      "bytes": 1245161,
+      "gitBlob": "3a35cb6de4dd4a3d840793bf7706bf9034002b2b"
+    },
+    {
+      "path": "public/assets/demo/map-objects-v1.webp",
+      "bytes": 940436,
+      "gitBlob": "4a4435c006fa1590ff89888a4131298262355512"
+    },
+    {
+      "path": "art-src/maps/sources/ground-v2.png",
+      "bytes": 2800033,
+      "gitBlob": "f21178cc934d1e045617c07e6ca5d94cac43d78c"
+    },
+    {
+      "path": "public/assets/demo/map-ground-v2.webp",
+      "bytes": 1901304,
+      "gitBlob": "8a033cac16f00dabb71443ab898e17fa31086673"
+    },
+    {
+      "path": "art-src/maps/sources/blocks-v2.png",
+      "bytes": 1145647,
+      "gitBlob": "027735e27ba1d22b5e0cd89595c78d3f6db3947c"
+    },
+    {
+      "path": "public/assets/demo/map-blocks-v2.webp",
+      "bytes": 814706,
+      "gitBlob": "e6751761a28b15d8a35144fe93b86bfd5fd12808"
+    },
+    {
+      "path": "art-src/maps/sources/wall-model-v12.png",
+      "bytes": 1720140,
+      "gitBlob": "0ec0667f9019bed936033c6e3373cca23db70ddd"
+    },
+    {
+      "path": "public/assets/demo/map-wall-model-v12.webp",
+      "bytes": 1110044,
+      "gitBlob": "f4a91144859eb3af8e563b67b64b31fb0aebd477"
+    },
+    {
+      "path": "art-src/maps/sources/side-doors-v2.png",
+      "bytes": 1048670,
+      "gitBlob": "890e475e77c2e874162c949722969c26e7062574"
+    },
+    {
+      "path": "public/assets/demo/map-side-doors-v2.webp",
+      "bytes": 781852,
+      "gitBlob": "9121f6598416713e12a983d60dd4c9e30313b1af"
+    }
+  ],
+  "retainedIntermediateV4": {
+    "stats": {
+      "startTime": "2026-10-28T19:17:55.396Z",
+      "duration": 777849.596,
+      "expected": 62,
+      "skipped": 2,
+      "unexpected": 8,
+      "flaky": 0
+    },
+    "failure": "Eight art-load assertions counted six rather than seven atlases because listener hard-coded old wall filename; changed test to MAP_ART.sources. Production source not failing."
+  },
+  "notes": [
+    "Owner accepted source art, not in-game or phone acceptance.",
+    "Screenshots are direct browser captures; wall closeups use test camera zoom 12, overview 4.25. Production camera unchanged.",
+    "Every theme tests 200 distinct connected fixture layouts; these are not production room content.",
+    "Old area and spawning measurements were not rerun: sim, geometry, data templates and collision bodies unchanged relative to f386549.",
+    "ABAB performance and negative control are separate JSON files; no concurrent browser tests during benchmark."
+  ]
+}

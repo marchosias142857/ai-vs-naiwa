@@ -1,0 +1,1881 @@
+{
+  "candidateImplementation": "4bae910373c5586e1fc724668d804b8e8a9ffc1a",
+  "candidateSrcTree": "586a5c8be7007363b6aab3dd4f704c9ac0f462a9",
+  "candidatePublicTree": "aab5d2ba2e01e27a9f529dcba5124cd6fad8270f",
+  "baseMain": "0ea5e721bf2329276f262a2c4e72643437be5f0a",
+  "oldReviewHead": "f3865490d928ad1056e0c3ff1f08101ec58ae0c4",
+  "acceptedSource": "wall-model-v12.png",
+  "fullCheck": {
+    "unitFiles": 64,
+    "unitTests": 522,
+    "format": true,
+    "eslint": true,
+    "typescript": true,
+    "build": true,
+    "logSha256": "c45352d9101f20bb3dd3a0ceb6dc855cdae4c0957dc01dee15e1b01ed6448e9e",
+    "note": "Complete check after runtime floor fix; final camera-fixture selection correction additionally passed typecheck and format checks."
+  },
+  "browser": {
+    "projects": ["desktop", "mobile-landscape"],
+    "engine": "Chromium / SwiftShader",
+    "webKitRun": false,
+    "physicalPhoneRun": false,
+    "adoptedResults": {
+      "unique": 32,
+      "passed": 32,
+      "failed": 0,
+      "note": "28 first-batch passes plus 4 corrected fixture cases; all 8 wall review cases rerun. Not a single all-green batch."
+    },
+    "firstBatchStats": {
+      "startTime": "2026-10-28T20:06:52.142Z",
+      "duration": 275740.714,
+      "expected": 28,
+      "skipped": 0,
+      "unexpected": 4,
+      "flaky": 0
+    },
+    "followupBatchStats": {
+      "startTime": "2026-10-28T20:12:42.820Z",
+      "duration": 82641.55500000001,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "tests": [
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3811,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4206,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4437,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4403,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3489,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4312,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4097,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4185,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4046,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12516,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12208,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3076,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3994
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3853
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 4406
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 2722
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3850,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12516,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12208,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 2763,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3994
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3853
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 4406
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 2722
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3523,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "temple",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 74
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4671,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "wreck",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 62
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4583,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "abyss",
+              "rocks": 7,
+              "actors": 29,
+              "traps": [
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "armed"
+                }
+              ],
+              "bullets": 51
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4253,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "milk",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [],
+              "bullets": 34
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 9742,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 10953,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 11184,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 9987,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3149,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "temple",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 74
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3684,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "wreck",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 62
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4187,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "abyss",
+              "rocks": 7,
+              "actors": 29,
+              "traps": [
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "armed"
+                }
+              ],
+              "bullets": 51
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3886,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "milk",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [],
+              "bullets": 34
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 7672,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 8281,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 8541,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 7856,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 15111,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 29033,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 14162,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 29483,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      }
+    ],
+    "firstBatchRawReportSha256": "fb8167c65975432e34527fc2ee20d7308393ea4a51d82f6f3062d40e6d1ae677",
+    "followupRawReportSha256": "7c8a152ef069fe3576492f054deb620f15475b082fb3230c0b36d8b3a644e90c",
+    "retainedFirstBatchTests": [
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3811,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4206,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4437,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4403,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3489,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4312,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4097,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4185,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4046,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12516,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12208,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3076,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3994
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3853
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 4406
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 2722
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3850,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12516,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12208,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 2763,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3994
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3853
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 4406
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 2722
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3523,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "temple",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 74
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4671,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "wreck",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 62
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4583,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "abyss",
+              "rocks": 7,
+              "actors": 29,
+              "traps": [
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "armed"
+                }
+              ],
+              "bullets": 51
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4253,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "milk",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [],
+              "bullets": 34
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 1",
+        "project": "desktop",
+        "status": "failed",
+        "milliseconds": 10518,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 2",
+        "project": "desktop",
+        "status": "failed",
+        "milliseconds": 11072,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 11598,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 9685,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3149,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "temple",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 74
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3684,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "wreck",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 62
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4187,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "abyss",
+              "rocks": 7,
+              "actors": 29,
+              "traps": [
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "armed"
+                }
+              ],
+              "bullets": 51
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3886,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "milk",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [],
+              "bullets": 34
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 1",
+        "project": "mobile-landscape",
+        "status": "failed",
+        "milliseconds": 9849,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 2",
+        "project": "mobile-landscape",
+        "status": "failed",
+        "milliseconds": 8688,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 9074,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 8254,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 15111,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 29033,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 14162,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 29483,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      }
+    ],
+    "followupTests": [
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 9742,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 10953,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 11184,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 9987,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 7672,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 8281,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 8541,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 7856,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      }
+    ],
+    "fixtureCorrection": "Obstacle close-up originally selected temple/wreck combat_0, which has no static box. Select existing combat_1 only for obstacle focus; unchanged runtime, scene, viewport, assertions and timeout. Initial 4 failures were TypeError reading missing obstacle.x."
+  },
+  "screenshots": [
+    {
+      "path": "docs/testing/wall-art-v2/temple-room.png",
+      "bytes": 885310,
+      "sha256": "509ec50e95fc9e4e1e11f991377e922c907e4eedbae5659577172e1c2494fae3",
+      "gitBlob": "adcb30ee1883e39feef4fb348a48d6609d717d99"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-door.png",
+      "bytes": 713456,
+      "sha256": "e80bfa14ea81499c3e0e4b759242d79e3f6d9475f09c016c7396c6ad83be7b31",
+      "gitBlob": "b01c10741559cd3772cd3a0d4ca276b9beb564e9"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-corner.png",
+      "bytes": 941290,
+      "sha256": "ac608ba06c35bb8162ba73e13e04cef97b0b1cd67028dae5f1dccc81e8f07fd1",
+      "gitBlob": "5e70d142564edd94dbe79e15259c211a55629a82"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-side-open.png",
+      "bytes": 810008,
+      "sha256": "ceb2b728a81aa47462c0da6b03155e9602292a11a6f7a0ae242a93537ce8c020",
+      "gitBlob": "5afa7d931e6733957beccb68b40d0e4bf78aca07"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-side-locked.png",
+      "bytes": 810462,
+      "sha256": "0e4588906d31f24f8e160a8ac6032bcfe88e48cfa7097403b6d574268fda19bc",
+      "gitBlob": "86584696a9f73b895b383fb7f9b0b9a579da915e"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-obstacle.png",
+      "bytes": 1266984,
+      "sha256": "175e2992f6c0251884d612c411a5551459128f723ec3828e0b937f37385bbb62",
+      "gitBlob": "5490085c3d1bfd81165e502a82335d4ce5d4e664"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-production.png",
+      "bytes": 938096,
+      "sha256": "e0c63db7f7858aa7fac36c11ab354137c9ec3bb1889430df8e16f9c674ec8c6c",
+      "gitBlob": "47120b1a9ee6c7645c8e12f3d8fac8ed6b719a6c"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-dense-mobile.png",
+      "bytes": 390364,
+      "sha256": "7e4adbc9f21ec0d85393c8ded2d06cd751a26ee8bf810eb7b6a3d301f6a1005b",
+      "gitBlob": "359d2dac54ef0e7613038cea456ba554477d7338"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-room.png",
+      "bytes": 755666,
+      "sha256": "29671c1911f6ff7d73dac23a9c94d65cc08688bd81105f3f5c1fcc097f0d2876",
+      "gitBlob": "4b7e1bce414d4bd0ec9cac332ed0f80a2ece7b27"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-door.png",
+      "bytes": 620525,
+      "sha256": "ceff4ee81c660984c76595ad7cd6c23f2d95a899037527394a2b8cc23bde07e9",
+      "gitBlob": "a71d2e1198b191ed4b0b6a8fa1a5d47762dc5ce1"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-corner.png",
+      "bytes": 757971,
+      "sha256": "883bae8229064d9d248e5a4cba0f2c56d5b5a2c15f2c18214e611c8464aba54f",
+      "gitBlob": "3d570920ffeb579d86e71e07eab46e532abddeca"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-side-open.png",
+      "bytes": 702971,
+      "sha256": "9a5ff2fd240b54089633e7b25560ea9ccbf270490762ac346b676d6265a48193",
+      "gitBlob": "b4610f04e6639e3b2f16ef78e077638fd873a8da"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-side-locked.png",
+      "bytes": 704740,
+      "sha256": "265c8ab7c754780eacf00e59933316633936f3765eb72143dc990d9d0c2953e2",
+      "gitBlob": "118b15393796a5e3bb5c4a08941616b68ca5c8ff"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-obstacle.png",
+      "bytes": 1082850,
+      "sha256": "1c5fcb02a5f57d91cad887caaa3e259d1f3cdd8875509b4008c364f603833607",
+      "gitBlob": "342e955d2804ef179f2b055a8665ec2fbdd67e08"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-production.png",
+      "bytes": 778838,
+      "sha256": "5aba1f8ec09513bbf52288c89c8b31e0d1d0bc2a4fd57fd21878e3bcfe610182",
+      "gitBlob": "c3da499814ea5be3deb56c0200b36fdb021bca2b"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-dense-mobile.png",
+      "bytes": 351398,
+      "sha256": "e01e653d7483cefb8a0c22e30516a4056758f4dd09310a781212bfab6e31687a",
+      "gitBlob": "cbef5f8af493b2232f7f928cf2e5ffd72e0b17aa"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-room.png",
+      "bytes": 856826,
+      "sha256": "da07514df9251bd189ca50a35cf7b0bb65b307a5df8c68ba775bd250257bee6a",
+      "gitBlob": "be4d7f27de0a13c25f73cb7bfdf6bb149fa18cf2"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-door.png",
+      "bytes": 736681,
+      "sha256": "6b0a17320b16be86a060475546bfe5a2179dc34595b07e07d0d44bd05349baa0",
+      "gitBlob": "2634337efc6bef2437e0ff9d20301d6b69a27e97"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-corner.png",
+      "bytes": 1053199,
+      "sha256": "ba6290d18aea29f0c8655a65719b34434e9fee9cc79e05142d17b25ce257fcb9",
+      "gitBlob": "a3b19fb541522dff6eb1d30b4bdb6e68cb35ced8"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-side-open.png",
+      "bytes": 837091,
+      "sha256": "55c1aa3fbef9e6e05ec19d89bcf7eb475a6f44a764529973ceff97d857431171",
+      "gitBlob": "64b8fb87f26d1b1d33a979ee3b5d293b1cba4bf0"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-side-locked.png",
+      "bytes": 837518,
+      "sha256": "9ac6c0df6a905eab3a04ac34dd35d09300ad194f6e0fc5cc330c71cc40d780f2",
+      "gitBlob": "b8e8f1d3a924066f917fcc980a7c0d8698877eda"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-obstacle.png",
+      "bytes": 1311003,
+      "sha256": "716b62d82cf0702ae0f06409dc7e7aa117899525e723a81e4399b6b79d38e407",
+      "gitBlob": "d1693e34ccc3615b84bd4a879e5a778f725e8f5a"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-production.png",
+      "bytes": 948187,
+      "sha256": "8ae92f2ef38174bbf7c000e8ad6aeb9b435e80b4180425c0f1d5f8e030dd71c5",
+      "gitBlob": "ccb92b346d004fed98d099f2dd6a803ddcc60925"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-dense-mobile.png",
+      "bytes": 394488,
+      "sha256": "06baf61bc3af92c34b093cfab885bb52f44c66cc936b07bba306c7ac81ab4491",
+      "gitBlob": "1fdbaf7a9e90a4152fbf802ba92d11bde541a363"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-room.png",
+      "bytes": 739254,
+      "sha256": "62f7c36502d9b349263534a40ddecbbf199eb3cb2944db05c1f41e06af601b33",
+      "gitBlob": "aa3e9c58162ef47e0eebe59f5ac88cfd414664f0"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-door.png",
+      "bytes": 864440,
+      "sha256": "c0f5f7adfb233fdf1426a13d20254f1053d461b97bd5c21ef4b83af7a5450dab",
+      "gitBlob": "65521e1e66d6963c240fd315dd273d3797dc19d5"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-corner.png",
+      "bytes": 472150,
+      "sha256": "c17400119f467bb98f3d65fdbc4e608d36e9bac307a2c815d22fe40fc762ee30",
+      "gitBlob": "cbd571edf805f2e6926bd4bb7062c75241619c08"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-side-open.png",
+      "bytes": 864440,
+      "sha256": "c0f5f7adfb233fdf1426a13d20254f1053d461b97bd5c21ef4b83af7a5450dab",
+      "gitBlob": "65521e1e66d6963c240fd315dd273d3797dc19d5"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-side-locked.png",
+      "bytes": 866508,
+      "sha256": "e23a94e8854a7dc492db8832d7548cca7a1ad942282779a6f888c910bd8ec51d",
+      "gitBlob": "c434f4ea75d07b94327d50bbc7f748e81550b430"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-obstacle.png",
+      "bytes": 1300988,
+      "sha256": "337c8c62d47a2bb91ed60afa7edf8058c47232daac8985378b86959c2e662c86",
+      "gitBlob": "36788a39facfeefcf0ce521be125552e76ab40b4"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-production.png",
+      "bytes": 895788,
+      "sha256": "b6de3d65e7e73795da3e255184e33d0c0e6589fb234a9c7cbdc3b2389125bf3e",
+      "gitBlob": "08748c939e702a16532f0943b02a4dbc0e4e9189"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-dense-mobile.png",
+      "bytes": 354931,
+      "sha256": "652a5286b07ea2373d8d0201810aa020c98c0397150a9437f702c42b0a948688",
+      "gitBlob": "337f29347ef21f7bac5b5aa8e31174035d82146c"
+    }
+  ],
+  "resources": [
+    {
+      "path": "art-src/maps/sources/terrain-v1.png",
+      "bytes": 2767824,
+      "gitBlob": "afefddbbe419b9b40a20a005e5561f0da49ae798"
+    },
+    {
+      "path": "public/assets/demo/map-terrain-v1.webp",
+      "bytes": 2061738,
+      "gitBlob": "55ee2c2f6257d6e96aebcee7d1e839668fff375f"
+    },
+    {
+      "path": "art-src/maps/sources/doors-v1.png",
+      "bytes": 2296001,
+      "gitBlob": "181b1407a76606249f9edcc9a2c872de754eb08d"
+    },
+    {
+      "path": "public/assets/demo/map-doors-v1.webp",
+      "bytes": 1660546,
+      "gitBlob": "200543fc2bfb3e468f13e0a53eca9c76cfb526c3"
+    },
+    {
+      "path": "art-src/maps/sources/objects-v1.png",
+      "bytes": 1245161,
+      "gitBlob": "3a35cb6de4dd4a3d840793bf7706bf9034002b2b"
+    },
+    {
+      "path": "public/assets/demo/map-objects-v1.webp",
+      "bytes": 940436,
+      "gitBlob": "4a4435c006fa1590ff89888a4131298262355512"
+    },
+    {
+      "path": "art-src/maps/sources/ground-v2.png",
+      "bytes": 2800033,
+      "gitBlob": "f21178cc934d1e045617c07e6ca5d94cac43d78c"
+    },
+    {
+      "path": "public/assets/demo/map-ground-v2.webp",
+      "bytes": 1901304,
+      "gitBlob": "8a033cac16f00dabb71443ab898e17fa31086673"
+    },
+    {
+      "path": "art-src/maps/sources/blocks-v2.png",
+      "bytes": 1145647,
+      "gitBlob": "027735e27ba1d22b5e0cd89595c78d3f6db3947c"
+    },
+    {
+      "path": "public/assets/demo/map-blocks-v2.webp",
+      "bytes": 814706,
+      "gitBlob": "e6751761a28b15d8a35144fe93b86bfd5fd12808"
+    },
+    {
+      "path": "art-src/maps/sources/wall-model-v12.png",
+      "bytes": 1720140,
+      "gitBlob": "0ec0667f9019bed936033c6e3373cca23db70ddd"
+    },
+    {
+      "path": "public/assets/demo/map-wall-model-v12.webp",
+      "bytes": 1110044,
+      "gitBlob": "f4a91144859eb3af8e563b67b64b31fb0aebd477"
+    },
+    {
+      "path": "art-src/maps/sources/side-doors-v2.png",
+      "bytes": 1048670,
+      "gitBlob": "890e475e77c2e874162c949722969c26e7062574"
+    },
+    {
+      "path": "public/assets/demo/map-side-doors-v2.webp",
+      "bytes": 781852,
+      "gitBlob": "9121f6598416713e12a983d60dd4c9e30313b1af"
+    }
+  ],
+  "retainedIntermediateV4": {
+    "stats": {
+      "startTime": "2026-10-28T19:17:55.396Z",
+      "duration": 777849.596,
+      "expected": 62,
+      "skipped": 2,
+      "unexpected": 8,
+      "flaky": 0
+    },
+    "failure": "Eight art-load assertions counted six rather than seven atlases because listener hard-coded old wall filename; changed test to MAP_ART.sources. Production source not failing."
+  },
+  "notes": [
+    "Owner accepted source art, not in-game or phone acceptance.",
+    "Screenshots are direct browser captures; wall closeups use test camera zoom 12, overview 4.25. Production camera unchanged.",
+    "The prior 70-pass/2-skip batch covered 200 distinct connected fixture layouts per theme; the post-floor-fix batch targets rendering and PWA without rerunning the 800-layout test.",
+    "Old area and spawning measurements were not rerun: sim, geometry, data templates and collision bodies unchanged relative to f386549.",
+    "ABAB and old-renderer negative control were run at 85ce678 before removal of rectangular obstacle shading; not rerun after this floor fix."
+  ],
+  "finalPrecache": {
+    "files": 27,
+    "bytes": 21108677
+  },
+  "previousVerification": {
+    "file": "verification-before-floor-fix.json",
+    "candidateImplementation": "85ce6787cf89a02c73dfd39e052d17919f7e94a9",
+    "screenshotsAtCommit": "0dc175bec44fe19e1c14dc218de3ba89416bc37f",
+    "stats": {
+      "startTime": "2026-10-28T19:42:50.721Z",
+      "duration": 737650.433,
+      "expected": 70,
+      "skipped": 2,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "floorUnderlayRegression": {
+    "beforeFixStats": {
+      "startTime": "2026-10-28T20:02:28.858Z",
+      "duration": 5383.888,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "beforeFix": "New desktop regression failed on temple with 7986 changed floor samples out of 9920; floor alpha was already opaque, but rectangular 70% dark backing obscured texture.",
+    "redReportSha256": "b73ad009d5722c2953fcda3fd30b15c04f6799e7ecfeb74513684b614257c65e",
+    "checkHistory": [
+      "First floor-fix check stopped at TypeScript union-tuple spread in new fixture; fixed explicit frame indices before green check.",
+      "One check process stopped during build without a completion record; a fresh complete check was required and is recorded above."
+    ],
+    "fix": "Remove rectangular backing; keep uninterrupted floor beneath transparent obstacle edges and preserve original source art shading."
+  }
+}
