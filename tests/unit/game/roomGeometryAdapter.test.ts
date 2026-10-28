@@ -17,6 +17,12 @@ function harness() {
     clear: () => graphics,
     fillStyle: () => graphics,
     fillRect: () => graphics,
+    beginPath: () => graphics,
+    moveTo: () => graphics,
+    lineTo: () => graphics,
+    closePath: () => graphics,
+    fillPath: () => graphics,
+    strokePath: () => graphics,
     lineStyle: () => graphics,
     lineBetween: () => graphics,
     strokeRect: () => graphics,
@@ -147,4 +153,17 @@ it('rejects unknown or mismatched template IDs before changing the active room g
   }
   arena.destroy();
   run.destroy();
+});
+
+it('static muzzle callback includes concave boundaries; dynamic rocks remain in the AI geometry provider', () => {
+  const { arena, sim } = harness();
+  const run = new DungeonRun(42, new EventBus(), 3);
+  arena.show(run, 'modular_v2/abyss/empty');
+  expect(arena.lineOfSight(196, 60, 284, 60)).toBe(false);
+  const hit = createGeometryHit();
+  Object.assign(sim.rocks[0]!, { active: true, landed: true, x: 240, y: 135, radius: 12 });
+  expect(arena.lineOfSight(240, 135, 255, 135)).toBe(true);
+  arena.prepareGeometry().traceSegment({ x: 240, y: 135 }, { x: 255, y: 135 }, M.LOS, hit);
+  expect(hit.hit).toBe(true);
+  expect(hit.kind).toBe('rock');
 });

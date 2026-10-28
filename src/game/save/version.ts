@@ -1,3 +1,4 @@
+import { MODULAR_V2 } from '../../data/roomTemplates/modularV2';
 import { WEAPON_ART } from '../../data/art';
 import { CHARACTER_ART } from '../../data/characterArt';
 import { ATTACKS } from '../../data/attacks';
@@ -16,9 +17,10 @@ import { TALENT_RULES, TALENTS } from '../../data/talents';
 import { WEAPONS } from '../../data/weapons';
 import { hashString } from '../../sim/core/Random';
 
-/** 生产构建的模块 URL 含 Vite 内容哈希，代码变化也会触发入口兜底；只在模块初始化计算。 */
+/** 生产构建的模块 URL 含 Vite 内容哈希，代码变化结束旧冒险；只在模块初始化计算。 */
+declare const __APP_RELEASE__: string;
 export const SAVE_VERSION = {
-  build: new URL(import.meta.url).pathname,
+  build: typeof __APP_RELEASE__ === 'string' ? __APP_RELEASE__ : new URL(import.meta.url).pathname,
   dataHash: hashString(
     JSON.stringify({
       CHARACTER_ART,
@@ -29,6 +31,7 @@ export const SAVE_VERSION = {
       DUNGEON,
       ENEMIES,
       LEGACY_V1,
+      MODULAR_V2,
       TRAP_RULES,
       ENCOUNTERS,
       LOOT_RULES,

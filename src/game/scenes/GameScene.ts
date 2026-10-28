@@ -2,7 +2,6 @@ import { readProfile, retryPendingRewards } from '../save/metaProfile';
 import { newRunId } from '../../sim/meta/profile';
 import { configureCamera } from '../configureCamera';
 import { RoomCamera } from '../RoomCamera';
-import { GRAYBOX_BOUNDS as B } from '../world/graybox';
 import { StressRun } from '../../debug/StressRun';
 import { debugCheckpoint } from '../../debug/floorCheckpoint';
 import { CombatAudio } from '../fx/CombatAudio';
@@ -137,11 +136,8 @@ export class GameScene extends M1Scene {
     const d = this.demo.dungeon;
     for (const id of d.room.links) {
       const to = d.map.rooms[id]!;
-      this.roomCamera?.hint(
-        B.x + B.width / 2 + ((to.x - d.room.x) * B.width) / 2,
-        B.y + B.height / 2 + ((to.y - d.room.y) * B.height) / 2,
-        d.locked ? 0x8a93b8 : 0x7ee8ff,
-      );
+      const port = this.demo.arena.port(to.x - d.room.x, to.y - d.room.y);
+      this.roomCamera?.hint(port.center.x, port.center.y, d.locked ? 0x8a93b8 : 0x7ee8ff);
     }
     for (const a of this.demo.sim.actors)
       if (a.team === 'enemy' && a.phase !== 'dead') this.roomCamera?.hint(a.x, a.y, 0xff8d9d);

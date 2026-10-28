@@ -9,14 +9,41 @@ import { decodeSimSnapshot, type RunSnapshot, type SessionSnapshot, type SimDeco
 import { SAVE_VERSION } from './version';
 
 export const RUN_KEY = 'avn.run.v2';
+export const BUILD_KEY = 'avn.run.build';
+let updatedAtBoot = false;
+/** Only adventure keys are invalidated; profile and unknown future resource keys are untouched. */
+export function prepareRunVersion(): boolean {
+  const previous = loadValue(BUILD_KEY);
+  const stored = inspectValue(RUN_KEY);
+  const stamp = `${SAVE_VERSION.build}:${SAVE_VERSION.dataHash}`;
+  const changed = previous !== null && previous !== stamp;
+  const decoded = stored.found ? decodeRun(stored.value) : null;
+  const incompatible = decoded?.kind === 'none' && decoded.notice === 'updated';
+  const unversionedEntry = previous === null && !stored.found && inspectValue(CHECKPOINT_KEY).found;
+  const unknownVersion = previous === null && stored.found && decoded?.kind === 'entry';
+  updatedAtBoot = changed || incompatible || unversionedEntry || unknownVersion;
+  if (updatedAtBoot) clearSavedRun();
+  saveValue(BUILD_KEY, stamp);
+  return updatedAtBoot;
+}
 export type ResumeChoice =
   | { kind: 'full'; snapshot: RunSnapshot }
-  | { kind: 'entry'; checkpoint: FloorCheckpoint; notice?: 'updated' | 'invalid' }
-  | { kind: 'none'; notice?: 'corrupt' };
+  | { kind: 'entry'; checkpoint: FloorCheckpoint; notice?: 'invalid' }
+  | { kind: 'none'; notice?: 'corrupt' | 'updated' };
 
 /** entry 始终独立校验；完整恢复必须通过 sim 与 game 两层按字段校验。 */
 export function decodeRun(value: unknown, decodeSim: SimDecoder = decodeSimSnapshot): ResumeChoice {
   if (!object(value)) return { kind: 'none', notice: 'corrupt' };
+  const metadata = value.meta;
+  if (
+    object(metadata) &&
+    typeof metadata.build === 'string' &&
+    typeof metadata.dataHash === 'string' &&
+    (value.version !== 2 ||
+      metadata.build !== SAVE_VERSION.build ||
+      metadata.dataHash !== SAVE_VERSION.dataHash)
+  )
+    return { kind: 'none', notice: 'updated' };
   // 旧构建或局部损坏的终局同样不能降级成入口并复活。
   if (
     object(value.sim) &&
@@ -39,7 +66,7 @@ export function decodeRun(value: unknown, decodeSim: SimDecoder = decodeSimSnaps
   )
     return invalid;
   if (value.version !== 2 || m.build !== SAVE_VERSION.build || m.dataHash !== SAVE_VERSION.dataHash)
-    return { kind: 'entry', checkpoint: entry, notice: 'updated' };
+    return { kind: 'none', notice: 'updated' };
   try {
     const sim = decodeSim(value.sim, entry.seed);
     if (!sim) return invalid;
@@ -70,6 +97,7 @@ export function decodeRun(value: unknown, decodeSim: SimDecoder = decodeSimSnaps
   }
 }
 export function readSavedRun(decodeSim: SimDecoder = decodeSimSnapshot): ResumeChoice {
+  if (updatedAtBoot) return { kind: 'none', notice: 'updated' };
   const stored = inspectValue(RUN_KEY);
   const checkpoint = stored.found ? null : parseCheckpoint(loadValue(CHECKPOINT_KEY));
   const result: ResumeChoice = stored.found
@@ -77,6 +105,7 @@ export function readSavedRun(decodeSim: SimDecoder = decodeSimSnapshot): ResumeC
     : checkpoint
       ? { kind: 'entry', checkpoint }
       : { kind: 'none' };
+  if (result.kind === 'none' && result.notice === 'updated') clearSavedRun();
   const entry =
     result.kind === 'full' ? result.snapshot.entry : result.kind === 'entry' ? result.checkpoint : null;
   if (entry && isSettled(readProfile().profile, entry.runId)) {
@@ -97,6 +126,7 @@ export function writeSavedRun(state: SessionSnapshot): boolean {
     meta: { seed: state.entry.seed, ...SAVE_VERSION, savedAt: Date.now() },
   };
   if (!saveValue(RUN_KEY, snapshot)) return false;
+  updatedAtBoot = false;
   removeValue(CHECKPOINT_KEY);
   return true;
 }

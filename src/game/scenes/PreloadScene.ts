@@ -1,3 +1,4 @@
+import { prepareRunVersion } from '../save/runStorage';
 import { configureCamera } from '../configureCamera';
 import { Scene } from 'phaser';
 import { COLORS, GAME_HEIGHT, GAME_WIDTH, SCENES } from '../../config';
@@ -30,7 +31,8 @@ export class PreloadScene extends Scene {
     createPlaceholderTextures(this);
     installDemoArt(this);
     const params = debugParams();
-    const target = params.stress || params.scene === SCENES.game ? SCENES.game : SCENES.menu;
+    const updated = prepareRunVersion();
+    const target = !updated && (params.stress || params.scene === SCENES.game) ? SCENES.game : SCENES.menu;
     this.scene.start(target);
   }
 }

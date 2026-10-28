@@ -1,10 +1,12 @@
+import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
+import { compileRoom, type CompiledRoom } from '../../sim/dungeon/compileRoom';
+import { MODULAR_V2 } from '../../data/roomTemplates/modularV2';
 import { resolveRoomTemplate } from '../../sim/dungeon/roomCatalog';
 import { ROOM_BLOCKS, createRoomArt, type RoomArt } from './RoomArt';
 import { TRAP_RULES } from '../../data/traps';
 import { DUNGEON } from '../../data/dungeon';
 import type { TrapPlacement } from '../../data/schema/traps';
 import type { TrapLayoutInput } from '../../sim/combat/api';
-import { standingBarrel } from '../../sim/room/Traps';
 import { LiveRoomGeometry } from '../../sim/geometry/LiveRoomGeometry';
 import { createGeometryHit, GeometryMask, type GeometryQueries } from '../../sim/geometry/RoomGeometry';
 import { ART } from '../assets/demoArt';
@@ -14,7 +16,6 @@ import type { GameObjects, Physics, Scene } from 'phaser';
 import { COLORS, DEPTH, TILE_SIZE } from '../../config';
 import { ROOM_LAYOUTS } from '../../data/layouts';
 import { ROOM_RULES } from '../../data/rooms';
-import { segmentHitsBox } from '../../sim/dungeon/geometry';
 import type { DungeonRun } from '../../sim/run/DungeonRun';
 import { TEX } from '../assets/keys';
 import type { CombatBridge } from './CombatBridge';
@@ -36,6 +37,8 @@ const ROOM_BOUNDARY = [
 /** 房间切换复用固定的内墙池。门口跨越判定由 DungeonRun 校验连接与锁门状态。 */
 export class RoomArena {
   private readonly art: RoomArt | null;
+  private room: CompiledRoom | null = null;
+  private readonly boundarySlots: Physics.Arcade.Image[] = [];
   private readonly navigation: NavigationGrid;
   private readonly graphics: GameObjects.Graphics;
   private readonly walls: Physics.Arcade.StaticGroup;
@@ -51,8 +54,9 @@ export class RoomArena {
     scene: Scene,
     private readonly bridge: CombatBridge,
     reflectBullets = false,
+    graybox = false,
   ) {
-    this.art = createRoomArt(scene);
+    this.art = graybox ? null : createRoomArt(scene);
     this.graphics = scene.add.graphics().setDepth(DEPTH.floor + 1);
     if (this.art && scene.textures.exists(ART.doors))
       for (let i = 0; i < 4; i++)
@@ -69,6 +73,11 @@ export class RoomArena {
       if (this.art) image.setTexture(ART.environment, 'pillar');
       image.disableBody(true, true);
       this.slots.push(image);
+    }
+    for (let i = 0; i < MODULAR_V2.maxBoundaryBodies; i++) {
+      const image = this.walls.create(0, 0, TEX.wall) as Physics.Arcade.Image;
+      image.disableBody(true, true);
+      this.boundarySlots.push(image);
     }
     this.geometry = new LiveRoomGeometry(ROOM_BOUNDARY, [], bridge.sim);
     this.navigation = new NavigationGrid(B, this.canWalk, this.pathClear);
@@ -90,6 +99,27 @@ export class RoomArena {
   show(run: DungeonRun, templateId: string): void {
     const template = resolveRoomTemplate(templateId, run.floor, run.room.kind);
     if (!template) throw new RangeError('room template does not match the generated room');
+    const room = compileRoom(template);
+    if (template.boxes.length > this.slots.length) throw new RangeError('obstacle pool exhausted');
+    for (const id of run.room.links) {
+      const to = run.map.rooms[id]!;
+      if (!room.ports.some((p) => p.direction.x === to.x - run.room.x && p.direction.y === to.y - run.room.y))
+        throw new RangeError('missing linked port');
+    }
+    this.room = room;
+    for (let i = 0; i < this.boundarySlots.length; i++) {
+      const image = this.boundarySlots[i]!,
+        box = room.cuts[i];
+      if (!box) {
+        image.disableBody(true, true);
+        continue;
+      }
+      image
+        .enableBody(true, box.x, box.y, true, true)
+        .setDisplaySize(box.width, box.height)
+        .refreshBody()
+        .setAlpha(0);
+    }
     this.art?.show(template.theme, template.boxes);
     this.setBoxes(template.boxes, template.obstacle, template.mask);
     // 每层每个房间的编号唯一；同一房间重建（存档恢复）时 sim 保留机关进行中的状态。
@@ -140,7 +170,7 @@ export class RoomArena {
         .setAlpha(hidden ? 0 : 1);
     }
     this.geometry.setRoom(
-      ROOM_BOUNDARY,
+      this.room?.boundary ?? ROOM_BOUNDARY,
       boxes.slice(0, this.slots.length).map((box, i) => {
         const x = B.x + B.width / 2 + box.x,
           y = B.y + B.height / 2 + box.y;
@@ -170,16 +200,13 @@ export class RoomArena {
     const g = this.graphics;
     g.clear();
     if (!this.art) {
-      g.fillStyle(COLORS.wall).fillRect(
-        B.x - TILE_SIZE,
-        B.y - TILE_SIZE,
-        B.width + 2 * TILE_SIZE,
-        B.height + 2 * TILE_SIZE,
-      );
-      g.fillStyle(COLORS.floor).fillRect(B.x, B.y, B.width, B.height);
-      g.lineStyle(1, COLORS.floorAlt);
-      for (let x = B.x; x < B.x + B.width; x += TILE_SIZE) g.lineBetween(x, B.y, x, B.y + B.height);
-      for (let y = B.y; y < B.y + B.height; y += TILE_SIZE) g.lineBetween(B.x, y, B.x + B.width, y);
+      const points = this.room?.boundary ?? ROOM_BOUNDARY;
+      g.beginPath();
+      g.moveTo(points[0]!.x, points[0]!.y);
+      for (let i = 1; i < points.length; i++) g.lineTo(points[i]!.x, points[i]!.y);
+      g.closePath();
+      g.fillStyle(COLORS.floor).fillPath();
+      g.lineStyle(2, COLORS.wall).strokePath();
     } else g.lineStyle(1, 0x647d80).strokeRect(B.x - 1, B.y - 1, B.width + 2, B.height + 2);
     const room = run.room,
       h = ROOM_RULES.doorHalfWidth;
@@ -189,8 +216,9 @@ export class RoomArena {
       const to = run.map.rooms[id]!,
         dx = to.x - room.x,
         dy = to.y - room.y;
-      const x = B.x + B.width / 2 + (dx * B.width) / 2,
-        y = B.y + B.height / 2 + (dy * B.height) / 2;
+      const port = this.port(dx, dy);
+      const x = port.center.x,
+        y = port.center.y;
       const door = this.doors[doorIndex++];
       if (door) {
         door
@@ -217,12 +245,9 @@ export class RoomArena {
       const to = run.map.rooms[id]!,
         dx = to.x - run.room.x,
         dy = to.y - run.room.y;
-      const cx = B.x + B.width / 2,
-        cy = B.y + B.height / 2;
-      const aligned = Math.abs(dx ? y - cy : x - cx) <= ROOM_RULES.doorHalfWidth;
-      const atEdge = dx
-        ? Math.abs(x - (cx + (dx * B.width) / 2)) < ROOM_RULES.exitReach
-        : Math.abs(y - (cy + (dy * B.height) / 2)) < ROOM_RULES.exitReach;
+      const port = this.port(dx, dy);
+      const aligned = Math.abs(dx ? y - port.center.y : x - port.center.x) <= ROOM_RULES.doorHalfWidth;
+      const atEdge = Math.abs(dx ? x - port.center.x : y - port.center.y) < ROOM_RULES.exitReach;
       if (aligned && atEdge && dx * vx + dy * vy > 0) return id;
     }
     return null;
@@ -241,8 +266,10 @@ export class RoomArena {
         this.bridge.actors.finishDeath(a.id);
         continue;
       }
-      const x = B.x + B.width / 2 - dx * (B.width / 2 - ROOM_RULES.entranceInset);
-      const y = B.y + B.height / 2 - dy * (B.height / 2 - ROOM_RULES.entranceInset);
+      const point = dx || dy ? this.port(-dx, -dy).entrance : this.anchor('player');
+      const safe = this.safePoint(point, a.radius);
+      if (!safe) throw new RangeError('no safe player entrance');
+      const { x, y } = safe;
       const body = s.image.body as Physics.Arcade.Body;
       body.reset(x, y);
       // reset 从贴图左上角定位；身体圆形碰撞体必须重新应用 offset。
@@ -265,19 +292,26 @@ export class RoomArena {
     }
     return this.geometry;
   }
+  port(dx: number, dy: number) {
+    const ports = this.room?.ports ?? LEGACY_V1.ports;
+    const port = ports.find((p) => p.direction.x === dx && p.direction.y === dy);
+    if (!port) throw new RangeError('missing room port');
+    return port;
+  }
+  anchor(kind: keyof CompiledRoom['anchors']): Readonly<Vec2> {
+    return this.room?.anchors[kind] ?? LEGACY_V1.anchors[kind];
+  }
+  readonly spawnAnchors = () => this.room?.spawns ?? [];
+  /** Dynamic blockers can invalidate a static anchor. Never return an unchecked position. */
+  safePoint(point: Readonly<Vec2>, radius: number): Readonly<Vec2> | null {
+    if (this.isFree(point.x, point.y, radius)) return point;
+    return this.spawnAnchors().find((p) => this.isFree(p.x, p.y, radius)) ?? null;
+  }
   readonly isFree = (x: number, y: number, r: number): boolean => {
-    if (x - r < B.x || x + r > B.x + B.width || y - r < B.y || y + r > B.y + B.height) return false;
-    for (const s of this.slots)
-      if (
-        s.body?.enable &&
-        Math.abs(s.x - x) < s.displayWidth / 2 + r &&
-        Math.abs(s.y - y) < s.displayHeight / 2 + r
-      )
-        return false;
-    // 还立着的鱼雷桶也算障碍：刷怪不刷进桶里，导航绕开它（ADR 0032）。
-    for (const t of this.bridge.sim.traps)
-      if (standingBarrel(t) && Math.hypot(t.x - x, t.y - y) < t.radius + r) return false;
-    return true;
+    this.prepareGeometry();
+    this.from.x = x;
+    this.from.y = y;
+    return this.geometry.canOccupy(this.from, r, 'spawn');
   };
   private readonly canWalk = (x: number, y: number, r: number): boolean => {
     this.from.x = x;
@@ -299,23 +333,15 @@ export class RoomArena {
     return (!this.hit.hit || this.hit.t === 1) && this.geometry.canOccupy(this.to, radius, 'walk');
   };
   readonly lineOfSight = (x1: number, y1: number, x2: number, y2: number): boolean => {
-    for (const s of this.slots)
-      if (
-        s.body?.enable &&
-        segmentHitsBox(
-          x1,
-          y1,
-          x2,
-          y2,
-          s.x - s.displayWidth / 2,
-          s.y - s.displayHeight / 2,
-          s.x + s.displayWidth / 2,
-          s.y + s.displayHeight / 2,
-        )
-      )
-        return false;
-    return true;
+    this.prepareGeometry();
+    this.from.x = x1;
+    this.from.y = y1;
+    this.to.x = x2;
+    this.to.y = y2;
+    this.geometry.traceStaticSegment(this.from, this.to, GeometryMask.LOS, this.hit);
+    return !this.hit.hit;
   };
+
   destroy(): void {
     for (const c of this.colliders) if (c.world) c.destroy();
     this.walls.destroy(true, true);

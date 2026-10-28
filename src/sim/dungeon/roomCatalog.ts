@@ -1,3 +1,4 @@
+import { MODULAR_V2 } from '../../data/roomTemplates/modularV2';
 import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
 import type { RoomLayouts } from '../../data/schema/layouts';
 import type { RoomTheme, TrapPlacement } from '../../data/schema/traps';
@@ -6,7 +7,7 @@ import type { DungeonRoom } from './generate';
 
 /** Derived floor selection for this build; not a serialized save field. */
 export interface FloorRoomLayouts {
-  readonly catalogId: 'legacy_v1';
+  readonly catalogId: 'modular_v2';
   readonly floor: number;
   readonly templateIds: readonly string[];
 }
@@ -39,7 +40,11 @@ export function selectRoomLayouts(
         throw new RangeError('invalid legacy room kind');
     }
   });
-  return { catalogId: LEGACY_V1.catalogId, floor, templateIds };
+  return {
+    catalogId: MODULAR_V2.catalogId,
+    floor,
+    templateIds: templateIds.map((id) => id.replace('legacy_v1/', 'modular_v2/')),
+  };
 }
 
 /** Resolved legacy geometry, with the same relative coordinates as the old RoomArena input. */
@@ -55,6 +60,29 @@ export interface RoomTemplate {
 
 /** Exact ID lookup. Unknown IDs never silently select another template. */
 export function roomTemplate(id: string): RoomTemplate | null {
+  if (id.startsWith('modular_v2/')) {
+    const source = roomTemplate(id.replace('modular_v2/', 'legacy_v1/'));
+    return source
+      ? {
+          ...source,
+          id,
+          traps:
+            id === 'modular_v2/wreck/combat_2'
+              ? source.traps.map((trap, i) =>
+                  i < 2 ? { ...trap, x: Math.sign(trap.x) * MODULAR_V2.cargoBarrelX } : trap,
+                )
+              : id === 'modular_v2/wreck/combat_1'
+                ? source.traps.map((trap, i) =>
+                    i === 3 ? { ...trap, x: MODULAR_V2.cargoEdgeBarrelX } : trap,
+                  )
+                : source.traps,
+          boxes:
+            id === 'modular_v2/wreck/combat_1'
+              ? source.boxes.map((box) => ({ ...box, width: MODULAR_V2.cargoDividerWidth }))
+              : source.boxes,
+        }
+      : null;
+  }
   for (const theme of LEGACY_V1.themes) {
     if (id === theme.empty.id)
       return { ...theme.empty, theme: theme.art, boxes: LEGACY_V1.layouts[0], traps: [] };

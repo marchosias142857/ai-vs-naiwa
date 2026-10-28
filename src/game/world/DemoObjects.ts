@@ -52,7 +52,11 @@ export class DemoObjects {
   update(): void {
     const s = this.session;
     this.portal.setVisible(s.dungeon.room.kind === 'exit');
-    this.portal.y = B.y + B.height / 2 + 22;
+    const exit = s.arena.anchor('exit'),
+      chest = s.arena.anchor('chest');
+    this.portal.setPosition(exit.x, exit.y + 22);
+    this.exitArt?.setPosition(exit.x, exit.y);
+    this.chest?.setPosition(chest.x, chest.y - 15);
     this.chest?.setVisible(s.dungeon.room.kind === 'chest');
     this.exitArt?.setVisible(s.dungeon.room.kind === 'exit');
     if (this.revision === s.loot.revision) return;

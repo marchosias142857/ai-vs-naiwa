@@ -108,7 +108,7 @@ export class DemoSession {
     if (!restored && weapon && Object.hasOwn(WEAPONS, weapon)) this.sim.takeWeapon(weapon as WeaponId);
     this.bridge = new CombatBridge(scene, this.sim);
     this.bridge.actors.enableArt(scene);
-    this.arena = new RoomArena(scene, this.bridge);
+    this.arena = new RoomArena(scene, this.bridge, false, true);
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, bus);
     this.hazards = new HazardLayer(scene, this.sim, this.bridge, bus);
     this.weaponFx = new WeaponFx(scene, this.sim, bus);
@@ -129,6 +129,7 @@ export class DemoSession {
       B,
       this.arena.isFree,
       POOL_SIZES.actors,
+      this.arena.spawnAnchors,
     );
     if (restored) {
       loadSim(this.parts(), restored.sim);
@@ -146,6 +147,7 @@ export class DemoSession {
         this.endTime >= (this.dungeon.phase === 'won' ? BALANCE.victoryDelay : BALANCE.deathRestartDelay);
     } else {
       this.showRoom();
+      this.arena.teleport();
       this.entry = this.checkpoint();
     }
     this.publishPosition();
@@ -257,7 +259,7 @@ export class DemoSession {
     if (
       interact &&
       this.dungeon.room.kind === 'exit' &&
-      Math.hypot(p.x - (B.x + B.width / 2), p.y - (B.y + B.height / 2)) <= ROOM_RULES.exitReach
+      Math.hypot(p.x - this.arena.anchor('exit').x, p.y - this.arena.anchor('exit').y) <= ROOM_RULES.exitReach
     ) {
       // 升级只在换层时分配候选列表；选择期间暂停物理，不消费战斗时间。
       const candidates = Object.keys(UPGRADES) as UpgradeId[];
@@ -323,7 +325,7 @@ export class DemoSession {
     if (
       this.dungeon.room.kind === 'chest' &&
       !this.dungeon.claimed[this.dungeon.roomId] &&
-      this.loot.chest(B.x + B.width / 2, B.y + B.height / 2)
+      this.loot.chest(this.arena.anchor('chest').x, this.arena.anchor('chest').y)
     )
       this.dungeon.claim();
   }
@@ -360,7 +362,8 @@ export class DemoSession {
       this.loot.enemy(e.x, e.y, e.kind);
     }
   };
-  private readonly onCleared = (): void => this.loot.reward(B.x + B.width / 2, B.y + B.height / 2);
+  private readonly onCleared = (): void =>
+    this.loot.reward(this.arena.anchor('reward').x, this.arena.anchor('reward').y);
   private readonly destroy = (): void => {
     this.scene.events.off(Scenes.Events.PRE_UPDATE, this.feedInput);
     this.scene.physics.world?.off(Physics.Arcade.Events.WORLD_STEP, this.step);

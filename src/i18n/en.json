@@ -67,7 +67,7 @@
   "hud.slots": "Slots: {primary} / {secondary}",
   "hint.portal": "[ ↑ EXIT ]",
   "menu.continueEntry": "Continue floor {floor} (from entrance)",
-  "save.updated": "Game updated. Continue from this floor’s entrance.",
+  "save.updated": "Game updated. The previous adventure has ended; talents and permanent resources are preserved.",
   "save.invalid": "Snapshot invalid. Continue from this floor’s entrance.",
   "save.corrupt": "Save corrupted. Unable to continue.",
   "weapon.cutlass": "Tide Cutlass",
