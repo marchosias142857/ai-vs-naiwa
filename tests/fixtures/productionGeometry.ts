@@ -1,5 +1,5 @@
 import { DungeonRun } from '../../src/sim/run/DungeonRun';
-import { AUTO, Game, Scene, Scale, type Physics } from 'phaser';
+import { AUTO, Game, Scene, Scale, type Physics, type GameObjects } from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
 import { BOSS_ROOM_LAYOUT } from '../../src/data/layouts';
 import { ENEMIES } from '../../src/data/enemies';
@@ -43,7 +43,8 @@ class GeometryScene extends Scene {
       runId: 'production-geometry-fixture',
     });
     const { sim, bridge, arena } = session;
-    new DemoObjects(this, session).update();
+    const objects = new DemoObjects(this, session);
+    objects.update();
     const input = createInputFrame();
     const actions: GameEvents['enemy:acted'][] = [];
     const shots: number[] = [];
@@ -80,6 +81,51 @@ class GeometryScene extends Scene {
     const player = sim.playerId!;
     this.cameras.main.setZoom(RENDER_SCALE * 1.5).centerOn(B.x + B.width / 2, B.y + B.height / 2);
     window.productionGeometry = {
+      trapState: (state) => {
+        const traps = sim.traps.filter((t) => t.active);
+        for (const t of traps)
+          Object.assign(
+            t,
+            t.kind === 'spikes'
+              ? { state: state === 'broken' ? 'idle' : state }
+              : t.kind === 'barrel'
+                ? { hp: state === 'idle' ? 8 : 2, state: state === 'broken' ? 'broken' : 'idle' }
+                : t.kind === 'mine'
+                  ? { state: state === 'idle' ? 'idle' : 'fuse', time: 5 }
+                  : {},
+          );
+        session.update();
+        const target = traps.find((t) => t.kind === 'spikes') ?? traps[0]!;
+        this.cameras.main.setZoom(10).centerOn(target.x, target.y);
+        return this.children.list
+          .filter(
+            (o) =>
+              (o.type === 'Image' || o.type === 'TileSprite') &&
+              (o as GameObjects.Image).visible &&
+              (o as GameObjects.Image).texture.key === MAP_ART.textures.objects,
+          )
+          .map((o) => (o as GameObjects.Image).frame.name);
+      },
+      objects: (kind) => {
+        const run = session.dungeon;
+        run.roomId = run.map.rooms.find((r) => r.kind === kind)!.id;
+        arena.show(run, 'modular_v2/temple/empty');
+        session.loot.clear();
+        session.loot.reward(240, 150);
+        session.update();
+        objects.update();
+        this.cameras.main.setZoom(10).centerOn(240, 135);
+        return this.children.list
+          .filter(
+            (o) =>
+              o.type === 'Image' &&
+              (o as GameObjects.Image).visible &&
+              [MAP_ART.textures.objects, MAP_ART.textures.hub].some(
+                (key) => key === (o as GameObjects.Image).texture.key,
+              ),
+          )
+          .map((o) => (o as GameObjects.Image).frame.name);
+      },
       walls: (floor, focus) => {
         const direction =
           focus === 'north'
@@ -166,7 +212,7 @@ class GeometryScene extends Scene {
         const visibleDoors = this.children.list.filter(
           (o) =>
             o.type === 'Image' &&
-            [MAP_ART.textures.doors, MAP_ART.textures.sideDoors].some(
+            [MAP_ART.doorTextures.horizontal, MAP_ART.doorTextures.vertical].some(
               (key) => key === (o as unknown as { texture: { key: string } }).texture.key,
             ) &&
             (o as unknown as { visible: boolean }).visible,
@@ -181,7 +227,7 @@ class GeometryScene extends Scene {
         return {
           theme,
           doors: visibleDoors.length,
-          sideDoors: visibleDoors.filter((o) => o.texture.key === MAP_ART.textures.sideDoors).length,
+          sideDoors: visibleDoors.filter((o) => o.texture.key === MAP_ART.doorTextures.vertical).length,
           lockedDoors: visibleDoors.filter((o) => o.frame.name.endsWith('_locked')).length,
           expectedDoors: run.room.links.length,
           southAlignment:
@@ -367,6 +413,8 @@ class GeometryScene extends Scene {
 declare global {
   interface Window {
     productionGeometry: {
+      trapState: (state: 'idle' | 'warn' | 'on' | 'broken') => string[];
+      objects: (kind: 'chest' | 'exit') => string[];
       walls: (
         floor: number,
         focus:

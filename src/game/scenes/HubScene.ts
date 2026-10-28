@@ -6,8 +6,8 @@ import { createCombatWorld, type CombatWorld } from '../../sim/combat/api';
 import { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
 import { createInputFrame } from '../../sim/core/types';
-import { ART } from '../assets/demoArt';
-import { MAP_ART } from '../../data/mapArt';
+import { MAP_ART, mapDoorRect } from '../../data/mapArt';
+import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
 import { configureCamera } from '../configureCamera';
 import { RoomCamera } from '../RoomCamera';
 import { setTestHooks } from '../testHooks';
@@ -35,12 +35,14 @@ export class HubScene extends Scene {
     retryPendingRewards();
     configureCamera(this);
     createRoomArt(this);
+    const door = mapDoorRect(LEGACY_V1.ports[0]!);
     this.add
-      .image(HUB.door.x, HUB.door.y, MAP_ART.textures.doors, 'temple_north_open')
-      .setDisplaySize(40, 30)
+      .image(door.x, door.y, MAP_ART.doorTextures.horizontal, 'temple_north_open')
+      .setOrigin(0)
+      .setDisplaySize(door.width, door.height)
       .setDepth(DEPTH.floorDecals);
     this.add
-      .image(HUB.altar.x, HUB.altar.y - 10, ART.altar)
+      .image(HUB.altar.x, HUB.altar.y - 10, MAP_ART.textures.hub, 'altar')
       .setDisplaySize(62, 62)
       .setDepth(DEPTH.floorDecals);
     this.sim = createCombatWorld({ seed: 0, bus: this.bus, maxActors: 1, maxBullets: 1 });

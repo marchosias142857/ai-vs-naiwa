@@ -9,6 +9,7 @@ import { CHARACTER_ART, DEFAULT_CHARACTER_ART, characterTexture } from '../../da
 import { ENEMIES } from '../../data/enemies';
 import { MONSTER_TEXTURES, enemyAnimation, monsterFrame } from '../../data/enemyArt';
 import { MAP_ART, mapFrameTexture } from '../../data/mapArt';
+import { installMapDoors } from './mapDoorArt';
 
 export const ART = {
   hero: DEFAULT_CHARACTER_ART.texture,
@@ -28,7 +29,7 @@ export function weaponTexture(id: WeaponId): string {
 /** 命名帧只切 Texture 坐标，不复制图片像素；全部图集进入 PWA 预缓存。 */
 export function preloadDemoArt(scene: Scene): void {
   const base = `${import.meta.env.BASE_URL}assets/demo/`;
-  for (const kind of ['terrain', 'doors', 'objects', 'ground', 'blocks', 'walls', 'sideDoors'] as const)
+  for (const kind of Object.keys(MAP_ART.sources) as (keyof typeof MAP_ART.sources)[])
     scene.load.image(MAP_ART.textures[kind], `${base}${MAP_ART.sources[kind]}`);
   for (const art of Object.values(CHARACTER_ART)) {
     scene.load.image(art.texture, `${base}${art.source}`);
@@ -37,12 +38,8 @@ export function preloadDemoArt(scene: Scene): void {
   }
   scene.load.image(ART.weapons, `${base}weapons.png`);
   scene.load.image(ART.arsenal, `${base}arsenal-v1.png`);
-  scene.load.image(ART.rooms, `${base}rooms-v1.png`);
   scene.load.image(ART.enemies, `${base}enemies.png`);
-  scene.load.image(ART.environment, `${base}environment.png`);
   scene.load.image(ART.title, `${base}title-confrontation-v1.webp`);
-  scene.load.image(ART.altar, `${base}talent-altar-v1.png`);
-  scene.load.image(ART.doors, `${base}doors.png`);
   // 只加载有帧数据的图集；普通怪物图集生成前不请求不存在的文件。
   const used = new Set(Object.keys(ENEMIES).map((kind) => enemyAnimation(kind)?.texture));
   for (const [name, t] of Object.entries(MONSTER_TEXTURES))
@@ -68,6 +65,7 @@ export function installDemoArt(scene: Scene): void {
       scene.textures.get(atlas).add(name, 0, ...rect);
   };
   for (const [name, rect] of Object.entries(MAP_ART.frames)) add(mapFrameTexture(name), name, rect);
+  installMapDoors(scene);
   for (const art of Object.values(CHARACTER_ART)) {
     for (const key of [art.texture, art.reactionTexture])
       if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Textures.FilterMode.NEAREST);

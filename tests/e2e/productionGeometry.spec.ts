@@ -137,3 +137,31 @@ test('map object atlas missing uses graybox without missing object frames', asyn
   await page.waitForFunction(() => window.productionGeometry);
   expect(errors).toEqual([]);
 });
+
+for (const floor of [1, 2, 3])
+  test(`unified trap states and inset borders: floor ${floor}`, async ({ page }, info) => {
+    await page.goto(url);
+    await page.waitForFunction(() => window.productionGeometry);
+    await page.evaluate((f) => window.productionGeometry.walls(f, 'room'), floor);
+    for (const state of ['idle', 'warn', 'on', 'broken'] as const) {
+      const frames = await page.evaluate((s) => window.productionGeometry.trapState(s), state);
+      expect(frames.length).toBeGreaterThan(0);
+      if (floor < 3 && state !== 'broken') expect(frames).toContain(`spikes_${state}`);
+      if (floor === 2)
+        expect(frames).toContain(
+          state === 'broken' ? 'barrel_broken' : state === 'idle' ? 'barrel' : 'barrel_hit',
+        );
+      await page.screenshot({ path: info.outputPath(`unified-traps-${floor}-${state}.png`), scale: 'css' });
+    }
+  });
+
+test('unified chest, exit and supply pickups use actual game objects', async ({ page }, info) => {
+  await page.goto(url);
+  await page.waitForFunction(() => window.productionGeometry);
+  for (const kind of ['chest', 'exit'] as const) {
+    const frames = await page.evaluate((k) => window.productionGeometry.objects(k), kind);
+    expect(frames).toContain(kind === 'chest' ? 'chest_open' : 'crystal');
+    for (const name of ['pickup_coin', 'pickup_energy', 'pickup_health']) expect(frames).toContain(name);
+    await page.screenshot({ path: info.outputPath(`unified-${kind}.png`), scale: 'css' });
+  }
+});

@@ -97,3 +97,23 @@ test('irregular obstacles preserve the textured floor beneath their transparent 
     expect(report.changedFloorPixels, theme).toBe(0);
   }
 });
+
+test('unified gates have opaque integer-module joins and field rims meet the floor without gaps', async ({
+  page,
+}, info) => {
+  await page.goto(url);
+  await page.waitForFunction(() => window.unifiedMapProbe);
+  for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
+    const report = await page.evaluate((t) => window.unifiedMapProbe(t), theme);
+    await info.attach(theme, { body: JSON.stringify(report), contentType: 'application/json' });
+    expect(report.samples).toBeGreaterThan(1000);
+    expect(report.rimGaps, theme).toBe(0);
+    expect(report.holes, theme).toBe(0);
+    expect(report.outsideChanges, theme).toBe(0);
+    expect(report.interiorChanges, theme).toBe(0);
+    expect(report.frames).toBe(8);
+    expect(report.doorPixels).toBeGreaterThan(200000);
+    expect(report.doorHoles, theme).toBe(0);
+    await page.screenshot({ path: info.outputPath(`unified-rims-${theme}.png`), scale: 'css' });
+  }
+});

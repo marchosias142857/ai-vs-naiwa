@@ -1,6 +1,6 @@
 import type { Textures, GameObjects, Scene } from 'phaser';
 import { DEPTH } from '../../config';
-import { MAP_ART } from '../../data/mapArt';
+import { MAP_ART, mapDoorRect } from '../../data/mapArt';
 import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
 import { MODULAR_V2 } from '../../data/roomTemplates/modularV2';
 import type { RoomTheme, TrapPlacement } from '../../data/schema/traps';
@@ -73,7 +73,7 @@ export class ModularRoomArt implements RoomArt {
     c.save();
     this.path(c, boundary);
     c.clip();
-    c.fillStyle = this.pattern(theme, 'floor');
+    c.fillStyle = this.pattern(theme);
     c.fillRect(LEFT, TOP, WIDTH, HEIGHT);
     // Keep cream boss indicators distinct from the sanctuary's limestone floor.
     c.fillStyle = theme === 'milk' ? 'rgba(0,0,0,0.28)' : 'rgba(0,0,0,0.12)';
@@ -90,13 +90,7 @@ export class ModularRoomArt implements RoomArt {
       if (!t.width || !t.height) continue;
       const x = 240 + t.x - t.width / 2,
         y = 135 + t.y - t.height / 2;
-      // Flush inset rims indicate the precise traversable field footprint, never a raised obstacle.
-      c.strokeStyle = this.pattern(theme, 'cap');
-      c.lineWidth = 4;
-      c.strokeRect(x - 1, y - 1, t.width + 2, t.height + 2);
-      c.strokeStyle = '#101a23';
-      c.lineWidth = 0.5;
-      c.strokeRect(x, y, t.width, t.height);
+      this.drawRim(c, theme, x, y, t.width, t.height);
     }
     // Keep the floor intact under irregular obstacle silhouettes. Their source art owns
     // the contact shading; a rectangular backing would show through transparent corners.
@@ -117,9 +111,8 @@ export class ModularRoomArt implements RoomArt {
         MAP_ART.wallWidth + MAP_ART.wallHeight,
       );
     for (const p of ports) {
-      const w = p.direction.x ? PAD * 2 : MAP_ART.doorSize.horizontal[0];
-      const height = p.direction.y ? PAD * 2 : MAP_ART.doorSize.vertical[1];
-      wall.clearRect(p.center.x - w / 2, p.center.y - height / 2, w, height);
+      const r = mapDoorRect(p);
+      wall.clearRect(r.x, r.y, r.width, r.height);
     }
     // Clear openings on the staging layer, preserving the floor beneath raised tops and doors.
     c.drawImage(this.wallCanvas, LEFT, TOP, WIDTH, HEIGHT);
@@ -184,35 +177,58 @@ export class ModularRoomArt implements RoomArt {
     return canvas;
   }
 
-  private pattern(theme: RoomTheme['art'], part: 'floor' | 'cap' | 'face'): CanvasPattern {
-    const name = `${theme}_${part === 'floor' ? 'ground' : part}` as const;
+  /** Nine-slice inset: the inner edge follows the exact field, the floor remains below every pixel. */
+  private drawRim(
+    c: CanvasRenderingContext2D,
+    theme: RoomTheme['art'],
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ): void {
+    const f = MAP_ART.frames[`${theme}_rim`];
+    const source = this.scene.textures.get(MAP_ART.textures.rims).getSourceImage() as HTMLImageElement;
+    const sx = Math.round(f[2] * MAP_ART.rimSlice),
+      sy = Math.round(f[3] * MAP_ART.rimSlice),
+      r = MAP_ART.rimWidth;
+    const xs = [f[0], f[0] + sx, f[0] + f[2] - sx, f[0] + f[2]];
+    const ys = [f[1], f[1] + sy, f[1] + f[3] - sy, f[1] + f[3]];
+    const dx = [x - r, x, x + width, x + width + r],
+      dy = [y - r, y, y + height, y + height + r];
+    for (let row = 0; row < 3; row++)
+      for (let col = 0; col < 3; col++) {
+        if (row === 1 && col === 1) continue;
+        c.drawImage(
+          source,
+          xs[col]!,
+          ys[row]!,
+          xs[col + 1]! - xs[col]!,
+          ys[row + 1]! - ys[row]!,
+          dx[col]!,
+          dy[row]!,
+          dx[col + 1]! - dx[col]!,
+          dy[row + 1]! - dy[row]!,
+        );
+      }
+  }
+
+  private pattern(theme: RoomTheme['art']): CanvasPattern {
+    const name = `${theme}_ground` as const;
     const cached = this.patterns.get(name);
     if (cached) return cached;
     const frame = MAP_ART.frames[name];
-    const width = part === 'floor' ? MAP_ART.floorTile : part === 'cap' ? MAP_ART.wallTile : 24;
-    const height = part === 'cap' ? MAP_ART.wallWidth : width;
+    const width = MAP_ART.floorTile,
+      height = width;
     const canvas = document.createElement('canvas');
-    const mirrored = part === 'floor';
+    const mirrored = true;
     const cellWidth = width * MAP_ART.density,
       cellHeight = height * MAP_ART.density;
     canvas.width = cellWidth * (mirrored ? 2 : 1);
     canvas.height = cellHeight * (mirrored ? 2 : 1);
     const context = canvas.getContext('2d')!;
     context.imageSmoothingEnabled = false;
-    const source = this.scene.textures
-      .get(part === 'floor' ? MAP_ART.textures.ground : MAP_ART.textures.terrain)
-      .getSourceImage() as HTMLImageElement;
-    context.drawImage(
-      source,
-      frame[0],
-      frame[1],
-      frame[2],
-      part === 'cap' ? MAP_ART.wallTopDepth[theme] : frame[3],
-      0,
-      0,
-      cellWidth,
-      cellHeight,
-    );
+    const source = this.scene.textures.get(MAP_ART.textures.ground).getSourceImage() as HTMLImageElement;
+    context.drawImage(source, frame[0], frame[1], frame[2], frame[3], 0, 0, cellWidth, cellHeight);
     if (mirrored) {
       // Matched edge pixels remove the hard atlas-repeat seam without blurred blending.
       context.save();

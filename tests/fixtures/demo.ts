@@ -261,7 +261,7 @@ class DemoHarness extends Scene {
       const next = (id: number) => {
         const from = session.dungeon.room,
           to = session.dungeon.map.rooms[id]!,
-          stage = doorStage(to.x - from.x, to.y - from.y);
+          stage = doorStage(session, to.x - from.x, to.y - from.y);
         walk(stage.x, stage.y);
         input.move.x = to.x - from.x;
         input.move.y = to.y - from.y;

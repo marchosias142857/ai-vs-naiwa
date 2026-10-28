@@ -1,4 +1,3 @@
-import { ROOM_RULES } from '../../src/data/rooms';
 import type { DemoSession } from '../../src/game/systems/DemoSession';
 import { GRAYBOX_BOUNDS as B } from '../../src/game/world/graybox';
 import type { InputFrame } from '../../src/sim/core/types';
@@ -42,9 +41,7 @@ export function walkTo(
  * 通往相邻房间那扇门内侧的入场点：从那扇门进来的角色就站在这里，内墙与机关都保证不压住它，
  * 并且正对门洞中心，从这里沿门的方向直走就能穿门。`dx`、`dy` 是目标房间相对当前房间的格子方向。
  */
-export function doorStage(dx: number, dy: number): { x: number; y: number } {
-  return {
-    x: ROOM_CENTER.x + Math.sign(dx) * (B.width / 2 - ROOM_RULES.entranceInset),
-    y: ROOM_CENTER.y + Math.sign(dy) * (B.height / 2 - ROOM_RULES.entranceInset),
-  };
+export function doorStage(session: DemoSession, dx: number, dy: number): Readonly<{ x: number; y: number }> {
+  // Templates may move a doorway away from the old rectangle midpoint (e.g. abyss north).
+  return session.arena.port(Math.sign(dx), Math.sign(dy)).entrance;
 }

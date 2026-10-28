@@ -1,5 +1,6 @@
 import { Game, Scene, AUTO, type Textures } from 'phaser';
-import { MAP_ART, mapFrameTexture } from '../../src/data/mapArt';
+import { MAP_ART, mapFrameTexture, mapDoorRect } from '../../src/data/mapArt';
+import { installMapDoors } from '../../src/game/assets/mapDoorArt';
 import { ModularRoomArt } from '../../src/game/world/ModularRoomArt';
 import { MODULAR_V2 } from '../../src/data/roomTemplates/modularV2';
 import { RoomGeometry, createGeometryHit, GeometryMask } from '../../src/sim/geometry/RoomGeometry';
@@ -30,8 +31,8 @@ function layout(i: number): CompiledRoom {
       {
         id: 'north',
         direction: { x: 0, y: -1 },
-        center: { x: 300, y: B.y },
-        entrance: { x: 300, y: B.y + 24 },
+        center: { x: 304, y: B.y },
+        entrance: { x: 304, y: B.y + 24 },
       },
     ],
     anchors: {
@@ -73,18 +74,84 @@ class ArtScene extends Scene {
     super('ArtMatrix');
   }
   preload() {
-    for (const kind of ['terrain', 'doors', 'objects', 'ground', 'blocks', 'walls', 'sideDoors'] as const)
+    for (const kind of Object.keys(MAP_ART.sources) as (keyof typeof MAP_ART.sources)[])
       this.load.image(MAP_ART.textures[kind], `/assets/demo/${MAP_ART.sources[kind]}`);
   }
   create() {
     for (const [name, frame] of Object.entries(MAP_ART.frames))
       this.textures.get(mapFrameTexture(name)).add(name, 0, frame[0], frame[1], frame[2], frame[3]);
+    installMapDoors(this);
     this.cameras.main.setZoom(3).centerOn(240, 135);
     const art = new ModularRoomArt(this);
     const before = { objects: this.children.length, textures: Object.keys(this.textures.list).sort() };
     const rooms = Array.from({ length: 200 }, (_, i) => layout(i));
     const unique = new Set(rooms.map((r) => JSON.stringify(r.boundary))).size;
     const allConnected = rooms.every(connected);
+    window.unifiedMapProbe = (theme) => {
+      const texture = this.textures.get('modular-ground:ArtMatrix') as Textures.CanvasTexture;
+      const traps = [
+        { kind: 'weed' as const, x: -64, y: -30, width: 56, height: 28 },
+        { kind: 'current' as const, x: 48, y: 0, width: 18, height: 100, angle: 90 },
+        { kind: 'spikes' as const, x: -24, y: 48, width: 48, height: 16 },
+      ];
+      art.show(theme, []);
+      const before = texture.context.getImageData(0, 0, texture.width, texture.height).data;
+      art.show(theme, [], undefined, traps);
+      const after = texture.context.getImageData(0, 0, texture.width, texture.height).data;
+      const index = (x: number, y: number) =>
+        (Math.floor((y - B.y + MAP_ART.canvasPadding) * MAP_ART.density) * texture.width +
+          Math.floor((x - B.x + MAP_ART.canvasPadding) * MAP_ART.density)) *
+        4;
+      const differs = (x: number, y: number) => {
+        const at = index(x, y);
+        return before.slice(at, at + 4).some((v, i) => v !== after[at + i]);
+      };
+      let samples = 0,
+        rimGaps = 0,
+        holes = 0,
+        outsideChanges = 0,
+        interiorChanges = 0;
+      for (const t of traps) {
+        const left = 240 + t.x - t.width / 2,
+          top = 135 + t.y - t.height / 2;
+        for (let u = -1.5; u <= t.width + 1.5; u += 0.5)
+          for (const y of [top - 1.5, top + t.height + 1.5]) {
+            if (!differs(left + u, y)) rimGaps++;
+            samples++;
+          }
+        for (let v = -1.5; v <= t.height + 1.5; v += 0.5)
+          for (const x of [left - 1.5, left + t.width + 1.5]) {
+            if (!differs(x, top + v)) rimGaps++;
+            samples++;
+          }
+        for (let y = top - 5; y <= top + t.height + 5; y += 0.5)
+          for (let x = left - 5; x <= left + t.width + 5; x += 0.5) {
+            if (after[index(x, y) + 3] !== 255) holes++;
+            const inside =
+              x > left + 0.5 && x < left + t.width - 0.5 && y > top + 0.5 && y < top + t.height - 0.5;
+            const outside =
+              x < left - 3.5 || x > left + t.width + 3.5 || y < top - 3.5 || y > top + t.height + 3.5;
+            if (inside && differs(x, y)) interiorChanges++;
+            if (outside && differs(x, y)) outsideChanges++;
+          }
+      }
+      let doorPixels = 0,
+        doorHoles = 0,
+        frames = 0;
+      for (const key of Object.values(MAP_ART.doorTextures)) {
+        const atlas = this.textures.get(key) as Textures.CanvasTexture;
+        for (const name of atlas.getFrameNames().filter((n) => n.startsWith(`${theme}_`))) {
+          const f = atlas.get(name),
+            rgba = atlas.context.getImageData(f.cutX, f.cutY, f.cutWidth, f.cutHeight).data;
+          for (let i = 3; i < rgba.length; i += 4) {
+            if (rgba[i] !== 255) doorHoles++;
+            doorPixels++;
+          }
+          frames++;
+        }
+      }
+      return { samples, rimGaps, holes, outsideChanges, interiorChanges, frames, doorPixels, doorHoles };
+    };
     window.modularArt = (theme) => {
       for (const room of rooms) art.show(theme, [], room, [], room.ports);
       return {
@@ -230,11 +297,10 @@ class ArtScene extends Scene {
           for (let x = L - 7.5; x < R + 8; x++) {
             if (
               inside(x, y) ||
-              room.ports.some((p) =>
-                p.direction.x
-                  ? Math.abs(y - p.center.y) < MAP_ART.doorSize.vertical[1] / 2 + 1
-                  : Math.abs(x - p.center.x) < MAP_ART.doorSize.horizontal[0] / 2 + 1,
-              )
+              room.ports.some((p) => {
+                const r = mapDoorRect(p);
+                return x >= r.x - 1 && x <= r.x + r.width + 1 && y >= r.y - 1 && y <= r.y + r.height + 1;
+              })
             )
               continue;
             const near = room.boundary.some((a, i) => {
@@ -249,11 +315,12 @@ class ArtScene extends Scene {
             }
           }
         for (const p of room.ports) {
-          // The existing door model owns its entire reserved span; no wall may remain behind it.
-          for (const tangent of [-18, -12, 0, 12, 18])
+          const r = mapDoorRect(p);
+          // Sample the full projected gate reservation, including both terminal cap rows.
+          for (const tangent of [2, 8, 24, 40, 46])
             for (const normal of [1, 4, 7]) {
-              const x = p.center.x + p.direction.x * normal + p.direction.y * tangent;
-              const y = p.center.y + p.direction.y * normal + p.direction.x * tangent;
+              const x = p.direction.x ? p.center.x + p.direction.x * normal : r.x + tangent;
+              const y = p.direction.x ? r.y + tangent : p.center.y + p.direction.y * normal;
               if (!pixel(data, x + 0.125, y + 0.125).endsWith(',0')) doorWallPixels++;
             }
           if (
@@ -283,6 +350,16 @@ class ArtScene extends Scene {
 new Game({ type: AUTO, width: 1280, height: 820, backgroundColor: '#000000', scene: ArtScene });
 declare global {
   interface Window {
+    unifiedMapProbe: (theme: 'temple' | 'wreck' | 'abyss' | 'milk') => {
+      samples: number;
+      rimGaps: number;
+      holes: number;
+      outsideChanges: number;
+      interiorChanges: number;
+      frames: number;
+      doorPixels: number;
+      doorHoles: number;
+    };
     obstacleFloorProbe: (theme: 'temple' | 'wreck' | 'abyss' | 'milk') => {
       changedFloorPixels: number;
       holes: number;

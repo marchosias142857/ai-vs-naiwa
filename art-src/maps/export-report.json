@@ -1,67 +1,106 @@
 [
   {
-    "name": "terrain",
-    "sourceFile": "terrain-v1.png",
-    "size": [
-      1254,
-      1254
-    ],
-    "sourceBytes": 2767824,
-    "runtimeBytes": 2061738,
-    "sourceSha256": "0a8d3df240051530d74a7f4b2bc1c30fc09f429e23fc11e2c15135997bdde4e9",
-    "runtimeSha256": "d5f8f6148cb1ab07294e5ac9641e197dec82d104a4a38e809884d97a3001282a",
-    "decodedRGBAIdentical": true
-  },
-  {
-    "name": "doors",
-    "sourceFile": "doors-v1.png",
-    "size": [
-      1536,
-      1024
-    ],
-    "sourceBytes": 2296001,
-    "runtimeBytes": 1660546,
-    "sourceSha256": "ca470cb36aa815e0f363fce6ded69fecc0567c32d5af6af2c3f32914a9e4a476",
-    "runtimeSha256": "82c6a7803a3f751f7ea72977834c225d6f4bbca3c708fc263be81e9897a5a78b",
-    "decodedRGBAIdentical": true
-  },
-  {
-    "name": "objects",
-    "sourceFile": "objects-v1.png",
-    "size": [
-      1254,
-      1254
-    ],
-    "sourceBytes": 1245161,
-    "runtimeBytes": 940436,
-    "sourceSha256": "80fcb57d24a9a2ba3e72b2ed43450548d3f2cc7d1676dcf61310f2519fc0c4f3",
-    "runtimeSha256": "107a67087df3cfd755f92091598a1e4cbb89a6619cb15fdd10deca0e9cc502ca",
-    "decodedRGBAIdentical": true
-  },
-  {
     "name": "ground",
-    "sourceFile": "ground-v2.png",
+    "sourceFile": "ground-v3.png",
     "size": [
       1254,
       1254
     ],
-    "sourceBytes": 2800033,
-    "runtimeBytes": 1901304,
-    "sourceSha256": "6d72f5e32875635e8959223b8f9bcbeaa9f9f1ea26da45f08f71293eb0904fb7",
-    "runtimeSha256": "bf5ae80a51c15bae9b91dc005793c7f4ae154756730896601ccc9aef42bb4940",
+    "sourceBytes": 1602882,
+    "runtimeBytes": 1220048,
+    "sourceSha256": "c9aa8e4afda7c5d81a30d559f158389d2b09501daf32a955eeaa6d253100c193",
+    "runtimeSha256": "a0fb670f2042df1d72bf39bcb6ba2143dd2977b881edf579f4a1f20c6a3ac03b",
     "decodedRGBAIdentical": true
   },
   {
     "name": "blocks",
-    "sourceFile": "blocks-v2.png",
+    "sourceFile": "blocks-v3.png",
     "size": [
-      1374,
-      1145
+      1289,
+      1220
     ],
-    "sourceBytes": 1145647,
-    "runtimeBytes": 814706,
-    "sourceSha256": "8681ac76c4a931eac75a1ad8e9e3a73cc2c306c6340a72edf1dc28dca1a41eef",
-    "runtimeSha256": "bbb40175dbd30379095f56ae81909577b81e4942a62775821fb7777a99258a96",
+    "sourceBytes": 880454,
+    "runtimeBytes": 604656,
+    "sourceSha256": "411949d3f5a4943cc77352005f1f9c98a8aa888fa698b6f019742fb41a91c78d",
+    "runtimeSha256": "b1a1fd4e226a2d1b41bef5b88ee819f5279b5d78500e329fc912fafd3c95a5d5",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "doors",
+    "sourceFile": "horizontal-v3.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sourceBytes": 1982145,
+    "runtimeBytes": 1458902,
+    "sourceSha256": "cc82f7d9aa134e05e6abf128b2f0adcd39139f9f96a4dbe450cba680c51d3387",
+    "runtimeSha256": "76c5d8c2e7919323f81e9bbe5644d644828f67ef8fa016530161d960c4c9fc95",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "sideDoors",
+    "sourceFile": "vertical-v3.png",
+    "size": [
+      1266,
+      1242
+    ],
+    "sourceBytes": 904532,
+    "runtimeBytes": 677810,
+    "sourceSha256": "98445ba2070b1dcd8fe23885164262cfd8533eb31357e4e25741a00bd8c7a2a5",
+    "runtimeSha256": "ca431c31cf8cd9c74d029f120e533867c7138ddc07c0fad4141005106872e950",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "objects",
+    "sourceFile": "mechanisms-v3.png",
+    "size": [
+      1268,
+      1240
+    ],
+    "sourceBytes": 1527712,
+    "runtimeBytes": 1225842,
+    "sourceSha256": "cc9dba45329f5791e033836ee268a9996a17646136a479ec16dcf586437842c2",
+    "runtimeSha256": "e2a1e5c67627585afd476b70b369f561930e10a9a418d0f7c18a05b4d7f8ecdf",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "rims",
+    "sourceFile": "rims-v3.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sourceBytes": 1500494,
+    "runtimeBytes": 1017120,
+    "sourceSha256": "88019430945c544b5e2793066ffe1ed914fe7fea176c5e968b5558ab99099f03",
+    "runtimeSha256": "14dd7748001cd0ecb6054eb68da28460b426097e3b25930f5d7ee0637f595681",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "hub",
+    "sourceFile": "hub-v3.png",
+    "size": [
+      1268,
+      1241
+    ],
+    "sourceBytes": 821552,
+    "runtimeBytes": 597106,
+    "sourceSha256": "76d7de394f73fb77b9c06d2e7f757f54c6f1355196a98a31cfd02f04d924ffe1",
+    "runtimeSha256": "266a7471c1260615ec35344476b6c8e0343d446496179e8293b43429b0e18710",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "effects",
+    "sourceFile": "effects-v3.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sourceBytes": 1378524,
+    "runtimeBytes": 933582,
+    "sourceSha256": "44cecddd2bbf7342ec0cb9b7b995106259acc0db0926176e8af95a187dd0c3b2",
+    "runtimeSha256": "295b294663d68cc8aab6f33e13c8c2edd094dcbaae34e8c9e588b46db3f890ef",
     "decodedRGBAIdentical": true
   },
   {
@@ -75,19 +114,6 @@
     "runtimeBytes": 833946,
     "sourceSha256": "0226d0fc518bc892dd284311e51c44b8c05f721038f83846a10786019e514ddf",
     "runtimeSha256": "871687aeb3471ee39504a4c1ed26962f59a65b6e357a5ff3df3c0367573cbd5b",
-    "decodedRGBAIdentical": true
-  },
-  {
-    "name": "sideDoors",
-    "sourceFile": "side-doors-v2.png",
-    "size": [
-      1254,
-      1254
-    ],
-    "sourceBytes": 1048670,
-    "runtimeBytes": 781852,
-    "sourceSha256": "a17988a2c06195d64418d725b538119dc7d861462a2177eff58801a7ddd74e29",
-    "runtimeSha256": "cf29038d9c539ccf3f1146311a03027bbfc4ced4be008d357970c5bb39cc65c8",
     "decodedRGBAIdentical": true
   }
 ]

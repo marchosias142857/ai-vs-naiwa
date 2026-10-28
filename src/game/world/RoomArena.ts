@@ -10,7 +10,7 @@ import type { TrapLayoutInput } from '../../sim/combat/api';
 import { LiveRoomGeometry } from '../../sim/geometry/LiveRoomGeometry';
 import { createGeometryHit, GeometryMask, type GeometryQueries } from '../../sim/geometry/RoomGeometry';
 import { ART } from '../assets/demoArt';
-import { MAP_ART } from '../../data/mapArt';
+import { MAP_ART, mapDoorRect } from '../../data/mapArt';
 import type { RoomTheme } from '../../data/schema/traps';
 import { NavigationGrid } from '../../sim/dungeon/NavigationGrid';
 import type { Vec2 } from '../../sim/core/types';
@@ -70,7 +70,7 @@ export class RoomArena {
             .image(
               0,
               0,
-              this.modularArt ? MAP_ART.textures.doors : ART.doors,
+              this.modularArt ? MAP_ART.doorTextures.horizontal : ART.doors,
               this.modularArt ? 'temple_north_open' : 'open',
             )
             .setDisplaySize(64, 40)
@@ -80,7 +80,7 @@ export class RoomArena {
     this.walls = scene.physics.add.staticGroup();
     for (let i = 0; i < ROOM_BLOCKS; i++) {
       const image = this.walls.create(0, 0, TEX.wall) as Physics.Arcade.Image;
-      if (this.art) image.setTexture(ART.environment, 'pillar');
+      if (this.art && scene.textures.exists(ART.environment)) image.setTexture(ART.environment, 'pillar');
       image.disableBody(true, true);
       this.slots.push(image);
     }
@@ -248,18 +248,16 @@ export class RoomArena {
       const door = this.doors[doorIndex++];
       if (door) {
         if (this.modularArt) {
+          const rect = mapDoorRect(port);
           door
             .setTexture(
-              dx ? MAP_ART.textures.sideDoors : MAP_ART.textures.doors,
+              dx ? MAP_ART.doorTextures.vertical : MAP_ART.doorTextures.horizontal,
               `${this.theme}_${port.id}_${run.locked ? 'locked' : 'open'}`,
             )
-            .setDisplaySize(
-              dx ? MAP_ART.doorSize.vertical[0] : MAP_ART.doorSize.horizontal[0],
-              dx ? MAP_ART.doorSize.vertical[1] : MAP_ART.doorSize.horizontal[1],
-            )
+            .setDisplaySize(rect.width, rect.height)
             .setAngle(0)
-            .setOrigin(0.5, dy < 0 ? 0.8 : dy > 0 ? 0.2 : 0.5)
-            .setPosition(x + dx * MAP_ART.sideDoorOffset, y + (dy > 0 ? MAP_ART.southDoorOffset : 0))
+            .setOrigin(0)
+            .setPosition(rect.x, rect.y)
             .setVisible(true);
           continue;
         }
