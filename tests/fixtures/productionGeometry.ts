@@ -81,24 +81,54 @@ class GeometryScene extends Scene {
     this.cameras.main.setZoom(RENDER_SCALE * 1.5).centerOn(B.x + B.width / 2, B.y + B.height / 2);
     window.productionGeometry = {
       walls: (floor, focus) => {
-        const run = new DungeonRun(42, new EventBus(), floor);
+        const direction =
+          focus === 'north'
+            ? { x: 0, y: -1 }
+            : focus === 'south'
+              ? { x: 0, y: 1 }
+              : focus === 'east'
+                ? { x: 1, y: 0 }
+                : focus === 'west'
+                  ? { x: -1, y: 0 }
+                  : undefined;
+        let run = new DungeonRun(42, new EventBus(), floor);
         const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
-        run.roomId = run.map.rooms
-          .filter((r) => r.kind === (floor === 4 ? 'boss' : 'combat'))
-          .sort((a, b) => b.links.length - a.links.length)[0]!.id;
+        for (let seed = 42; seed < 170; seed++) {
+          run = new DungeonRun(seed, new EventBus(), floor);
+          const room = run.map.rooms
+            .filter(
+              (r) =>
+                r.kind === (floor === 4 ? 'boss' : 'combat') &&
+                (!direction ||
+                  r.links.some(
+                    (id) =>
+                      run.map.rooms[id]!.x - r.x === direction.x &&
+                      run.map.rooms[id]!.y - r.y === direction.y,
+                  )),
+            )
+            .sort((a, b) => b.links.length - a.links.length)[0];
+          if (room) {
+            run.roomId = room.id;
+            break;
+          }
+          if (seed === 169) throw Error('No generated room with requested gate direction');
+        }
         run.phase = focus === 'side-locked' ? 'fighting' : 'exploring';
         arena.show(
           run,
-          `modular_v2/${theme}/${floor === 4 ? 'boss' : floor === 3 ? 'combat_1' : 'combat_0'}`,
+          `modular_v2/${theme}/${floor === 4 ? 'boss' : floor === 3 || focus === 'obstacle' ? 'combat_1' : 'combat_0'}`,
         );
         bridge.actors.apply();
         session.update();
         const adjacent =
           run.map.rooms[
             run.room.links.find((id) =>
-              focus.startsWith('side')
-                ? run.map.rooms[id]!.x !== run.room.x
-                : run.map.rooms[id]!.y < run.room.y,
+              direction
+                ? run.map.rooms[id]!.x - run.room.x === direction.x &&
+                  run.map.rooms[id]!.y - run.room.y === direction.y
+                : focus.startsWith('side')
+                  ? run.map.rooms[id]!.x !== run.room.x
+                  : run.map.rooms[id]!.y < run.room.y,
             ) ?? run.room.links[0]!
           ]!;
         const port = arena.port(adjacent.x - run.room.x, adjacent.y - run.room.y);
@@ -108,11 +138,30 @@ class GeometryScene extends Scene {
             : floor === 4
               ? { x: 376, y: 47 }
               : { x: floor === 1 ? 336 : 352, y: 71 };
+        const obstacle = this.children.list.find(
+          (o) =>
+            o.type === 'TileSprite' &&
+            (o as unknown as { texture: { key: string }; visible: boolean }).texture.key ===
+              MAP_ART.textures.blocks &&
+            (o as unknown as { visible: boolean }).visible,
+        ) as unknown as { x: number; y: number };
         this.cameras.main
           .setZoom(focus === 'room' ? 4.25 : 12)
           .centerOn(
-            focus === 'room' ? 240 : focus !== 'corner' ? port.center.x : corner.x,
-            focus === 'room' ? 135 : focus !== 'corner' ? port.center.y : corner.y,
+            focus === 'room'
+              ? 240
+              : focus === 'obstacle'
+                ? obstacle.x
+                : focus !== 'corner'
+                  ? port.center.x
+                  : corner.x,
+            focus === 'room'
+              ? 135
+              : focus === 'obstacle'
+                ? obstacle.y
+                : focus !== 'corner'
+                  ? port.center.y
+                  : corner.y,
           );
         const visibleDoors = this.children.list.filter(
           (o) =>
@@ -121,13 +170,24 @@ class GeometryScene extends Scene {
               (key) => key === (o as unknown as { texture: { key: string } }).texture.key,
             ) &&
             (o as unknown as { visible: boolean }).visible,
-        ) as unknown as Array<{ texture: { key: string }; frame: { name: string } }>;
+        ) as unknown as Array<{
+          texture: { key: string };
+          frame: { name: string };
+          y: number;
+          originY: number;
+          displayHeight: number;
+        }>;
+        const south = visibleDoors.find((o) => o.frame.name === `${theme}_south_open`);
         return {
           theme,
           doors: visibleDoors.length,
           sideDoors: visibleDoors.filter((o) => o.texture.key === MAP_ART.textures.sideDoors).length,
           lockedDoors: visibleDoors.filter((o) => o.frame.name.endsWith('_locked')).length,
           expectedDoors: run.room.links.length,
+          southAlignment:
+            focus === 'south' && south
+              ? south.y - south.originY * south.displayHeight - (port.center.y - MAP_ART.wallHeight)
+              : null,
         };
       },
       showcase: (floor) => {
@@ -309,8 +369,25 @@ declare global {
     productionGeometry: {
       walls: (
         floor: number,
-        focus: 'room' | 'door' | 'corner' | 'side-open' | 'side-locked',
-      ) => { theme: string; doors: number; sideDoors: number; lockedDoors: number; expectedDoors: number };
+        focus:
+          | 'room'
+          | 'door'
+          | 'corner'
+          | 'side-open'
+          | 'side-locked'
+          | 'obstacle'
+          | 'north'
+          | 'south'
+          | 'east'
+          | 'west',
+      ) => {
+        theme: string;
+        doors: number;
+        sideDoors: number;
+        lockedDoors: number;
+        expectedDoors: number;
+        southAlignment: number | null;
+      };
       showcase: (floor: number) => {
         theme: string;
         rocks: number;

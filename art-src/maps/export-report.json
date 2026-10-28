@@ -66,15 +66,15 @@
   },
   {
     "name": "walls",
-    "sourceFile": "wall-model-v12.png",
+    "sourceFile": "wall-model-v17.png",
     "size": [
-      1536,
-      1024
+      1774,
+      887
     ],
-    "sourceBytes": 1720140,
-    "runtimeBytes": 1110044,
-    "sourceSha256": "c920e30782a473bd883846f346a941abbddf3bdbad561714e10b94c9fc098bb2",
-    "runtimeSha256": "c8ecd33057e8d687042c171c0b5987850bd76baa8b3fb882306aac71726b3d8c",
+    "sourceBytes": 1224132,
+    "runtimeBytes": 833946,
+    "sourceSha256": "0226d0fc518bc892dd284311e51c44b8c05f721038f83846a10786019e514ddf",
+    "runtimeSha256": "871687aeb3471ee39504a4c1ed26962f59a65b6e357a5ff3df3c0367573cbd5b",
     "decodedRGBAIdentical": true
   },
   {

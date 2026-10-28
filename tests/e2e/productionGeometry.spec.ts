@@ -101,7 +101,18 @@ for (const floor of [1, 2, 3, 4])
     page.on('pageerror', (e) => errors.push(e.message));
     await page.goto(url + '/?missing=legacy-doors');
     await page.waitForFunction(() => window.productionGeometry);
-    for (const focus of ['room', 'door', 'corner', 'side-open', 'side-locked'] as const) {
+    for (const focus of [
+      'room',
+      'door',
+      'corner',
+      'side-open',
+      'side-locked',
+      'obstacle',
+      'north',
+      'south',
+      'east',
+      'west',
+    ] as const) {
       const report = await page.evaluate(
         ({ floor, focus }) => window.productionGeometry.walls(floor, focus),
         { floor, focus },
@@ -109,6 +120,7 @@ for (const floor of [1, 2, 3, 4])
       expect(report.doors).toBe(report.expectedDoors);
       expect(report.lockedDoors).toBe(focus === 'side-locked' ? report.expectedDoors : 0);
       if (focus.startsWith('side')) expect(report.sideDoors).toBeGreaterThan(0);
+      if (focus === 'south') expect(report.southAlignment).toBeCloseTo(0, 8);
       await page.screenshot({ path: info.outputPath(`wall-${floor}-${focus}.png`), scale: 'css' });
     }
     expect(errors).toEqual([]);

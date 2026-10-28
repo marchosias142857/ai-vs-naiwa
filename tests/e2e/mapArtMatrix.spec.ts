@@ -82,3 +82,18 @@ test('cuboid tops stay upright; vertical rows hide bases, corners stay opaque an
     expect(report.openPorts, theme).toBe(5);
   }
 });
+
+test('irregular obstacles preserve the textured floor beneath their transparent edges', async ({
+  page,
+}, info) => {
+  await page.goto(url);
+  await page.waitForFunction(() => window.obstacleFloorProbe);
+  for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
+    const report = await page.evaluate((t) => window.obstacleFloorProbe(t), theme);
+    await info.attach(theme, { body: JSON.stringify(report), contentType: 'application/json' });
+    expect(report.samples).toBeGreaterThan(9000);
+    expect(report.transparentModelPixels, theme).toBeGreaterThan(100);
+    expect(report.holes, theme).toBe(0);
+    expect(report.changedFloorPixels, theme).toBe(0);
+  }
+});

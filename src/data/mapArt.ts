@@ -8,7 +8,7 @@ export const MAP_ART = {
     objects: 'map_objects_v1',
     ground: 'map_ground_v2',
     blocks: 'map_blocks_v2',
-    walls: 'map_wall_model_v12',
+    walls: 'map_wall_model_v17',
     sideDoors: 'map_side_doors_v2',
   },
   sources: {
@@ -17,7 +17,7 @@ export const MAP_ART = {
     objects: 'map-objects-v1.webp',
     ground: 'map-ground-v2.webp',
     blocks: 'map-blocks-v2.webp',
-    walls: 'map-wall-model-v12.webp',
+    walls: 'map-wall-model-v17.webp',
     sideDoors: 'map-side-doors-v2.webp',
   },
   density: 8,
@@ -29,6 +29,8 @@ export const MAP_ART = {
   // North/south models stay unchanged; new narrow side frames align their caps with the wall.
   doorSize: { horizontal: [40, 30], vertical: [13, 38] },
   sideDoorOffset: 6,
+  // South gate cap begins at the same y as the adjacent wall cap (9.6 above the port).
+  southDoorOffset: -3.6,
   wallBacking: { temple: '#30445b', wreck: '#513722', abyss: '#192b47', milk: '#928673' },
   wallTile: 32,
   // Use only the continuous top course. The rest of each square cap frame is a frontal wall face.

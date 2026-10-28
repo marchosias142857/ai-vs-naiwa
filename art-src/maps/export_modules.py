@@ -13,7 +13,7 @@ frames = {}
 reports = []
 for name in ['terrain', 'doors', 'objects', 'ground', 'blocks', 'walls', 'sideDoors']:
     version = 'v2' if name in ['ground', 'blocks', 'walls', 'sideDoors'] else 'v1'
-    asset = 'wall-model-v12' if name == 'walls' else 'side-doors-v2' if name == 'sideDoors' else f'{name}-{version}'
+    asset = 'wall-model-v17' if name == 'walls' else 'side-doors-v2' if name == 'sideDoors' else f'{name}-{version}'
     source = SOURCE / f'{asset}.png'
     output = ROOT / 'public/assets/demo' / f'map-{asset}.webp'
     im = Image.open(source).convert('RGBA')
@@ -31,14 +31,12 @@ for name in ['terrain', 'doors', 'objects', 'ground', 'blocks', 'walls', 'sideDo
                     'runtimeSha256': hashlib.sha256(output.read_bytes()).hexdigest(),
                     'decodedRGBAIdentical': True})
     if name == 'walls':
-        # Four newly painted, connected models in a 2x2 atlas. Keep original PNG intact.
-        # Measured top/body regions are normalized by the renderer to exact 80x80 + 80x96.
+        # Owner-selected four connected models in one row, edited for clean edges,
+        # dark wall faces and pixel-art shading. Original generated PNG remains untouched.
         for i, theme in enumerate(['temple', 'wreck', 'abyss', 'milk']):
-            x = (i % 2) * im.width // 2
-            row = i // 2
-            top, join, bottom = (0, 248, 496) if row == 0 else (496, 727, im.height)
-            for part, y, end in [('top', top, join), ('face', join, bottom)]:
-                cell = im.crop((x, y, x + im.width // 2, end))
+            x, right = i * im.width // 4, (i + 1) * im.width // 4
+            for part, y, end in [('top', 0, 456), ('face', 456, im.height)]:
+                cell = im.crop((x, y, right, end))
                 box = cell.getchannel('A').point(lambda a: 255 if a > 16 else 0).getbbox()
                 assert box
                 l, t, r, b = box

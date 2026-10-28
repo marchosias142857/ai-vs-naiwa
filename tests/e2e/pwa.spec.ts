@@ -1,4 +1,5 @@
 import { bestiaryCards } from '../../src/sim/meta/bestiary';
+import { MAP_ART } from '../../src/data/mapArt';
 import { expect, test } from '@playwright/test';
 import { cp, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -140,17 +141,19 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
       expect(file.size).toBeLessThan(300 * 1024);
     }
   }
-  const modules = await reopened.evaluate(async () =>
-    Promise.all(
-      ['terrain', 'doors', 'objects'].map(async (kind) => {
-        const response = await fetch(`assets/demo/map-${kind}-v1.webp`);
-        const blob = await response.blob();
-        const bitmap = await createImageBitmap(blob);
-        const report = { ok: response.ok, type: blob.type, size: blob.size, width: bitmap.width };
-        bitmap.close();
-        return report;
-      }),
-    ),
+  const modules = await reopened.evaluate(
+    async (sources) =>
+      Promise.all(
+        sources.map(async (source) => {
+          const response = await fetch(`assets/demo/${source}`);
+          const blob = await response.blob();
+          const bitmap = await createImageBitmap(blob);
+          const report = { ok: response.ok, type: blob.type, size: blob.size, width: bitmap.width };
+          bitmap.close();
+          return report;
+        }),
+      ),
+    Object.values(MAP_ART.sources),
   );
   for (const file of modules) {
     expect(file.ok).toBe(true);

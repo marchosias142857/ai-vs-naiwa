@@ -59,6 +59,7 @@ it('uses dedicated pixel wall parts with a square cap and a 1.2 body ratio, pres
   expect(MAP_ART.wallFacePixels).toBe(96);
   expect(MAP_ART.wallHeight / MAP_ART.wallWidth).toBe(1.2);
   expect(MAP_ART.doorSize).toEqual({ horizontal: [40, 30], vertical: [13, 38] });
+  expect(MAP_ART.southDoorOffset - MAP_ART.doorSize.horizontal[1] * 0.2).toBeCloseTo(-MAP_ART.wallHeight);
   for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
     expect(mapFrameTexture(`${theme}_wall_top`)).toBe(MAP_ART.textures.walls);
     expect(mapFrameTexture(`${theme}_wall_face`)).toBe(MAP_ART.textures.walls);

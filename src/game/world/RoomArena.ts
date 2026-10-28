@@ -259,7 +259,7 @@ export class RoomArena {
             )
             .setAngle(0)
             .setOrigin(0.5, dy < 0 ? 0.8 : dy > 0 ? 0.2 : 0.5)
-            .setPosition(x + dx * MAP_ART.sideDoorOffset, y)
+            .setPosition(x + dx * MAP_ART.sideDoorOffset, y + (dy > 0 ? MAP_ART.southDoorOffset : 0))
             .setVisible(true);
           continue;
         }

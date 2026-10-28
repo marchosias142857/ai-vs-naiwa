@@ -94,6 +94,52 @@ class ArtScene extends Scene {
         after: { objects: this.children.length, textures: Object.keys(this.textures.list).sort() },
       };
     };
+    window.obstacleFloorProbe = (theme) => {
+      // Exercise a single irregular model and both directions of repeated dividers.
+      const boxes = [
+        { x: -48, y: 0, width: 16, height: 16 },
+        { x: 0, y: 0, width: 48, height: 16 },
+        { x: 48, y: 0, width: 16, height: 48 },
+      ];
+      const texture = this.textures.get('modular-ground:ArtMatrix') as Textures.CanvasTexture;
+      art.show(theme, []);
+      const floor = texture.context.getImageData(0, 0, texture.width, texture.height).data;
+      art.show(theme, boxes);
+      const covered = texture.context.getImageData(0, 0, texture.width, texture.height).data;
+      let changedFloorPixels = 0,
+        holes = 0,
+        samples = 0;
+      for (const box of boxes)
+        for (let y = -box.height / 2 - 2; y < box.height / 2 + 2; y += 0.5)
+          for (let x = -box.width / 2 - 2; x < box.width / 2 + 2; x += 0.5) {
+            const px = Math.floor((240 + box.x + x - B.x + MAP_ART.canvasPadding) * MAP_ART.density);
+            const py = Math.floor((135 + box.y + y - B.y + MAP_ART.canvasPadding) * MAP_ART.density);
+            const index = (py * texture.width + px) * 4;
+            samples++;
+            if (covered[index + 3] !== 255) holes++;
+            if (floor.slice(index, index + 4).some((v, i) => v !== covered[index + i])) changedFloorPixels++;
+          }
+      const frame = MAP_ART.frames[`${theme}_obstacle`];
+      const canvas = document.createElement('canvas');
+      canvas.width = frame[2];
+      canvas.height = frame[3];
+      const c = canvas.getContext('2d')!;
+      c.drawImage(
+        this.textures.get(MAP_ART.textures.blocks).getSourceImage() as HTMLImageElement,
+        frame[0],
+        frame[1],
+        frame[2],
+        frame[3],
+        0,
+        0,
+        canvas.width,
+        canvas.height,
+      );
+      const model = c.getImageData(0, 0, canvas.width, canvas.height).data;
+      let transparentModelPixels = 0;
+      for (let i = 3; i < model.length; i += 4) if (model[i] === 0) transparentModelPixels++;
+      return { changedFloorPixels, holes, samples, transparentModelPixels };
+    };
     window.wallArtProbe = (theme) => {
       const d = MAP_ART.density,
         w = MAP_ART.wallWidth,
@@ -237,6 +283,12 @@ class ArtScene extends Scene {
 new Game({ type: AUTO, width: 1280, height: 820, backgroundColor: '#000000', scene: ArtScene });
 declare global {
   interface Window {
+    obstacleFloorProbe: (theme: 'temple' | 'wreck' | 'abyss' | 'milk') => {
+      changedFloorPixels: number;
+      holes: number;
+      samples: number;
+      transparentModelPixels: number;
+    };
     wallArtProbe: (theme: 'temple' | 'wreck' | 'abyss' | 'milk') => {
       topDifferences: number;
       baseDifferences: number;
