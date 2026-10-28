@@ -98,15 +98,8 @@ export class ModularRoomArt implements RoomArt {
       c.lineWidth = 0.5;
       c.strokeRect(x, y, t.width, t.height);
     }
-    // A narrow ground shadow distinguishes raised blockers from traversable floor/field rims.
-    c.fillStyle = 'rgba(3,8,14,0.7)';
-    for (const box of boxes)
-      c.fillRect(
-        240 + box.x - box.width / 2 - 0.5,
-        135 + box.y - box.height / 2,
-        box.width + 1,
-        box.height + 1.5,
-      );
+    // Keep the floor intact under irregular obstacle silhouettes. Their source art owns
+    // the contact shading; a rectangular backing would show through transparent corners.
     c.restore();
     const wall = this.wallCanvas.getContext('2d')!;
     wall.setTransform(1, 0, 0, 1, 0, 0);
