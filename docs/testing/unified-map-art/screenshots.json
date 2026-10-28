@@ -5,355 +5,505 @@
       "file": "temple-room.png",
       "source": "productionGeometry-map-wall-review-floor-1-desktop/wall-1-room.png",
       "bytes": 759364,
-      "sha256": "54abc6ffffbe717ce78343da475b5d79ea4c99750657ecf3c2cce39c57be0276"
+      "sha256": "54abc6ffffbe717ce78343da475b5d79ea4c99750657ecf3c2cce39c57be0276",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-north.png",
       "source": "productionGeometry-map-wall-review-floor-1-desktop/wall-1-north.png",
       "bytes": 471974,
-      "sha256": "19b8ee16298a6f9f5c680e35f2bda4494e64b4a031313e26b1c18d0ece03b184"
+      "sha256": "19b8ee16298a6f9f5c680e35f2bda4494e64b4a031313e26b1c18d0ece03b184",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-south.png",
       "source": "productionGeometry-map-wall-review-floor-1-desktop/wall-1-south.png",
       "bytes": 384862,
-      "sha256": "2c3a5ba5fbf6efd4969a1b72ef6bce9a49a0f5bc793afa5f2b10bac4f99c9cea"
+      "sha256": "2c3a5ba5fbf6efd4969a1b72ef6bce9a49a0f5bc793afa5f2b10bac4f99c9cea",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-east.png",
       "source": "productionGeometry-map-wall-review-floor-1-desktop/wall-1-east.png",
       "bytes": 652509,
-      "sha256": "0f125d3674ecb1ffa4b864ddf0cd9a3fbbbb54e1afa72deb33c81b9d72aef4ce"
+      "sha256": "0f125d3674ecb1ffa4b864ddf0cd9a3fbbbb54e1afa72deb33c81b9d72aef4ce",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-west.png",
       "source": "productionGeometry-map-wall-review-floor-1-desktop/wall-1-west.png",
       "bytes": 642295,
-      "sha256": "35bf61f933f3d54575091a4796224c61d045d3d49690761bddeec66d905dd8f1"
+      "sha256": "35bf61f933f3d54575091a4796224c61d045d3d49690761bddeec66d905dd8f1",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-corner.png",
       "source": "productionGeometry-map-wall-review-floor-1-desktop/wall-1-corner.png",
       "bytes": 709436,
-      "sha256": "b92bef407655f66a61810e087a914aa411e40a989c56147e9d64215145df8744"
+      "sha256": "b92bef407655f66a61810e087a914aa411e40a989c56147e9d64215145df8744",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-obstacle.png",
       "source": "productionGeometry-map-wall-review-floor-1-desktop/wall-1-obstacle.png",
       "bytes": 904747,
-      "sha256": "3f4f6deb0cbf0b3aa277451cc6590c2f96c9c520219cc330ead7f4cd8f4cbbcb"
+      "sha256": "3f4f6deb0cbf0b3aa277451cc6590c2f96c9c520219cc330ead7f4cd8f4cbbcb",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-side-locked.png",
       "source": "productionGeometry-map-wall-review-floor-1-desktop/wall-1-side-locked.png",
       "bytes": 643456,
-      "sha256": "86de166b0aa58b1c12e597d9a97dc4a9e1d6a08e4626d356226c3e53383fddd9"
+      "sha256": "86de166b0aa58b1c12e597d9a97dc4a9e1d6a08e4626d356226c3e53383fddd9",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-production.png",
       "source": "mapArt-modular-production-art-floor-1-desktop/modular-floor-1.png",
       "bytes": 633295,
-      "sha256": "92ad33e0ba3144b78add16ae19fc45fc66d4847babd6a290f6ea2df1c794f0e4"
+      "sha256": "92ad33e0ba3144b78add16ae19fc45fc66d4847babd6a290f6ea2df1c794f0e4",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-dense-mobile.png",
       "source": "productionGeometry-map-art-dense-showcase-floor-1-mobile-landscape/map-dense-1.png",
       "bytes": 344696,
-      "sha256": "b281a6531d13f6c6e99518a332a52b6ef6764ed5c31d920a74b297bbeb301d29"
+      "sha256": "b281a6531d13f6c6e99518a332a52b6ef6764ed5c31d920a74b297bbeb301d29",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-rims.png",
       "source": "mapArtMatrix-unified-gates-5dcf2-meet-the-floor-without-gaps-desktop/unified-rims-temple.png",
       "bytes": 387545,
-      "sha256": "768f8dd6426d6f1c1e26fea3d4fc3e40e40230b7cad7c7db4b888e670ca38031"
+      "sha256": "768f8dd6426d6f1c1e26fea3d4fc3e40e40230b7cad7c7db4b888e670ca38031",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-traps-idle.png",
       "source": "productionGeometry-unified-72288-s-and-inset-borders-floor-1-desktop/unified-traps-1-idle.png",
       "bytes": 1317093,
-      "sha256": "234bfc3fd57e6a75e3228027aeb4492cdf772cdc98598426ba4acab75b2141d8"
+      "sha256": "234bfc3fd57e6a75e3228027aeb4492cdf772cdc98598426ba4acab75b2141d8",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-traps-warn.png",
       "source": "productionGeometry-unified-72288-s-and-inset-borders-floor-1-desktop/unified-traps-1-warn.png",
       "bytes": 1318958,
-      "sha256": "cc80eceb5411fccac05cbf772e414c15cdaafb4704492b799286380051ae66e3"
+      "sha256": "cc80eceb5411fccac05cbf772e414c15cdaafb4704492b799286380051ae66e3",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-traps-on.png",
       "source": "productionGeometry-unified-72288-s-and-inset-borders-floor-1-desktop/unified-traps-1-on.png",
       "bytes": 1321944,
-      "sha256": "0092ebe242c9d208fc826cc2c64e61433ffa5e9e401615d576513f295018d0d0"
+      "sha256": "0092ebe242c9d208fc826cc2c64e61433ffa5e9e401615d576513f295018d0d0",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "temple-traps-broken.png",
       "source": "productionGeometry-unified-72288-s-and-inset-borders-floor-1-desktop/unified-traps-1-broken.png",
       "bytes": 1317093,
-      "sha256": "234bfc3fd57e6a75e3228027aeb4492cdf772cdc98598426ba4acab75b2141d8"
+      "sha256": "234bfc3fd57e6a75e3228027aeb4492cdf772cdc98598426ba4acab75b2141d8",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-room.png",
       "source": "productionGeometry-map-wall-review-floor-2-desktop/wall-2-room.png",
       "bytes": 613363,
-      "sha256": "37a739ebbcca75a3bd55eb08ed0eb16c9c4740bc2e235d263b1d63e64504b8bf"
+      "sha256": "37a739ebbcca75a3bd55eb08ed0eb16c9c4740bc2e235d263b1d63e64504b8bf",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-north.png",
       "source": "productionGeometry-map-wall-review-floor-2-desktop/wall-2-north.png",
       "bytes": 435684,
-      "sha256": "01fda24213971cae1b28b932b071cd4c44db664e00c62aa2dd9ab6863e5df326"
+      "sha256": "01fda24213971cae1b28b932b071cd4c44db664e00c62aa2dd9ab6863e5df326",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-south.png",
       "source": "productionGeometry-map-wall-review-floor-2-desktop/wall-2-south.png",
       "bytes": 330161,
-      "sha256": "4550890948b661c19b911333863bb83b11a47962702b4a89e1cb11f0b6762d96"
+      "sha256": "4550890948b661c19b911333863bb83b11a47962702b4a89e1cb11f0b6762d96",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-east.png",
       "source": "productionGeometry-map-wall-review-floor-2-desktop/wall-2-east.png",
       "bytes": 562178,
-      "sha256": "161e06c12802434fa0d159ad73525a41b4a58c54bd656f5aab835df1f0a03804"
+      "sha256": "161e06c12802434fa0d159ad73525a41b4a58c54bd656f5aab835df1f0a03804",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-west.png",
       "source": "productionGeometry-map-wall-review-floor-2-desktop/wall-2-west.png",
       "bytes": 537964,
-      "sha256": "ad23eb5cc18e0c0a58e842e47dcef1a42746c13c20a455e54fa718a94c1a3836"
+      "sha256": "ad23eb5cc18e0c0a58e842e47dcef1a42746c13c20a455e54fa718a94c1a3836",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-corner.png",
       "source": "productionGeometry-map-wall-review-floor-2-desktop/wall-2-corner.png",
       "bytes": 590671,
-      "sha256": "3975673a6659a1e11ca5fbffddf0d5a892c2f892c5e8c8e1f51c29f57ebf6fbe"
+      "sha256": "3975673a6659a1e11ca5fbffddf0d5a892c2f892c5e8c8e1f51c29f57ebf6fbe",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-obstacle.png",
       "source": "productionGeometry-map-wall-review-floor-2-desktop/wall-2-obstacle.png",
       "bytes": 807496,
-      "sha256": "f58e300bfa2523f128fb8b8d558b5821356f942ea8f2147ba8f400afe0d4ea79"
+      "sha256": "f58e300bfa2523f128fb8b8d558b5821356f942ea8f2147ba8f400afe0d4ea79",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-side-locked.png",
       "source": "productionGeometry-map-wall-review-floor-2-desktop/wall-2-side-locked.png",
       "bytes": 563588,
-      "sha256": "a57d90426ed7738f6e985d146a9d6794172090e497188ca86c5f49b97222f280"
+      "sha256": "a57d90426ed7738f6e985d146a9d6794172090e497188ca86c5f49b97222f280",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-production.png",
       "source": "mapArt-modular-production-art-floor-2-desktop/modular-floor-2.png",
       "bytes": 580910,
-      "sha256": "370cedc1b66a0ecbdcc21f29ebc6f30fc2f5437d03f1b1be72feb6d6441aa720"
+      "sha256": "370cedc1b66a0ecbdcc21f29ebc6f30fc2f5437d03f1b1be72feb6d6441aa720",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-dense-mobile.png",
       "source": "productionGeometry-map-art-dense-showcase-floor-2-mobile-landscape/map-dense-2.png",
       "bytes": 298387,
-      "sha256": "dbec2fd62dc15646adcc4e5c2db1ccb5ceee3b5a201465699e7cdbfb7ebb5727"
+      "sha256": "dbec2fd62dc15646adcc4e5c2db1ccb5ceee3b5a201465699e7cdbfb7ebb5727",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-rims.png",
       "source": "mapArtMatrix-unified-gates-5dcf2-meet-the-floor-without-gaps-desktop/unified-rims-wreck.png",
       "bytes": 349409,
-      "sha256": "e35e3007958c9ba42553e198351027b96b4b36db911cf1ecacfe11499723cd9a"
+      "sha256": "e35e3007958c9ba42553e198351027b96b4b36db911cf1ecacfe11499723cd9a",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-traps-idle.png",
       "source": "productionGeometry-unified-190b4-s-and-inset-borders-floor-2-desktop/unified-traps-2-idle.png",
       "bytes": 1076436,
-      "sha256": "502168c61f09e453439191b69490b3d09135954cf401364c832dcb12aff7103c"
+      "sha256": "502168c61f09e453439191b69490b3d09135954cf401364c832dcb12aff7103c",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-traps-warn.png",
       "source": "productionGeometry-unified-190b4-s-and-inset-borders-floor-2-desktop/unified-traps-2-warn.png",
       "bytes": 1077205,
-      "sha256": "447bc89898b0db73414952160b6acdc1650f07888284cc243b1901104efd0e60"
+      "sha256": "447bc89898b0db73414952160b6acdc1650f07888284cc243b1901104efd0e60",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-traps-on.png",
       "source": "productionGeometry-unified-190b4-s-and-inset-borders-floor-2-desktop/unified-traps-2-on.png",
       "bytes": 1078210,
-      "sha256": "8ea5405c7f78b61d52be6309b29d2256eea88a18bdbec26f106d5ad6f68b8cbf"
+      "sha256": "8ea5405c7f78b61d52be6309b29d2256eea88a18bdbec26f106d5ad6f68b8cbf",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "wreck-traps-broken.png",
       "source": "productionGeometry-unified-190b4-s-and-inset-borders-floor-2-desktop/unified-traps-2-broken.png",
       "bytes": 1071972,
-      "sha256": "6aae3f9324f93fe0d868dc69f467de755f812fc5df725f799bb5d69ba5294a96"
+      "sha256": "6aae3f9324f93fe0d868dc69f467de755f812fc5df725f799bb5d69ba5294a96",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-room.png",
       "source": "productionGeometry-map-wall-review-floor-3-desktop/wall-3-room.png",
       "bytes": 648999,
-      "sha256": "c0af720e350632c4e5cd29f192d77b88a9be37dad07e39dae48692e2f5bdc193"
+      "sha256": "c0af720e350632c4e5cd29f192d77b88a9be37dad07e39dae48692e2f5bdc193",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-north.png",
       "source": "productionGeometry-map-wall-review-floor-3-desktop/wall-3-north.png",
       "bytes": 533197,
-      "sha256": "8d4d468e959a22fc03371c42cc6968ae1e64eafc7bb5d011093500c35218af48"
+      "sha256": "8d4d468e959a22fc03371c42cc6968ae1e64eafc7bb5d011093500c35218af48",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-south.png",
       "source": "productionGeometry-map-wall-review-floor-3-desktop/wall-3-south.png",
       "bytes": 346432,
-      "sha256": "24d4d731aec277d77c97d94a52a447cb5c825d2d74ef9a2b5ed9ba98ed725ab5"
+      "sha256": "24d4d731aec277d77c97d94a52a447cb5c825d2d74ef9a2b5ed9ba98ed725ab5",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-east.png",
       "source": "productionGeometry-map-wall-review-floor-3-desktop/wall-3-east.png",
       "bytes": 602925,
-      "sha256": "d84cc175eab8d56bfd75e165c62bebe733b38425f9c8059888921cf90d739ca2"
+      "sha256": "d84cc175eab8d56bfd75e165c62bebe733b38425f9c8059888921cf90d739ca2",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-west.png",
       "source": "productionGeometry-map-wall-review-floor-3-desktop/wall-3-west.png",
       "bytes": 592159,
-      "sha256": "6114c0bf7b4cf1e6f05167c23c9d4b37ff7bbc4938707d8057dbcced347467d7"
+      "sha256": "6114c0bf7b4cf1e6f05167c23c9d4b37ff7bbc4938707d8057dbcced347467d7",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-corner.png",
       "source": "productionGeometry-map-wall-review-floor-3-desktop/wall-3-corner.png",
       "bytes": 773364,
-      "sha256": "542e408ca3efeb0a8948c3b939c8cb93d37f7bb59ae5e9708506cf3ee98d0b35"
+      "sha256": "542e408ca3efeb0a8948c3b939c8cb93d37f7bb59ae5e9708506cf3ee98d0b35",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-obstacle.png",
       "source": "productionGeometry-map-wall-review-floor-3-desktop/wall-3-obstacle.png",
       "bytes": 870606,
-      "sha256": "b2c2dfb2ea7f34da6ac54e2cd8dd67492f4f938257cdc79191fff794a5e7f581"
+      "sha256": "b2c2dfb2ea7f34da6ac54e2cd8dd67492f4f938257cdc79191fff794a5e7f581",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-side-locked.png",
       "source": "productionGeometry-map-wall-review-floor-3-desktop/wall-3-side-locked.png",
       "bytes": 603590,
-      "sha256": "63d2cfbd08e6b24e9bfb9bf7a94419ae289329029a2196191f9e29fb5adb5e54"
+      "sha256": "63d2cfbd08e6b24e9bfb9bf7a94419ae289329029a2196191f9e29fb5adb5e54",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-production.png",
       "source": "mapArt-modular-production-art-floor-3-desktop/modular-floor-3.png",
       "bytes": 617767,
-      "sha256": "639bd6294c10e7fe4a67547794758d3fafb3665be44ef40f64aaa06c264c1e23"
+      "sha256": "639bd6294c10e7fe4a67547794758d3fafb3665be44ef40f64aaa06c264c1e23",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-dense-mobile.png",
       "source": "productionGeometry-map-art-dense-showcase-floor-3-mobile-landscape/map-dense-3.png",
       "bytes": 328518,
-      "sha256": "cf72605744d84f1fa178f7a92e238cfbec8c1b9618bcd17a4e740d04af7f60a7"
+      "sha256": "cf72605744d84f1fa178f7a92e238cfbec8c1b9618bcd17a4e740d04af7f60a7",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-rims.png",
       "source": "mapArtMatrix-unified-gates-5dcf2-meet-the-floor-without-gaps-desktop/unified-rims-abyss.png",
       "bytes": 362571,
-      "sha256": "cc171b79cae006779d7ca6b189800266a337ba42e0ed20a1ce31652f77e5cead"
+      "sha256": "cc171b79cae006779d7ca6b189800266a337ba42e0ed20a1ce31652f77e5cead",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-traps-idle.png",
       "source": "productionGeometry-unified-ce009-s-and-inset-borders-floor-3-desktop/unified-traps-3-idle.png",
       "bytes": 1105840,
-      "sha256": "46ceb1703dac7f6686a93b85c0e763843465befe927dd55550d49708af89fb1e"
+      "sha256": "46ceb1703dac7f6686a93b85c0e763843465befe927dd55550d49708af89fb1e",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-traps-warn.png",
       "source": "productionGeometry-unified-ce009-s-and-inset-borders-floor-3-desktop/unified-traps-3-warn.png",
       "bytes": 1106113,
-      "sha256": "2c656e4ab6b0091f7f0b5ddb9e704591fdaf49ee33443340b3c55aa58ec81c35"
+      "sha256": "2c656e4ab6b0091f7f0b5ddb9e704591fdaf49ee33443340b3c55aa58ec81c35",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-traps-on.png",
       "source": "productionGeometry-unified-ce009-s-and-inset-borders-floor-3-desktop/unified-traps-3-on.png",
       "bytes": 1106113,
-      "sha256": "2c656e4ab6b0091f7f0b5ddb9e704591fdaf49ee33443340b3c55aa58ec81c35"
+      "sha256": "2c656e4ab6b0091f7f0b5ddb9e704591fdaf49ee33443340b3c55aa58ec81c35",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "abyss-traps-broken.png",
       "source": "productionGeometry-unified-ce009-s-and-inset-borders-floor-3-desktop/unified-traps-3-broken.png",
       "bytes": 1106113,
-      "sha256": "2c656e4ab6b0091f7f0b5ddb9e704591fdaf49ee33443340b3c55aa58ec81c35"
+      "sha256": "2c656e4ab6b0091f7f0b5ddb9e704591fdaf49ee33443340b3c55aa58ec81c35",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-room.png",
       "source": "productionGeometry-map-wall-review-floor-4-desktop/wall-4-room.png",
       "bytes": 586718,
-      "sha256": "1b9a21e5d619d408b0cc921afb9ac177efb24c5275374feef7760539413aaff6"
+      "sha256": "1b9a21e5d619d408b0cc921afb9ac177efb24c5275374feef7760539413aaff6",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-north.png",
       "source": "productionGeometry-map-wall-review-floor-4-desktop/wall-4-north.png",
       "bytes": 420081,
-      "sha256": "0fae15952b5bf574c9db6f9b889dfc8c88dc68476171df6b010d420c6f015bb7"
+      "sha256": "0fae15952b5bf574c9db6f9b889dfc8c88dc68476171df6b010d420c6f015bb7",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-south.png",
       "source": "productionGeometry-map-wall-review-floor-4-desktop/wall-4-south.png",
       "bytes": 344867,
-      "sha256": "79495730618c4f1cdae5d00e1fc672d013ab588e4668c63ed990ca1df5741fed"
+      "sha256": "79495730618c4f1cdae5d00e1fc672d013ab588e4668c63ed990ca1df5741fed",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-east.png",
       "source": "productionGeometry-map-wall-review-floor-4-desktop/wall-4-east.png",
       "bytes": 583997,
-      "sha256": "dd7178bb5d163cba7c0144be2c545d1d80dbd1eeccd6c19cbdb473100f1408ce"
+      "sha256": "dd7178bb5d163cba7c0144be2c545d1d80dbd1eeccd6c19cbdb473100f1408ce",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-west.png",
       "source": "productionGeometry-map-wall-review-floor-4-desktop/wall-4-west.png",
       "bytes": 573975,
-      "sha256": "9b70dfdf5a1eaf93db4b9dc2ef8b2116644e004c90a24531aa74552f5c8e4669"
+      "sha256": "9b70dfdf5a1eaf93db4b9dc2ef8b2116644e004c90a24531aa74552f5c8e4669",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-corner.png",
       "source": "productionGeometry-map-wall-review-floor-4-desktop/wall-4-corner.png",
       "bytes": 354543,
-      "sha256": "cf46b58a3ae58cc0f0daa5029bea5662dc299a447bfd989522f996c932560cbc"
+      "sha256": "cf46b58a3ae58cc0f0daa5029bea5662dc299a447bfd989522f996c932560cbc",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-obstacle.png",
       "source": "productionGeometry-map-wall-review-floor-4-desktop/wall-4-obstacle.png",
       "bytes": 765940,
-      "sha256": "cd6d3f40432cd6c3b62b8ff151550af6bfa313e897528dadc57448c800ad7f08"
+      "sha256": "cd6d3f40432cd6c3b62b8ff151550af6bfa313e897528dadc57448c800ad7f08",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-side-locked.png",
       "source": "productionGeometry-map-wall-review-floor-4-desktop/wall-4-side-locked.png",
       "bytes": 584248,
-      "sha256": "45ca2c337451c3c3b1143509fa7f555fbfd1d369c6f41a8817c54e84ad7ca0a9"
+      "sha256": "45ca2c337451c3c3b1143509fa7f555fbfd1d369c6f41a8817c54e84ad7ca0a9",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-production.png",
       "source": "mapArt-modular-production-art-floor-4-desktop/modular-floor-4.png",
       "bytes": 558796,
-      "sha256": "7a9dbd61f83e80c1617c840e57f2c32240e02918018afafd51520c4610b2c918"
+      "sha256": "7a9dbd61f83e80c1617c840e57f2c32240e02918018afafd51520c4610b2c918",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-dense-mobile.png",
       "source": "productionGeometry-map-art-dense-showcase-floor-4-mobile-landscape/map-dense-4.png",
       "bytes": 279988,
-      "sha256": "63f5f1f4a7c3f65e957d6c7649c27ddc4bd3dc280a225f07fc37e33009559575"
+      "sha256": "63f5f1f4a7c3f65e957d6c7649c27ddc4bd3dc280a225f07fc37e33009559575",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "milk-rims.png",
       "source": "mapArtMatrix-unified-gates-5dcf2-meet-the-floor-without-gaps-desktop/unified-rims-milk.png",
       "bytes": 362223,
-      "sha256": "368e71e683a9dfca170dad8bcc76e2ca82a6f528d835265076d0433b2bf77b46"
+      "sha256": "368e71e683a9dfca170dad8bcc76e2ca82a6f528d835265076d0433b2bf77b46",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "hub.png",
       "source": "mapArt-unified-hub-uses-th-aa903-ate-floor-and-redrawn-altar-desktop/unified-hub.png",
       "bytes": 567891,
-      "sha256": "988e3eed2cb69733b502518607cc75d129d3061a750307fabd40c92c271bc025"
+      "sha256": "988e3eed2cb69733b502518607cc75d129d3061a750307fabd40c92c271bc025",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "chest.png",
       "source": "productionGeometry-unified-891a2-ups-use-actual-game-objects-desktop/unified-chest.png",
       "bytes": 1276584,
-      "sha256": "b32b11de2b20066e46b936e022d375b56ca708cc5f9a61cb0761fe9df438057e"
+      "sha256": "b32b11de2b20066e46b936e022d375b56ca708cc5f9a61cb0761fe9df438057e",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
     },
     {
       "file": "exit.png",
       "source": "productionGeometry-unified-891a2-ups-use-actual-game-objects-desktop/unified-exit.png",
       "bytes": 1276222,
-      "sha256": "6448ca2765a292282ca0afc8a981770f4d51fe784673bf5b2b287d38925a732c"
+      "sha256": "6448ca2765a292282ca0afc8a981770f4d51fe784673bf5b2b287d38925a732c",
+      "batch": "unified-v3-final-results",
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d"
+    },
+    {
+      "file": "temple-zones.png",
+      "source": "productionGeometry-unified-ad561-heir-existing-display-slots-desktop/unified-zones-1.png",
+      "batch": "unified-v3-hazards-results",
+      "runtimeCommit": "23cf5978af6a81ec6942a05774a5e9b3cca87bd6",
+      "bytes": 1268876,
+      "sha256": "bfc092bdef858cb0c076ee7fddc46af29c44b9c8953ef604c671c9bc01e0126a"
+    },
+    {
+      "file": "wreck-zones.png",
+      "source": "productionGeometry-unified-ad561-heir-existing-display-slots-desktop/unified-zones-2.png",
+      "batch": "unified-v3-hazards-results",
+      "runtimeCommit": "23cf5978af6a81ec6942a05774a5e9b3cca87bd6",
+      "bytes": 1031842,
+      "sha256": "22a75a154f752ff30b213c9ac0ad694213c1ac45826efed00edda636bbf599eb"
+    },
+    {
+      "file": "abyss-zones.png",
+      "source": "productionGeometry-unified-ad561-heir-existing-display-slots-desktop/unified-zones-3.png",
+      "batch": "unified-v3-hazards-results",
+      "runtimeCommit": "23cf5978af6a81ec6942a05774a5e9b3cca87bd6",
+      "bytes": 1118933,
+      "sha256": "d6bcd7a7cc2b2f18304e17fd579fb99dd2335e26cc3373104a4b4c1eb0a9f6df"
+    },
+    {
+      "file": "milk-zones.png",
+      "source": "productionGeometry-unified-ad561-heir-existing-display-slots-desktop/unified-zones-4.png",
+      "batch": "unified-v3-hazards-results",
+      "runtimeCommit": "23cf5978af6a81ec6942a05774a5e9b3cca87bd6",
+      "bytes": 1084289,
+      "sha256": "36a8da99e8c7415128ee8f9401a0faaa2c5390a1fc720aa874d3af9454fe0385"
     }
   ]
 }

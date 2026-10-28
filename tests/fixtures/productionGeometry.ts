@@ -278,6 +278,34 @@ class GeometryScene extends Scene {
           bullets: bridge.bullets.activeCount,
         };
       },
+      zones: (active) => {
+        for (let i = 0; i < 2; i++)
+          Object.assign(sim.zones[i]!, {
+            active,
+            kind: i ? 'poison' : 'milk',
+            x: i ? 274 : 206,
+            y: 148,
+            radius: 20,
+            duration: 10,
+            remaining: 6,
+          });
+        session.update();
+        this.cameras.main.setZoom(8).centerOn(240, 148);
+        const visible = this.children.list.filter(
+          (o): o is GameObjects.Image =>
+            'texture' in o &&
+            (o as GameObjects.Image).texture.key === MAP_ART.textures.effects &&
+            'visible' in o &&
+            o.visible === true &&
+            ['hazard_milk', 'hazard_poison'].includes(String((o as GameObjects.Image).frame.name)),
+        );
+        return {
+          frames: visible.map((o) => String(o.frame.name)).sort(),
+          opaqueEnough: visible.every((o) => o.alpha > 0.6),
+          children: this.children.length,
+          textures: this.textures.getTextureKeys().length,
+        };
+      },
       restored: !!data?.restored,
       restore: (state) => this.scene.restart({ restored: state }),
       rockSave: () => {
@@ -442,6 +470,12 @@ declare global {
         actors: number;
         traps: { kind: string; state: string }[];
         bullets: number;
+      };
+      zones: (active: boolean) => {
+        frames: string[];
+        opaqueEnough: boolean;
+        children: number;
+        textures: number;
       };
       restored: boolean;
       restore: (state: SessionSnapshot) => void;

@@ -80,7 +80,7 @@ test('祭台迁移、解锁失败与写盘失败、连续购买、重置确认�
   });
   expect(errors).toEqual([]);
 });
-test('满级天赋新局属性、完整续玩及入口兜底均冻结开局配置', async ({ page }) => {
+test('满级天赋同版本续玩冻结开局配置；更新结束旧局并保留档案', async ({ page }) => {
   await page.goto('/?seed=42');
   const talents = Object.fromEntries(Object.entries(TALENTS).map(([id, n]) => [id, n.costs.length]));
   await page.evaluate((p) => localStorage.setItem('avn.profile.v2', JSON.stringify(p)), {
@@ -107,15 +107,16 @@ test('满级天赋新局属性、完整续玩及入口兜底均冻结开局配�
     s.meta.build = 'old';
     localStorage.setItem('avn.run.v2', JSON.stringify(s));
   });
+  const profileBeforeUpdate = await page.evaluate(() => localStorage.getItem('avn.profile.v2'));
   await page.reload();
-  await page.locator('#continue-run').click();
-  await page.waitForFunction(() => !!window.__AVN__?.demo);
-  expect(await page.evaluate(() => window.__AVN__!.demo)).toMatchObject({ hp: 9, armor: 7, energy: 250 });
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('avn.run.v2')!).entry)).toMatchObject({
-    runId: entry.runId,
-    talents,
-    coins: 12,
-  });
+  await expect(page.locator('#continue-run')).toBeDisabled();
+  await expect(page.locator('#save-notice')).toContainText('旧冒险已结束');
+  expect(await page.evaluate(() => localStorage.getItem('avn.run.v2'))).toBeNull();
+  expect(await page.evaluate(() => localStorage.getItem('avn.profile.v2'))).toBe(profileBeforeUpdate);
+  await startAdventure(page);
+  const freshEntry = await page.evaluate(() => JSON.parse(localStorage.getItem('avn.run.v2')!).entry);
+  expect(freshEntry.talents).toEqual({});
+  expect(freshEntry.runId).not.toBe(entry.runId);
 });
 test('损坏档案备份原文；已结算的冒险不会出现在继续入口', async ({ page }) => {
   await page.goto('/?seed=42');

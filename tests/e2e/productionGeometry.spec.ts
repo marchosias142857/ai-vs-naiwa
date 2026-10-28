@@ -165,3 +165,24 @@ test('unified chest, exit and supply pickups use actual game objects', async ({ 
     await page.screenshot({ path: info.outputPath(`unified-${kind}.png`), scale: 'css' });
   }
 });
+
+test('unified environment zones stay visible on each floor and recycle their existing display slots', async ({
+  page,
+}, info) => {
+  await page.goto(url);
+  await page.waitForFunction(() => window.productionGeometry);
+  for (const floor of [1, 2, 3, 4]) {
+    await page.evaluate((f) => window.productionGeometry.walls(f, 'room'), floor);
+    const before = await page.evaluate(() => window.productionGeometry.zones(false));
+    for (let i = 0; i < 3; i++) {
+      const active = await page.evaluate(() => window.productionGeometry.zones(true));
+      expect(active.frames).toEqual(['hazard_milk', 'hazard_poison']);
+      expect(active.opaqueEnough).toBe(true);
+      expect([active.children, active.textures]).toEqual([before.children, before.textures]);
+      if (!i) await page.screenshot({ path: info.outputPath(`unified-zones-${floor}.png`), scale: 'css' });
+      const cleared = await page.evaluate(() => window.productionGeometry.zones(false));
+      expect(cleared.frames).toEqual([]);
+      expect([cleared.children, cleared.textures]).toEqual([before.children, before.textures]);
+    }
+  }
+});
