@@ -8,7 +8,7 @@
 
 ## 背景
 
-#101 要求用各招式专属的动画替代怪物施放技能时的红色预警圈，并且画面由 sim 状态和招式进度驱动。GPT 的接入审计（PR #112 的 `docs/design/monster-skill-animation.md`）列出了现有视图的缺口：
+#101 要求用各招式专属的动画替代怪物施放技能时的红色预警圈，并且画面由 sim 状态和招式进度驱动。GPT 的接入审计（[PR #112](https://github.com/marchosias142857/ai-vs-naiwa/pull/112/files) 的 `docs/design/monster-skill-animation.md`，未合入 main，已关闭）列出了现有视图的缺口：
 
 1. `ActorView` 只有 `pose`、`move`、`aim`、`lift`，没有招式阶段和进度。`EnemyArt` 只能在第一次观察到动作变化时自己起一个时钟：读档首帧对不上 sim 的真实进度；渲染跳过期间同名动作重新开始了，它也分辨不出来。
 2. 旧的 `charge_dash` 只写 `brain.time`，不写 `brain.span`，无法统一用剩余时间换算进度。

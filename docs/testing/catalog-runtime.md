@@ -2,6 +2,8 @@
 
 基线：main `2150898a9c5d8e3cfb0e19211c1878a2fe609bd8`（负责人已合并 #128）。分支：`gpt/114-catalog-runtime`。执行日期：2026-10-28，时间戳为 UTC。运行来自提交前工作树，代码提交 `8a47d5541445eeab9f992957c4c2d2792b213a46`，逐文件摘要见 [report.json](catalog-runtime/report.json)；随后提交的文档/报告不改变运行时代码。
 
+交付时 main 新合入 #130，变为 `b49edc41db5a1baa4d2d2c5ba5093d83c3c26fd9`，只修正 ADR 0038 与怪物动画方案各一行旧审计链接。已同步到本分支并核对源代码/测试/构建配置无变化；上面的实际测试基线不改写。同步后仅做全仓格式、diff 与源码摘要检查，不为文档变化重复完整 check 或浏览器批次。
+
 ## 改动与边界
 
 `legacy_v1` 转为当前矩形房间的正式运行目录，布局/机关摆放只有这一份手写数据。旧 ROOM_LAYOUTS/BOSS_ROOM_LAYOUT/ROOM_THEMES 只提供不可变视图。原 freezeV1/legacyV1Template 更名为 selectRoomLayouts/roomTemplate，不留下迁移别名；DemoSession 每层生成一次稳定 ID 清单，RoomArena 在建房前校验主题与房型，再使用冻结的 boxes/traps/obstacle/mask。非法 ID 或不匹配在任何房间变更前拒绝。

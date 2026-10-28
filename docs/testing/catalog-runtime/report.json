@@ -4285,5 +4285,13 @@
     "observed": "Disabled manually",
     "method": "Read-only GitHub CI workflow page",
     "enableOrRerunPerformed": false
+  },
+  "latestMainAtDelivery": "b49edc41db5a1baa4d2d2c5ba5093d83c3c26fd9",
+  "mainUpdate": {
+    "pr": 130,
+    "files": ["docs/adr/0038-monster-move-progress-view.md", "docs/design/monster-skill-moves.md"],
+    "scope": "One documentation link correction in each file; merged into this branch at delivery. No runtime/test/build configuration changes.",
+    "validation": "Full-repository format check, diff check and recorded source SHA-256 checks; no repeat of full check or E2E for documentation only.",
+    "testBaselinePreserved": true
   }
 }

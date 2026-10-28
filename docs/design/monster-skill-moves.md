@@ -1,6 +1,6 @@
 # #101 怪物技能动画定稿方案
 
-起草：Claude，2026-10-27。依据 GPT 的[接入审计](monster-skill-animation.md)（PR #112）定稿，契约见 [ADR 0038](../adr/0038-monster-move-progress-view.md)。本文是动画接入 PR 的设计依据：表格里的「替代建议」以本文为准，审计里的来源分类和验证清单继续有效。
+起草：Claude，2026-10-27。依据 GPT 的[接入审计](https://github.com/marchosias142857/ai-vs-naiwa/pull/112/files)（PR #112，未合入 main，已关闭）定稿，契约见 [ADR 0038](../adr/0038-monster-move-progress-view.md)。本文是动画接入 PR 的设计依据：表格里的「替代建议」以本文为准，审计里的来源分类和验证清单继续有效。
 
 ## 1. 原则
 
