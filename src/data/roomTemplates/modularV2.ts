@@ -3,12 +3,14 @@
  */
 export const MODULAR_V2 = freeze({
   catalogId: 'modular_v2',
-  // Reserve an 8-unit apron around the legacy rectangle; milk keeps its original bounds.
-  bounds: { x: 96, y: 39, width: 288, height: 192 },
+  // Include two extra south wall modules so solid raised tops do not reduce playable area.
+  bounds: { x: 96, y: 39, width: 288, height: 208 },
+  southApron: 16,
+  wall: { width: 8, faceHeight: 9.6 },
   // Shorter cargo dividers keep player-centre clearance above 80%, including standing barrels.
   cargoDividerWidth: 56,
   cargoBarrelX: 24,
-  cargoEdgeBarrelX: -88,
+  cargoEdgeBarrelX: -80,
   maxBoundaryBodies: 4,
   spawnGrid: 16,
   spawnMargin: 24,

@@ -1,0 +1,1256 @@
+{
+  "numTotalTestSuites": 19,
+  "numPassedTestSuites": 19,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 104,
+  "numPassedTests": 104,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1793228345077,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "keeps every module frame inside its source and every lossless runtime asset within PWA budget",
+          "status": "passed",
+          "title": "keeps every module frame inside its source and every lossless runtime asset within PWA budget",
+          "duration": 51.124018000000035,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "provides distinct four-direction door states and all trap states without rotating frontal art",
+          "status": "passed",
+          "title": "provides distinct four-direction door states and all trap states without rotating frontal art",
+          "duration": 4.434459000000004,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "keeps wall cap/body ratios and reserves six whole modules for both gate orientations",
+          "status": "passed",
+          "title": "keeps wall cap/body ratios and reserves six whole modules for both gate orientations",
+          "duration": 0.9228820000000155,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "aligns every supported room gate to complete wall cells after projection",
+          "status": "passed",
+          "title": "aligns every supported room gate to complete wall cells after projection",
+          "duration": 37.99588499999999,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1793228346048,
+      "endTime": 1793228346142.9958,
+      "status": "passed",
+      "message": "",
+      "name": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/unit/mapArt.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "builds one solid outer course, ordered by y then x, for a rectangular room",
+          "status": "passed",
+          "title": "builds one solid outer course, ordered by y then x, for a rectangular room",
+          "duration": 14.517888999999968,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "blocks the entire drawn wall silhouette, including raised south caps and the wreck step",
+          "status": "passed",
+          "title": "blocks the entire drawn wall silhouette, including raised south caps and the wreck step",
+          "duration": 204.26887899999997,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "keeps complete wall footprints outside every existing contour, including concave corners",
+          "status": "passed",
+          "title": "keeps complete wall footprints outside every existing contour, including concave corners",
+          "duration": 31.181285000000003,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rejects unapproved off-grid/diagonal contours rather than painting a mismatched footprint",
+          "status": "passed",
+          "title": "rejects unapproved off-grid/diagonal contours rather than painting a mismatched footprint",
+          "duration": 4.587459999999965,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1793228345468,
+      "endTime": 1793228345723.5874,
+      "status": "passed",
+      "message": "",
+      "name": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/unit/wallCells.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "production room layouts and Boss columns compile at the same world positions as the wall pool",
+          "status": "passed",
+          "title": "production room layouts and Boss columns compile at the same world positions as the wall pool",
+          "duration": 18.958557999999982,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "real navigation immediately routes around landed rocks, then releases the path on removal",
+          "status": "passed",
+          "title": "real navigation immediately routes around landed rocks, then releases the path on removal",
+          "duration": 13.811073999999962,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "standing-barrel changes are visible before a render tick and queries alone preserve revision",
+          "status": "passed",
+          "title": "standing-barrel changes are visible before a render tick and queries alone preserve revision",
+          "duration": 16.861079000000018,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rejects unknown or mismatched template IDs before changing the active room geometry",
+          "status": "passed",
+          "title": "rejects unknown or mismatched template IDs before changing the active room geometry",
+          "duration": 2.951061999999979,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "static muzzle callback includes concave boundaries; dynamic rocks remain in the AI geometry provider",
+          "status": "passed",
+          "title": "static muzzle callback includes concave boundaries; dynamic rocks remain in the AI geometry provider",
+          "duration": 2.1335730000000126,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1793228346086,
+      "endTime": 1793228346141.1335,
+      "status": "passed",
+      "message": "",
+      "name": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/unit/game/roomGeometryAdapter.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_chaser：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_chaser：20 秒内每秒存档完全相同",
+          "duration": 77.42214299999995,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_scout：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_scout：20 秒内每秒存档完全相同",
+          "duration": 26.33914100000004,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_tank：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_tank：20 秒内每秒存档完全相同",
+          "duration": 26.713084999999978,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_spitter：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_spitter：20 秒内每秒存档完全相同",
+          "duration": 26.896240999999918,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_turret：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_turret：20 秒内每秒存档完全相同",
+          "duration": 29.48647900000003,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_charger：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_charger：20 秒内每秒存档完全相同",
+          "duration": 12.219192000000021,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_hopper：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_hopper：20 秒内每秒存档完全相同",
+          "duration": 35.694402999999966,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_bomber：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_bomber：20 秒内每秒存档完全相同",
+          "duration": 17.73817800000006,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_tongue：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_tongue：20 秒内每秒存档完全相同",
+          "duration": 22.598829000000023,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_burrower：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_burrower：20 秒内每秒存档完全相同",
+          "duration": 18.482128999999986,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_dancer：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_dancer：20 秒内每秒存档完全相同",
+          "duration": 15.098625999999967,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["矩形房间：接入几何后结果与旧规则逐步一致"],
+          "fullName": "矩形房间：接入几何后结果与旧规则逐步一致 naiwa_gasser：20 秒内每秒存档完全相同",
+          "status": "passed",
+          "title": "naiwa_gasser：20 秒内每秒存档完全相同",
+          "duration": 28.882968000000005,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["视线（规则 3）"],
+          "fullName": "视线（规则 3） 隔着凹口外的房外区域看不见就不开火；旧规则（没有几何）会隔墙开火",
+          "status": "passed",
+          "title": "隔着凹口外的房外区域看不见就不开火；旧规则（没有几何）会隔墙开火",
+          "duration": 12.45131200000003,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["视线（规则 3）"],
+          "fullName": "视线（规则 3） 柱子挡住视线；绕到柱子旁边就恢复开火",
+          "status": "passed",
+          "title": "柱子挡住视线；绕到柱子旁边就恢复开火",
+          "duration": 19.60281000000009,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["跳跃落点（规则 1）"],
+          "fullName": "跳跃落点（规则 1） 路上有柱子：起跳时把距离截到柱前，实际落点与预计落点一致，不嵌进柱子",
+          "status": "passed",
+          "title": "路上有柱子：起跳时把距离截到柱前，实际落点与预计落点一致，不嵌进柱子",
+          "duration": 1.302744999999959,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["跳跃落点（规则 1）"],
+          "fullName": "跳跃落点（规则 1） 贴着墙起跳仍能跳出去（初始接触只挡朝里的运动）",
+          "status": "passed",
+          "title": "贴着墙起跳仍能跳出去（初始接触只挡朝里的运动）",
+          "duration": 1.0416510000000017,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["跳跃落点（规则 1）"],
+          "fullName": "跳跃落点（规则 1） 终点不能落地时每次退 2 单位，全部不行就原地跳；不抽随机数",
+          "status": "passed",
+          "title": "终点不能落地时每次退 2 单位，全部不行就原地跳；不抽随机数",
+          "duration": 4.974232999999913,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["奶怪冲撞分类（规则 4）"],
+          "fullName": "奶怪冲撞分类（规则 4） 贴着外墙冲向靠墙柱：撞柱眩晕（旧规则会因为贴墙判成不晕）",
+          "status": "passed",
+          "title": "贴着外墙冲向靠墙柱：撞柱眩晕（旧规则会因为贴墙判成不晕）",
+          "duration": 6.556570000000079,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["奶怪冲撞分类（规则 4）"],
+          "fullName": "奶怪冲撞分类（规则 4） 冲向房间外墙只停下，不晕",
+          "status": "passed",
+          "title": "冲向房间外墙只停下，不晕",
+          "duration": 2.167640000000006,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["召唤与落石（规则 5、6）"],
+          "fullName": "召唤与落石（规则 5、6） 贴着墙角召唤：每只子体都放在合法位置或施法者身上，数量与 AI 随机抽数和旧规则相同",
+          "status": "passed",
+          "title": "贴着墙角召唤：每只子体都放在合法位置或施法者身上，数量与 AI 随机抽数和旧规则相同",
+          "duration": 6.986569000000031,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["召唤与落石（规则 5、6）"],
+          "fullName": "召唤与落石（规则 5、6） 有柱子的房间里，石块雨和砸地的每块石头都落在合法位置",
+          "status": "passed",
+          "title": "有柱子的房间里，石块雨和砸地的每块石头都落在合法位置",
+          "duration": 39.91824500000007,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["召唤与落石（规则 5、6）"],
+          "fullName": "召唤与落石（规则 5、6） 所有尝试都不合法：跳过这块石头，不抽错开时长；抽数等于尝试次数",
+          "status": "passed",
+          "title": "所有尝试都不合法：跳过这块石头，不抽错开时长；抽数等于尝试次数",
+          "duration": 22.224694,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["铲爪蛙出土（规则 2）"],
+          "fullName": "铲爪蛙出土（规则 2） L 形和凹口房里反复潜地、出土，每次出土位置都能容纳身体",
+          "status": "passed",
+          "title": "L 形和凹口房里反复潜地、出土，每次出土位置都能容纳身体",
+          "duration": 20.877984000000083,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1793228345551,
+      "endTime": 1793228346030.878,
+      "status": "passed",
+      "message": "",
+      "name": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/unit/sim/aiGeometry.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["特殊弹体"],
+          "fullName": "特殊弹体 章鱼火箭筒：命中造成直击伤害并爆炸，波及旁边的敌人；撞墙也会爆炸",
+          "status": "passed",
+          "title": "章鱼火箭筒：命中造成直击伤害并爆炸，波及旁边的敌人；撞墙也会爆炸",
+          "duration": 48.38771000000003,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["特殊弹体"],
+          "fullName": "特殊弹体 电鳗法杖：命中后连锁跳到附近的新目标，伤害逐跳衰减",
+          "status": "passed",
+          "title": "电鳗法杖：命中后连锁跳到附近的新目标，伤害逐跳衰减",
+          "duration": 4.372505999999987,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["特殊弹体"],
+          "fullName": "特殊弹体 鲨鳍回旋镖：同时只能扔一个，去程回程各打一次，接住后才能再扔",
+          "status": "passed",
+          "title": "鲨鳍回旋镖：同时只能扔一个，去程回程各打一次，接住后才能再扔",
+          "duration": 17.814502000000005,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["特殊弹体"],
+          "fullName": "特殊弹体 河豚魔杖：小河豚会转向偏离瞄准线的敌人",
+          "status": "passed",
+          "title": "河豚魔杖：小河豚会转向偏离瞄准线的敌人",
+          "duration": 17.01960200000002,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["特殊弹体"],
+          "fullName": "特殊弹体 海胆榴弹：飞到头后炸出 8 根小刺",
+          "status": "passed",
+          "title": "海胆榴弹：飞到头后炸出 8 根小刺",
+          "duration": 3.7975090000001046,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["特殊弹体"],
+          "fullName": "特殊弹体 弹弹水枪：撞墙反弹，次数用完后消失",
+          "status": "passed",
+          "title": "弹弹水枪：撞墙反弹，次数用完后消失",
+          "duration": 2.645481000000018,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["特殊弹体"],
+          "fullName": "特殊弹体 水母护卫：最多 4 只，绕玩家转圈，碰到敌人隔一段时间再电一次",
+          "status": "passed",
+          "title": "水母护卫：最多 4 只，绕玩家转圈，碰到敌人隔一段时间再电一次",
+          "duration": 35.40140100000008,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["开火方式"],
+          "fullName": "开火方式 珊瑚长弓：按住只蓄力，松开发射；蓄满伤害 ×4 并穿透，轻点只有基础伤害",
+          "status": "passed",
+          "title": "珊瑚长弓：按住只蓄力，松开发射；蓄满伤害 ×4 并穿透，轻点只有基础伤害",
+          "duration": 9.423284999999964,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["开火方式"],
+          "fullName": "开火方式 灯笼鱼光枪：按住时射到墙为止，持续伤害光束上的敌人，按间隔扣能量",
+          "status": "passed",
+          "title": "灯笼鱼光枪：按住时射到墙为止，持续伤害光束上的敌人，按间隔扣能量",
+          "duration": 9.988796999999977,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["开火方式"],
+          "fullName": "开火方式 泡泡加特林：射速越打越快，开火时移动变慢",
+          "status": "passed",
+          "title": "泡泡加特林：射速越打越快，开火时移动变慢",
+          "duration": 7.088242000000037,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["开火方式"],
+          "fullName": "开火方式 冰沙喷枪：叠层减速，叠满冻住不动、没有接触伤害；Boss 只减速不冻结",
+          "status": "passed",
+          "title": "冰沙喷枪：叠层减速，叠满冻住不动、没有接触伤害；Boss 只减速不冻结",
+          "duration": 11.234977999999956,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["突进近战"],
+          "fullName": "突进近战 剑鱼长枪前冲一小段；鲨齿太刀冲刺斩更远，冲刺中无敌",
+          "status": "passed",
+          "title": "剑鱼长枪前冲一小段；鲨齿太刀冲刺斩更远，冲刺中无敌",
+          "duration": 9.281641000000036,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["存档"],
+          "fullName": "存档 弹体在飞、蓄力与冰冻进行中存档，恢复后继续的结果逐项一致",
+          "status": "passed",
+          "title": "弹体在飞、蓄力与冰冻进行中存档，恢复后继续的结果逐项一致",
+          "duration": 30.607950000000073,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["存档"],
+          "fullName": "存档 弹体池前面有空槽时存档，分裂出的小弹落在原来的槽位，恢复后继续一致（GPT 复现的场景）",
+          "status": "passed",
+          "title": "弹体池前面有空槽时存档，分裂出的小弹落在原来的槽位，恢复后继续一致（GPT 复现的场景）",
+          "duration": 11.23405600000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": ["存档"],
+          "fullName": "存档 区域池前面有空槽时存档，恢复到原来的槽位（ADR 0030 的毒气同理）",
+          "status": "passed",
+          "title": "区域池前面有空槽时存档，恢复到原来的槽位（ADR 0030 的毒气同理）",
+          "duration": 10.907002000000034,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1793228345549,
+      "endTime": 1793228345779.907,
+      "status": "passed",
+      "message": "",
+      "name": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/unit/sim/arsenal.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "only armed barrels / landed active rocks block; queries do not refresh or mutate snapshots",
+          "status": "passed",
+          "title": "only armed barrels / landed active rocks block; queries do not refresh or mutate snapshots",
+          "duration": 8.207290999999998,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "revision and object identities stay fixed for unchanged topology, hp, timers and nonblocking traps",
+          "status": "passed",
+          "title": "revision and object identities stay fixed for unchanged topology, hp, timers and nonblocking traps",
+          "duration": 37.34275500000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "mixed live/static first hits, masks, ties, misses and footprints equal an immutable snapshot",
+          "status": "passed",
+          "title": "mixed live/static first hits, masks, ties, misses and footprints equal an immutable snapshot",
+          "duration": 113.58969499999995,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "real fixed combat pools survive save/load, trap replacement and clearHazards without stale geometry or RNG writes",
+          "status": "passed",
+          "title": "real fixed combat pools survive save/load, trap replacement and clearHazards without stale geometry or RNG writes",
+          "duration": 31.852277999999956,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "reserved dynamic IDs and changing source capacity fail instead of silently losing blockers",
+          "status": "passed",
+          "title": "reserved dynamic IDs and changing source capacity fail instead of silently losing blockers",
+          "duration": 1.5075239999999894,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1793228345546,
+      "endTime": 1793228345744.5076,
+      "status": "passed",
+      "message": "",
+      "name": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/unit/sim/liveRoomGeometry.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "locks ordered UTF-8 catalog bytes without snapshot auto-update",
+          "status": "passed",
+          "title": "locks ordered UTF-8 catalog bytes without snapshot auto-update",
+          "duration": 88.71042000000006,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "exposes the canonical catalog through immutable compatibility views",
+          "status": "passed",
+          "title": "exposes the canonical catalog through immutable compatibility views",
+          "duration": 14.444127999999978,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "is deeply frozen, with unique stable IDs and strict lookup",
+          "status": "passed",
+          "title": "is deeply frozen, with unique stable IDs and strict lookup",
+          "duration": 9.904710000000023,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rejects mutation through production views without changing selected IDs or geometry",
+          "status": "passed",
+          "title": "rejects mutation through production views without changing selected IDs or geometry",
+          "duration": 2.5981689999999844,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates theme and form against the generated room instead of guessing by ID suffix",
+          "status": "passed",
+          "title": "validates theme and form against the generated room instead of guessing by ID suffix",
+          "duration": 0.5051019999999653,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "returns independent floor manifests without mutating map progress",
+          "status": "passed",
+          "title": "returns independent floor manifests without mutating map progress",
+          "duration": 30.803634999999986,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rejects invalid seed, floor and room indexing instead of guessing a legacy ID",
+          "status": "passed",
+          "title": "rejects invalid seed, floor and room indexing instead of guessing a legacy ID",
+          "duration": 1.385569999999916,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1793228345597,
+      "endTime": 1793228345746.3855,
+      "status": "passed",
+      "message": "",
+      "name": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/unit/sim/roomCatalog.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/temple/empty",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/temple/empty",
+          "duration": 698.9939149999999,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/temple/combat_0",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/temple/combat_0",
+          "duration": 427.9248620000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/temple/combat_1",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/temple/combat_1",
+          "duration": 691.123462,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/temple/combat_2",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/temple/combat_2",
+          "duration": 903.1708359999998,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/temple/combat_3",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/temple/combat_3",
+          "duration": 705.5036500000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/temple/combat_4",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/temple/combat_4",
+          "duration": 1265.5165630000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/wreck/empty",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/wreck/empty",
+          "duration": 597.1566540000003,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/wreck/combat_0",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/wreck/combat_0",
+          "duration": 704.8771699999998,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/wreck/combat_1",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/wreck/combat_1",
+          "duration": 1535.5239000000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/wreck/combat_2",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/wreck/combat_2",
+          "duration": 1499.4914629999994,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/wreck/combat_3",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/wreck/combat_3",
+          "duration": 1803.3142800000005,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/abyss/empty",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/abyss/empty",
+          "duration": 1255.6198280000008,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/abyss/combat_0",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/abyss/combat_0",
+          "duration": 977.4864229999985,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/abyss/combat_1",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/abyss/combat_1",
+          "duration": 2060.1700330000003,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/abyss/combat_2",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/abyss/combat_2",
+          "duration": 3117.7508449999987,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/abyss/combat_3",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/abyss/combat_3",
+          "duration": 1791.1832209999993,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/milk/empty",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/milk/empty",
+          "duration": 515.2838980000015,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/milk/combat_0",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/milk/combat_0",
+          "duration": 522.3760690000017,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "validates area, connected clearance and anchors: modular_v2/milk/boss",
+          "status": "passed",
+          "title": "validates area, connected clearance and anchors: modular_v2/milk/boss",
+          "duration": 567.0064359999997,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "keeps pending and both streams unchanged when all candidates are blocked, including load",
+          "status": "passed",
+          "title": "keeps pending and both streams unchanged when all candidates are blocked, including load",
+          "duration": 10.590118000000075,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1793228345544,
+      "endTime": 1793228367198.59,
+      "status": "passed",
+      "message": "",
+      "name": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/unit/sim/roomFoundations.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "full footprint rejects diagonal corner overlap missed by centre/cross checks",
+          "status": "passed",
+          "title": "full footprint rejects diagonal corner overlap missed by centre/cross checks",
+          "duration": 4.9370270000000005,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "concave notch: legal endpoints do not imply legal full path",
+          "status": "passed",
+          "title": "concave notch: legal endpoints do not imply legal full path",
+          "duration": 3.220117000000016,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "L corner has exact round capsule contact rather than expanded square",
+          "status": "passed",
+          "title": "L corner has exact round capsule contact rather than expanded square",
+          "duration": 0.5428490000000465,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "first blocker wins; exact ties prefer boundary then stable ID independent of order",
+          "status": "passed",
+          "title": "first blocker wins; exact ties prefer boundary then stable ID independent of order",
+          "duration": 0.7070359999999596,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "independent masks and reserved water semantics; decoration mask zero",
+          "status": "passed",
+          "title": "independent masks and reserved water semantics; decoration mask zero",
+          "duration": 5.466907000000049,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "zero length, overlap, outside, endpoint contact and miss reset caller output",
+          "status": "passed",
+          "title": "zero length, overlap, outside, endpoint contact and miss reset caller output",
+          "duration": 0.6954790000000344,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "immutable snapshots, independent results, new revisions for removal; invalid values rejected",
+          "status": "passed",
+          "title": "immutable snapshots, independent results, new revisions for removal; invalid values rejected",
+          "duration": 3.1342879999999695,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "LOS equals actual CombatWorld.los for standing/broken barrels, including tangencies and endpoints",
+          "status": "passed",
+          "title": "LOS equals actual CombatWorld.los for standing/broken barrels, including tangencies and endpoints",
+          "duration": 13.831413999999995,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "trace normals oppose entry in both directions and polygon windings",
+          "status": "passed",
+          "title": "trace normals oppose entry in both directions and polygon windings",
+          "duration": 0.8223500000000286,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "continuous sweep agrees with independent dense circle sampling across many notch paths",
+          "status": "passed",
+          "title": "continuous sweep agrees with independent dense circle sampling across many notch paths",
+          "duration": 387.375915,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "boundary: touching / 0.01 penetration / epsilon gap allow departure and sliding, block entry",
+          "status": "passed",
+          "title": "boundary: touching / 0.01 penetration / epsilon gap allow departure and sliding, block entry",
+          "duration": 2.2329280000000153,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "pillar: touching / 0.01 penetration / epsilon gap allow departure and sliding, block entry",
+          "status": "passed",
+          "title": "pillar: touching / 0.01 penetration / epsilon gap allow departure and sliding, block entry",
+          "duration": 2.0786259999999857,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "circle: touching / 0.01 penetration / epsilon gap allow departure and sliding, block entry",
+          "status": "passed",
+          "title": "circle: touching / 0.01 penetration / epsilon gap allow departure and sliding, block entry",
+          "duration": 1.4098260000000664,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "Boss sliding against the outer wall hits the wall-adjacent pillar first",
+          "status": "passed",
+          "title": "Boss sliding against the outer wall hits the wall-adjacent pillar first",
+          "duration": 0.5297689999999875,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "initial shallow contact does not suppress later entry into the same concave contour",
+          "status": "passed",
+          "title": "initial shallow contact does not suppress later entry into the same concave contour",
+          "duration": 0.2920199999999795,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "zero-radius vertices return unit normals opposing travel, including both polygon windings",
+          "status": "passed",
+          "title": "zero-radius vertices return unit normals opposing travel, including both polygon windings",
+          "duration": 0.5110909999999649,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "outside rooms and deeply embedded polygon/circle centres report separating normals",
+          "status": "passed",
+          "title": "outside rooms and deeply embedded polygon/circle centres report separating normals",
+          "duration": 0.35445500000002994,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "pure LOS retains legacy closed-polygon contact without the body epsilon band",
+          "status": "passed",
+          "title": "pure LOS retains legacy closed-polygon contact without the body epsilon band",
+          "duration": 8.273789999999963,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "rounded polygon corners share the contact tolerance and separate along a unit radial normal",
+          "status": "passed",
+          "title": "rounded polygon corners share the contact tolerance and separate along a unit radial normal",
+          "duration": 0.5524030000000266,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "boundary-class locked doors are solid obstacles, with boundary tie priority",
+          "status": "passed",
+          "title": "boundary-class locked doors are solid obstacles, with boundary tie priority",
+          "duration": 0.33404399999994894,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "future tangency from free space and endpoint contact keep closed sweep semantics",
+          "status": "passed",
+          "title": "future tangency from free space and endpoint contact keep closed sweep semantics",
+          "duration": 0.5142359999999826,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1793228345551,
+      "endTime": 1793228345990.5142,
+      "status": "passed",
+      "message": "",
+      "name": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/unit/sim/roomGeometry.test.ts"
+    }
+  ]
+}

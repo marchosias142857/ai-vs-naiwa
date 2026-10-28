@@ -12,18 +12,20 @@ function layout(i: number): CompiledRoom {
   const x = 128 + Math.floor(i / 25) * 8,
     w = 16 + (i % 5) * 8,
     h = 8 + (Math.floor(i / 5) % 5) * 8;
+  const boundary = [
+    { x: B.x, y: B.y },
+    { x, y: B.y },
+    { x, y: B.y + h },
+    { x: x + w, y: B.y + h },
+    { x: x + w, y: B.y },
+    { x: B.x + B.width, y: B.y },
+    { x: B.x + B.width, y: B.y + B.height },
+    { x: B.x, y: B.y + B.height },
+  ];
   return {
     bounds: B,
-    boundary: [
-      { x: B.x, y: B.y },
-      { x, y: B.y },
-      { x, y: B.y + h },
-      { x: x + w, y: B.y + h },
-      { x: x + w, y: B.y },
-      { x: B.x + B.width, y: B.y },
-      { x: B.x + B.width, y: B.y + B.height },
-      { x: B.x, y: B.y + B.height },
-    ],
+    boundary,
+    artBoundary: boundary,
     cuts: [{ x: x + w / 2, y: B.y + h / 2, width: w, height: h }],
     obstacles: [],
     spawns: [],

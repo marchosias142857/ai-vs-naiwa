@@ -63,7 +63,7 @@ export class ModularRoomArt implements RoomArt {
     traps: readonly TrapPlacement[] = [],
     ports: CompiledRoom['ports'] = [],
   ): void {
-    const boundary = room?.boundary ?? DEFAULT_BOUNDARY;
+    const boundary = room?.artBoundary ?? DEFAULT_BOUNDARY;
     const c = this.texture.context,
       d = MAP_ART.density;
     c.setTransform(1, 0, 0, 1, 0, 0);
@@ -211,35 +211,24 @@ export class ModularRoomArt implements RoomArt {
     const canvas = document.createElement('canvas');
     const cellWidth = width * MAP_ART.density,
       cellHeight = height * MAP_ART.density;
-    canvas.width = cellWidth;
-    canvas.height = cellHeight;
+    canvas.width = cellWidth * 2;
+    canvas.height = cellHeight * 2;
     const context = canvas.getContext('2d')!;
     context.imageSmoothingEnabled = false;
     const source = this.scene.textures.get(MAP_ART.textures.ground).getSourceImage() as HTMLImageElement;
-    // Wrap complete unequal pavers across both texture edges. Repetition continues the
-    // very same brick and grout instead of reflecting it or joining two source borders.
-    const d = MAP_ART.density,
-      grout = MAP_ART.floorGroutPixels;
-    context.fillStyle = MAP_ART.floorGrout[theme];
-    context.fillRect(0, 0, cellWidth, cellHeight);
-    MAP_ART.floorPavers.forEach(([x, y, w, h], i) => {
-      const [sx, sy, sw, sh] = MAP_ART.floorFaceSamples[i % MAP_ART.floorFaceSamples.length]!;
-      const px = (x + MAP_ART.floorPhase[0]) % width,
-        py = (y + MAP_ART.floorPhase[1]) % height;
-      for (const dx of [0, -cellWidth])
-        for (const dy of [0, -cellHeight])
-          context.drawImage(
-            source,
-            frame[0] + sx * frame[2],
-            frame[1] + sy * frame[3],
-            sw * frame[2],
-            sh * frame[3],
-            px * d + grout / 2 + dx,
-            py * d + grout / 2 + dy,
-            w * d - grout,
-            h * d - grout,
-          );
-    });
+    context.drawImage(source, frame[0], frame[1], frame[2], frame[3], 0, 0, cellWidth, cellHeight);
+    // Reflect adjacent texture cells across their shared edge, including repeat boundaries.
+    // Use the complete approved brickwork instead of constructing separate paver joints.
+    context.save();
+    context.translate(canvas.width, 0);
+    context.scale(-1, 1);
+    context.drawImage(canvas, 0, 0, cellWidth, cellHeight, 0, 0, cellWidth, cellHeight);
+    context.restore();
+    context.save();
+    context.translate(0, canvas.height);
+    context.scale(1, -1);
+    context.drawImage(canvas, 0, 0, canvas.width, cellHeight, 0, 0, canvas.width, cellHeight);
+    context.restore();
     const pattern = this.texture.context.createPattern(canvas, 'repeat')!;
     pattern.setTransform(new DOMMatrix().scale(1 / MAP_ART.density));
     this.patterns.set(name, pattern);

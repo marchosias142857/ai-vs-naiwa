@@ -52,6 +52,31 @@ test.afterAll(async () => {
     });
   if (directory) await rm(directory, { recursive: true, force: true });
 });
+test('solid wall tops stop real Arcade movement, projectiles and sight in all four themes', async ({
+  page,
+}, info) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto(url);
+  await page.waitForFunction(() => window.productionGeometry);
+  for (const floor of [1, 2, 3, 4]) {
+    const results = await page.evaluate((f) => window.productionGeometry.wallCollision(f), floor);
+    expect(results).toHaveLength(floor === 2 ? 2 : 1);
+    for (const result of results) {
+      expect(result.actualY).toBeCloseTo(result.expectedY, 3);
+      expect(result.projectileY).toBeCloseTo(result.topY, 3);
+      expect(result.projectileBlocked).toBe(true);
+      expect(result.losBlocked).toBe(true);
+      expect(result.spawnBlocked).toBe(true);
+    }
+    await info.attach(`solid-walls-floor-${floor}`, {
+      body: JSON.stringify(results),
+      contentType: 'application/json',
+    });
+  }
+  expect(errors).toEqual([]);
+});
+
 for (const scenario of ['pillar', 'boundary', 'near-wall', 'rain', 'brood', 'los', 'hop'] as const)
   test(`production geometry: ${scenario}`, async ({ page }, info) => {
     const errors: string[] = [];

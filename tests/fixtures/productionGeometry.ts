@@ -18,6 +18,8 @@ import { createGeometryHit, GeometryMask } from '../../src/sim/geometry/RoomGeom
 import { ART } from '../../src/game/assets/demoArt';
 import { MAP_ART } from '../../src/data/mapArt';
 import { DemoObjects } from '../../src/game/world/DemoObjects';
+import { compileRoom } from '../../src/sim/dungeon/compileRoom';
+import { roomTemplate } from '../../src/sim/dungeon/roomCatalog';
 
 /** Real DemoSession, physics, art and pooled hazards. Only starting arrangements are fixtures.
  * No injected geometry provider, fake AI stages, velocities, actions or collision callbacks.
@@ -81,6 +83,44 @@ class GeometryScene extends Scene {
     const player = sim.playerId!;
     this.cameras.main.setZoom(RENDER_SCALE * 1.5).centerOn(B.x + B.width / 2, B.y + B.height / 2);
     window.productionGeometry = {
+      wallCollision: (floor) => {
+        const run = new DungeonRun(42, new EventBus(), floor);
+        const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
+        const id = `modular_v2/${theme}/empty`;
+        arena.show(run, id);
+        const room = compileRoom(roomTemplate(id)!);
+        const edges = room.artBoundary.flatMap((a, i, points) => {
+          const b = points[(i + 1) % points.length]!;
+          return a.y === b.y && a.x > b.x
+            ? [{ x: b.x + (a.x - b.x) * 0.7, y: a.y - MAP_ART.wallHeight }]
+            : [];
+        });
+        return edges.map((edge) => {
+          pin(player, edge.x, edge.y - 25);
+          input.move.x = 0;
+          input.move.y = 1;
+          for (let i = 0; i < 90; i++) step();
+          input.move.y = 0;
+          const actor = sim.getActor(player)!;
+          const q = arena.prepareGeometry(),
+            hit = createGeometryHit();
+          q.traceSegment(
+            { x: edge.x, y: edge.y - 20 },
+            { x: edge.x, y: edge.y + 4 },
+            GeometryMask.projectile,
+            hit,
+          );
+          return {
+            expectedY: edge.y - actor.radius,
+            actualY: actor.y,
+            projectileY: hit.y,
+            topY: edge.y,
+            projectileBlocked: hit.hit && hit.kind === 'boundary',
+            losBlocked: !arena.lineOfSight(edge.x, edge.y - 20, edge.x, edge.y + 4),
+            spawnBlocked: !arena.isFree(edge.x, edge.y + 4, 0),
+          };
+        });
+      },
       trapState: (state) => {
         const traps = sim.traps.filter((t) => t.active);
         for (const t of traps)
@@ -231,9 +271,7 @@ class GeometryScene extends Scene {
           lockedDoors: visibleDoors.filter((o) => o.frame.name.endsWith('_locked')).length,
           expectedDoors: run.room.links.length,
           southAlignment:
-            focus === 'south' && south
-              ? south.y - south.originY * south.displayHeight - (port.center.y - MAP_ART.wallHeight)
-              : null,
+            focus === 'south' && south ? south.y - south.originY * south.displayHeight - port.center.y : null,
         };
       },
       showcase: (floor) => {
@@ -441,6 +479,15 @@ class GeometryScene extends Scene {
 declare global {
   interface Window {
     productionGeometry: {
+      wallCollision: (floor: number) => {
+        expectedY: number;
+        actualY: number;
+        projectileY: number;
+        topY: number;
+        projectileBlocked: boolean;
+        losBlocked: boolean;
+        spawnBlocked: boolean;
+      }[];
       trapState: (state: 'idle' | 'warn' | 'on' | 'broken') => string[];
       objects: (kind: 'chest' | 'exit') => string[];
       walls: (

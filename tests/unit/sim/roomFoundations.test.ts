@@ -116,7 +116,18 @@ for (const theme of LEGACY_V1.themes)
             queue.push(n);
           }
         }
-        expect(reached.size).toBe(cells.size);
+        expect(
+          reached.size,
+          JSON.stringify({
+            radius,
+            unreachable: [...cells]
+              .filter((id) => !reached.has(id))
+              .map((id) => ({
+                x: b.x + ((id % cols) + 0.5) * step,
+                y: b.y + (Math.floor(id / cols) + 0.5) * step,
+              })),
+          }),
+        ).toBe(cells.size);
         expect(free).toBeGreaterThanOrEqual(legacyFree);
         // Count all old legal centres, even disconnected pockets: the new connected area
         // must exceed this stricter baseline, not merely an arbitrarily chosen component.

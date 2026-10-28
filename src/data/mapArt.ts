@@ -1,4 +1,5 @@
 import { MAP_ART_FRAMES } from './mapArtFrames';
+import { MODULAR_V2 } from './roomTemplates/modularV2';
 
 /** World sizes are presentation only; collision footprints remain in room templates. */
 export const MAP_ART = {
@@ -25,34 +26,10 @@ export const MAP_ART = {
     effects: 'map-effects-v3.webp',
   },
   density: 8,
-  // Unequal ashlar rectangles tile a 32-unit torus; no reflected copies or atlas perimeter.
-  floorPavers: [
-    [0, 0, 8, 8],
-    [8, 0, 16, 6],
-    [24, 0, 8, 8],
-    [0, 8, 8, 8],
-    [8, 6, 16, 10],
-    [24, 8, 8, 8],
-    [0, 16, 16, 6],
-    [16, 16, 8, 10],
-    [24, 16, 8, 10],
-    [0, 22, 8, 10],
-    [8, 22, 8, 10],
-    [16, 26, 16, 6],
-  ],
-  // Interior-only material samples retain v3's grain; source grout cannot double the joints.
-  floorFaceSamples: [
-    [0.05, 0.07, 0.14, 0.14],
-    [0.86, 0.1, 0.1, 0.14],
-    [0.67, 0.65, 0.1, 0.12],
-  ],
-  floorPhase: [5, 3],
-  floorGroutPixels: 2,
-  floorGrout: { temple: '#586471', wreck: '#946b4b', abyss: '#646681', milk: '#a39266' },
-  wallWidth: 8,
+  wallWidth: MODULAR_V2.wall.width,
   wallPixels: 80,
   wallFacePixels: 96,
-  wallHeight: (8 * 96) / 80,
+  wallHeight: MODULAR_V2.wall.faceHeight,
   canvasPadding: 20,
   // Six complete 8-unit modules. Projection shifts the entire side opening with the wall caps.
   doorModules: 6,
@@ -84,20 +61,22 @@ export function mapFrameTexture(frame: string): string {
 /** Shared visual reservation and sprite placement; never changes the physical doorway. */
 export function mapDoorRect(port: {
   center: { x: number; y: number };
+  artCenter?: { x: number; y: number };
   direction: { x: number; y: number };
 }): { x: number; y: number; width: number; height: number } {
   const w = MAP_ART.wallWidth,
-    h = MAP_ART.wallHeight;
+    h = MAP_ART.wallHeight,
+    center = port.artCenter ?? port.center;
   if (port.direction.x)
     return {
-      x: port.center.x + (port.direction.x < 0 ? -w : 0),
-      y: port.center.y - MAP_ART.doorSize.vertical[1] / 2 - h,
+      x: center.x + (port.direction.x < 0 ? -w : 0),
+      y: center.y - MAP_ART.doorSize.vertical[1] / 2 - h,
       width: MAP_ART.doorSize.vertical[0],
       height: MAP_ART.doorSize.vertical[1],
     };
   return {
-    x: port.center.x - MAP_ART.doorSize.horizontal[0] / 2,
-    y: port.center.y + (port.direction.y < 0 ? -w : 0) - h,
+    x: center.x - MAP_ART.doorSize.horizontal[0] / 2,
+    y: center.y + (port.direction.y < 0 ? -w : 0) - h,
     width: MAP_ART.doorSize.horizontal[0],
     height: MAP_ART.doorSize.horizontal[1],
   };

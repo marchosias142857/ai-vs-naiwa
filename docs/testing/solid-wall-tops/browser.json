@@ -1,0 +1,560 @@
+{
+  "config": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "/workspace/scratch/b82bcc13d770/foundations-followup/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config=/workspace/scratch/b82bcc13d770/playwright-solid-wall-tops.config.mjs",
+      "tests/e2e/productionGeometry.spec.ts",
+      "--grep",
+      "solid wall tops",
+      "--project=desktop",
+      "--project=mobile-landscape"
+    ],
+    "configFile": "/workspace/scratch/b82bcc13d770/playwright-solid-wall-tops.config.mjs",
+    "rootDir": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/workspace/scratch/b82bcc13d770/solid-wall-tops-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e",
+        "testIgnore": [],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/workspace/scratch/b82bcc13d770/solid-wall-tops-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "mobile-landscape",
+        "name": "mobile-landscape",
+        "testDir": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e",
+        "testIgnore": [],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
+        "timeout": 30000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/workspace/scratch/b82bcc13d770/solid-wall-tops-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "desktop",
+        "testDir": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e",
+        "snapshotDir": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://localhost:4173",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium",
+          "launchOptions": {
+            "executablePath": "/workspace/scratch/b82bcc13d770/verification-browser/chromium",
+            "env": {
+              "COLORTERM": "",
+              "no_proxy": "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16",
+              "RSYNC_HOST": "gaas-browser",
+              "CODEX_EXEC_SERVER_REMOTE_BASE_URL": "https://codex-cloud-environments.chatgpt.com/api",
+              "CODEX_FLORA_CCA_GATEWAY_RESOLUTION_HOST": "",
+              "NPM_CONFIG_CACHE": "/root/.npm",
+              "SITES_PNPM_CACHE_SEED": "/opt/codex/cache/sites-vinext-pnpm",
+              "CODEX_VERSION": "0.0.0",
+              "CODEX_PRIMARY_RUNTIME_ROOT": "/opt/codex/runtimes/codex-primary-runtime",
+              "NODE_EXTRA_CA_CERTS": "/usr/local/share/ca-certificates/nebula-dns.crt",
+              "BUNDLE_HTTPS_PROXY": "http://127.0.0.1:36553",
+              "GH_PAGER": "cat",
+              "PWD": "/workspace/scratch/b82bcc13d770/foundations-followup",
+              "OTEL_RESOURCE_ATTRIBUTES": "runtime_source=cca,cluster=applied-caas47,region=northcentralus,service.instance.id=fe99b2b4-5edb-4c9e-a24a-6adc0c1b18bc",
+              "RSYNC_DIR": "/workspace/scratch",
+              "NPM_CONFIG_NOPROXY": "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16",
+              "SITES_PNPM_SHARED_STORE": "/workspace/.sites-runtime/pnpm-store",
+              "OPENAI_CLUSTER": "applied-caas47",
+              "OTEL_TRACES_SAMPLER_ARG": "0.01",
+              "BUNDLE_NO_PROXY": "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16",
+              "TZ": "America/Los_Angeles",
+              "ftp_proxy": "socks5h://127.0.0.1:39509",
+              "NODE_USE_ENV_PROXY": "1",
+              "SITES_PNPM_BIN": "/opt/codex/tools/pnpm/bin/pnpm.cjs",
+              "PIP_PROXY": "http://127.0.0.1:36553",
+              "HOME": "/root",
+              "CODEX_SESSION_ID": "01a18118-05fc-7182-b517-9c2a37e9e0c4",
+              "LANG": "C.UTF-8",
+              "NPM_CONFIG_AUDIT": "false",
+              "CODEX_PRIMARY_RUNTIME_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "CODEX_FLORA_CCA_REUSE_EXECUTOR": "0",
+              "npm_config_proxy": "http://127.0.0.1:36553",
+              "DOCKER_HTTP_PROXY": "http://127.0.0.1:36553",
+              "NETWORK": "caas_ingress_only",
+              "YARN_HTTP_PROXY": "http://127.0.0.1:36553",
+              "WSS_PROXY": "http://127.0.0.1:36553",
+              "https_proxy": "http://127.0.0.1:36553",
+              "RSYNC_PASSWORD": "05bc42e3-3211-4a02-af98-157d2578f83c",
+              "CODEX_NETWORK_ALLOW_LOCAL_BINDING": "1",
+              "NPM_CONFIG_PROXY": "http://127.0.0.1:36553",
+              "NPM_CONFIG_HTTPS_PROXY": "http://127.0.0.1:36553",
+              "CODEX_ENVIRONMENT_ID": "ccarenv_b64_Y2NhcmVudl82YWQxMTcyY2RmNjQ4MTkxYTVmZmYzM2JhN2JlZDYxYw",
+              "CODEX_HOME": "/root/.codex",
+              "CODEX_PRIMARY_RUNTIME_NODE": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "RSYNC_DELETE": "true",
+              "CODEX_PRIMARY_RUNTIME_BUNDLE_VERSION": "26.1022.11436",
+              "CAAS_IMAGE_GIT_COMMIT_SHA": "2ab902dbc40ad5bc36b7de4a341185f4259effe6",
+              "TERM": "dumb",
+              "ELECTRON_GET_USE_PROXY": "true",
+              "CODEX_THREAD_ID": "01a18118-05fc-7182-b517-9c2a37e9e0c4",
+              "CODEX_PROXY_CERT": "/usr/local/share/ca-certificates/nebula-dns.crt",
+              "OTEL_TRACES_SAMPLER": "parentbased_traceidratio",
+              "npm_config_http_proxy": "http://127.0.0.1:36553",
+              "GIT_PAGER": "cat",
+              "NO_PROXY": "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16",
+              "CODEX_FLORA_CCA_EXPECTED_EXECUTOR_PID": "251",
+              "FTP_PROXY": "socks5h://127.0.0.1:39509",
+              "BUNDLE_HTTP_PROXY": "http://127.0.0.1:36553",
+              "CODEX_APPLY_PATCH_PRESERVE_LINE_ENDINGS": "1",
+              "SHLVL": "0",
+              "CODEX_PRIMARY_RUNTIME": "/opt/codex/runtimes/codex-primary-runtime",
+              "SITES_MANAGED_LINUX_CONTAINER": "1",
+              "PAGER": "cat",
+              "HTTPS_PROXY": "http://127.0.0.1:36553",
+              "HTTP_PROXY": "http://127.0.0.1:36553",
+              "CDP_PORT": "9222",
+              "http_proxy": "http://127.0.0.1:36553",
+              "NPM_CONFIG_FUND": "false",
+              "NO_COLOR": "1",
+              "WS_PROXY": "http://127.0.0.1:36553",
+              "CODEX_CI": "1",
+              "LC_CTYPE": "C.UTF-8",
+              "SSL_CERT_FILE": "/usr/local/share/ca-certificates/nebula-dns.crt",
+              "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+              "ALL_PROXY": "socks5h://127.0.0.1:39509",
+              "PIP_CERT": "/usr/local/share/ca-certificates/nebula-dns.crt",
+              "REQUESTS_CA_BUNDLE": "/usr/local/share/ca-certificates/nebula-dns.crt",
+              "wss_proxy": "http://127.0.0.1:36553",
+              "CODEX_TOOL_CALL_ID": "exec-ccf14fae-77c4-4911-ac38-045a8a1c73f5",
+              "GRADLE_OPTS": "-Dhttp.proxyHost=browser-proxy -Dhttp.proxyPort=8889 -Dhttps.proxyHost=browser-proxy -Dhttps.proxyPort=8889",
+              "DD_SERVICE": "sa-server-worker-sampling",
+              "LC_ALL": "C.UTF-8",
+              "CODEX_SANDBOX_NETWORK_DISABLED": "1",
+              "ws_proxy": "http://127.0.0.1:36553",
+              "all_proxy": "socks5h://127.0.0.1:39509",
+              "NPM_CONFIG_HTTP_PROXY": "http://127.0.0.1:36553",
+              "npm_config_noproxy": "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16",
+              "PATH": "/root/.codex/tmp/arg0/codex-arg0llpgJH:/opt/codex/codex-path:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "CODEX_NETWORK_PROXY_ACTIVE": "1",
+              "YARN_HTTPS_PROXY": "http://127.0.0.1:36553",
+              "SITES_PNPM_VERSION": "11.25.0",
+              "CODEX_PRIMARY_RUNTIME_NODE_MODULES": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+              "CODEX_FLORA_CCA_WORKSPACE_CWD": "/workspace/scratch/b82bcc13d770",
+              "CODEX_FLORA_CCA_BOOTSTRAP_ATTEMPT_ID": "80c3bc8f-8bc6-4f89-a298-40dd12f48e29",
+              "CODEX_FLORA_CCA_GATEWAY_HOST_ALIASES": "",
+              "RSYNC_MODULE": "scratch",
+              "DEBIAN_FRONTEND": "noninteractive",
+              "SITES_NPM_CACHE_SEED": "/opt/codex/cache/sites-vinext-npm",
+              "npm_config_https_proxy": "http://127.0.0.1:36553",
+              "DOCKER_HTTPS_PROXY": "http://127.0.0.1:36553",
+              "CAAS_IMAGE_VERSION": "20261023002754-2ab902dbc40a",
+              "_": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "BROWSERSLIST_IGNORE_OLD_DATA": "true",
+              "FONTCONFIG_FILE": "/workspace/scratch/b82bcc13d770/verification-browser/fonts.conf"
+            },
+            "args": [
+              "--ash-no-nudges",
+              "--disable-domain-reliability",
+              "--disable-print-preview",
+              "--disk-cache-size=33554432",
+              "--no-default-browser-check",
+              "--no-pings",
+              "--font-render-hinting=none",
+              "--disable-features=AudioServiceOutOfProcess,IsolateOrigins,site-per-process",
+              "--enable-features=SharedArrayBuffer",
+              "--ignore-gpu-blocklist",
+              "--in-process-gpu",
+              "--use-gl=angle",
+              "--use-angle=swiftshader",
+              "--enable-unsafe-swiftshader",
+              "--allow-running-insecure-content",
+              "--disable-setuid-sandbox",
+              "--disable-site-isolation-trials",
+              "--disable-web-security",
+              "--headless='shell'",
+              "--no-sandbox"
+            ]
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "desktop"
+      },
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/workspace/scratch/b82bcc13d770/solid-wall-tops-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "mobile-landscape",
+        "testDir": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e",
+        "snapshotDir": "/workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 30000,
+        "use": {
+          "baseURL": "http://localhost:4173",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Mobile Safari/537.36",
+          "viewport": {
+            "width": 863,
+            "height": 360
+          },
+          "screen": {
+            "width": 915,
+            "height": 412
+          },
+          "deviceScaleFactor": 2.625,
+          "isMobile": true,
+          "hasTouch": true,
+          "defaultBrowserType": "chromium",
+          "launchOptions": {
+            "executablePath": "/workspace/scratch/b82bcc13d770/verification-browser/chromium",
+            "env": {
+              "COLORTERM": "",
+              "no_proxy": "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16",
+              "RSYNC_HOST": "gaas-browser",
+              "CODEX_EXEC_SERVER_REMOTE_BASE_URL": "https://codex-cloud-environments.chatgpt.com/api",
+              "CODEX_FLORA_CCA_GATEWAY_RESOLUTION_HOST": "",
+              "NPM_CONFIG_CACHE": "/root/.npm",
+              "SITES_PNPM_CACHE_SEED": "/opt/codex/cache/sites-vinext-pnpm",
+              "CODEX_VERSION": "0.0.0",
+              "CODEX_PRIMARY_RUNTIME_ROOT": "/opt/codex/runtimes/codex-primary-runtime",
+              "NODE_EXTRA_CA_CERTS": "/usr/local/share/ca-certificates/nebula-dns.crt",
+              "BUNDLE_HTTPS_PROXY": "http://127.0.0.1:36553",
+              "GH_PAGER": "cat",
+              "PWD": "/workspace/scratch/b82bcc13d770/foundations-followup",
+              "OTEL_RESOURCE_ATTRIBUTES": "runtime_source=cca,cluster=applied-caas47,region=northcentralus,service.instance.id=fe99b2b4-5edb-4c9e-a24a-6adc0c1b18bc",
+              "RSYNC_DIR": "/workspace/scratch",
+              "NPM_CONFIG_NOPROXY": "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16",
+              "SITES_PNPM_SHARED_STORE": "/workspace/.sites-runtime/pnpm-store",
+              "OPENAI_CLUSTER": "applied-caas47",
+              "OTEL_TRACES_SAMPLER_ARG": "0.01",
+              "BUNDLE_NO_PROXY": "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16",
+              "TZ": "America/Los_Angeles",
+              "ftp_proxy": "socks5h://127.0.0.1:39509",
+              "NODE_USE_ENV_PROXY": "1",
+              "SITES_PNPM_BIN": "/opt/codex/tools/pnpm/bin/pnpm.cjs",
+              "PIP_PROXY": "http://127.0.0.1:36553",
+              "HOME": "/root",
+              "CODEX_SESSION_ID": "01a18118-05fc-7182-b517-9c2a37e9e0c4",
+              "LANG": "C.UTF-8",
+              "NPM_CONFIG_AUDIT": "false",
+              "CODEX_PRIMARY_RUNTIME_PYTHON": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+              "CODEX_FLORA_CCA_REUSE_EXECUTOR": "0",
+              "npm_config_proxy": "http://127.0.0.1:36553",
+              "DOCKER_HTTP_PROXY": "http://127.0.0.1:36553",
+              "NETWORK": "caas_ingress_only",
+              "YARN_HTTP_PROXY": "http://127.0.0.1:36553",
+              "WSS_PROXY": "http://127.0.0.1:36553",
+              "https_proxy": "http://127.0.0.1:36553",
+              "RSYNC_PASSWORD": "05bc42e3-3211-4a02-af98-157d2578f83c",
+              "CODEX_NETWORK_ALLOW_LOCAL_BINDING": "1",
+              "NPM_CONFIG_PROXY": "http://127.0.0.1:36553",
+              "NPM_CONFIG_HTTPS_PROXY": "http://127.0.0.1:36553",
+              "CODEX_ENVIRONMENT_ID": "ccarenv_b64_Y2NhcmVudl82YWQxMTcyY2RmNjQ4MTkxYTVmZmYzM2JhN2JlZDYxYw",
+              "CODEX_HOME": "/root/.codex",
+              "CODEX_PRIMARY_RUNTIME_NODE": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "RSYNC_DELETE": "true",
+              "CODEX_PRIMARY_RUNTIME_BUNDLE_VERSION": "26.1022.11436",
+              "CAAS_IMAGE_GIT_COMMIT_SHA": "2ab902dbc40ad5bc36b7de4a341185f4259effe6",
+              "TERM": "dumb",
+              "ELECTRON_GET_USE_PROXY": "true",
+              "CODEX_THREAD_ID": "01a18118-05fc-7182-b517-9c2a37e9e0c4",
+              "CODEX_PROXY_CERT": "/usr/local/share/ca-certificates/nebula-dns.crt",
+              "OTEL_TRACES_SAMPLER": "parentbased_traceidratio",
+              "npm_config_http_proxy": "http://127.0.0.1:36553",
+              "GIT_PAGER": "cat",
+              "NO_PROXY": "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16",
+              "CODEX_FLORA_CCA_EXPECTED_EXECUTOR_PID": "251",
+              "FTP_PROXY": "socks5h://127.0.0.1:39509",
+              "BUNDLE_HTTP_PROXY": "http://127.0.0.1:36553",
+              "CODEX_APPLY_PATCH_PRESERVE_LINE_ENDINGS": "1",
+              "SHLVL": "0",
+              "CODEX_PRIMARY_RUNTIME": "/opt/codex/runtimes/codex-primary-runtime",
+              "SITES_MANAGED_LINUX_CONTAINER": "1",
+              "PAGER": "cat",
+              "HTTPS_PROXY": "http://127.0.0.1:36553",
+              "HTTP_PROXY": "http://127.0.0.1:36553",
+              "CDP_PORT": "9222",
+              "http_proxy": "http://127.0.0.1:36553",
+              "NPM_CONFIG_FUND": "false",
+              "NO_COLOR": "1",
+              "WS_PROXY": "http://127.0.0.1:36553",
+              "CODEX_CI": "1",
+              "LC_CTYPE": "C.UTF-8",
+              "SSL_CERT_FILE": "/usr/local/share/ca-certificates/nebula-dns.crt",
+              "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+              "ALL_PROXY": "socks5h://127.0.0.1:39509",
+              "PIP_CERT": "/usr/local/share/ca-certificates/nebula-dns.crt",
+              "REQUESTS_CA_BUNDLE": "/usr/local/share/ca-certificates/nebula-dns.crt",
+              "wss_proxy": "http://127.0.0.1:36553",
+              "CODEX_TOOL_CALL_ID": "exec-ccf14fae-77c4-4911-ac38-045a8a1c73f5",
+              "GRADLE_OPTS": "-Dhttp.proxyHost=browser-proxy -Dhttp.proxyPort=8889 -Dhttps.proxyHost=browser-proxy -Dhttps.proxyPort=8889",
+              "DD_SERVICE": "sa-server-worker-sampling",
+              "LC_ALL": "C.UTF-8",
+              "CODEX_SANDBOX_NETWORK_DISABLED": "1",
+              "ws_proxy": "http://127.0.0.1:36553",
+              "all_proxy": "socks5h://127.0.0.1:39509",
+              "NPM_CONFIG_HTTP_PROXY": "http://127.0.0.1:36553",
+              "npm_config_noproxy": "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16",
+              "PATH": "/root/.codex/tmp/arg0/codex-arg0llpgJH:/opt/codex/codex-path:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override:/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback",
+              "CODEX_NETWORK_PROXY_ACTIVE": "1",
+              "YARN_HTTPS_PROXY": "http://127.0.0.1:36553",
+              "SITES_PNPM_VERSION": "11.25.0",
+              "CODEX_PRIMARY_RUNTIME_NODE_MODULES": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+              "CODEX_FLORA_CCA_WORKSPACE_CWD": "/workspace/scratch/b82bcc13d770",
+              "CODEX_FLORA_CCA_BOOTSTRAP_ATTEMPT_ID": "80c3bc8f-8bc6-4f89-a298-40dd12f48e29",
+              "CODEX_FLORA_CCA_GATEWAY_HOST_ALIASES": "",
+              "RSYNC_MODULE": "scratch",
+              "DEBIAN_FRONTEND": "noninteractive",
+              "SITES_NPM_CACHE_SEED": "/opt/codex/cache/sites-vinext-npm",
+              "npm_config_https_proxy": "http://127.0.0.1:36553",
+              "DOCKER_HTTPS_PROXY": "http://127.0.0.1:36553",
+              "CAAS_IMAGE_VERSION": "20261023002754-2ab902dbc40a",
+              "_": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "BROWSERSLIST_IGNORE_OLD_DATA": "true",
+              "FONTCONFIG_FILE": "/workspace/scratch/b82bcc13d770/verification-browser/fonts.conf"
+            },
+            "args": [
+              "--ash-no-nudges",
+              "--disable-domain-reliability",
+              "--disable-print-preview",
+              "--disk-cache-size=33554432",
+              "--no-default-browser-check",
+              "--no-pings",
+              "--font-render-hinting=none",
+              "--disable-features=AudioServiceOutOfProcess,IsolateOrigins,site-per-process",
+              "--enable-features=SharedArrayBuffer",
+              "--ignore-gpu-blocklist",
+              "--in-process-gpu",
+              "--use-gl=angle",
+              "--use-angle=swiftshader",
+              "--enable-unsafe-swiftshader",
+              "--allow-running-insecure-content",
+              "--disable-setuid-sandbox",
+              "--disable-site-isolation-trials",
+              "--disable-web-security",
+              "--headless='shell'",
+              "--no-sandbox"
+            ]
+          }
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "mobile-landscape"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      ["list", null],
+      [
+        "json",
+        {
+          "outputFile": "/workspace/scratch/b82bcc13d770/foundations-followup/docs/testing/solid-wall-tops/browser.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "productionGeometry.spec.ts",
+      "file": "productionGeometry.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "solid wall tops stop real Arcade movement, projectiles and sight in all four themes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2632,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "buffer": "KG5vZGU6MzApIFdhcm5pbmc6IFRoZSAnTk9fQ09MT1InIGVudiBpcyBpZ25vcmVkIGR1ZSB0byB0aGUgJ0ZPUkNFX0NPTE9SJyBlbnYgYmVpbmcgc2V0LgooVXNlIGBub2RlIC0tdHJhY2Utd2FybmluZ3MgLi4uYCB0byBzaG93IHdoZXJlIHRoZSB3YXJuaW5nIHdhcyBjcmVhdGVkKQo="
+                    },
+                    {
+                      "buffer": "KG5vZGU6MzApIFdhcm5pbmc6IFRoZSAnTk9fQ09MT1InIGVudiBpcyBpZ25vcmVkIGR1ZSB0byB0aGUgJ0ZPUkNFX0NPTE9SJyBlbnYgYmVpbmcgc2V0LgooVXNlIGBub2RlIC0tdHJhY2Utd2FybmluZ3MgLi4uYCB0byBzaG93IHdoZXJlIHRoZSB3YXJuaW5nIHdhcyBjcmVhdGVkKQo="
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-10-28T23:00:06.951Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "solid-walls-floor-1",
+                      "contentType": "application/json",
+                      "body": "W3siZXhwZWN0ZWRZIjoyMzEuNCwiYWN0dWFsWSI6MjMxLjQsInByb2plY3RpbGVZIjoyMzcuNCwidG9wWSI6MjM3LjQsInByb2plY3RpbGVCbG9ja2VkIjp0cnVlLCJsb3NCbG9ja2VkIjp0cnVlLCJzcGF3bkJsb2NrZWQiOnRydWV9XQ=="
+                    },
+                    {
+                      "name": "solid-walls-floor-2",
+                      "contentType": "application/json",
+                      "body": "W3siZXhwZWN0ZWRZIjoyMzEuNCwiYWN0dWFsWSI6MjMxLjQsInByb2plY3RpbGVZIjoyMzcuNCwidG9wWSI6MjM3LjQsInByb2plY3RpbGVCbG9ja2VkIjp0cnVlLCJsb3NCbG9ja2VkIjp0cnVlLCJzcGF3bkJsb2NrZWQiOnRydWV9LHsiZXhwZWN0ZWRZIjoxOTkuNCwiYWN0dWFsWSI6MTk5LjQsInByb2plY3RpbGVZIjoyMDUuNCwidG9wWSI6MjA1LjQsInByb2plY3RpbGVCbG9ja2VkIjp0cnVlLCJsb3NCbG9ja2VkIjp0cnVlLCJzcGF3bkJsb2NrZWQiOnRydWV9XQ=="
+                    },
+                    {
+                      "name": "solid-walls-floor-3",
+                      "contentType": "application/json",
+                      "body": "W3siZXhwZWN0ZWRZIjoyMzEuNCwiYWN0dWFsWSI6MjMxLjQsInByb2plY3RpbGVZIjoyMzcuNCwidG9wWSI6MjM3LjQsInByb2plY3RpbGVCbG9ja2VkIjp0cnVlLCJsb3NCbG9ja2VkIjp0cnVlLCJzcGF3bkJsb2NrZWQiOnRydWV9XQ=="
+                    },
+                    {
+                      "name": "solid-walls-floor-4",
+                      "contentType": "application/json",
+                      "body": "W3siZXhwZWN0ZWRZIjoyMjMuNCwiYWN0dWFsWSI6MjIzLjQsInByb2plY3RpbGVZIjoyMjkuNCwidG9wWSI6MjI5LjQsInByb2plY3RpbGVCbG9ja2VkIjp0cnVlLCJsb3NCbG9ja2VkIjp0cnVlLCJzcGF3bkJsb2NrZWQiOnRydWV9XQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b3714d85ab2772e7d529-f96b93849fede1bf3cdb",
+          "file": "productionGeometry.spec.ts",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "solid wall tops stop real Arcade movement, projectiles and sight in all four themes",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "mobile-landscape",
+              "projectName": "mobile-landscape",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2530,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "buffer": "KG5vZGU6MTM1KSBXYXJuaW5nOiBUaGUgJ05PX0NPTE9SJyBlbnYgaXMgaWdub3JlZCBkdWUgdG8gdGhlICdGT1JDRV9DT0xPUicgZW52IGJlaW5nIHNldC4KKFVzZSBgbm9kZSAtLXRyYWNlLXdhcm5pbmdzIC4uLmAgdG8gc2hvdyB3aGVyZSB0aGUgd2FybmluZyB3YXMgY3JlYXRlZCkK"
+                    },
+                    {
+                      "buffer": "KG5vZGU6MTM1KSBXYXJuaW5nOiBUaGUgJ05PX0NPTE9SJyBlbnYgaXMgaWdub3JlZCBkdWUgdG8gdGhlICdGT1JDRV9DT0xPUicgZW52IGJlaW5nIHNldC4KKFVzZSBgbm9kZSAtLXRyYWNlLXdhcm5pbmdzIC4uLmAgdG8gc2hvdyB3aGVyZSB0aGUgd2FybmluZyB3YXMgY3JlYXRlZCkK"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-10-28T23:00:13.463Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "solid-walls-floor-1",
+                      "contentType": "application/json",
+                      "body": "W3siZXhwZWN0ZWRZIjoyMzEuNCwiYWN0dWFsWSI6MjMxLjQsInByb2plY3RpbGVZIjoyMzcuNCwidG9wWSI6MjM3LjQsInByb2plY3RpbGVCbG9ja2VkIjp0cnVlLCJsb3NCbG9ja2VkIjp0cnVlLCJzcGF3bkJsb2NrZWQiOnRydWV9XQ=="
+                    },
+                    {
+                      "name": "solid-walls-floor-2",
+                      "contentType": "application/json",
+                      "body": "W3siZXhwZWN0ZWRZIjoyMzEuNCwiYWN0dWFsWSI6MjMxLjQsInByb2plY3RpbGVZIjoyMzcuNCwidG9wWSI6MjM3LjQsInByb2plY3RpbGVCbG9ja2VkIjp0cnVlLCJsb3NCbG9ja2VkIjp0cnVlLCJzcGF3bkJsb2NrZWQiOnRydWV9LHsiZXhwZWN0ZWRZIjoxOTkuNCwiYWN0dWFsWSI6MTk5LjQsInByb2plY3RpbGVZIjoyMDUuNCwidG9wWSI6MjA1LjQsInByb2plY3RpbGVCbG9ja2VkIjp0cnVlLCJsb3NCbG9ja2VkIjp0cnVlLCJzcGF3bkJsb2NrZWQiOnRydWV9XQ=="
+                    },
+                    {
+                      "name": "solid-walls-floor-3",
+                      "contentType": "application/json",
+                      "body": "W3siZXhwZWN0ZWRZIjoyMzEuNCwiYWN0dWFsWSI6MjMxLjQsInByb2plY3RpbGVZIjoyMzcuNCwidG9wWSI6MjM3LjQsInByb2plY3RpbGVCbG9ja2VkIjp0cnVlLCJsb3NCbG9ja2VkIjp0cnVlLCJzcGF3bkJsb2NrZWQiOnRydWV9XQ=="
+                    },
+                    {
+                      "name": "solid-walls-floor-4",
+                      "contentType": "application/json",
+                      "body": "W3siZXhwZWN0ZWRZIjoyMjMuNCwiYWN0dWFsWSI6MjIzLjQsInByb2plY3RpbGVZIjoyMjkuNCwidG9wWSI6MjI5LjQsInByb2plY3RpbGVCbG9ja2VkIjp0cnVlLCJsb3NCbG9ja2VkIjp0cnVlLCJzcGF3bkJsb2NrZWQiOnRydWV9XQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b3714d85ab2772e7d529-6894e3f7e9748aec0b1d",
+          "file": "productionGeometry.spec.ts",
+          "line": 55,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-28T23:00:06.346Z",
+    "duration": 12759.992999999999,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
