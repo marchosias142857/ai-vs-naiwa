@@ -1,5 +1,6 @@
+import { resolveRoomTemplate } from '../../sim/dungeon/roomCatalog';
 import { ROOM_BLOCKS, createRoomArt, type RoomArt } from './RoomArt';
-import { TRAP_RULES, roomTheme } from '../../data/traps';
+import { TRAP_RULES } from '../../data/traps';
 import { DUNGEON } from '../../data/dungeon';
 import type { TrapPlacement } from '../../data/schema/traps';
 import type { TrapLayoutInput } from '../../sim/combat/api';
@@ -11,7 +12,7 @@ import { NavigationGrid } from '../../sim/dungeon/NavigationGrid';
 import type { Vec2 } from '../../sim/core/types';
 import type { GameObjects, Physics, Scene } from 'phaser';
 import { COLORS, DEPTH, TILE_SIZE } from '../../config';
-import { BOSS_ROOM_LAYOUT, ROOM_LAYOUTS } from '../../data/layouts';
+import { ROOM_LAYOUTS } from '../../data/layouts';
 import { ROOM_RULES } from '../../data/rooms';
 import { segmentHitsBox } from '../../sim/dungeon/geometry';
 import type { DungeonRun } from '../../sim/run/DungeonRun';
@@ -85,24 +86,14 @@ export class RoomArena {
     this.bridge.sim.hitWall(slot.id, body.center.x, body.center.y);
     this.bridge.bullets.recycle(slot);
   };
-  /**
-   * 按楼层主题摆房间（ADR 0032）：战斗房用主题里第 `plan` 个方案的内墙与机关，
-   * Boss 房固定放石柱（ADR 0030），其他房间空着。
-   */
-  show(run: DungeonRun, plan: number): void {
-    const theme = roomTheme(run.floor);
-    let boxes: readonly Box[] = ROOM_LAYOUTS[0],
-      traps: readonly TrapPlacement[] = [];
-    if (run.room.kind === 'boss') boxes = BOSS_ROOM_LAYOUT;
-    else if (run.room.kind === 'combat') {
-      const p = theme.plans[plan % theme.plans.length]!;
-      boxes = ROOM_LAYOUTS[p.layout % ROOM_LAYOUTS.length]!;
-      traps = p.traps;
-    }
-    this.art?.show(theme.art, boxes);
-    this.setBoxes(boxes, run.room.kind === 'boss' ? 'pillar' : 'wall');
+  /** Resolve the selected stable ID before placing art, Arcade bodies or sim obstacles. */
+  show(run: DungeonRun, templateId: string): void {
+    const template = resolveRoomTemplate(templateId, run.floor, run.room.kind);
+    if (!template) throw new RangeError('room template does not match the generated room');
+    this.art?.show(template.theme, template.boxes);
+    this.setBoxes(template.boxes, template.obstacle, template.mask);
     // 每层每个房间的编号唯一；同一房间重建（存档恢复）时 sim 保留机关进行中的状态。
-    this.placeTraps(run.floor * DUNGEON.gridSize ** 2 + run.roomId, traps);
+    this.placeTraps(run.floor * DUNGEON.gridSize ** 2 + run.roomId, template.traps);
     this.prepareGeometry();
     this.draw(run);
   }
@@ -131,7 +122,7 @@ export class RoomArena {
   setLayout(layout: number): void {
     this.setBoxes(ROOM_LAYOUTS[layout % ROOM_LAYOUTS.length]!);
   }
-  private setBoxes(boxes: readonly Box[], kind: 'wall' | 'pillar' = 'wall'): void {
+  private setBoxes(boxes: readonly Box[], kind: 'wall' | 'pillar' = 'wall', mask = 15): void {
     // 新主题的内墙由 RoomArt 平铺障碍块画出来，这里的墙体只保留碰撞。
     const hidden = this.art?.drawsBlocks ?? false;
     for (let i = 0; i < this.slots.length; i++) {
@@ -160,7 +151,7 @@ export class RoomArena {
         return {
           id: `${kind}:${i}`,
           kind,
-          mask: 15,
+          mask,
           shape: {
             type: 'polygon',
             points: [

@@ -1,3 +1,4 @@
+import baseline from '../fixtures/legacyV1/production-baseline.json' with { type: 'json' };
 import { expect, test } from '@playwright/test';
 import { build } from 'vite';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
@@ -41,7 +42,7 @@ test.afterAll(async () => {
 });
 
 for (const seed of [0, 42, 12345, 0xffffffff])
-  test(`freezeV1 matches real DemoSession selection and root invariants: seed=${seed}`, async ({
+  test(`selectRoomLayouts matches real DemoSession selection and root invariants: seed=${seed}`, async ({
     page,
   }, info) => {
     const errors: string[] = [];
@@ -60,6 +61,12 @@ for (const seed of [0, 42, 12345, 0xffffffff])
       expect(result.center).toEqual(LEGACY_V1.anchors.player);
       for (const row of result.rows) {
         expect(row.templateId).toBe(row.expectedId);
+        const recorded = baseline.selections[String(seed) as keyof typeof baseline.selections][floor - 1]!;
+        expect(row.expectedId).toBe(recorded.templateIds[row.id]);
+        const original = baseline.templates[row.expectedId as keyof typeof baseline.templates];
+        expect(row.bodies).toEqual(original.bodies);
+        expect(row.traps).toEqual(original.traps);
+        expect(row.staticObstacles).toEqual(original.staticObstacles);
         expect(row.form).toBe(row.kind === 'combat' || row.kind === 'boss' ? row.kind : 'empty');
         expect(row.bodies).toEqual(row.expectedBodies);
         expect(row.staticObstacles).toEqual(row.expectedObstacles);

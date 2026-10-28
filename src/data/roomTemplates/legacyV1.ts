@@ -1,4 +1,5 @@
-/** Frozen at main 0507bed (#127). Never regenerate from the live catalog.
+/** First runtime catalog, frozen at main 0507bed (#127), completed by #128.
+ * Canonical source for the rectangular adapter; never regenerate its values from other tables.
  * Coordinate boxes/traps are relative to the room center; ports/anchors are world positions.
  * Any byte change requires an explicit compatibility review (ADR 0039).
  */

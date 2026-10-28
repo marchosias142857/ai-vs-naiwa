@@ -6,7 +6,7 @@ import { ROOM_THEMES, TRAP_RULES } from '../../../src/data/traps';
 import { ROOM_RULES } from '../../../src/data/rooms';
 import { RoomLayoutsSchema } from '../../../src/data/schema/layouts';
 import { RoomThemeSchema } from '../../../src/data/schema/traps';
-import { freezeV1, legacyV1Template } from '../../../src/sim/dungeon/freezeV1';
+import { selectRoomLayouts, roomTemplate, resolveRoomTemplate } from '../../../src/sim/dungeon/roomCatalog';
 import { DungeonRun } from '../../../src/sim/run/DungeonRun';
 import { EventBus } from '../../../src/sim/core/EventBus';
 
@@ -15,7 +15,7 @@ it('locks ordered UTF-8 catalog bytes without snapshot auto-update', () => {
   expect(Buffer.from(JSON.stringify(LEGACY_V1) + '\n', 'utf8')).toEqual(expected);
 });
 
-it('copies the current plans, geometry and door rules with no shared references', () => {
+it('exposes the canonical catalog through immutable compatibility views', () => {
   expect(LEGACY_V1.layouts).toEqual(ROOM_LAYOUTS);
   expect(LEGACY_V1.bossLayout).toEqual(BOSS_ROOM_LAYOUT);
   expect(LEGACY_V1.trapRadii).toEqual({ mine: TRAP_RULES.mine.radius, barrel: TRAP_RULES.barrel.radius });
@@ -34,11 +34,11 @@ it('copies the current plans, geometry and door rules with no shared references'
     expect(plain).toEqual(live);
     expect(RoomThemeSchema.safeParse(plain).success).toBe(true);
     expect(theme.plans).not.toBe(live.plans);
-    theme.plans.forEach((p, index) => expect(p.traps).not.toBe(live.plans[index]!.traps));
+    theme.plans.forEach((p, index) => expect(p.traps).toBe(live.plans[index]!.traps));
   });
   LEGACY_V1.layouts.forEach((boxes, i) => {
-    expect(boxes).not.toBe(ROOM_LAYOUTS[i]);
-    boxes.forEach((box, j) => expect(box).not.toBe(ROOM_LAYOUTS[i]![j]));
+    expect(boxes).toBe(ROOM_LAYOUTS[i]);
+    boxes.forEach((box, j) => expect(box).toBe(ROOM_LAYOUTS[i]![j]));
   });
 });
 
@@ -54,7 +54,7 @@ it('is deeply frozen, with unique stable IDs and strict lookup', () => {
   expect(new Set(ids).size).toBe(22);
   for (const theme of LEGACY_V1.themes) {
     for (const descriptor of [theme.empty, theme.boss, ...theme.plans]) {
-      expect(legacyV1Template(descriptor.id)).toMatchObject({
+      expect(roomTemplate(descriptor.id)).toMatchObject({
         id: descriptor.id,
         theme: theme.art,
         form: descriptor.form,
@@ -64,25 +64,37 @@ it('is deeply frozen, with unique stable IDs and strict lookup', () => {
     }
   }
   for (const id of ['', 'temple/combat_0', 'legacy_v1/temple/combat_99', '__proto__'])
-    expect(legacyV1Template(id)).toBeNull();
+    expect(roomTemplate(id)).toBeNull();
   expect(Reflect.set(LEGACY_V1.bounds, 'x', 999)).toBe(false);
   expect(LEGACY_V1.bounds.x).toBe(104);
 });
 
-it('keeps legacy IDs and geometry when the live plans are extended or reordered', () => {
+it('rejects mutation through production views without changing selected IDs or geometry', () => {
   const run = new DungeonRun(12345, new EventBus());
-  const before = freezeV1(run.seed, 1, run.map.rooms);
-  const geometry = before.templateIds.map(legacyV1Template);
-  const plans = ROOM_THEMES[0].plans as unknown as unknown[];
-  const saved = plans.slice();
-  try {
-    plans.reverse();
-    plans.push({ layout: 8, traps: [] });
-    expect(freezeV1(run.seed, 1, run.map.rooms)).toEqual(before);
-    expect(before.templateIds.map(legacyV1Template)).toEqual(geometry);
-  } finally {
-    plans.splice(0, plans.length, ...saved);
-  }
+  const before = selectRoomLayouts(run.seed, 1, run.map.rooms);
+  const geometry = before.templateIds.map(roomTemplate);
+  const plans = ROOM_THEMES[0]!.plans as unknown as unknown[];
+  expect(() => plans.reverse()).toThrow(TypeError);
+  expect(() => plans.push({ layout: 8, traps: [] })).toThrow(TypeError);
+  expect(Reflect.set(ROOM_THEMES[0]!, 'art', 'milk')).toBe(false);
+  expect(Reflect.set(ROOM_LAYOUTS[1][0], 'x', 999)).toBe(false);
+  expect(selectRoomLayouts(run.seed, 1, run.map.rooms)).toEqual(before);
+  expect(before.templateIds.map(roomTemplate)).toEqual(geometry);
+});
+
+it('validates theme and form against the generated room instead of guessing by ID suffix', () => {
+  expect(resolveRoomTemplate('legacy_v1/milk/boss', 4, 'boss')?.obstacle).toBe('pillar');
+  for (const [id, floor, kind] of [
+    ['legacy_v1/temple/boss', 1, 'combat'],
+    ['legacy_v1/wreck/boss', 4, 'boss'],
+    ['legacy_v1/abyss/boss', 3, 'exit'],
+    ['legacy_v1/milk/combat_0', 4, 'boss'],
+    ['legacy_v1/temple/empty', 1, 'combat'],
+    ['legacy_v1/temple/combat_0', 1, 'start'],
+    ['legacy_v1/temple/empty', 0, 'start'],
+    ['unknown', 1, 'start'],
+  ] as const)
+    expect(resolveRoomTemplate(id, floor, kind)).toBeNull();
 });
 
 it('returns independent floor manifests without mutating map progress', () => {
@@ -90,13 +102,13 @@ it('returns independent floor manifests without mutating map progress', () => {
     for (let floor = 1; floor <= 4; floor++) {
       const run = new DungeonRun(seed, new EventBus(), floor);
       const before = JSON.stringify({ map: run.map, state: run.save() });
-      const first = freezeV1(seed, floor, run.map.rooms);
-      const second = freezeV1(seed, floor, run.map.rooms);
+      const first = selectRoomLayouts(seed, floor, run.map.rooms);
+      const second = selectRoomLayouts(seed, floor, run.map.rooms);
       expect(first).toEqual(second);
       expect(first.templateIds).not.toBe(second.templateIds);
       expect(first.templateIds).toHaveLength(floor === 4 ? 2 : 8);
       run.map.rooms.forEach((room) => {
-        const template = legacyV1Template(first.templateIds[room.id]!)!;
+        const template = roomTemplate(first.templateIds[room.id]!)!;
         expect(template.theme).toBe(LEGACY_V1.themes[floor - 1]!.art);
         expect(template.form).toBe(room.kind === 'combat' || room.kind === 'boss' ? room.kind : 'empty');
         if (room.kind === 'boss') expect(template.boxes).toEqual(BOSS_ROOM_LAYOUT);
@@ -108,7 +120,7 @@ it('returns independent floor manifests without mutating map progress', () => {
 });
 
 it('rejects invalid seed, floor and room indexing instead of guessing a legacy ID', () => {
-  for (const seed of [-1, 0x100000000, 1.5, NaN]) expect(() => freezeV1(seed, 1, [])).toThrow();
-  for (const floor of [0, 5, 1.5, NaN]) expect(() => freezeV1(42, floor, [])).toThrow();
-  expect(() => freezeV1(42, 1, [{ id: 1, kind: 'combat' }])).toThrow();
+  for (const seed of [-1, 0x100000000, 1.5, NaN]) expect(() => selectRoomLayouts(seed, 1, [])).toThrow();
+  for (const floor of [0, 5, 1.5, NaN]) expect(() => selectRoomLayouts(42, floor, [])).toThrow();
+  expect(() => selectRoomLayouts(42, 1, [{ id: 1, kind: 'combat' }])).toThrow();
 });

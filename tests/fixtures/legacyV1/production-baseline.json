@@ -1,0 +1,1355 @@
+{
+  "sourceHead": "81a2a77a0678a1eddafaa41bc3bd036347ec4df2",
+  "sourceReport": "docs/testing/legacy-catalog/review-5677887656.json",
+  "provenance": "Recorded by the pre-catalog DemoSession.rebuildRoom and RoomArena adapters at PR128. Not generated from the current selector.",
+  "selections": {
+    "0": [
+      {
+        "floor": 1,
+        "templateIds": [
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/combat_2",
+          "legacy_v1/temple/combat_0",
+          "legacy_v1/temple/combat_1",
+          "legacy_v1/temple/combat_4",
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/combat_4"
+        ]
+      },
+      {
+        "floor": 2,
+        "templateIds": [
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/combat_1",
+          "legacy_v1/wreck/combat_1",
+          "legacy_v1/wreck/combat_0",
+          "legacy_v1/wreck/combat_0",
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/combat_2"
+        ]
+      },
+      {
+        "floor": 3,
+        "templateIds": [
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/combat_3",
+          "legacy_v1/abyss/combat_0",
+          "legacy_v1/abyss/combat_3",
+          "legacy_v1/abyss/combat_3",
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/combat_1"
+        ]
+      },
+      {
+        "floor": 4,
+        "templateIds": ["legacy_v1/milk/empty", "legacy_v1/milk/boss"]
+      }
+    ],
+    "42": [
+      {
+        "floor": 1,
+        "templateIds": [
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/combat_2",
+          "legacy_v1/temple/combat_3",
+          "legacy_v1/temple/combat_3",
+          "legacy_v1/temple/combat_4",
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/combat_4"
+        ]
+      },
+      {
+        "floor": 2,
+        "templateIds": [
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/combat_1",
+          "legacy_v1/wreck/combat_3",
+          "legacy_v1/wreck/combat_1",
+          "legacy_v1/wreck/combat_0",
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/combat_0"
+        ]
+      },
+      {
+        "floor": 3,
+        "templateIds": [
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/combat_1",
+          "legacy_v1/abyss/combat_0",
+          "legacy_v1/abyss/combat_1",
+          "legacy_v1/abyss/combat_1",
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/combat_3"
+        ]
+      },
+      {
+        "floor": 4,
+        "templateIds": ["legacy_v1/milk/empty", "legacy_v1/milk/boss"]
+      }
+    ],
+    "12345": [
+      {
+        "floor": 1,
+        "templateIds": [
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/combat_2",
+          "legacy_v1/temple/combat_0",
+          "legacy_v1/temple/combat_1",
+          "legacy_v1/temple/combat_0",
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/combat_1"
+        ]
+      },
+      {
+        "floor": 2,
+        "templateIds": [
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/combat_3",
+          "legacy_v1/wreck/combat_2",
+          "legacy_v1/wreck/combat_1",
+          "legacy_v1/wreck/combat_0",
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/combat_1"
+        ]
+      },
+      {
+        "floor": 3,
+        "templateIds": [
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/combat_3",
+          "legacy_v1/abyss/combat_0",
+          "legacy_v1/abyss/combat_2",
+          "legacy_v1/abyss/combat_2",
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/combat_3"
+        ]
+      },
+      {
+        "floor": 4,
+        "templateIds": ["legacy_v1/milk/empty", "legacy_v1/milk/boss"]
+      }
+    ],
+    "4294967295": [
+      {
+        "floor": 1,
+        "templateIds": [
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/combat_4",
+          "legacy_v1/temple/combat_4",
+          "legacy_v1/temple/combat_0",
+          "legacy_v1/temple/combat_4",
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/empty",
+          "legacy_v1/temple/combat_3"
+        ]
+      },
+      {
+        "floor": 2,
+        "templateIds": [
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/combat_2",
+          "legacy_v1/wreck/combat_3",
+          "legacy_v1/wreck/combat_3",
+          "legacy_v1/wreck/combat_0",
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/empty",
+          "legacy_v1/wreck/combat_0"
+        ]
+      },
+      {
+        "floor": 3,
+        "templateIds": [
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/combat_1",
+          "legacy_v1/abyss/combat_2",
+          "legacy_v1/abyss/combat_3",
+          "legacy_v1/abyss/combat_1",
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/empty",
+          "legacy_v1/abyss/combat_0"
+        ]
+      },
+      {
+        "floor": 4,
+        "templateIds": ["legacy_v1/milk/empty", "legacy_v1/milk/boss"]
+      }
+    ]
+  },
+  "templates": {
+    "legacy_v1/temple/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/temple/combat_2": {
+      "bodies": [
+        {
+          "x": 170,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 170,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        }
+      ],
+      "traps": [
+        {
+          "kind": "spikes",
+          "x": 204,
+          "y": 135,
+          "width": 16,
+          "height": 56,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 276,
+          "y": 135,
+          "width": 16,
+          "height": 56,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1.1
+        },
+        {
+          "kind": "weed",
+          "x": 240,
+          "y": 91,
+          "width": 48,
+          "height": 20,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/temple/combat_0": {
+      "bodies": [],
+      "traps": [
+        {
+          "kind": "weed",
+          "x": 176,
+          "y": 91,
+          "width": 56,
+          "height": 28,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "weed",
+          "x": 304,
+          "y": 179,
+          "width": 56,
+          "height": 28,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 240,
+          "y": 95,
+          "width": 48,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 240,
+          "y": 175,
+          "width": 48,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1.2
+        }
+      ],
+      "staticObstacles": []
+    },
+    "legacy_v1/temple/combat_1": {
+      "bodies": [
+        {
+          "x": 176,
+          "y": 99,
+          "width": 24,
+          "height": 24
+        },
+        {
+          "x": 304,
+          "y": 171,
+          "width": 24,
+          "height": 24
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 105,
+          "width": 90,
+          "height": 18,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "weed",
+          "x": 220,
+          "y": 175,
+          "width": 48,
+          "height": 24,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/temple/combat_4": {
+      "bodies": [
+        {
+          "x": 292,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 292,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        }
+      ],
+      "traps": [
+        {
+          "kind": "weed",
+          "x": 240,
+          "y": 135,
+          "width": 40,
+          "height": 28,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:4",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:5",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:6",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:7",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/wreck/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/wreck/combat_1": {
+      "bodies": [
+        {
+          "x": 184,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 184,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 135,
+          "width": 110,
+          "height": 20,
+          "radius": 0,
+          "angle": 3.141592653589793,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 200,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 280,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 140,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/wreck/combat_0": {
+      "bodies": [],
+      "traps": [
+        {
+          "kind": "barrel",
+          "x": 170,
+          "y": 90,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 310,
+          "y": 180,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 210,
+          "y": 187,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 270,
+          "y": 83,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 240,
+          "y": 135,
+          "width": 32,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": []
+    },
+    "legacy_v1/wreck/combat_2": {
+      "bodies": [
+        {
+          "x": 164,
+          "y": 83,
+          "width": 48,
+          "height": 12
+        },
+        {
+          "x": 146,
+          "y": 101,
+          "width": 12,
+          "height": 24
+        },
+        {
+          "x": 316,
+          "y": 187,
+          "width": 48,
+          "height": 12
+        },
+        {
+          "x": 334,
+          "y": 169,
+          "width": 12,
+          "height": 24
+        }
+      ],
+      "traps": [
+        {
+          "kind": "barrel",
+          "x": 224,
+          "y": 123,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 256,
+          "y": 123,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 240,
+          "y": 149,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 160,
+          "y": 175,
+          "width": 32,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 320,
+          "y": 95,
+          "width": 32,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/abyss/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/abyss/combat_3": {
+      "bodies": [
+        {
+          "x": 184,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 101,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 184,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        },
+        {
+          "x": 296,
+          "y": 169,
+          "width": 64,
+          "height": 12
+        }
+      ],
+      "traps": [
+        {
+          "kind": "mine",
+          "x": 180,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 300,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 140,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 340,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 300,
+          "y": 73,
+          "width": 40,
+          "height": 14,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0.8
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/abyss/combat_0": {
+      "bodies": [],
+      "traps": [
+        {
+          "kind": "mine",
+          "x": 180,
+          "y": 95,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 300,
+          "y": 95,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 180,
+          "y": 175,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 300,
+          "y": 175,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 135,
+          "width": 24,
+          "height": 96,
+          "radius": 0,
+          "angle": 1.5707963267948966,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": []
+    },
+    "legacy_v1/abyss/combat_1": {
+      "bodies": [
+        {
+          "x": 170,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 95,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 170,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        },
+        {
+          "x": 310,
+          "y": 175,
+          "width": 20,
+          "height": 20
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 89,
+          "width": 90,
+          "height": 18,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "current",
+          "x": 240,
+          "y": 181,
+          "width": 90,
+          "height": 18,
+          "radius": 0,
+          "angle": 3.141592653589793,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 240,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 140,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "mine",
+          "x": 340,
+          "y": 197,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/milk/empty": {
+      "bodies": [],
+      "traps": [],
+      "staticObstacles": []
+    },
+    "legacy_v1/milk/boss": {
+      "bodies": [
+        {
+          "x": 164,
+          "y": 93,
+          "width": 22,
+          "height": 22
+        },
+        {
+          "x": 316,
+          "y": 93,
+          "width": 22,
+          "height": 22
+        },
+        {
+          "x": 164,
+          "y": 177,
+          "width": 22,
+          "height": 22
+        },
+        {
+          "x": 316,
+          "y": 177,
+          "width": 22,
+          "height": 22
+        }
+      ],
+      "traps": [],
+      "staticObstacles": [
+        {
+          "id": "pillar:0",
+          "kind": "pillar",
+          "mask": 15
+        },
+        {
+          "id": "pillar:1",
+          "kind": "pillar",
+          "mask": 15
+        },
+        {
+          "id": "pillar:2",
+          "kind": "pillar",
+          "mask": 15
+        },
+        {
+          "id": "pillar:3",
+          "kind": "pillar",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/temple/combat_3": {
+      "bodies": [
+        {
+          "x": 240,
+          "y": 135,
+          "width": 28,
+          "height": 28
+        },
+        {
+          "x": 180,
+          "y": 95,
+          "width": 16,
+          "height": 16
+        },
+        {
+          "x": 300,
+          "y": 175,
+          "width": 16,
+          "height": 16
+        }
+      ],
+      "traps": [
+        {
+          "kind": "current",
+          "x": 160,
+          "y": 135,
+          "width": 18,
+          "height": 100,
+          "radius": 0,
+          "angle": 1.5707963267948966,
+          "delay": 0
+        },
+        {
+          "kind": "current",
+          "x": 320,
+          "y": 135,
+          "width": 18,
+          "height": 100,
+          "radius": 0,
+          "angle": 4.71238898038469,
+          "delay": 0
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/wreck/combat_3": {
+      "bodies": [
+        {
+          "x": 170,
+          "y": 115,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 200,
+          "y": 180,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 220,
+          "y": 85,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 270,
+          "y": 165,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 295,
+          "y": 90,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 325,
+          "y": 175,
+          "width": 14,
+          "height": 14
+        }
+      ],
+      "traps": [
+        {
+          "kind": "barrel",
+          "x": 150,
+          "y": 85,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 330,
+          "y": 73,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "barrel",
+          "x": 234,
+          "y": 143,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 250,
+          "y": 107,
+          "width": 40,
+          "height": 16,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0.6
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:4",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:5",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    },
+    "legacy_v1/abyss/combat_2": {
+      "bodies": [
+        {
+          "x": 292,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 172,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 150,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 188,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 219,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 261,
+          "y": 98,
+          "width": 14,
+          "height": 14
+        },
+        {
+          "x": 292,
+          "y": 120,
+          "width": 14,
+          "height": 14
+        }
+      ],
+      "traps": [
+        {
+          "kind": "mine",
+          "x": 240,
+          "y": 135,
+          "width": 0,
+          "height": 0,
+          "radius": 7,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 160,
+          "y": 73,
+          "width": 40,
+          "height": 14,
+          "radius": 0,
+          "angle": 0,
+          "delay": 0
+        },
+        {
+          "kind": "spikes",
+          "x": 320,
+          "y": 197,
+          "width": 40,
+          "height": 14,
+          "radius": 0,
+          "angle": 0,
+          "delay": 1
+        }
+      ],
+      "staticObstacles": [
+        {
+          "id": "wall:0",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:1",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:2",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:3",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:4",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:5",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:6",
+          "kind": "wall",
+          "mask": 15
+        },
+        {
+          "id": "wall:7",
+          "kind": "wall",
+          "mask": 15
+        }
+      ]
+    }
+  }
+}

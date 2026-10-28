@@ -24,7 +24,7 @@ class RoomScene extends Scene {
     const room = new DungeonRun(1, bus);
     room.enter(1);
     const arena = new RoomArena(this, bridge);
-    arena.show(room, 1);
+    arena.show(room, 'legacy_v1/temple/combat_1');
     let hits = 0;
     bus.on('bullet:hit', (e) => {
       if (e.targetId === null) hits++;
@@ -60,7 +60,7 @@ class RoomScene extends Scene {
         blocked = !arena.lineOfSight(140, 99, 210, 99),
         clear = arena.lineOfSight(140, 135, 300, 135);
       const children = this.children.length;
-      for (let i = 0; i < 50; i++) arena.show(room, i);
+      for (let i = 0; i < 50; i++) arena.show(room, `legacy_v1/temple/combat_${i % 5}`);
       arena.teleport(1, 0);
       const a = sim.getActor(p)!,
         body = bridge.actors.slots.find((s) => s.id === p)!.image.body!;

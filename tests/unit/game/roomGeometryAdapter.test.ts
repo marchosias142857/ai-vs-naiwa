@@ -80,7 +80,7 @@ it('production room layouts and Boss columns compile at the same world positions
   // Select the actual boss entry from the generated floor, without changing game production APIs.
   const boss = run.map.rooms.find((room) => room.kind === 'boss')!;
   run.roomId = boss.id;
-  arena.show(run, 0);
+  arena.show(run, 'legacy_v1/milk/boss');
   const box = BOSS_ROOM_LAYOUT[0]!;
   arena
     .prepareGeometry()
@@ -129,4 +129,22 @@ it('standing-barrel changes are visible before a render tick and queries alone p
   expect(arena.steer(cx - 70, cy, cx + 70, cy, 6, out)).toBe(false);
   expect(arena.prepareGeometry().revision).toBeGreaterThan(revision);
   arena.destroy();
+});
+
+it('rejects unknown or mismatched template IDs before changing the active room geometry', () => {
+  const { arena } = harness();
+  const run = new DungeonRun(42, new EventBus());
+  arena.show(run, 'legacy_v1/temple/empty');
+  const before = arena.prepareGeometry().revision;
+  for (const id of [
+    'unknown',
+    'legacy_v1/milk/empty',
+    'legacy_v1/temple/combat_0',
+    'legacy_v1/temple/boss',
+  ]) {
+    expect(() => arena.show(run, id)).toThrow(RangeError);
+    expect(arena.prepareGeometry().revision).toBe(before);
+  }
+  arena.destroy();
+  run.destroy();
 });
