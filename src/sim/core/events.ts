@@ -58,6 +58,7 @@ export interface GameEvents {
     arcDegrees: number;
   };
   'melee:hit': { team: Team; x: number; y: number; angle: number; targetId: EntityId; critical: boolean };
+  /** angle 为实际发射的弹型基准轴；自瞄枪口补偿后可不同于身体/持械姿态。 */
   'weapon:fired': { ownerId: EntityId; weaponId: string; x: number; y: number; angle: number };
   /** 连锁闪电跳了一次（ADR 0031），只给特效用；伤害照常发 `entity:damaged` 与 `bullet:hit`。 */
   'weapon:chained': { team: Team; x1: number; y1: number; x2: number; y2: number };

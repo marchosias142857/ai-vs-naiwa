@@ -130,7 +130,7 @@ describe('CombatWorld：移动与开火', () => {
     expect(result.bulletSpawns[0]!.lifetime).toBeCloseTo(w.range / w.bulletSpeed, 9);
   });
 
-  it('朝向：正在瞄准 > 正在移动 > 保持上一次的朝向；没有自动瞄准（ADR 0020）', () => {
+  it('未攻击朝向：正在瞄准 > 正在移动 > 保持上一次的朝向（ADR 0043）', () => {
     const { world, input } = setup();
     const pid = world.spawnPlayer('ai_proto', 0, 0);
     input.move.y = 1;

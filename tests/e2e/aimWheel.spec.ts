@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { INPUT_UI as UI } from '../../src/game/fx/params';
 
 for (const compact of [false, true]) {
-  test(`触屏轮盘：${compact ? '小屏' : '横屏'}死区、双指方向、拖出与回中`, async ({
+  test(`触屏轮盘：${compact ? '小屏' : '横屏'}微小偏移、双指方向、拖出与回中`, async ({
     page,
     context,
     isMobile,
@@ -21,10 +21,10 @@ for (const compact of [false, true]) {
     expect(await page.evaluate(() => window.__AVN__!.input!.aim)).toBeNull();
     await cdp.send('Input.dispatchTouchEvent', {
       type: 'touchMove',
-      touchPoints: [walking, { ...fire, x: fire.x + UI.aimWheel.deadzone / 2 }],
+      touchPoints: [walking, { ...fire, x: fire.x + 0.25 }],
     });
     await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.move.x)).toBeGreaterThan(0.5);
-    expect(await page.evaluate(() => window.__AVN__!.input!.aim)).toBeNull();
+    await expect.poll(() => page.evaluate(() => window.__AVN__!.input!.aim)).toEqual({ x: 1, y: 0 });
     // 向左上拖出底盘，方向仍来自固定圆心；桥接层实际收到了单位方向。
     await cdp.send('Input.dispatchTouchEvent', {
       type: 'touchMove',

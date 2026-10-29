@@ -3,8 +3,8 @@ import { INPUT_UI } from '../../src/game/fx/params';
 
 /**
  * #15 战斗流程：开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来，全程控制台零报错。
- * 开火用模拟手柄的 RT，不推右摇杆，即朝面向（右）开火（ADR 0020，玩家没有自动瞄准）。
- * 种子 42 的第一波里有怪从右侧靠近，所以桌面和手机视口都能用同一种方式稳定命中。
+ * 开火用模拟手柄 RT，不推右摇杆；弹体按 ADR 0043 选取最近有效敌人。
+ * 桌面和手机视口经过相同 sim 规则和实际 Arcade 碰撞。
  */
 
 type PadWindow = Window & { __setTrigger?: (down: boolean) => void };

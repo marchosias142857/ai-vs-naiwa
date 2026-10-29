@@ -49,19 +49,25 @@ describe('开火角度：弹道穿过目标碰撞圆心', () => {
       }
     });
 
-  it('玩家没有自动瞄准：不瞄准时朝面向开火，不会转向敌人', () => {
-    const world = createCombatWorld({ seed: 1, bus: new EventBus<GameEvents>() });
+  it('弹体自瞄：没有手动方向时朝活动敌人开火，保留手枪散布', () => {
+    const bus = new EventBus<GameEvents>();
+    const world = createCombatWorld({ seed: 1, bus });
     const pid = world.spawnPlayer('ai_proto', PLAYER.x, PLAYER.y);
     world.spawnEnemy('naiwa_scout', PLAYER.x + 70, PLAYER.y + 20);
     const input = createInputFrame();
+    for (let t = 0; t < BALANCE.spawnTelegraph + DT; t += DT) world.step(DT, input);
     input.fire = true;
     const angles: number[] = [];
+    const axes: number[] = [];
+    bus.on('weapon:fired', (e) => axes.push(e.angle));
     for (let t = 0; t < BALANCE.spawnTelegraph + 0.5; t += DT)
       for (const b of world.step(DT, input).bulletSpawns) if (b.team === 'player') angles.push(b.angle);
-    expect(world.getActor(pid)!.facing).toBe(0);
+    const targetAngle = Math.atan2(20, 70);
+    expect(world.getActor(pid)!.facing).toBeCloseTo(targetAngle);
     expect(angles.length).toBeGreaterThan(2);
-    // 手枪散布 ±2°：子弹始终朝面向（右）飞，不朝右下方的敌人。
-    for (const angle of angles) expect(Math.abs(angle)).toBeLessThanOrEqual(Math.PI / 90);
+    // 手枪散布仍为 ±2°，围绕自动选定的目标方向。
+    expect(axes).toHaveLength(angles.length);
+    angles.forEach((angle, i) => expect(Math.abs(angle - axes[i]!)).toBeLessThanOrEqual(Math.PI / 90));
   });
 });
 

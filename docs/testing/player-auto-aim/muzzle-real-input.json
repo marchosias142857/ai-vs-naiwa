@@ -1,0 +1,1316 @@
+{
+  "stats": {
+    "startTime": "2026-10-29T21:20:21.545Z",
+    "duration": 68232.809,
+    "expected": 19,
+    "skipped": 5,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "browser": "Chromium 153.0.8010.0 / Linux / SwiftShader",
+  "tests": [
+    {
+      "title": "production aim: pointer pistol_basic",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 3127,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "keyboard"
+                },
+                "shots": [
+                  {
+                    "ownerId": 1,
+                    "weaponId": "pistol_basic",
+                    "x": 246.77499999999998,
+                    "y": 145.175,
+                    "angle": 1.8273574835304163
+                  }
+                ],
+                "shotTargets": [
+                  {
+                    "x": 240,
+                    "y": 171
+                  }
+                ],
+                "targetDamage": 0,
+                "facing": 1.5707963267948966,
+                "bodyFacing": 1.5707963267948966,
+                "melee": {
+                  "active": false,
+                  "angle": 0
+                },
+                "beam": {
+                  "active": false,
+                  "angle": 0
+                },
+                "bullets": [
+                  {
+                    "x": -68.02684694529724,
+                    "y": 250.9429180006503
+                  }
+                ],
+                "specialShots": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: gamepad pistol_basic",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 3331,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "gamepad"
+                },
+                "shots": [
+                  {
+                    "ownerId": 1,
+                    "weaponId": "pistol_basic",
+                    "x": 246.77499999999998,
+                    "y": 145.175,
+                    "angle": 1.8273574835304163
+                  }
+                ],
+                "shotTargets": [
+                  {
+                    "x": 240,
+                    "y": 171
+                  }
+                ],
+                "targetDamage": 0,
+                "facing": 1.5707963267948966,
+                "bodyFacing": 1.5707963267948966,
+                "melee": {
+                  "active": false,
+                  "angle": 0
+                },
+                "beam": {
+                  "active": false,
+                  "angle": 0
+                },
+                "bullets": [
+                  {
+                    "x": -68.02684694529724,
+                    "y": 250.9429180006503
+                  }
+                ],
+                "specialShots": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: pointer fin_boomerang",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 3373,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "keyboard"
+                },
+                "shots": [
+                  {
+                    "ownerId": 1,
+                    "weaponId": "fin_boomerang",
+                    "x": 247.86666666666665,
+                    "y": 143.8,
+                    "angle": 1.8523301271759478
+                  }
+                ],
+                "shotTargets": [
+                  {
+                    "x": 240,
+                    "y": 171
+                  }
+                ],
+                "targetDamage": 0,
+                "facing": 1.5707963267948966,
+                "bodyFacing": 1.5707963267948966,
+                "melee": {
+                  "active": false,
+                  "angle": 0
+                },
+                "beam": {
+                  "active": false,
+                  "angle": 0
+                },
+                "bullets": [],
+                "specialShots": [
+                  {
+                    "vx": -69.45734752858615,
+                    "vy": 240.15760840392548
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: gamepad fin_boomerang",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 3318,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "gamepad"
+                },
+                "shots": [
+                  {
+                    "ownerId": 1,
+                    "weaponId": "fin_boomerang",
+                    "x": 247.86666666666665,
+                    "y": 143.8,
+                    "angle": 1.8523301271759478
+                  }
+                ],
+                "shotTargets": [
+                  {
+                    "x": 240,
+                    "y": 171
+                  }
+                ],
+                "targetDamage": 0,
+                "facing": 1.5707963267948966,
+                "bodyFacing": 1.5707963267948966,
+                "melee": {
+                  "active": false,
+                  "angle": 0
+                },
+                "beam": {
+                  "active": false,
+                  "angle": 0
+                },
+                "bullets": [],
+                "specialShots": [
+                  {
+                    "vx": -69.45734752858615,
+                    "vy": 240.15760840392548
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: pointer lantern_beam",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2855,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "keyboard"
+                },
+                "shots": [
+                  {
+                    "ownerId": 1,
+                    "weaponId": "lantern_beam",
+                    "x": 223.63333333333335,
+                    "y": 134.46666666666667,
+                    "angle": 3.141592653589793
+                  }
+                ],
+                "shotTargets": [
+                  {
+                    "x": 240,
+                    "y": 171
+                  }
+                ],
+                "targetDamage": 0,
+                "facing": 3.141592653589793,
+                "bodyFacing": 3.141592653589793,
+                "melee": {
+                  "active": false,
+                  "angle": 0
+                },
+                "beam": {
+                  "active": true,
+                  "angle": 3.141592653589793
+                },
+                "bullets": [],
+                "specialShots": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: gamepad lantern_beam",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 3146,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "gamepad"
+                },
+                "shots": [
+                  {
+                    "ownerId": 1,
+                    "weaponId": "lantern_beam",
+                    "x": 223.63333333333335,
+                    "y": 134.46666666666667,
+                    "angle": 3.141592653589793
+                  }
+                ],
+                "shotTargets": [
+                  {
+                    "x": 240,
+                    "y": 171
+                  }
+                ],
+                "targetDamage": 0,
+                "facing": 3.141592653589793,
+                "bodyFacing": 3.141592653589793,
+                "melee": {
+                  "active": false,
+                  "angle": 0
+                },
+                "beam": {
+                  "active": true,
+                  "angle": 3.141592653589793
+                },
+                "bullets": [],
+                "specialShots": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: pointer cutlass",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 3037,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "keyboard"
+                },
+                "shots": [],
+                "shotTargets": [],
+                "targetDamage": 0,
+                "facing": 3.141592653589793,
+                "bodyFacing": 3.141592653589793,
+                "melee": {
+                  "active": true,
+                  "angle": 3.141592653589793
+                },
+                "beam": {
+                  "active": false,
+                  "angle": 0
+                },
+                "bullets": [],
+                "specialShots": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: gamepad cutlass",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2931,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "gamepad"
+                },
+                "shots": [],
+                "shotTargets": [],
+                "targetDamage": 0,
+                "facing": 3.141592653589793,
+                "bodyFacing": 3.141592653589793,
+                "melee": {
+                  "active": true,
+                  "angle": 3.141592653589793
+                },
+                "beam": {
+                  "active": false,
+                  "angle": 0
+                },
+                "bullets": [],
+                "specialShots": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production LOS blocks auto target and preserves mouse fallback",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2882,
+          "retry": 0,
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "title": "charge release keeps its original trigger and faces the auto target on the release step",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2282,
+          "retry": 0,
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "title": "pistol_basic: actual Arcade shot hits a stationary radius-3 target directly below",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2646,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "actual-small-target-hit",
+              "data": {
+                "fired": {
+                  "input": {
+                    "move": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "aim": {
+                      "x": -1,
+                      "y": 0
+                    },
+                    "fire": true,
+                    "skillPressed": false,
+                    "swapPressed": false,
+                    "interactPressed": false,
+                    "pausePressed": false,
+                    "source": "keyboard"
+                  },
+                  "shots": [
+                    {
+                      "ownerId": 1,
+                      "weaponId": "pistol_basic",
+                      "x": 246.77499999999998,
+                      "y": 145.175,
+                      "angle": 1.8273574835304163
+                    }
+                  ],
+                  "shotTargets": [
+                    {
+                      "x": 240,
+                      "y": 171
+                    }
+                  ],
+                  "targetDamage": 0,
+                  "facing": 1.5707963267948966,
+                  "bodyFacing": 1.5707963267948966,
+                  "melee": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "beam": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "bullets": [
+                    {
+                      "x": -68.02684694529724,
+                      "y": 250.9429180006503
+                    }
+                  ],
+                  "specialShots": []
+                },
+                "result": {
+                  "input": {
+                    "move": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "aim": {
+                      "x": -1,
+                      "y": 0
+                    },
+                    "fire": true,
+                    "skillPressed": false,
+                    "swapPressed": false,
+                    "interactPressed": false,
+                    "pausePressed": false,
+                    "source": "keyboard"
+                  },
+                  "shots": [
+                    {
+                      "ownerId": 1,
+                      "weaponId": "pistol_basic",
+                      "x": 246.77499999999998,
+                      "y": 145.175,
+                      "angle": 1.8273574835304163
+                    }
+                  ],
+                  "shotTargets": [
+                    {
+                      "x": 240,
+                      "y": 171
+                    }
+                  ],
+                  "targetDamage": 1,
+                  "facing": 3.141592653589793,
+                  "bodyFacing": 3.141592653589793,
+                  "melee": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "beam": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "bullets": [],
+                  "specialShots": []
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "sniper_pierce: actual Arcade shot hits a stationary radius-3 target directly below",
+      "project": "desktop",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2700,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "actual-small-target-hit",
+              "data": {
+                "fired": {
+                  "input": {
+                    "move": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "aim": {
+                      "x": -1,
+                      "y": 0
+                    },
+                    "fire": true,
+                    "skillPressed": false,
+                    "swapPressed": false,
+                    "interactPressed": false,
+                    "pausePressed": false,
+                    "source": "keyboard"
+                  },
+                  "shots": [
+                    {
+                      "ownerId": 1,
+                      "weaponId": "sniper_pierce",
+                      "x": 246.83999999999997,
+                      "y": 151.05,
+                      "angle": 1.9010936816241493
+                    }
+                  ],
+                  "shotTargets": [
+                    {
+                      "x": 240,
+                      "y": 171
+                    }
+                  ],
+                  "targetDamage": 0,
+                  "facing": 1.5707963267948966,
+                  "bodyFacing": 1.5707963267948966,
+                  "melee": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "beam": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "bullets": [
+                    {
+                      "x": -136.2162162162158,
+                      "y": 397.29729729729746
+                    }
+                  ],
+                  "specialShots": []
+                },
+                "result": {
+                  "input": {
+                    "move": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "aim": {
+                      "x": -1,
+                      "y": 0
+                    },
+                    "fire": true,
+                    "skillPressed": false,
+                    "swapPressed": false,
+                    "interactPressed": false,
+                    "pausePressed": false,
+                    "source": "keyboard"
+                  },
+                  "shots": [
+                    {
+                      "ownerId": 1,
+                      "weaponId": "sniper_pierce",
+                      "x": 246.83999999999997,
+                      "y": 151.05,
+                      "angle": 1.9010936816241493
+                    }
+                  ],
+                  "shotTargets": [
+                    {
+                      "x": 240,
+                      "y": 171
+                    }
+                  ],
+                  "targetDamage": 1,
+                  "facing": 3.141592653589793,
+                  "bodyFacing": 3.141592653589793,
+                  "melee": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "beam": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "bullets": [],
+                  "specialShots": []
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: pointer pistol_basic",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2711,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "touch"
+                },
+                "shots": [
+                  {
+                    "ownerId": 1,
+                    "weaponId": "pistol_basic",
+                    "x": 246.77499999999998,
+                    "y": 145.175,
+                    "angle": 1.8273574835304163
+                  }
+                ],
+                "shotTargets": [
+                  {
+                    "x": 240,
+                    "y": 171
+                  }
+                ],
+                "targetDamage": 0,
+                "facing": 1.5707963267948966,
+                "bodyFacing": 1.5707963267948966,
+                "melee": {
+                  "active": false,
+                  "angle": 0
+                },
+                "beam": {
+                  "active": false,
+                  "angle": 0
+                },
+                "bullets": [
+                  {
+                    "x": -68.02684694529724,
+                    "y": 250.9429180006503
+                  }
+                ],
+                "specialShots": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: gamepad pistol_basic",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "runs": [
+        {
+          "status": "skipped",
+          "durationMs": 601,
+          "retry": 0,
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "title": "production aim: pointer fin_boomerang",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2801,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "touch"
+                },
+                "shots": [
+                  {
+                    "ownerId": 1,
+                    "weaponId": "fin_boomerang",
+                    "x": 247.86666666666665,
+                    "y": 143.8,
+                    "angle": 1.8523301271759478
+                  }
+                ],
+                "shotTargets": [
+                  {
+                    "x": 240,
+                    "y": 171
+                  }
+                ],
+                "targetDamage": 0,
+                "facing": 1.5707963267948966,
+                "bodyFacing": 1.5707963267948966,
+                "melee": {
+                  "active": false,
+                  "angle": 0
+                },
+                "beam": {
+                  "active": false,
+                  "angle": 0
+                },
+                "bullets": [],
+                "specialShots": [
+                  {
+                    "vx": -69.45734752858615,
+                    "vy": 240.15760840392548
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: gamepad fin_boomerang",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "runs": [
+        {
+          "status": "skipped",
+          "durationMs": 785,
+          "retry": 0,
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "title": "production aim: pointer lantern_beam",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2588,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "touch"
+                },
+                "shots": [
+                  {
+                    "ownerId": 1,
+                    "weaponId": "lantern_beam",
+                    "x": 223.63333333333335,
+                    "y": 134.46666666666667,
+                    "angle": 3.141592653589793
+                  }
+                ],
+                "shotTargets": [
+                  {
+                    "x": 240,
+                    "y": 171
+                  }
+                ],
+                "targetDamage": 0,
+                "facing": 3.141592653589793,
+                "bodyFacing": 3.141592653589793,
+                "melee": {
+                  "active": false,
+                  "angle": 0
+                },
+                "beam": {
+                  "active": true,
+                  "angle": 3.141592653589793
+                },
+                "bullets": [],
+                "specialShots": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: gamepad lantern_beam",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "runs": [
+        {
+          "status": "skipped",
+          "durationMs": 605,
+          "retry": 0,
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "title": "production aim: pointer cutlass",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2858,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "real-input-attack",
+              "data": {
+                "input": {
+                  "move": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "aim": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "fire": true,
+                  "skillPressed": false,
+                  "swapPressed": false,
+                  "interactPressed": false,
+                  "pausePressed": false,
+                  "source": "touch"
+                },
+                "shots": [],
+                "shotTargets": [],
+                "targetDamage": 0,
+                "facing": 3.141592653589793,
+                "bodyFacing": 3.141592653589793,
+                "melee": {
+                  "active": true,
+                  "angle": 3.141592653589793
+                },
+                "beam": {
+                  "active": false,
+                  "angle": 0
+                },
+                "bullets": [],
+                "specialShots": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "production aim: gamepad cutlass",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "runs": [
+        {
+          "status": "skipped",
+          "durationMs": 746,
+          "retry": 0,
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "title": "production LOS blocks auto target and preserves mouse fallback",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "runs": [
+        {
+          "status": "skipped",
+          "durationMs": 45,
+          "retry": 0,
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "title": "charge release keeps its original trigger and faces the auto target on the release step",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 2471,
+          "retry": 0,
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "title": "pistol_basic: actual Arcade shot hits a stationary radius-3 target directly below",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 3377,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "actual-small-target-hit",
+              "data": {
+                "fired": {
+                  "input": {
+                    "move": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "aim": null,
+                    "fire": true,
+                    "skillPressed": false,
+                    "swapPressed": false,
+                    "interactPressed": false,
+                    "pausePressed": false,
+                    "source": "touch"
+                  },
+                  "shots": [
+                    {
+                      "ownerId": 1,
+                      "weaponId": "pistol_basic",
+                      "x": 246.77499999999998,
+                      "y": 145.175,
+                      "angle": 1.8273574835304163
+                    }
+                  ],
+                  "shotTargets": [
+                    {
+                      "x": 240,
+                      "y": 171
+                    }
+                  ],
+                  "targetDamage": 0,
+                  "facing": 1.5707963267948966,
+                  "bodyFacing": 1.5707963267948966,
+                  "melee": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "beam": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "bullets": [
+                    {
+                      "x": -68.02684694529724,
+                      "y": 250.9429180006503
+                    }
+                  ],
+                  "specialShots": []
+                },
+                "result": {
+                  "input": {
+                    "move": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "aim": null,
+                    "fire": true,
+                    "skillPressed": false,
+                    "swapPressed": false,
+                    "interactPressed": false,
+                    "pausePressed": false,
+                    "source": "touch"
+                  },
+                  "shots": [
+                    {
+                      "ownerId": 1,
+                      "weaponId": "pistol_basic",
+                      "x": 246.77499999999998,
+                      "y": 145.175,
+                      "angle": 1.8273574835304163
+                    }
+                  ],
+                  "shotTargets": [
+                    {
+                      "x": 240,
+                      "y": 171
+                    }
+                  ],
+                  "targetDamage": 1,
+                  "facing": 0,
+                  "bodyFacing": 0,
+                  "melee": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "beam": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "bullets": [],
+                  "specialShots": []
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "sniper_pierce: actual Arcade shot hits a stationary radius-3 target directly below",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "runs": [
+        {
+          "status": "passed",
+          "durationMs": 3101,
+          "retry": 0,
+          "evidence": [
+            {
+              "name": "actual-small-target-hit",
+              "data": {
+                "fired": {
+                  "input": {
+                    "move": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "aim": null,
+                    "fire": true,
+                    "skillPressed": false,
+                    "swapPressed": false,
+                    "interactPressed": false,
+                    "pausePressed": false,
+                    "source": "touch"
+                  },
+                  "shots": [
+                    {
+                      "ownerId": 1,
+                      "weaponId": "sniper_pierce",
+                      "x": 246.83999999999997,
+                      "y": 151.05,
+                      "angle": 1.9010936816241493
+                    }
+                  ],
+                  "shotTargets": [
+                    {
+                      "x": 240,
+                      "y": 171
+                    }
+                  ],
+                  "targetDamage": 0,
+                  "facing": 1.5707963267948966,
+                  "bodyFacing": 1.5707963267948966,
+                  "melee": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "beam": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "bullets": [
+                    {
+                      "x": -136.2162162162158,
+                      "y": 397.29729729729746
+                    }
+                  ],
+                  "specialShots": []
+                },
+                "result": {
+                  "input": {
+                    "move": {
+                      "x": 0,
+                      "y": 0
+                    },
+                    "aim": null,
+                    "fire": true,
+                    "skillPressed": false,
+                    "swapPressed": false,
+                    "interactPressed": false,
+                    "pausePressed": false,
+                    "source": "touch"
+                  },
+                  "shots": [
+                    {
+                      "ownerId": 1,
+                      "weaponId": "sniper_pierce",
+                      "x": 246.83999999999997,
+                      "y": 151.05,
+                      "angle": 1.9010936816241493
+                    }
+                  ],
+                  "shotTargets": [
+                    {
+                      "x": 240,
+                      "y": 171
+                    }
+                  ],
+                  "targetDamage": 1,
+                  "facing": 0,
+                  "bodyFacing": 0,
+                  "melee": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "beam": {
+                    "active": false,
+                    "angle": 0
+                  },
+                  "bullets": [],
+                  "specialShots": []
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

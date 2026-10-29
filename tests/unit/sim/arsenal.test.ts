@@ -367,7 +367,7 @@ describe('存档', () => {
   it('弹体在飞、蓄力与冰冻进行中存档，恢复后继续的结果逐项一致', () => {
     const t = setup([{ x: 200, y: 20, w: 20, h: 40 }]);
     t.player(100, 100, 'jelly_guard');
-    const target = t.enemy('naiwa_tank', 180, 100);
+    t.enemy('naiwa_tank', 180, 100);
     t.enemy('naiwa_chaser', 60, 160, false);
     t.step(WARMUP);
     // 换武器保留冷却（ADR 0008），每把先松手等冷却结束再开火。
@@ -382,9 +382,10 @@ describe('存档', () => {
     fire('jelly_guard', 90);
     fire('urchin_mortar', 2, { x: -1, y: 0 });
     fire('bubble_bouncer', 2, { x: 1, y: -1 });
-    // 回旋镖与河豚朝别处打，只让冰沙打到坦克，免得它在存档前被打死。
+    // 自瞄会攻击当前敌人；冰冻检查使用随后生成的新目标，避免先前攻击已将它击杀。
     fire('puffer_wand', 2, { x: -1, y: 1 });
     fire('fin_boomerang', 2, { x: 0, y: 1 });
+    const target = t.enemy('naiwa_tank', 100, 70);
     fire('slush_blaster', 12);
     t.world.equipWeapon('coral_bow');
     t.input.fire = true;

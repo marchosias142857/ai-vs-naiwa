@@ -1,6 +1,6 @@
 import { startAdventure, enterDungeon } from './helpers/town';
 import { INPUT_UI } from '../../src/game/fx/params';
-import { installPad, padButton, type PadWindow } from './helpers/gamepad';
+import { installPad, padButton } from './helpers/gamepad';
 import { expect, test } from '@playwright/test';
 
 test('demo：默认地牢入口、行动按钮、真实走门、清房与暂停', async ({ page, isMobile }, info) => {
@@ -165,7 +165,7 @@ test('demo：语言与反馈设置持久保存，英文游戏与暂停菜单可�
 for (const energy of [200, 20])
   test(
     energy === 200
-      ? 'demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算'
+      ? 'demo：只按 RT 自瞄与 Arcade 命中击败 Boss，保持 RT 不跳过结算'
       : 'demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击',
     async ({ page }, info) => {
       test.setTimeout(50_000);
@@ -204,34 +204,7 @@ for (const energy of [200, 20])
       await page.keyboard.down(key);
       await page.waitForFunction(() => window.__AVN__!.demo!.kind === 'boss');
       await page.keyboard.up(key);
-      // 玩家没有自动瞄准（ADR 0020）：每帧把右摇杆推向最近的敌人，从身体中心对准碰撞圆心。
-      await page.evaluate(() => {
-        const aim = () => {
-          const demo = window.__AVN__?.demo,
-            pad = window as PadWindow;
-          if (!demo || demo.settled) {
-            pad.setPadAxes!([0, 0, 0, 0]);
-            return;
-          }
-          let dx = 0,
-            dy = 0,
-            best = Infinity;
-          for (const e of demo.enemies) {
-            const x = e.x - demo.x,
-              y = e.y - demo.y,
-              d = Math.hypot(x, y);
-            // 目标恰好在枪口原点时跳过，避免把 NaN 写进模拟手柄。
-            if (d > 0 && d < best) {
-              best = d;
-              dx = x / d;
-              dy = y / d;
-            }
-          }
-          pad.setPadAxes!([0, 0, dx, dy]);
-          requestAnimationFrame(aim);
-        };
-        requestAnimationFrame(aim);
-      });
+      // 只按 RT：生产 sim 根据武器类别选敌，浏览器不代算方向（ADR 0043）。
       await padButton(page, 7, true);
       await page.waitForFunction(() => window.__AVN__!.demo!.alive > 0);
       await expect(page.locator('.demo-status')).toContainText('奶怪');
@@ -306,6 +279,7 @@ test('demo：存储被禁用仍可开局，明确显示未保存状态', async (
     };
   });
   await page.goto('/?scene=Game&seed=42');
+  await page.waitForFunction(() => !!window.__AVN__?.demo);
   await expect(page.locator('.demo-hint')).toContainText('无法保存进度');
   const x = await page.evaluate(() => window.__AVN__!.demo!.x);
   await page.keyboard.down('d');

@@ -1,0 +1,60 @@
+{
+  "stats": {
+    "startTime": "2026-10-29T21:23:27.971Z",
+    "duration": 63538.725,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来（固定种子不变）",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 17013,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来（固定种子不变）",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 14734,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 13944,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 13716,
+          "retry": 0
+        }
+      ]
+    }
+  ]
+}

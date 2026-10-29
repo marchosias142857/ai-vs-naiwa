@@ -1,0 +1,13 @@
+{
+  "base": "f1b27ccc0a613badb090cb1d61fd7d55e8227d96",
+  "runtimeFiles": {
+    "src/game/fx/params.ts": "a2e25e30809fb9264da46952f376bf193f5f30e754738a082233df53d979a02d",
+    "src/game/input/TouchState.ts": "2137636d2614dc544bd34398590f6d56dc733b1a399d3fa04712dcf72c9099ed",
+    "src/game/testHooks.ts": "5b70305a4ef56270f42c6fae7f38e79a58bd6feb3c68d727196e179b020f7af4",
+    "src/i18n/en.json": "54360cb71dbb655a81b723eaa2c883948e2c9581933fff9be6cfb04672c8d29d",
+    "src/i18n/zh-CN.json": "6f6d4a72744d36c5f1b1966ace50f6224a73ec1df0b0551efc871aefed4e6a61",
+    "src/sim/combat/CombatWorld.ts": "f5501fd9bd633850508f366a74e5fca61f5d1c0af815b8f162c9478737a6cfa1",
+    "src/sim/combat/autoAim.ts": "737366debe1fa66aa15618fd834c0947f5ff81a91475a0f7e67a0d5984f87f4b",
+    "src/sim/core/types.ts": "ea418758d291d5e9efc3b05e8c665a3640dc393a70430687edd0f716a12eeb25"
+  }
+}

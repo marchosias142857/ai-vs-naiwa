@@ -1,0 +1,8 @@
+{
+  "src/sim/combat/CombatWorld.ts": "45298a601731adb526c906a1bb58bdba69e837b52ea2995aa0263f6a17d2803b",
+  "src/sim/core/events.ts": "abb2e31a6a2f8f033fcb70e821019d5d8b35a5644415815d9974bf6798158b9e",
+  "tests/unit/sim/playerAutoAim.test.ts": "ae0c84276925369749eb2796f0b294b4c958b4a5fc8d788a59057c6697b8b90f",
+  "tests/unit/sim/simFollowups.test.ts": "10c15c4ce072c3a51abaa32b4649adce8e53de79c6781768edbe5d3bc41e95c3",
+  "tests/fixtures/playerAutoAim.ts": "4d983f34cd185e401192138f3bd6ab21926d7858bb0ff4ab189702513ccac944",
+  "tests/e2e/playerAutoAim.spec.ts": "67547df3a0b0667ef7e2f5c8482916140d83bfbd19d1d5d8e57b95cf23e46bdd"
+}
