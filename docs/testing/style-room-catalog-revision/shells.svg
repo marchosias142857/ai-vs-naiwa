@@ -1,0 +1,619 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1600"
+  height="2720"
+  viewBox="0 0 1600 2720"
+>
+  <rect width="1600" height="2720" fill="#111923" />
+  <text x="40" y="45" fill="#f1eee0" font-size="28" font-family="sans-serif">
+    32 distinct room shells · 368 × 272 world units
+  </text>
+  <g transform="translate(200,240)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-184,-136 184,-136 184,136 -184,136"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      court_0
+    </text>
+  </g>
+  <g transform="translate(600,240)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-184,-136 -48,-136 -48,-112 48,-112 48,-136 184,-136 184,136 -184,136"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      court_1
+    </text>
+  </g>
+  <g transform="translate(1000,240)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-184,-136 -48,-136 -48,-112 48,-112 48,-136 184,-136 184,136 64,136 64,104 -64,104 -64,136 -184,136"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      court_2
+    </text>
+  </g>
+  <g transform="translate(1400,240)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-184,-136 -128,-136 -128,-112 -80,-112 -80,-136 80,-136 80,-112 128,-112 128,-136 184,-136 184,136 -184,136"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      court_3
+    </text>
+  </g>
+  <g transform="translate(200,570)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-152,-136 152,-136 184,-104 184,104 152,136 -152,136 -184,104 -184,-104"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      cloister_0
+    </text>
+  </g>
+  <g transform="translate(600,570)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-152,-136 120,-136 184,-72 184,104 152,136 -120,136 -184,72 -184,-104"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      cloister_1
+    </text>
+  </g>
+  <g transform="translate(1000,570)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-136,-136 184,-136 184,88 136,136 -184,136 -184,-88"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      cloister_2
+    </text>
+  </g>
+  <g transform="translate(1400,570)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-136,-136 -48,-136 -48,-112 48,-112 48,-136 136,-136 184,-88 184,88 136,136 -136,136 -184,88 -184,-88"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      cloister_3
+    </text>
+  </g>
+  <g transform="translate(200,900)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-120,-136 184,-136 184,136 -184,136 -184,-72"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      corner_hall_0
+    </text>
+  </g>
+  <g transform="translate(600,900)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-120,-136 184,-136 184,136 -184,136 -184,-88 -120,-88"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      corner_hall_1
+    </text>
+  </g>
+  <g transform="translate(1000,900)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-120,-136 184,-136 184,136 -184,136 -184,-56 -120,-56"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      corner_hall_2
+    </text>
+  </g>
+  <g transform="translate(1400,900)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-120,-136 184,-136 184,72 136,72 136,136 -184,136 -184,-72"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      corner_hall_3
+    </text>
+  </g>
+  <g transform="translate(200,1230)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-152,-136 152,-136 152,-56 184,-56 184,56 152,56 152,136 -152,136 -152,56 -184,56 -184,-56 -152,-56"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      side_galleries_0
+    </text>
+  </g>
+  <g transform="translate(600,1230)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-152,-136 152,-136 152,-56 184,-56 184,88 120,88 120,136 -120,136 -120,88 -184,88 -184,-56 -152,-56"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      side_galleries_1
+    </text>
+  </g>
+  <g transform="translate(1000,1230)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-136,-136 -48,-136 -48,-112 48,-112 48,-136 136,-136 136,-72 184,-72 184,72 136,72 136,136 -136,136 -136,72 -184,72 -184,-72 -136,-72"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      side_galleries_2
+    </text>
+  </g>
+  <g transform="translate(1400,1230)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-120,-136 152,-136 152,-88 184,-88 184,56 120,56 120,136 -152,136 -152,88 -184,88 -184,-56 -120,-56"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      side_galleries_3
+    </text>
+  </g>
+  <g transform="translate(200,1560)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-152,-136 -64,-136 -64,-96 64,-96 64,-136 152,-136 184,-104 184,136 -184,136 -184,-104"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      north_terrace_0
+    </text>
+  </g>
+  <g transform="translate(600,1560)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-136,-136 -48,-136 -48,-104 48,-104 48,-136 136,-136 136,-88 184,-88 184,136 -184,136 -184,-88 -136,-88"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      north_terrace_1
+    </text>
+  </g>
+  <g transform="translate(1000,1560)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-184,-136 -136,-136 -136,-96 -64,-96 -64,-136 64,-136 64,-96 136,-96 136,-136 184,-136 184,136 -184,136"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      north_terrace_2
+    </text>
+  </g>
+  <g transform="translate(1400,1560)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-152,-136 -48,-136 -48,-104 48,-104 48,-136 184,-136 184,72 120,136 -184,136 -184,-104"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      north_terrace_3
+    </text>
+  </g>
+  <g transform="translate(200,1890)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-136,-136 184,-136 184,72 152,72 152,136 -184,136 -184,-104 -136,-104"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      offset_wings_0
+    </text>
+  </g>
+  <g transform="translate(600,1890)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-120,-136 184,-136 184,136 -152,136 -152,104 -184,104 -184,-72 -120,-72"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      offset_wings_1
+    </text>
+  </g>
+  <g transform="translate(1000,1890)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-136,-136 152,-136 152,-72 184,-72 184,136 -120,136 -120,104 -184,104 -184,-88"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      offset_wings_2
+    </text>
+  </g>
+  <g transform="translate(1400,1890)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-136,-136 152,-136 184,-104 184,88 152,88 152,136 -120,136 -184,72 -184,-72 -136,-72"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      offset_wings_3
+    </text>
+  </g>
+  <g transform="translate(200,2220)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-184,-136 184,-136 184,72 120,72 120,136 48,136 48,112 -48,112 -48,136 -120,136 -120,72 -184,72"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      south_hall_0
+    </text>
+  </g>
+  <g transform="translate(600,2220)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-136,-136 184,-136 184,136 64,136 64,88 -64,88 -64,136 -184,136 -184,-88"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      south_hall_1
+    </text>
+  </g>
+  <g transform="translate(1000,2220)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-184,-136 -48,-136 -48,-112 48,-112 48,-136 184,-136 184,136 128,136 128,104 64,104 64,136 -64,136 -64,104 -128,104 -128,136 -184,136"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      south_hall_2
+    </text>
+  </g>
+  <g transform="translate(1400,2220)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-152,-136 184,-136 184,72 120,136 48,136 48,104 -48,104 -48,136 -152,136 -184,104 -184,-88 -152,-88"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      south_hall_3
+    </text>
+  </g>
+  <g transform="translate(200,2550)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-152,-136 136,-136 184,-88 184,72 120,136 -136,136 -184,88 -184,-104"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      long_octagon_0
+    </text>
+  </g>
+  <g transform="translate(600,2550)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-120,-136 -48,-136 -48,-112 48,-112 48,-136 152,-136 184,-104 184,88 136,136 -152,136 -184,104 -184,-72"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      long_octagon_1
+    </text>
+  </g>
+  <g transform="translate(1000,2550)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-136,-136 120,-136 184,-72 184,104 152,136 48,136 48,104 -48,104 -48,136 -120,136 -184,72 -184,-88"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      long_octagon_2
+    </text>
+  </g>
+  <g transform="translate(1400,2550)">
+    <rect x="-192" y="-155" width="384" height="305" rx="12" fill="#202c3c" />
+    <polygon
+      points="-120,-136 -48,-136 -48,-112 48,-112 48,-136 136,-136 184,-88 184,72 120,136 48,136 48,112 -48,112 -48,136 -152,136 -184,104 -184,-72"
+      fill="#697a87"
+      stroke="#ded8c6"
+      stroke-width="4"
+    />
+    <text
+      x="0"
+      y="-165"
+      text-anchor="middle"
+      fill="#f1eee0"
+      font-size="18"
+      font-family="sans-serif"
+    >
+      long_octagon_3
+    </text>
+  </g>
+</svg>
