@@ -7,9 +7,12 @@ export const MAP_ART = {
     rims: 'map_rims_v3',
     doors: 'map_horizontal_v3',
     objects: 'map_mechanisms_v3',
-    ground: 'map_ground_v6',
+    templeGround: 'map_ground_temple_v7',
+    wreckGround: 'map_ground_wreck_v7',
+    abyssGround: 'map_ground_abyss_v7',
+    milkGround: 'map_ground_milk_v7',
     blocks: 'map_blocks_v3',
-    walls: 'map_wall_model_v17',
+    walls: 'map_wall_model_v18',
     sideDoors: 'map_vertical_v3',
     hub: 'map_hub_v3',
     effects: 'map_effects_v3',
@@ -18,9 +21,12 @@ export const MAP_ART = {
     rims: 'map-rims-v3.webp',
     doors: 'map-horizontal-v3.webp',
     objects: 'map-mechanisms-v3.webp',
-    ground: 'map-ground-v6.webp',
+    templeGround: 'map-ground-temple-v7.webp',
+    wreckGround: 'map-ground-wreck-v7.webp',
+    abyssGround: 'map-ground-abyss-v7.webp',
+    milkGround: 'map-ground-milk-v7.webp',
     blocks: 'map-blocks-v3.webp',
-    walls: 'map-wall-model-v17.webp',
+    walls: 'map-wall-model-v18.webp',
     sideDoors: 'map-vertical-v3.webp',
     hub: 'map-hub-v3.webp',
     effects: 'map-effects-v3.webp',
@@ -38,7 +44,12 @@ export const MAP_ART = {
   rimWidth: 3,
   rimSlice: 0.18,
   wallBacking: { temple: '#30445b', wreck: '#513722', abyss: '#192b47', milk: '#928673' },
-  floorTile: 32,
+  floorTile: MODULAR_V2.wall.width,
+  floorVariants: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  // Exclude the generated atlas grid; rebuild one exact material-colored pixel per edge.
+  floorSourceInset: 8,
+  floorBorderPixels: 1,
+  floorBorder: { temple: '#4a5761', wreck: '#624c40', abyss: '#3c4154', milk: '#685947' },
   fieldTile: 16,
   naturalFieldTile: 32,
   frames: MAP_ART_FRAMES,
@@ -51,7 +62,8 @@ export function mapFrameTexture(frame: string): string {
   if (frame.startsWith('hazard_')) return MAP_ART.textures.effects;
   if (/_(east|west)_(open|locked)$/.test(frame)) return MAP_ART.textures.sideDoors;
   if (/_wall_(top|face)$/.test(frame)) return MAP_ART.textures.walls;
-  if (frame.endsWith('_ground')) return MAP_ART.textures.ground;
+  for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const)
+    if (frame.startsWith(`${theme}_ground_`)) return MAP_ART.textures[`${theme}Ground`];
   if (frame.endsWith('_obstacle')) return MAP_ART.textures.blocks;
   return (frame.endsWith('_open') && frame !== 'chest_open') || frame.endsWith('_locked')
     ? MAP_ART.textures.doors

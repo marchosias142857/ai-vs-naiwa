@@ -1,0 +1,307 @@
+(node:713) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ai-vs-naiwa@0.0.1 test:e2e
+> playwright test --config=/workspace/scratch/b82bcc13d770/playwright-137.config.mjs mapLayers.spec.ts mapArt.spec.ts mapArtMatrix.spec.ts --grep-invert 200 connected
+
+(node:726) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:739) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:739) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+
+Running 32 tests using 1 worker
+
+(node:786) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:786) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+  ✓   1 [desktop] › tests/e2e/mapArt.spec.ts:4:1 › unified hub uses the same wall, gate, floor and redrawn altar (3.5s)
+  ✓   2 [desktop] › tests/e2e/mapArt.spec.ts:15:3 › modular production art floor 1 (4.6s)
+  ✓   3 [desktop] › tests/e2e/mapArt.spec.ts:15:3 › modular production art floor 2 (4.1s)
+  ✓   4 [desktop] › tests/e2e/mapArt.spec.ts:15:3 › modular production art floor 3 (4.7s)
+  ✓   5 [desktop] › tests/e2e/mapArt.spec.ts:15:3 › modular production art floor 4 (4.0s)
+  ✓   6 [desktop] › tests/e2e/mapArtMatrix.spec.ts:66:1 › cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open (6.4s)
+  ✓   7 [desktop] › tests/e2e/mapArtMatrix.spec.ts:85:1 › irregular obstacles preserve the textured floor beneath their transparent edges (3.0s)
+  ✓   8 [desktop] › tests/e2e/mapArtMatrix.spec.ts:100:1 › unified gates have opaque integer-module joins and field rims meet the floor without gaps (3.9s)
+  ✓   9 [desktop] › tests/e2e/mapLayers.spec.ts:46:3 › temple: actors stay above reused obstacles and barrels from either side (3.1s)
+  ✘  10 [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › temple: random wall-width tiles keep uniform borders and stable revisits (5.1s)
+(node:1034) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1034) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+  ✓  11 [desktop] › tests/e2e/mapLayers.spec.ts:46:3 › wreck: actors stay above reused obstacles and barrels from either side (3.5s)
+  ✘  12 [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › wreck: random wall-width tiles keep uniform borders and stable revisits (5.3s)
+(node:1148) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1148) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+  ✓  13 [desktop] › tests/e2e/mapLayers.spec.ts:46:3 › abyss: actors stay above reused obstacles and barrels from either side (3.8s)
+  ✘  14 [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › abyss: random wall-width tiles keep uniform borders and stable revisits (5.3s)
+(node:1266) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1266) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+  ✓  15 [desktop] › tests/e2e/mapLayers.spec.ts:46:3 › milk: actors stay above reused obstacles and barrels from either side (3.2s)
+  ✘  16 [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › milk: random wall-width tiles keep uniform borders and stable revisits (5.1s)
+(node:1382) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1382) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+  ✓  17 [mobile-landscape] › tests/e2e/mapArt.spec.ts:4:1 › unified hub uses the same wall, gate, floor and redrawn altar (3.2s)
+  ✓  18 [mobile-landscape] › tests/e2e/mapArt.spec.ts:15:3 › modular production art floor 1 (4.8s)
+  ✓  19 [mobile-landscape] › tests/e2e/mapArt.spec.ts:15:3 › modular production art floor 2 (4.5s)
+  ✓  20 [mobile-landscape] › tests/e2e/mapArt.spec.ts:15:3 › modular production art floor 3 (4.3s)
+  ✓  21 [mobile-landscape] › tests/e2e/mapArt.spec.ts:15:3 › modular production art floor 4 (4.2s)
+  ✓  22 [mobile-landscape] › tests/e2e/mapArtMatrix.spec.ts:66:1 › cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open (6.8s)
+  ✓  23 [mobile-landscape] › tests/e2e/mapArtMatrix.spec.ts:85:1 › irregular obstacles preserve the textured floor beneath their transparent edges (2.9s)
+  ✓  24 [mobile-landscape] › tests/e2e/mapArtMatrix.spec.ts:100:1 › unified gates have opaque integer-module joins and field rims meet the floor without gaps (3.6s)
+  ✓  25 [mobile-landscape] › tests/e2e/mapLayers.spec.ts:46:3 › temple: actors stay above reused obstacles and barrels from either side (3.5s)
+  ✘  26 [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › temple: random wall-width tiles keep uniform borders and stable revisits (4.5s)
+(node:1634) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1634) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+  ✓  27 [mobile-landscape] › tests/e2e/mapLayers.spec.ts:46:3 › wreck: actors stay above reused obstacles and barrels from either side (3.6s)
+  ✘  28 [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › wreck: random wall-width tiles keep uniform borders and stable revisits (4.5s)
+(node:1749) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1749) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+  ✓  29 [mobile-landscape] › tests/e2e/mapLayers.spec.ts:46:3 › abyss: actors stay above reused obstacles and barrels from either side (3.6s)
+  ✘  30 [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › abyss: random wall-width tiles keep uniform borders and stable revisits (4.6s)
+(node:1863) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1863) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+  ✓  31 [mobile-landscape] › tests/e2e/mapLayers.spec.ts:46:3 › milk: actors stay above reused obstacles and barrels from either side (3.6s)
+  ✘  32 [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › milk: random wall-width tiles keep uniform borders and stable revisits (4.6s)
+
+
+  1) [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › temple: random wall-width tiles keep uniform borders and stable revisits 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 291
+
+      78 |     });
+      79 |     for (const report of [first, other, restored]) {
+    > 80 |       expect(report.unmatched).toBe(0);
+         |                                ^
+      81 |       expect(report.wrongBorder).toBe(0);
+      82 |       expect(report.counts.every((n) => n > 0)).toBe(true);
+      83 |       expect(report.objects).toBe(first.objects);
+        at /workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/mapLayers.spec.ts:80:32
+
+    Error Context: ../137-final-results/mapLayers-temple-random-wa-92f35-borders-and-stable-revisits-desktop/error-context.md
+
+    Error Context: ../137-final-results/mapLayers-temple-random-wa-92f35-borders-and-stable-revisits-desktop/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../137-final-results/mapLayers-temple-random-wa-92f35-borders-and-stable-revisits-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../137-final-results/mapLayers-temple-random-wa-92f35-borders-and-stable-revisits-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › wreck: random wall-width tiles keep uniform borders and stable revisits 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 302
+
+      78 |     });
+      79 |     for (const report of [first, other, restored]) {
+    > 80 |       expect(report.unmatched).toBe(0);
+         |                                ^
+      81 |       expect(report.wrongBorder).toBe(0);
+      82 |       expect(report.counts.every((n) => n > 0)).toBe(true);
+      83 |       expect(report.objects).toBe(first.objects);
+        at /workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/mapLayers.spec.ts:80:32
+
+    Error Context: ../137-final-results/mapLayers-wreck-random-wal-a2711-borders-and-stable-revisits-desktop/error-context.md
+
+    Error Context: ../137-final-results/mapLayers-wreck-random-wal-a2711-borders-and-stable-revisits-desktop/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../137-final-results/mapLayers-wreck-random-wal-a2711-borders-and-stable-revisits-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../137-final-results/mapLayers-wreck-random-wal-a2711-borders-and-stable-revisits-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › abyss: random wall-width tiles keep uniform borders and stable revisits 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 309
+
+      78 |     });
+      79 |     for (const report of [first, other, restored]) {
+    > 80 |       expect(report.unmatched).toBe(0);
+         |                                ^
+      81 |       expect(report.wrongBorder).toBe(0);
+      82 |       expect(report.counts.every((n) => n > 0)).toBe(true);
+      83 |       expect(report.objects).toBe(first.objects);
+        at /workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/mapLayers.spec.ts:80:32
+
+    Error Context: ../137-final-results/mapLayers-abyss-random-wal-de852-borders-and-stable-revisits-desktop/error-context.md
+
+    Error Context: ../137-final-results/mapLayers-abyss-random-wal-de852-borders-and-stable-revisits-desktop/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../137-final-results/mapLayers-abyss-random-wal-de852-borders-and-stable-revisits-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../137-final-results/mapLayers-abyss-random-wal-de852-borders-and-stable-revisits-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › milk: random wall-width tiles keep uniform borders and stable revisits 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 304
+
+      78 |     });
+      79 |     for (const report of [first, other, restored]) {
+    > 80 |       expect(report.unmatched).toBe(0);
+         |                                ^
+      81 |       expect(report.wrongBorder).toBe(0);
+      82 |       expect(report.counts.every((n) => n > 0)).toBe(true);
+      83 |       expect(report.objects).toBe(first.objects);
+        at /workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/mapLayers.spec.ts:80:32
+
+    Error Context: ../137-final-results/mapLayers-milk-random-wall-dafbd-borders-and-stable-revisits-desktop/error-context.md
+
+    Error Context: ../137-final-results/mapLayers-milk-random-wall-dafbd-borders-and-stable-revisits-desktop/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../137-final-results/mapLayers-milk-random-wall-dafbd-borders-and-stable-revisits-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace ../137-final-results/mapLayers-milk-random-wall-dafbd-borders-and-stable-revisits-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › temple: random wall-width tiles keep uniform borders and stable revisits 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 291
+
+      78 |     });
+      79 |     for (const report of [first, other, restored]) {
+    > 80 |       expect(report.unmatched).toBe(0);
+         |                                ^
+      81 |       expect(report.wrongBorder).toBe(0);
+      82 |       expect(report.counts.every((n) => n > 0)).toBe(true);
+      83 |       expect(report.objects).toBe(first.objects);
+        at /workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/mapLayers.spec.ts:80:32
+
+    Error Context: ../137-final-results/mapLayers-temple-random-wa-92f35-borders-and-stable-revisits-mobile-landscape/error-context.md
+
+    Error Context: ../137-final-results/mapLayers-temple-random-wa-92f35-borders-and-stable-revisits-mobile-landscape/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../137-final-results/mapLayers-temple-random-wa-92f35-borders-and-stable-revisits-mobile-landscape/trace.zip
+    Usage:
+
+        npx playwright show-trace ../137-final-results/mapLayers-temple-random-wa-92f35-borders-and-stable-revisits-mobile-landscape/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › wreck: random wall-width tiles keep uniform borders and stable revisits 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 302
+
+      78 |     });
+      79 |     for (const report of [first, other, restored]) {
+    > 80 |       expect(report.unmatched).toBe(0);
+         |                                ^
+      81 |       expect(report.wrongBorder).toBe(0);
+      82 |       expect(report.counts.every((n) => n > 0)).toBe(true);
+      83 |       expect(report.objects).toBe(first.objects);
+        at /workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/mapLayers.spec.ts:80:32
+
+    Error Context: ../137-final-results/mapLayers-wreck-random-wal-a2711-borders-and-stable-revisits-mobile-landscape/error-context.md
+
+    Error Context: ../137-final-results/mapLayers-wreck-random-wal-a2711-borders-and-stable-revisits-mobile-landscape/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../137-final-results/mapLayers-wreck-random-wal-a2711-borders-and-stable-revisits-mobile-landscape/trace.zip
+    Usage:
+
+        npx playwright show-trace ../137-final-results/mapLayers-wreck-random-wal-a2711-borders-and-stable-revisits-mobile-landscape/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › abyss: random wall-width tiles keep uniform borders and stable revisits 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 309
+
+      78 |     });
+      79 |     for (const report of [first, other, restored]) {
+    > 80 |       expect(report.unmatched).toBe(0);
+         |                                ^
+      81 |       expect(report.wrongBorder).toBe(0);
+      82 |       expect(report.counts.every((n) => n > 0)).toBe(true);
+      83 |       expect(report.objects).toBe(first.objects);
+        at /workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/mapLayers.spec.ts:80:32
+
+    Error Context: ../137-final-results/mapLayers-abyss-random-wal-de852-borders-and-stable-revisits-mobile-landscape/error-context.md
+
+    Error Context: ../137-final-results/mapLayers-abyss-random-wal-de852-borders-and-stable-revisits-mobile-landscape/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../137-final-results/mapLayers-abyss-random-wal-de852-borders-and-stable-revisits-mobile-landscape/trace.zip
+    Usage:
+
+        npx playwright show-trace ../137-final-results/mapLayers-abyss-random-wal-de852-borders-and-stable-revisits-mobile-landscape/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8) [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › milk: random wall-width tiles keep uniform borders and stable revisits 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 304
+
+      78 |     });
+      79 |     for (const report of [first, other, restored]) {
+    > 80 |       expect(report.unmatched).toBe(0);
+         |                                ^
+      81 |       expect(report.wrongBorder).toBe(0);
+      82 |       expect(report.counts.every((n) => n > 0)).toBe(true);
+      83 |       expect(report.objects).toBe(first.objects);
+        at /workspace/scratch/b82bcc13d770/foundations-followup/tests/e2e/mapLayers.spec.ts:80:32
+
+    Error Context: ../137-final-results/mapLayers-milk-random-wall-dafbd-borders-and-stable-revisits-mobile-landscape/error-context.md
+
+    Error Context: ../137-final-results/mapLayers-milk-random-wall-dafbd-borders-and-stable-revisits-mobile-landscape/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../137-final-results/mapLayers-milk-random-wall-dafbd-borders-and-stable-revisits-mobile-landscape/trace.zip
+    Usage:
+
+        npx playwright show-trace ../137-final-results/mapLayers-milk-random-wall-dafbd-borders-and-stable-revisits-mobile-landscape/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8 failed
+    [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › temple: random wall-width tiles keep uniform borders and stable revisits 
+    [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › wreck: random wall-width tiles keep uniform borders and stable revisits 
+    [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › abyss: random wall-width tiles keep uniform borders and stable revisits 
+    [desktop] › tests/e2e/mapLayers.spec.ts:65:3 › milk: random wall-width tiles keep uniform borders and stable revisits 
+    [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › temple: random wall-width tiles keep uniform borders and stable revisits 
+    [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › wreck: random wall-width tiles keep uniform borders and stable revisits 
+    [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › abyss: random wall-width tiles keep uniform borders and stable revisits 
+    [mobile-landscape] › tests/e2e/mapLayers.spec.ts:65:3 › milk: random wall-width tiles keep uniform borders and stable revisits 
+  24 passed (2.6m)

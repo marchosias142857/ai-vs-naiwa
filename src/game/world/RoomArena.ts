@@ -19,6 +19,7 @@ import { COLORS, DEPTH, TILE_SIZE } from '../../config';
 import { ROOM_LAYOUTS } from '../../data/layouts';
 import { ROOM_RULES } from '../../data/rooms';
 import type { DungeonRun } from '../../sim/run/DungeonRun';
+import { Random } from '../../sim/core/Random';
 import { TEX } from '../assets/keys';
 import type { CombatBridge } from './CombatBridge';
 import { GRAYBOX_BOUNDS as B } from './graybox';
@@ -143,6 +144,7 @@ export class RoomArena {
           return p.direction.x === to.x - run.room.x && p.direction.y === to.y - run.room.y;
         }),
       ),
+      new Random(run.seed).fork(`map-floor:${run.floor}:${run.roomId}`).snapshot,
     );
     this.setBoxes(template.boxes, template.obstacle, template.mask);
     // 每层每个房间的编号唯一；同一房间重建（存档恢复）时 sim 保留机关进行中的状态。

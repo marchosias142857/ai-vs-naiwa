@@ -1,6 +1,6 @@
 # #114 地图美术源文件
 
-当前资源的带图风格基准、完整类别索引及新增主题提示词见 [地图美术风格手册](../../docs/MAP_ART_STYLE.md)。下文早期版本均为来源历史；实际采用 v17 墙体、最终淡色 ground-v5 和其余 v3 图集。
+当前资源的带图风格基准、完整类别索引及新增主题提示词见 [地图美术风格手册](../../docs/MAP_ART_STYLE.md)。下文早期版本均为来源历史；实际采用 v18 同色边框墙体、已确认的十款方砖 ground-v7 和其余 v3 图集。
 
 负责人于 2026-10-27 指定 GPT 负责地图画面、资源生成与工程实现；Claude 主责仅怪物 AI 和武器设计，同时继续复审 GPT 完成的工作。
 
@@ -107,8 +107,18 @@
 负责人最后确认当前砖块结构，仅要求整体调淡、略提亮并降低饱和度/纹理对比，以便看清人物和怪物；最终 ground-v5 已由 imagegen 按此调整，源 PNG 原样保留。
 
 
-## 当前地板 ground-v6（#135，待负责人实测）
+## 历史地板 ground-v6（#135，已由 v7 取代）
 
 负责人要求改为无砖缝的纯像素材质，保留冷蓝灰/暖棕/靛蓝/暖砂四主题配色。使用内置 imagegen 重绘并迭代去掉长纹与醒目斑点，最终原稿原样保存为 [ground-v6.png](sources/ground-v6.png)，提示词见 [ground-v6.txt](prompts/ground-v6.txt)。没有程序补边、模糊、旋转或镜像；完整帧仍直接平铺。
 
 原稿 1,537,333 字节，运行 WebP 1,136,944 字节，解码 RGBA 相同。旧运行 v5 删除，原始 v5 配色参考保留；其余八张图集不变。九图合计 8,485,908 字节，较 v5 减少 144,248 字节；此为当前文件体积，未缩减 Git 历史。更新后的规范与实际图片见 [风格手册](../../docs/MAP_ART_STYLE.md)，游戏验证见 [#135](../../docs/testing/floor-actor-layers.md)。
+
+## 当前地板 ground-v7（#137）
+
+负责人已确认四主题各十款方砖并授权上传，取代 #136 的纯纹理地板。内置 imagegen 生成，未用 CLI fallback；原始 PNG 原样保留。源图为 `sources/ground-temple-v7.png`、`ground-wreck-v7.png`、`ground-abyss-v7.png`、`ground-milk-v7.png`，均 1983×793。完整提示词（含最终细边修正）见 [ground-v7.json](prompts/ground-v7.json)。
+
+运行对应四张 `map-ground-<theme>-v7.webp`，无损编码、RGBA 与原稿一致。每图 5×2 切出十款，运行时以最近邻缩到墙宽 8×8，并统一 1 缓存像素外边；不旋转/镜像。具体边色、采样、固定随机、未来生成规则见 [风格手册](../../docs/MAP_ART_STYLE.md#5-地板墙宽方砖同色细边十款随机铺设)。旧运行 v6 移除，历史源图保留；尺寸/摘要见 [导出记录](export-report.json)。
+
+## #137 墙体边框 v18
+
+负责人要求将 v17 的黑色边框改成对应材质色；通过 imagegen 编辑为 `sources/wall-model-v18.png`，原稿原样保留，1774×887。提示词见 [wall-model-v18.txt](prompts/wall-model-v18.txt)，运行图为 `map-wall-model-v18.webp`，RGBA 与原稿一致。沿用原来的顶/身采样、80×80 + 80×96 归一化、8 单位模块和门洞；旧运行 v17 删除，原稿保留历史。原稿颜色与局内门墙连接效果仍待负责人验收。

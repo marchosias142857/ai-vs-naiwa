@@ -73,58 +73,78 @@ class LayerScene extends Scene {
         hiddenWeapon: obstacles.some((o) => order.indexOf(o) >= order.indexOf(actors.weapon)),
       };
     };
-    window.floorPatternProbe = (theme) => {
-      art.show(theme, []);
+    window.floorPatternProbe = (theme, seed) => {
+      art.show(theme, [], undefined, [], [], seed);
       const texture = this.textures.get('modular-ground:Layers') as Textures.CanvasTexture;
       const B = MODULAR_V2.bounds,
         d = MAP_ART.density,
         n = MAP_ART.floorTile * d;
+      const columns = 24,
+        rows = 16;
       const actual = texture.context.getImageData(
         (128 - B.x + MAP_ART.canvasPadding) * d,
-        (96 - B.y + MAP_ART.canvasPadding) * d,
-        n * 2,
-        n * 2,
+        (79 - B.y + MAP_ART.canvasPadding) * d,
+        n * columns,
+        n * rows,
       ).data;
-      const canvas = document.createElement('canvas');
-      canvas.width = canvas.height = n;
-      const ctx = canvas.getContext('2d')!;
-      ctx.imageSmoothingEnabled = false;
-      const f = MAP_ART.frames[`${theme}_ground`];
-      ctx.drawImage(
-        this.textures.get(MAP_ART.textures.ground).getSourceImage() as HTMLImageElement,
-        f[0],
-        f[1],
-        f[2],
-        f[3],
-        0,
-        0,
-        n,
-        n,
-      );
-      const source = ctx.getImageData(0, 0, n, n).data;
-      let differences = 0;
-      for (let y = 0; y < n * 2; y++)
-        for (let x = 0; x < n * 2; x++)
-          for (let c = 0; c < 4; c++)
-            if (actual[(y * n * 2 + x) * 4 + c] !== source[((y % n) * n + (x % n)) * 4 + c]) differences++;
-      const jump = (axis: 'x' | 'y', edge: number) => {
-        let sum = 0;
-        for (let i = 0; i < n; i++)
-          for (let c = 0; c < 3; c++) {
-            const a = axis === 'x' ? i * n + edge : edge * n + i;
-            const b = axis === 'x' ? i * n + ((edge + 1) % n) : ((edge + 1) % n) * n + i;
-            sum += Math.abs(source[a * 4 + c]! - source[b * 4 + c]!);
-          }
-        return sum / (n * 3);
-      };
-      // Natural pixel texture need not duplicate opposing pixels. Its boundary must not
-      // introduce a stronger line than the material's ordinary internal transitions.
+      const expected = MAP_ART.floorVariants.map((i) => {
+        // Match the one-draw source canvases. Repeated readbacks on a shared canvas
+        // switch Chromium's raster backend and can change nearest-neighbour rounding.
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = n;
+        const ctx = canvas.getContext('2d')!;
+        ctx.imageSmoothingEnabled = false;
+        const f = MAP_ART.frames[`${theme}_ground_${i}`],
+          inset = MAP_ART.floorSourceInset;
+        ctx.drawImage(
+          this.textures.get(MAP_ART.textures[`${theme}Ground`]).getSourceImage() as HTMLImageElement,
+          f[0] + inset,
+          f[1] + inset,
+          f[2] - inset * 2,
+          f[3] - inset * 2,
+          1,
+          1,
+          n - 2,
+          n - 2,
+        );
+        return ctx.getImageData(0, 0, n, n).data;
+      });
+      const border = MAP_ART.floorBorder[theme]
+        .slice(1)
+        .match(/../g)!
+        .map((h) => parseInt(h, 16));
+      const counts = Array<number>(10).fill(0);
+      let unmatched = 0,
+        wrongBorder = 0,
+        digest = 0x811c9dc5;
+      for (const byte of actual) digest = Math.imul(digest ^ byte, 0x01000193);
+      for (let row = 0; row < rows; row++)
+        for (let col = 0; col < columns; col++) {
+          const candidates = Array<boolean>(10).fill(true);
+          for (let y = 0; y < n; y++)
+            for (let x = 0; x < n; x++) {
+              const offset = ((row * n + y) * n * columns + col * n + x) * 4;
+              const edge = x === 0 || y === 0 || x === n - 1 || y === n - 1;
+              for (let c = 0; c < 4; c++) {
+                if (edge) {
+                  if (actual[offset + c] !== (c === 3 ? 255 : border[c])) wrongBorder++;
+                } else
+                  for (let i = 0; i < 10; i++) {
+                    if (actual[offset + c] !== expected[i]![(y * n + x) * 4 + c]) candidates[i] = false;
+                  }
+              }
+            }
+          const found = candidates.indexOf(true);
+          if (found < 0) unmatched++;
+          else counts[found]!++;
+        }
       return {
-        differences,
-        axes: (['x', 'y'] as const).map((axis) => ({
-          seam: jump(axis, n - 1),
-          internalMax: Math.max(...Array.from({ length: n - 1 }, (_, i) => jump(axis, i))),
-        })),
+        counts,
+        unmatched,
+        wrongBorder,
+        digest: digest >>> 0,
+        objects: this.children.length,
+        textures: this.textures.getTextureKeys().length,
       };
     };
   }
@@ -150,9 +170,16 @@ declare global {
       hiddenActors: number;
       hiddenWeapon: boolean;
     };
-    floorPatternProbe: (theme: 'temple' | 'wreck' | 'abyss' | 'milk') => {
-      differences: number;
-      axes: { seam: number; internalMax: number }[];
+    floorPatternProbe: (
+      theme: 'temple' | 'wreck' | 'abyss' | 'milk',
+      seed: number,
+    ) => {
+      counts: number[];
+      unmatched: number;
+      wrongBorder: number;
+      digest: number;
+      objects: number;
+      textures: number;
     };
   }
 }
