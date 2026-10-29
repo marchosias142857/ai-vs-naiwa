@@ -1,3 +1,4 @@
+import { decorateUi } from './game/ui/decorateUi';
 import { destroySound } from './services/Sound';
 import { AUTO, Game, Scale, VERSION } from 'phaser';
 import type { Types } from 'phaser';
@@ -12,6 +13,8 @@ import { PreloadScene } from './game/scenes/PreloadScene';
 import { setTestHooks } from './game/testHooks';
 import './pwa/registerSW';
 import { InputScene } from './game/ui/InputScene';
+
+decorateUi(document);
 
 const config: Types.Core.GameConfig = {
   type: AUTO,

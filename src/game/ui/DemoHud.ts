@@ -1,3 +1,5 @@
+import { UI_ART, UI_ICONS, uiIcon, type UiIcon } from '../assets/uiArt';
+import { decorateUi } from './decorateUi';
 import { offerCount } from '../../sim/meta/talents';
 import { TALENT_RULES } from '../../data/talents';
 import type { Settlement } from '../save/metaProfile';
@@ -13,8 +15,7 @@ import { DUNGEON } from '../../data/dungeon';
 import { UPGRADES } from '../../data/player';
 import type { DemoSession } from '../systems/DemoSession';
 import { weaponLabel } from './labels';
-import './demo.css';
-import './layout.css';
+import './imageUi.css';
 
 /** 战斗 HUD：固定 DOM 对象；只有计数文字按 4 Hz 刷新，小地图只在房间状态变化时画。 */
 export class DemoHud {
@@ -97,6 +98,7 @@ export class DemoHud {
     );
     this.modal.append(this.shop, this.restart, this.menu);
     this.root.append(this.vitals.root, this.status, this.mapToggle, this.map, this.hint, this.modal);
+    decorateUi(this.root);
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
     this.layout();
@@ -179,6 +181,7 @@ export class DemoHud {
           this.rewards.append(row);
         }
         const total = document.createElement('strong');
+        uiIcon(total, 'talent');
         total.textContent = t('talent.rewardTotal', { points: result?.reward?.total ?? 0 });
         const status = document.createElement('p');
         status.id = 'talent-reward-status';
@@ -282,13 +285,28 @@ export class DemoHud {
       if (!known) continue;
       ctx.fillStyle = r.id === d.roomId ? '#7ee8ff' : d.cleared[r.id] ? '#9be86a' : '#59628a';
       ctx.fillRect(r.x * size + 2, r.y * size + 2, size - 4, size - 4);
-      ctx.fillStyle = '#0b0d14';
-      ctx.font = '9px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(
-        r.kind === 'exit' ? '↑' : r.kind === 'chest' ? '?' : r.kind === 'boss' ? 'B' : '',
-        (r.x + 0.5) * size,
-        (r.y + 0.7) * size,
+      const icon: UiIcon =
+        r.kind === 'exit'
+          ? 'exit'
+          : r.kind === 'chest'
+            ? 'chest'
+            : r.kind === 'boss'
+              ? 'boss'
+              : r.kind === 'start'
+                ? 'door'
+                : 'unknown';
+      const i = UI_ICONS.indexOf(icon);
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(
+        this.scene.textures.get(UI_ART.icons).getSourceImage() as HTMLImageElement,
+        (i % 6) * 64,
+        Math.floor(i / 6) * 64,
+        64,
+        64,
+        r.x * size + 2,
+        r.y * size + 2,
+        size - 4,
+        size - 4,
       );
     }
   }

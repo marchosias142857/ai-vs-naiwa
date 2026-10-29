@@ -1,3 +1,4 @@
+import { preloadUiArt, installUiArt } from '../../src/game/assets/uiArt';
 import { createInputFrame } from '../../src/sim/core/types';
 import { compileRoom } from '../../src/sim/dungeon/compileRoom';
 import { AUTO, Game, Scene, type Physics } from 'phaser';
@@ -20,7 +21,11 @@ class CatalogScene extends Scene {
   constructor() {
     super('Game');
   }
+  preload(): void {
+    preloadUiArt(this);
+  }
   create(data?: { state?: SessionSnapshot; entryOnly?: boolean }): void {
+    installUiArt(this);
     createPlaceholderTextures(this);
     this.physics.disableUpdate();
     const seed = Number(new URLSearchParams(location.search).get('seed'));

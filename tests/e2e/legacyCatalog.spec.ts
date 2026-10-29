@@ -16,6 +16,7 @@ test.beforeAll(async () => {
   await build({
     configFile: false,
     root: resolve('tests/fixtures'),
+    publicDir: resolve('public'),
     base: './',
     logLevel: 'silent',
     build: { outDir: directory, rollupOptions: { input: resolve('tests/fixtures/legacyCatalog.html') } },
@@ -24,7 +25,16 @@ test.beforeAll(async () => {
     const path = new URL(req.url ?? '/', 'http://localhost').pathname;
     void readFile(join(directory, path === '/' ? 'legacyCatalog.html' : path))
       .then((data) => {
-        res.setHeader('Content-Type', path.endsWith('.js') ? 'text/javascript' : 'text/html');
+        res.setHeader(
+          'Content-Type',
+          path.endsWith('.js')
+            ? 'text/javascript'
+            : path.endsWith('.css')
+              ? 'text/css'
+              : path.endsWith('.png')
+                ? 'image/png'
+                : 'text/html',
+        );
         res.end(data);
       })
       .catch(() => res.writeHead(404).end());

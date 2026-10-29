@@ -13,6 +13,7 @@ test.beforeAll(async () => {
   await build({
     configFile: false,
     root: resolve('tests/fixtures'),
+    publicDir: resolve('public'),
     base: './',
     logLevel: 'silent',
     build: {

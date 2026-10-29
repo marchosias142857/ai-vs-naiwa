@@ -1,3 +1,4 @@
+import { decorateUi } from './decorateUi';
 import { addLayoutSettings } from './LayoutEditor';
 import { uiEditor } from '../../services/uiLayout';
 import { guardGameUi } from './guardGameUi';
@@ -14,6 +15,7 @@ export class PausePanel {
     this.root.id = 'demo-pause';
     this.root.className = 'demo-dialog';
     const continueButton = document.createElement('button');
+    continueButton.id = 'pause-resume';
     continueButton.textContent = t('pause.resume');
     const exit = document.createElement('button');
     exit.id = 'pause-menu';
@@ -30,6 +32,7 @@ export class PausePanel {
     this.root.append(continueButton, exit);
     addLayoutSettings(this.root, ui, this.abort.signal);
     this.root.hidden = true;
+    decorateUi(this.root);
     guardGameUi(this.root, ui, this.abort.signal);
     document.body.append(this.root);
     this.navigation = new MenuNavigation(this.root, ui);

@@ -1,3 +1,4 @@
+import { uiIcon } from '../assets/uiArt';
 import { placeUi } from '../../services/uiLayout';
 import { t } from '../../i18n/t';
 /** 固定 DOM 状态条，4 Hz 只写文本与比例，不创建元素。 */
@@ -9,6 +10,7 @@ export class Vitals {
       label = document.createElement('span');
     row.className = `vital vital-${kind}`;
     row.setAttribute('role', 'meter');
+    uiIcon(label, kind === 'health' ? 'heart' : kind === 'armor' ? 'shield' : 'energy');
     row.append(fill, label);
     this.root.append(row);
     return { row, fill, label, kind };

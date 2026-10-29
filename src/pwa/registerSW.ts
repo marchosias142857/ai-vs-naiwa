@@ -1,4 +1,5 @@
 /// <reference types="vite-plugin-pwa/vanillajs" />
+import { t } from '../i18n/t';
 import { registerSW } from 'virtual:pwa-register';
 
 // 注册失败不能阻止游戏启动；开发服务器不注册，避免缓存干扰热更新。
@@ -10,6 +11,9 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   let requestedReload = false;
   let swRegistration: ServiceWorkerRegistration | undefined;
   const showUpdate = () => {
+    if (message) message.textContent = t('ui.update');
+    if (refresh) refresh.textContent = t('ui.refresh');
+    if (dismiss) dismiss.textContent = t('ui.later');
     if (prompt) prompt.hidden = false;
   };
   let controller = navigator.serviceWorker.controller;
@@ -66,7 +70,7 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
       void updateSW().catch(() => {
         requestedReload = false;
         refresh.disabled = false;
-        if (message) message.textContent = '更新失败，请重试';
+        if (message) message.textContent = t('ui.updateFailed');
       });
     }
   });

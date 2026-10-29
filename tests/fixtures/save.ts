@@ -1,3 +1,4 @@
+import { preloadUiArt, installUiArt } from '../../src/game/assets/uiArt';
 import { HubScene } from '../../src/game/scenes/HubScene';
 import { AUTO, Game, Scene, Scale } from 'phaser';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
@@ -14,7 +15,11 @@ import { SAVE_REQUEST, LIFECYCLE_PAUSE } from '../../src/game/world/combatPause'
 import { doorStage, ROOM_CENTER, walkTo } from './route';
 
 class Bootstrap extends Scene {
+  preload(): void {
+    preloadUiArt(this);
+  }
   create(): void {
+    installUiArt(this);
     createPlaceholderTextures(this);
     this.scene.start(new URLSearchParams(location.search).get('scene') === 'Game' ? 'Game' : 'Menu');
   }

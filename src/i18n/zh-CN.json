@@ -89,7 +89,7 @@
   "hud.health": "生命",
   "hud.armor": "护甲",
   "hud.energy": "能量",
-  "hud.coins": "◆ 金币 {coins}",
+  "hud.coins": "金币 {coins}",
   "input.ready": "准备继续战斗",
   "hint.start.keyboard": "从门口探索 · WASD移动 · 鼠标开火 · 弹体自瞄，激光/近战手动瞄准",
   "hint.start.touch": "从门口探索 · 左轮盘移动 · 按住右轮盘攻击 · 激光/近战拖动定向",
@@ -277,5 +277,11 @@
   "bestiary.open": "图鉴",
   "bestiary.shortcut": "键盘 I / 手柄 X 打开图鉴",
   "bestiary.back": "返回",
-  "bestiary.controls": "方向键 / 左摇杆选择 · PageUp/PageDown / 右摇杆滚动详情 · Esc / B 返回"
+  "bestiary.controls": "方向键 / 左摇杆选择 · PageUp/PageDown / 右摇杆滚动详情 · Esc / B 返回",
+  "ui.loading": "加载中…",
+  "ui.rotate": "请横屏游玩",
+  "ui.update": "有新版本",
+  "ui.refresh": "点击刷新",
+  "ui.later": "稍后",
+  "ui.updateFailed": "更新失败，请重试"
 }

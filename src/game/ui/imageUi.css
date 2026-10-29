@@ -1,0 +1,399 @@
+@import './demo.css' layer(uiLayout);
+@import './layout.css' layer(uiLayout);
+@import './talents.css' layer(uiLayout);
+@import './bestiary.css' layer(uiLayout);
+
+/* Raster skins sit above layout rules; text stays native and crisp at every zoom. */
+:root {
+  --ui-panel: url('/assets/ui/frame-panel-v1.png');
+  --ui-normal: url('/assets/ui/frame-normal-v1.png');
+  --ui-focus: url('/assets/ui/frame-focus-v1.png');
+  --ui-pressed: url('/assets/ui/frame-pressed-v1.png');
+  --ui-disabled: url('/assets/ui/frame-disabled-v1.png');
+  --ui-well: url('/assets/ui/frame-well-v1.png');
+}
+:where(button, summary, select) {
+  box-sizing: border-box;
+  min-height: 44px;
+  border: 8px solid transparent;
+  border-image: var(--ui-normal) 18 fill / 8px / 0 stretch;
+  border-radius: 0;
+  background: none;
+  color: #f1f5ee;
+  font-family: system-ui, sans-serif;
+  cursor: pointer;
+  text-shadow: 0 1px #14232f;
+  touch-action: manipulation;
+}
+:where(button, summary, select):is(:hover, :focus-visible),
+:where(button)[aria-pressed='true'],
+:where(button)[aria-expanded='true'],
+details[open] > summary,
+.layout-item.selected {
+  border-image-source: var(--ui-focus);
+}
+:where(button, summary):active {
+  border-image-source: var(--ui-pressed);
+}
+:where(button):disabled {
+  border-image-source: var(--ui-disabled);
+  color: #b6c1c7;
+  opacity: 1;
+  cursor: default;
+}
+:where(button, summary, select, input):focus-visible {
+  outline: 2px solid #e5e3af;
+  outline-offset: 2px;
+}
+summary {
+  list-style: none;
+  text-align: center;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+:where(
+  .demo-dialog,
+  .menu-settings,
+  .layout-tools,
+  #bestiary-panel,
+  #pwa-update,
+  #rotate-overlay,
+  #loading-panel
+) {
+  box-sizing: border-box;
+  border: 10px solid transparent;
+  border-image: var(--ui-panel) 18 fill / 10px / 0 stretch;
+  border-radius: 0;
+  background: none;
+  color: #ecf3ed;
+}
+#demo-menu-panel {
+  border: 0;
+  border-image: none;
+}
+#demo-menu-panel > h2 {
+  color: #f4e9ba;
+  text-shadow: 0 2px 0 #152732;
+}
+#demo-menu-panel summary {
+  padding: 3px 6px;
+}
+.menu-settings {
+  gap: 6px;
+  padding: 8px;
+}
+:where(
+  .demo-status,
+  .demo-hint,
+  .demo-map,
+  #resume-caption,
+  #talent-rewards,
+  .talent-tree > section,
+  #talent-panel footer,
+  #bestiary-detail,
+  .bestiary-lead > .bestiary-portrait,
+  .bestiary-number
+) {
+  border: 5px solid transparent;
+  border-image: var(--ui-well) 18 fill / 5px / 0 stretch;
+  border-radius: 0;
+  background: none;
+}
+.demo-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: max-content;
+  max-width: calc(100% - 290px);
+  right: auto;
+  padding: 2px 5px;
+  font-size: 11px;
+}
+.demo-hint:empty {
+  display: none;
+}
+.demo-map {
+  box-sizing: content-box;
+  width: 100px;
+  height: 100px;
+  image-rendering: pixelated;
+}
+.demo-map-toggle {
+  width: 60px;
+  min-height: 40px;
+  padding: 0;
+  font-size: 11px;
+}
+.demo-map-toggle::before {
+  --icon-size: 16px;
+  margin-right: 2px;
+}
+[data-ui-icon]::before {
+  content: '';
+  display: inline-block;
+  width: var(--icon-size, 22px);
+  height: var(--icon-size, 22px);
+  margin-right: 6px;
+  vertical-align: middle;
+  background: url('/assets/ui/icons-v1.png') var(--icon-x) var(--icon-y) / 600% 600% no-repeat;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+.vital {
+  border: 3px solid transparent;
+  border-image: var(--ui-well) 18 fill / 3px / 0 stretch;
+  background: none;
+}
+.vital i {
+  background: var(--ui-normal) center / 100% 100% no-repeat;
+  filter: brightness(1.7);
+}
+.vital-health i {
+  filter: sepia(1) saturate(3) hue-rotate(300deg) brightness(1.5);
+}
+.vital-armor i {
+  filter: brightness(2) saturate(1.7);
+}
+.vital-energy i {
+  filter: brightness(2) saturate(2) hue-rotate(330deg);
+}
+.vital span {
+  z-index: 1;
+  position: relative;
+  text-shadow:
+    0 1px 1px #081b29,
+    1px 0 #081b29;
+}
+.vital span::before {
+  --icon-size: 12px;
+  margin-right: 3px;
+}
+#talent-panel {
+  padding: 8px;
+  gap: 8px;
+}
+#talent-panel header {
+  gap: 8px;
+}
+#talent-panel header button {
+  padding: 2px 5px;
+}
+#talent-panel header button::before {
+  --icon-size: 18px;
+  margin-right: 3px;
+}
+.talent-tree {
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+  gap: 8px;
+}
+.talent-tree h3 {
+  background: #162d39;
+  border-image: var(--ui-well) 18 fill / 5px;
+  margin: 0;
+  padding: 6px;
+}
+.talent-branch {
+  min-height: 224px;
+}
+.talent-branch svg {
+  stroke: none;
+  image-rendering: pixelated;
+}
+#talent-panel .talent-branch button {
+  padding: 3px 2px 3px 16px;
+  min-height: 52px;
+  width: 47%;
+  line-height: 1.3;
+}
+.talent-branch button::before {
+  position: absolute;
+  left: -3px;
+  top: calc(50% - 9px);
+  --icon-size: 18px;
+  margin: 0;
+}
+#talent-panel button[data-state='locked'] {
+  border-image-source: var(--ui-disabled);
+  color: #b7c5cb;
+  background: none;
+}
+#talent-panel button[data-state='points'] {
+  border-image-source: var(--ui-pressed);
+  color: #e9cbaa;
+}
+#talent-panel button[data-state='maxed'] {
+  border-image-source: var(--ui-focus);
+  color: #f5e8b3;
+}
+#talent-panel button[aria-pressed='true'] {
+  outline: 2px solid #b1f5ec;
+  outline-offset: 2px;
+}
+#talent-panel button:disabled {
+  opacity: 1;
+}
+#talent-panel footer {
+  padding: 5px;
+  gap: 10px;
+}
+#talent-panel footer p {
+  line-height: 1.4;
+}
+#bestiary-grid button {
+  border-image: var(--ui-normal) 18 fill / 8px;
+  border-radius: 0;
+  background: none;
+}
+#bestiary-grid button:is(:focus-visible, [aria-pressed='true']) {
+  border-image-source: var(--ui-focus);
+  background: none;
+}
+#bestiary-grid button[data-role='boss'] {
+  border-image-source: var(--ui-focus);
+}
+#bestiary-detail {
+  padding: 8px 12px;
+}
+.bestiary-number {
+  left: 6px;
+  top: 6px;
+}
+.layout-tools {
+  padding: 6px;
+}
+.layout-tools select {
+  height: 44px;
+  background: #1b303b;
+  color: #f1f5ee;
+}
+.layout-tools label {
+  min-height: 40px;
+}
+.layout-tools input[type='range'] {
+  appearance: none;
+  height: 8px;
+  background: var(--ui-focus) center / 100% 100%;
+}
+.layout-tools input::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background: url('/assets/ui/controls-v1.png') 50% 0 / 300% 200%;
+}
+.layout-tools input::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  background: url('/assets/ui/controls-v1.png') 50% 0 / 300% 200%;
+}
+#layout-save {
+  background: none;
+  color: #f4e9ba;
+}
+.layout-control,
+#demo-actions button[data-layout] {
+  border: 0;
+  border-image: none;
+  border-radius: 50%;
+  background: url('/assets/ui/controls-v1.png') 50% 100% / 300% 200%;
+  padding: 6px;
+  color: #f1f5ee;
+  line-height: 1.1;
+}
+#demo-actions button::before,
+.layout-control::before {
+  display: block;
+  margin: 0 auto 1px;
+  --icon-size: 20px;
+}
+#demo-actions button:active {
+  filter: brightness(1.5);
+}
+.layout-control[data-key='move'] {
+  background-position: 0 0;
+}
+.layout-control[data-key='fire'] {
+  background-position: 100% 0;
+}
+#loading-panel {
+  position: fixed;
+  z-index: 4;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(320px, 80vw);
+  padding: 16px;
+  text-align: center;
+  font: 16px system-ui;
+}
+#loading-panel progress {
+  display: block;
+  width: 100%;
+  height: 18px;
+  margin-top: 12px;
+  appearance: none;
+  border: 0;
+  background: var(--ui-well) center / 100% 100%;
+}
+#loading-panel progress::-webkit-progress-bar {
+  background: var(--ui-well) center / 100% 100%;
+}
+#loading-panel progress::-webkit-progress-value {
+  background: var(--ui-focus) center / 100% 100%;
+}
+#loading-panel progress::-moz-progress-bar {
+  background: var(--ui-focus) center / 100% 100%;
+}
+@media (max-height: 480px) {
+  #talent-panel {
+    gap: 4px;
+    padding: 4px;
+  }
+  #talent-panel header {
+    gap: 4px;
+    font-size: 11px;
+  }
+  #talent-panel header button {
+    font-size: 11px;
+    padding: 0 2px;
+  }
+  #talent-panel h2 {
+    font-size: 16px;
+  }
+  #talent-panel footer {
+    font-size: 11px;
+    padding: 3px;
+  }
+  #talent-panel footer p {
+    margin: 2px 0;
+  }
+}
+@media (forced-colors: active) {
+  :where(button, summary, select, .demo-dialog) {
+    border-image: none;
+    border-color: ButtonText;
+  }
+}
+/* Full-canvas panels and saved meter previews retain their original layout boxes. */
+#bestiary-panel {
+  border-width: 0;
+}
+.layout-item.vital {
+  min-height: 0;
+}
+@media (max-width: 680px) {
+  .talent-tree {
+    grid-template-columns: repeat(3, minmax(210px, 1fr));
+    touch-action: pan-x pan-y;
+    scrollbar-width: thin;
+    scrollbar-color: #6f8ca5 #14232f;
+  }
+}
+@media (max-height: 480px) {
+  /* A pinned branch heading must not cover the selected node on a shallow viewport. */
+  .talent-tree h3 {
+    position: static;
+  }
+}

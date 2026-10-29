@@ -1,0 +1,214 @@
+{
+  "base": "ca9a2d057fa187e156a514f802c8d205c2b2d56e",
+  "projects": ["desktop", "mobile-landscape"],
+  "note": "Latest result per file/title/project; conditional skips retained. WebKit and real-device validation not run. Historical failures are recorded in runs.",
+  "total": 374,
+  "latest": {
+    "passed": 351,
+    "skipped": 23
+  },
+  "files": [
+    {
+      "file": "aim.spec.ts",
+      "passed": 2,
+      "skipped": 2
+    },
+    {
+      "file": "aimWheel.spec.ts",
+      "skipped": 3,
+      "passed": 3
+    },
+    {
+      "file": "art.spec.ts",
+      "passed": 10
+    },
+    {
+      "file": "audio.spec.ts",
+      "passed": 2
+    },
+    {
+      "file": "bestiary.spec.ts",
+      "passed": 7,
+      "skipped": 1
+    },
+    {
+      "file": "bestiaryLifecycle.spec.ts",
+      "passed": 2
+    },
+    {
+      "file": "combat.spec.ts",
+      "passed": 5,
+      "skipped": 1
+    },
+    {
+      "file": "debug.spec.ts",
+      "passed": 8
+    },
+    {
+      "file": "demo.spec.ts",
+      "passed": 18
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "passed": 16
+    },
+    {
+      "file": "entities.spec.ts",
+      "passed": 46
+    },
+    {
+      "file": "face.spec.ts",
+      "passed": 2
+    },
+    {
+      "file": "fxRender.spec.ts",
+      "passed": 2
+    },
+    {
+      "file": "hdPresentation.spec.ts",
+      "passed": 2
+    },
+    {
+      "file": "hub.spec.ts",
+      "passed": 5,
+      "skipped": 1
+    },
+    {
+      "file": "imageUi.spec.ts",
+      "passed": 6
+    },
+    {
+      "file": "input.spec.ts",
+      "passed": 5,
+      "skipped": 1
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "passed": 10
+    },
+    {
+      "file": "lifecycle.spec.ts",
+      "passed": 6
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "passed": 10
+    },
+    {
+      "file": "mapArtMatrix.spec.ts",
+      "passed": 8
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "passed": 16
+    },
+    {
+      "file": "mobileFire.spec.ts",
+      "skipped": 5,
+      "passed": 5
+    },
+    {
+      "file": "monsterArt.spec.ts",
+      "passed": 4
+    },
+    {
+      "file": "playerAutoAim.spec.ts",
+      "passed": 19,
+      "skipped": 5
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "passed": 50
+    },
+    {
+      "file": "pwa.spec.ts",
+      "passed": 4
+    },
+    {
+      "file": "resumeProduction.spec.ts",
+      "passed": 2
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "passed": 8,
+      "skipped": 2
+    },
+    {
+      "file": "save.spec.ts",
+      "passed": 33,
+      "skipped": 1
+    },
+    {
+      "file": "skillAnimation.spec.ts",
+      "passed": 4
+    },
+    {
+      "file": "smoke.spec.ts",
+      "passed": 4
+    },
+    {
+      "file": "stress.spec.ts",
+      "passed": 4
+    },
+    {
+      "file": "talents.spec.ts",
+      "passed": 9,
+      "skipped": 1
+    },
+    {
+      "file": "uiLayout.spec.ts",
+      "passed": 4
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "passed": 10
+    }
+  ],
+  "runs": [
+    {
+      "batch": "ui",
+      "startTime": "2026-10-29T22:10:52.064Z",
+      "duration": 655727.053,
+      "expected": 63,
+      "skipped": 3,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    {
+      "batch": "finalui",
+      "startTime": "2026-10-29T22:27:26.319Z",
+      "duration": 127548.886,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    {
+      "batch": "small-final",
+      "startTime": "2026-10-29T22:41:05.482Z",
+      "duration": 133734.253,
+      "expected": 15,
+      "skipped": 1,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "batch": "remaining-final",
+      "startTime": "2026-10-29T22:43:19.934Z",
+      "duration": 1067300.52,
+      "expected": 285,
+      "skipped": 20,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    {
+      "batch": "art-fixed",
+      "startTime": "2026-10-29T23:01:22.019Z",
+      "duration": 47295.544,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  ]
+}

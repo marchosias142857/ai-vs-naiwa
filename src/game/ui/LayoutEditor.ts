@@ -1,3 +1,5 @@
+import { uiIcon } from '../assets/uiArt';
+import { decorateUi } from './decorateUi';
 import type { Scene } from 'phaser';
 import { t } from '../../i18n/t';
 import {
@@ -13,7 +15,7 @@ import {
   type UiKey,
 } from '../../services/uiLayout';
 import { guardGameUi } from './guardGameUi';
-import './layout.css';
+import './imageUi.css';
 
 /** 独立草稿：保存才应用；局内从手动暂停进入，关闭后仍留在暂停页。 */
 export class LayoutEditor {
@@ -48,6 +50,10 @@ export class LayoutEditor {
       const label = document.createElement('span');
       label.textContent = t(`layout.${key}`) + (isVital(key) ? (key === 'energy' ? ' 200/200' : ' 6/6') : '');
       if (isVital(key)) item.append(document.createElement('i'));
+      uiIcon(
+        isVital(key) ? label : item,
+        key === 'health' ? 'heart' : key === 'armor' ? 'shield' : key === 'fire' ? 'aim' : key,
+      );
       item.append(label);
       let pointer: number | null = null,
         dx = 0,
@@ -151,6 +157,7 @@ export class LayoutEditor {
     this.notice.setAttribute('role', 'status');
     panel.append(actions, this.notice);
     this.root.append(panel);
+    decorateUi(this.root);
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
     window.addEventListener(

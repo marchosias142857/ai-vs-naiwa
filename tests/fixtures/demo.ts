@@ -1,3 +1,4 @@
+import { preloadUiArt, installUiArt } from '../../src/game/assets/uiArt';
 import { offerCount } from '../../src/sim/meta/talents';
 import type { PhysicsSnapshot } from '../../src/game/world/CombatBridge';
 import { parseCheckpoint, type FloorCheckpoint } from '../../src/sim/run/checkpoint';
@@ -24,7 +25,11 @@ class DemoHarness extends Scene {
   constructor() {
     super('Game');
   }
+  preload(): void {
+    preloadUiArt(this);
+  }
   create(): void {
+    installUiArt(this);
     createPlaceholderTextures(this);
     this.physics.disableUpdate();
     this.scene.launch(InputScene.KEY);
