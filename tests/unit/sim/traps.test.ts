@@ -22,6 +22,7 @@ import { RoomDirector } from '../../../src/sim/run/RoomDirector';
 import { createSimDecoder } from '../../../src/sim/run/parseSnapshot';
 import { saveSim, type SimSnapshot } from '../../../src/sim/run/snapshot';
 import { GRAYBOX_BOUNDS as B } from '../../../src/game/world/graybox';
+import { roomTemplate } from '../../../src/sim/dungeon/roomCatalog';
 
 /** ADR 0032 房间机关。物理用最小的速度积分代替 Arcade。 */
 const DT = 1 / 60;
@@ -70,6 +71,26 @@ function setup(extra: Partial<CombatWorldOptions> = {}) {
 }
 
 describe('地刺', () => {
+  it('uses the resized whole-cell footprint for damage, including the new outer strip', () => {
+    const placement = roomTemplate('modular_v2/abyss/combat_2')!.traps[1]!;
+    expect([placement.width, placement.height]).toEqual([48, 16]);
+    for (const [dx, dy, hit] of [
+      [23.5, 0, true],
+      [24.5, 0, false],
+      [0, 7.5, true],
+      [0, 8.5, false],
+    ] as const) {
+      const t = setup();
+      const x = 240 + placement.x,
+        y = 135 + placement.y;
+      const player = t.world.spawnPlayer('ai_proto', x + dx, y + dy);
+      t.pin(player, x + dx, y + dy);
+      t.world.setTraps(1, [trap('spikes', x, y, { width: placement.width, height: placement.height })]);
+      t.step(Math.ceil((TRAP_RULES.spikes.rest + TRAP_RULES.spikes.warn) / DT) + 2);
+      expect(t.hurt.get(player) ?? 0).toBe(hit ? TRAP_RULES.spikes.damage : 0);
+    }
+  });
+
   it('收起 → 预警 → 刺出，刺出时伤害站在上面的所有角色，每次刺出每人最多一次', () => {
     const t = setup();
     const player = t.world.spawnPlayer('ai_proto', 100, 100);

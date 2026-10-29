@@ -1,0 +1,46 @@
+{
+  "version": "wall-variants-v19-approved",
+  "status": "user-selected-source; not integrated",
+  "approval": "负责人上传《四主题十二款像素墙体.png》并明确：就用这一版。",
+  "source": "art-src/maps/sources/wall-variants-v19-approved.png",
+  "sha256": "e9cbf46c6b37fd01a26805ef2a62b2bc0d0e9e5e55db710b43839915fc24905f",
+  "sourceSize": [
+    1086,
+    1448
+  ],
+  "layout": {
+    "columns": [
+      "temple",
+      "wreck",
+      "abyss",
+      "milk"
+    ],
+    "rows": [
+      "variant_0",
+      "variant_1",
+      "variant_2"
+    ]
+  },
+  "requirements": [
+    "采用此上传原件，不用后续重绘替代",
+    "同主题3款随机，顶面与墙身成对选取，不旋转/镜像",
+    "每主题统一轮廓、边色与明暗层次",
+    "目标墙顶80×80，墙身80×96；只允许等比缩放，不用分段非等比归一化",
+    "独立表现随机，重进与同版本恢复稳定，不影响地板及玩法随机"
+  ],
+  "generation": {
+    "tool": "built-in image_gen",
+    "prompt": "Use case: style-transfer. A production pixel-art wall sprite sheet with EXACTLY TWELVE complete walls.\n\nImage 1 is the geometric EDIT TARGET, a 4-column by 3-row sheet of flat wall templates. Preserve its1536x2048 canvas, all 12 positions, rectangular masks, top/body proportions and cap pad locations exactly. Paint INSIDE its existing silhouettes, do not resize/rearrange. Image 2 is the USER-SELECTED finished wall design: retain its raised square cap, shallow bevel, stone block/wood panel construction, restrained weathering, palette, pixel technique and lighting. Images3-5 are approved temple, wreck, and milk floor textures; their quiet, low-saturation sparse pixel texture is the overall style standard.\n\nLAYOUT: four columns are Temple gray-blue stone; Wreck muted brown wood; Abyss gray-indigo stone; Milk beige sandstone. Three rows are three distinct variants of each SAME theme. Exactly3 per theme,12 total. All three in a column use the SAME base palette, brightness, border color, central square pad geometry, internal masonry/wood divisions and outer shape. Vary only placement of small sparse wear patches, short wood grain marks, and restrained thin cracks similar to the selected reference. Row1 mostly intact with subtle scuffs, row2 different sparse scuffs and light weathering, row3 a few small thin weathering cracks. Do not make progressive damage states or collapsing walls. Each is a full normal wall. No large emblem, no chips in the silhouette, no glowing parts.\n\nHARD DIMENSIONS: every wall exactly240x528 in this sheet, equivalent to native80x176 at3x. Upper cap240x240 = square; lower attached front face240x288 =1.2height/width. No isometric projection or trapezoids. x starts144,480,816,1152; y starts152,760,1368. Cap/body split always exactly y+240. Bottoms y+528. Central small square pad108x108 stays inside cap. Width stays240 from top to bottom, no side overhang, no taper, no gap at join. Keep template opaque bounds unchanged. ALL 12 use identical dimensions. Preserve structural ratios; this art must fit the game with UNIFORM scaling only, no later stretching.\n\nEdges are thin matching-material colors, not black outlines. Cap noticeably lighter than body with shallow top-left lighting. Crisp pixel clusters matching floors, no photorealism, smooth blur or noisy speckles. Surrounding background fully transparent outside each rectangle; NO haze, glow, shadows, gradient, vignette or floor. No title, no text, no numbering, no grid lines. Output just the 12 separate wall sprites in the template's exact arrangement."
+  },
+  "notes": [
+    "上传原件的像素内容和此前生成稿并非逐像素相同；上传原件为唯一选定版本。",
+    "原稿尺寸/边界尚未完成生产切帧验收，外观确认不代表运行时比例、拼接或随机功能已验证。"
+  ],
+  "reaffirmation": {
+    "upload": "四主题十二款像素墙体(2).png",
+    "instruction": "不要忘了我认可的是这一版的墙体",
+    "sameBytes": true,
+    "sameRGBA": true,
+    "sha256": "e9cbf46c6b37fd01a26805ef2a62b2bc0d0e9e5e55db710b43839915fc24905f"
+  }
+}

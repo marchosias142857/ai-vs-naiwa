@@ -1,0 +1,18 @@
+{
+  "version": "north-gates-v4-candidate",
+  "status": "user-approved appearance; not integrated",
+  "scope": "north-facing horizontal gates, four themes, open/locked",
+  "targetFrame": [
+    480,
+    176
+  ],
+  "targetCapHeight": 80,
+  "targetFaceHeight": 96,
+  "generation": {
+    "tool": "built-in image_gen",
+    "prompt": "Use case: style-transfer. Production game sprites for NORTH horizontal dungeon gates, 4 themes x 2 states, exactly8 gates.\n\nImage1 is the EDIT TARGET and exact geometry/layout template. Image2 is the user's FINAL approved wall sprite sheet: gates must visibly belong to this same game, same quiet pixel-art materials, shallow square bevels, lighting, edge colors and texture scale. Images3-5 are approved temple/wood/sandstone floor textures, additional style guidance. Preserve Image1's1024x1024 canvas and rectangular sprite bounds exactly.\n\nLAYOUT:4rows: cool gray-blue temple stone, muted brown shipwreck timber, gray-indigo abyss stone, subdued beige sandstone milk temple. Left column OPEN, right column LOCKED. Both states use identical structural frame, same textures in same places, only add closed iron portcullis and one small readable lock in locked state.\n\nGEOMETRY is the primary constraint: every gate480pixels wide x176pixels high (ratio30:11), occupying exactly six80pixel wall modules. x=16 or528; y=64,304,544,784. Upper cap/lintel region80pixels tall; lower front elevation96pixels tall. Side jambs80pixels wide; central passage320pixels wide. The two upper endcaps are exact80x80 squares, with small centered square raised pads36x36 like the approved walls. The middle lintel is a continuous320x80 beam joining the endcaps, with restrained shallow rectangular construction. All sprite outer edges remain a straight rectangle, with no overhanging ornament, no rounded arch, no protrusion. Fit details within the existing template masks. Do not widen/tall the frame or change aspect ratio. Pixel-native proportions must work without nonuniform scaling.\n\nOPEN: lower central passage is a deep dark opening, with a thin same-theme threshold at bottom; show no bars. LOCKED: same opening with slim dark iron vertical bars and two horizontal braces, small central muted bronze lock, no glow. Doorway depth is contained inside the lower96pixel front, never a long perspective tunnel or stairs outside its box. Open and locked register perfectly.\n\nSTYLE: match approved wall reference's muted materials, top brighter than face, same scale of small crisp pixel patches and sparse wear. Thin same-hue outer border, no thick black frame. Iron may be dark. No realistic textures, heavy ornament, gold trim, coral, shells, noisy speckles or large cracks. World light upper left. Brown uses straight short wood grain, no round knots. The bright pad on a wall remains square on the door endcaps, never horizontally stretched.\n\nBackground outside the8frames entirely transparent, no halo/haze/drop shadow/glow. No text, labels, grid lines, characters or extra objects. Keep 480x176 source proportions exact; do not copy old squashed gate dimensions."
+  },
+  "approved": true,
+  "approval": "负责人看完北侧横门开/锁四主题稿后回复：可以。",
+  "source": "art-src/maps/sources/north-gates-v4-approved.png"
+}

@@ -1,0 +1,527 @@
+{
+  "note": "Opaque content bounds before source-frame padding. Original alpha unchanged.",
+  "bounds": {
+    "temple_obstacle": [
+      133,
+      135,
+      441,
+      453
+    ],
+    "wreck_obstacle": [
+      682,
+      135,
+      446,
+      453
+    ],
+    "abyss_obstacle": [
+      129,
+      665,
+      447,
+      460
+    ],
+    "milk_obstacle": [
+      682,
+      665,
+      446,
+      460
+    ],
+    "temple_north_open": [
+      20,
+      74,
+      587,
+      221
+    ],
+    "temple_north_locked": [
+      648,
+      74,
+      587,
+      222
+    ],
+    "wreck_north_open": [
+      20,
+      357,
+      587,
+      222
+    ],
+    "wreck_north_locked": [
+      648,
+      357,
+      587,
+      222
+    ],
+    "abyss_north_open": [
+      20,
+      642,
+      587,
+      222
+    ],
+    "abyss_north_locked": [
+      648,
+      642,
+      587,
+      222
+    ],
+    "milk_north_open": [
+      20,
+      925,
+      587,
+      224
+    ],
+    "milk_north_locked": [
+      648,
+      925,
+      587,
+      223
+    ],
+    "temple_south_open": [
+      19,
+      64,
+      591,
+      218
+    ],
+    "temple_south_locked": [
+      645,
+      64,
+      591,
+      218
+    ],
+    "wreck_south_open": [
+      19,
+      364,
+      591,
+      214
+    ],
+    "wreck_south_locked": [
+      645,
+      364,
+      591,
+      214
+    ],
+    "abyss_south_open": [
+      19,
+      659,
+      591,
+      223
+    ],
+    "abyss_south_locked": [
+      645,
+      659,
+      591,
+      223
+    ],
+    "milk_south_open": [
+      19,
+      958,
+      591,
+      219
+    ],
+    "milk_south_locked": [
+      645,
+      958,
+      591,
+      219
+    ],
+    "temple_east_open": [
+      26,
+      43,
+      103,
+      581
+    ],
+    "temple_east_locked": [
+      177,
+      43,
+      105,
+      581
+    ],
+    "temple_west_open": [
+      329,
+      43,
+      105,
+      581
+    ],
+    "temple_west_locked": [
+      482,
+      43,
+      105,
+      581
+    ],
+    "wreck_east_open": [
+      636,
+      43,
+      104,
+      582
+    ],
+    "wreck_east_locked": [
+      788,
+      43,
+      105,
+      581
+    ],
+    "wreck_west_open": [
+      941,
+      43,
+      104,
+      581
+    ],
+    "wreck_west_locked": [
+      1092,
+      43,
+      105,
+      581
+    ],
+    "abyss_east_open": [
+      26,
+      668,
+      103,
+      584
+    ],
+    "abyss_east_locked": [
+      177,
+      668,
+      105,
+      584
+    ],
+    "abyss_west_open": [
+      329,
+      668,
+      106,
+      584
+    ],
+    "abyss_west_locked": [
+      482,
+      668,
+      105,
+      584
+    ],
+    "milk_east_open": [
+      636,
+      668,
+      104,
+      584
+    ],
+    "milk_east_locked": [
+      788,
+      669,
+      105,
+      583
+    ],
+    "milk_west_open": [
+      941,
+      669,
+      104,
+      583
+    ],
+    "milk_west_locked": [
+      1092,
+      668,
+      104,
+      584
+    ],
+    "weed": [
+      49,
+      348,
+      305,
+      289
+    ],
+    "barrel": [
+      394,
+      360,
+      196,
+      266
+    ],
+    "barrel_hit": [
+      658,
+      371,
+      209,
+      255
+    ],
+    "barrel_broken": [
+      910,
+      444,
+      301,
+      186
+    ],
+    "mine": [
+      74,
+      694,
+      210,
+      208
+    ],
+    "mine_lit": [
+      368,
+      694,
+      206,
+      207
+    ],
+    "chest": [
+      646,
+      711,
+      248,
+      204
+    ],
+    "chest_open": [
+      955,
+      662,
+      236,
+      253
+    ],
+    "lantern": [
+      417,
+      949,
+      121,
+      243
+    ],
+    "moss": [
+      633,
+      1007,
+      280,
+      196
+    ],
+    "coral": [
+      955,
+      970,
+      256,
+      236
+    ],
+    "temple_rim": [
+      113,
+      114,
+      444,
+      440
+    ],
+    "wreck_rim": [
+      699,
+      114,
+      444,
+      440
+    ],
+    "abyss_rim": [
+      113,
+      699,
+      444,
+      442
+    ],
+    "milk_rim": [
+      699,
+      699,
+      444,
+      442
+    ],
+    "altar": [
+      108,
+      251,
+      769,
+      771
+    ],
+    "pickup_coin": [
+      993,
+      318,
+      182,
+      169
+    ],
+    "pickup_health": [
+      997,
+      604,
+      168,
+      227
+    ],
+    "pickup_energy": [
+      1003,
+      961,
+      155,
+      205
+    ],
+    "hazard_rock": [
+      145,
+      71,
+      504,
+      428
+    ],
+    "hazard_milk": [
+      832,
+      154,
+      634,
+      323
+    ],
+    "hazard_poison": [
+      169,
+      545,
+      442,
+      432
+    ],
+    "hazard_debris": [
+      874,
+      617,
+      539,
+      332
+    ],
+    "temple_wall_0": [
+      97,
+      100,
+      181,
+      386
+    ],
+    "wreck_wall_0": [
+      334,
+      100,
+      181,
+      386
+    ],
+    "abyss_wall_0": [
+      571,
+      100,
+      182,
+      386
+    ],
+    "milk_wall_0": [
+      810,
+      100,
+      180,
+      386
+    ],
+    "temple_wall_1": [
+      97,
+      529,
+      181,
+      387
+    ],
+    "wreck_wall_1": [
+      335,
+      529,
+      180,
+      387
+    ],
+    "abyss_wall_1": [
+      572,
+      529,
+      181,
+      387
+    ],
+    "milk_wall_1": [
+      810,
+      529,
+      180,
+      387
+    ],
+    "temple_wall_2": [
+      97,
+      959,
+      181,
+      386
+    ],
+    "wreck_wall_2": [
+      335,
+      959,
+      180,
+      386
+    ],
+    "abyss_wall_2": [
+      572,
+      959,
+      181,
+      386
+    ],
+    "milk_wall_2": [
+      810,
+      959,
+      180,
+      386
+    ],
+    "temple_spikes_idle": [
+      57,
+      67,
+      276,
+      275
+    ],
+    "temple_spikes_warn": [
+      408,
+      67,
+      271,
+      274
+    ],
+    "temple_spikes_on": [
+      754,
+      67,
+      275,
+      274
+    ],
+    "wreck_spikes_idle": [
+      57,
+      411,
+      276,
+      274
+    ],
+    "wreck_spikes_warn": [
+      408,
+      411,
+      271,
+      274
+    ],
+    "wreck_spikes_on": [
+      754,
+      411,
+      275,
+      274
+    ],
+    "abyss_spikes_idle": [
+      57,
+      756,
+      276,
+      275
+    ],
+    "abyss_spikes_warn": [
+      407,
+      756,
+      271,
+      275
+    ],
+    "abyss_spikes_on": [
+      754,
+      756,
+      275,
+      275
+    ],
+    "milk_spikes_idle": [
+      57,
+      1098,
+      276,
+      275
+    ],
+    "milk_spikes_warn": [
+      408,
+      1098,
+      270,
+      275
+    ],
+    "milk_spikes_on": [
+      754,
+      1098,
+      276,
+      275
+    ],
+    "temple_crystal": [
+      131,
+      62,
+      436,
+      485
+    ],
+    "wreck_crystal": [
+      716,
+      62,
+      438,
+      485
+    ],
+    "abyss_crystal": [
+      128,
+      642,
+      441,
+      485
+    ],
+    "milk_crystal": [
+      715,
+      642,
+      442,
+      485
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "path": "docs/testing/floor-style-redraw/wall-1-room.png",
+    "sha256": "99ed0bffb8a0c07ce50100d435deeffe01dcb6c63e865e1f27849039fea20c0f"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/wall-1-side-locked.png",
+    "sha256": "01d6c0e3ad3ab3aaf46b24ab0dc9b679dce9244df4f0c86a295965b402b75d3a"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/unified-zones-1.png",
+    "sha256": "08766ba312329882c334e988a6d988618701f796ce4c44f40437d65748430fcb"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/wall-2-room.png",
+    "sha256": "36fb679f275145bbdafbfd26e5f8cc6ec36dadc54f568523d711724591c31e34"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/wall-2-side-locked.png",
+    "sha256": "72ba66e27fdc77d00809af5ab954710b2ce1873a31de8758730fd04edb17c96d"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/unified-zones-2.png",
+    "sha256": "97c25ae712448e49a4596196e18c286c9c882579f3f89683abc7368002a1e9c0"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/wall-3-room.png",
+    "sha256": "37c745f043e46d885e5869789137d55d81c6b408ec2c1d7b2689274e7c670143"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/wall-3-side-locked.png",
+    "sha256": "728a16abbf650e8cefad8c218099d62c680756a162609bbffc949b61b1e14fcd"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/unified-zones-3.png",
+    "sha256": "620e4c76cd3645538b34d0ce23839df1c411da1b3a4926d60a9f625dad57150f"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/wall-4-room.png",
+    "sha256": "315d3bfa716470e48d53f630919b88eaa4083b81302e4f07898721ffafad8004"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/wall-4-side-locked.png",
+    "sha256": "ea16c0d3528d8a1a5a4e01a6b000bfdb1186deb6368c97a2ba90b3d074097ace"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/unified-zones-4.png",
+    "sha256": "c0b3872d4c77400f531326f1a7beda42812951755472c6f6c0212d6d3ec1b7b5"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/themed-temple-on.png",
+    "sha256": "9656faad5da2d7c101ab57369b9f5e7c1913d08715136ef02e2fa5f7b0d6741c"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/themed-wreck-on.png",
+    "sha256": "fce2fd2caa93af0bd37e9d7e10e9e211f21a817a4fa9b8525eacc619a2537923"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/themed-abyss-on.png",
+    "sha256": "83cac85e95ef2fac2ede5d1c840ceab20df11e56afbb31ebea86f93bb1319532"
+  },
+  {
+    "path": "docs/testing/floor-style-redraw/themed-milk-on.png",
+    "sha256": "107a43200a292c2bc32c1867fa6797b8f4f9f807ac46a21826691baf1bd1d7e8"
+  }
+]

@@ -9,6 +9,63 @@ import { RoomThemeSchema } from '../../../src/data/schema/traps';
 import { selectRoomLayouts, roomTemplate, resolveRoomTemplate } from '../../../src/sim/dungeon/roomCatalog';
 import { DungeonRun } from '../../../src/sim/run/DungeonRun';
 import { EventBus } from '../../../src/sim/core/EventBus';
+import { MODULAR_V2 } from '../../../src/data/roomTemplates/modularV2';
+import { compileRoom } from '../../../src/sim/dungeon/compileRoom';
+import { RoomGeometry } from '../../../src/sim/geometry/RoomGeometry';
+
+it('uses whole obstacle models and spike cells with clear entrances in the active catalog', () => {
+  const changed: string[] = [];
+  for (const theme of LEGACY_V1.themes)
+    for (const plan of [theme.empty, ...theme.plans, theme.boss]) {
+      const old = roomTemplate(plan.id)!;
+      const room = roomTemplate(plan.id.replace('legacy_v1/', 'modular_v2/'))!;
+      const compiled = compileRoom(room);
+      const empty = new RoomGeometry(compiled.boundary, [], 0);
+      for (const box of room.boxes)
+        expect(Math.max(box.width, box.height) % Math.min(box.width, box.height), room.id).toBe(0);
+      room.traps.forEach((trap, i) => {
+        if (trap.kind !== 'spikes') return;
+        expect(trap.width! % MODULAR_V2.spikeTile, room.id).toBe(0);
+        expect(trap.height! % MODULAR_V2.spikeTile, room.id).toBe(0);
+        if (trap.width !== old.traps[i]!.width || trap.height !== old.traps[i]!.height)
+          changed.push(`${room.id}:${i}:${trap.width}x${trap.height}`);
+        const left = 240 + trap.x - trap.width! / 2,
+          right = left + trap.width!,
+          top = 135 + trap.y - trap.height! / 2,
+          bottom = top + trap.height!;
+        for (const x of [left, right])
+          for (const y of [top, bottom]) expect(empty.canOccupy({ x, y }, 0, 'walk'), room.id).toBe(true);
+        for (const box of room.boxes)
+          expect(
+            right > 240 + box.x - box.width / 2 &&
+              left < 240 + box.x + box.width / 2 &&
+              bottom > 135 + box.y - box.height / 2 &&
+              top < 135 + box.y + box.height / 2,
+            room.id,
+          ).toBe(false);
+        for (const port of compiled.ports)
+          expect(
+            port.entrance.x > left - 8 &&
+              port.entrance.x < right + 8 &&
+              port.entrance.y > top - 8 &&
+              port.entrance.y < bottom + 8,
+            room.id,
+          ).toBe(false);
+      });
+    }
+  expect(changed).toEqual([
+    'modular_v2/temple/combat_2:0:16x64',
+    'modular_v2/temple/combat_2:1:16x64',
+    'modular_v2/wreck/combat_3:3:48x16',
+    'modular_v2/abyss/combat_2:1:48x16',
+    'modular_v2/abyss/combat_2:2:48x16',
+    'modular_v2/abyss/combat_3:4:48x16',
+  ]);
+  for (const id of ['wreck/combat_1', 'abyss/combat_3'])
+    expect(roomTemplate(`modular_v2/${id}`)!.boxes.map(({ width, height }) => [width, height])).toEqual(
+      Array.from({ length: 4 }, () => [60, 12]),
+    );
+});
 
 it('locks ordered UTF-8 catalog bytes without snapshot auto-update', () => {
   const expected = readFileSync(new URL('../../fixtures/legacyV1/catalog.bytes.txt', import.meta.url));

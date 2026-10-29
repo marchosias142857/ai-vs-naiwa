@@ -66,20 +66,28 @@ export function roomTemplate(id: string): RoomTemplate | null {
       ? {
           ...source,
           id,
-          traps:
-            id === 'modular_v2/wreck/combat_2'
-              ? source.traps.map((trap, i) =>
-                  i < 2 ? { ...trap, x: Math.sign(trap.x) * MODULAR_V2.cargoBarrelX } : trap,
-                )
-              : id === 'modular_v2/wreck/combat_1'
-                ? source.traps.map((trap, i) =>
-                    i === 3 ? { ...trap, x: MODULAR_V2.cargoEdgeBarrelX } : trap,
-                  )
-                : source.traps,
+          traps: source.traps.map((trap, i) => {
+            if (trap.kind === 'spikes') {
+              const tile = MODULAR_V2.spikeTile;
+              return {
+                ...trap,
+                y: id === 'modular_v2/abyss/combat_2' && i === 1 ? MODULAR_V2.abyssNorthSpikeY : trap.y,
+                width: Math.max(1, Math.round(trap.width! / tile)) * tile,
+                height: Math.max(1, Math.round(trap.height! / tile)) * tile,
+              };
+            }
+            if (id === 'modular_v2/wreck/combat_2' && i < 2)
+              return { ...trap, x: Math.sign(trap.x) * MODULAR_V2.cargoBarrelX };
+            if (id === 'modular_v2/wreck/combat_1' && i === 3)
+              return { ...trap, x: MODULAR_V2.cargoEdgeBarrelX };
+            return trap;
+          }),
           boxes:
             id === 'modular_v2/wreck/combat_1'
               ? source.boxes.map((box) => ({ ...box, width: MODULAR_V2.cargoDividerWidth }))
-              : source.boxes,
+              : id === 'modular_v2/abyss/combat_3'
+                ? source.boxes.map((box) => ({ ...box, width: MODULAR_V2.abyssDividerWidth }))
+                : source.boxes,
         }
       : null;
   }

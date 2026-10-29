@@ -2,7 +2,7 @@ import { Physics } from 'phaser';
 import type { GameObjects, Scene } from 'phaser';
 import { DEPTH, DEPTH_Y_SORT } from '../../config';
 import { BALANCE } from '../../data/balance';
-import { MAP_ART, type MapFrame } from '../../data/mapArt';
+import { MAP_ART, MAP_THEME_FRAMES, type MapFrame } from '../../data/mapArt';
 import { TRAP_RULES } from '../../data/traps';
 import type { CombatWorld, TrapView } from '../../sim/combat/api';
 import type { CombatBridge } from '../world/CombatBridge';
@@ -125,7 +125,8 @@ export class TrapLayer {
     if (t.kind === 'spikes') {
       // 预警时在两张图之间闪，刺出前一眼能看出来。
       const blink = t.state === 'warn' && Math.floor(this.time * F.warnBlink) % 2 === 0;
-      const frame = t.state === 'on' ? 'spikes_on' : blink ? 'spikes_warn' : 'spikes_idle';
+      const state = t.state === 'on' ? 'on' : blink ? 'warn' : 'idle';
+      const frame = MAP_THEME_FRAMES[this.arena.artTheme].spikes[state];
       this.fieldFrame(field, frame);
       field.setSize(t.width, t.height);
       field.setTilePosition(0, 0);
@@ -151,7 +152,9 @@ export class TrapLayer {
   private fieldFrame(field: GameObjects.TileSprite, name: MapFrame): void {
     const frame = MAP_ART.frames[name];
     const size = name === 'current' || name === 'weed' ? MAP_ART.naturalFieldTile : MAP_ART.fieldTile;
-    field.setFrame(name).setTileScale(size / frame[2], size / frame[3]);
+    const texture = name.includes('_spikes_') ? MAP_ART.textures.spikes : MAP_ART.textures.objects;
+    if (field.texture.key !== texture || field.frame.name !== name) field.setTexture(texture, name);
+    field.setTileScale(size / frame[2]);
   }
 
   private drawProp(prop: GameObjects.Image, t: TrapView): void {

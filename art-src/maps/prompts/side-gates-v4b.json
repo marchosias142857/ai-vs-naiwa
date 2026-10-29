@@ -1,0 +1,61 @@
+{
+  "version": "side-gates-v4b-candidate",
+  "status": "awaiting user visual review; not integrated",
+  "revision": "Open passage interiors recolored into the matching theme's material family",
+  "targetFrame": [
+    80,
+    480
+  ],
+  "sourceCanvas": [
+    1216,
+    1293
+  ],
+  "layout": {
+    "groups": [
+      [
+        "temple",
+        "wreck"
+      ],
+      [
+        "abyss",
+        "milk"
+      ]
+    ],
+    "withinGroup": [
+      "east_open",
+      "east_locked",
+      "west_open",
+      "west_locked"
+    ]
+  },
+  "generation": {
+    "tool": "built-in image_gen",
+    "prompt": "Precise color-only edit to image1, the16-sprite side-gate sheet. Image2 is the approved four-theme wall palette reference.\n\nChange ONLY the recessed interior background of the EIGHT OPEN gates: columns1,3,5,7 in each of the two rows. Replace the shared nearly-black blue interiors with each gate's own main material color family. Temple recesses must be muted BLUE-GRAY, wreck recesses clearly WARM BROWN WOOD, abyss recesses GRAY-INDIGO, milk recesses clearly WARM SANDSTONE BEIGE. Sample the same-theme body color from image2. Their base fill should be a readable midtone of that material, gently darker than the frame, NEVER black or generic navy. Suggested midtone palette: temple #506176; wood #795b44; abyss #4f546d; sandstone #9a865f. Subtle depth shadows must be darker shades of that SAME hue, small and soft within the pixel-art style; no large near-black region. Existing floor slabs/short grain at the bottom of a recess can remain, recolored consistently. No new light sources or glow. All eight openings must unmistakably match their theme.\n\nPRESERVE EVERYTHING ELSE from image1 exactly: sixteen sprites, positions and canvas dimensions,1:6slender silhouettes, square endcaps, frame details and color, pixel scale, little cracks, lighting, transparent outer background, and all EIGHT LOCKED gates in columns2,4,6,8. Do not repaint, move, resize, crop, rotate, mirror or stretch any object. Do not add bars or locks to open gates. No changes to the closed gate bars, locks or backgrounds. No text. True transparency around the sprites, no colored halos.\n\nThis is ONLY a local recoloring of the dark OPEN passage interiors, not a new design."
+  },
+  "validation": {
+    "openInteriorMedianRGB": {
+      "temple": [
+        73,
+        88,
+        104
+      ],
+      "wreck": [
+        103,
+        77,
+        60
+      ],
+      "abyss": [
+        81,
+        83,
+        106
+      ],
+      "milk": [
+        131,
+        113,
+        82
+      ]
+    },
+    "productionFrames": "not integrated; exact frame/cap bounds, transparency and uniform-scale integration still pending"
+  },
+  "approved": false
+}

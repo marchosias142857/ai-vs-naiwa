@@ -1,0 +1,406 @@
+{
+  "note": "Authoring layout rectangles only, not measured runtime atlas frames. Dimensions preserve intended in-game aspect ratios. Props can leave transparent space INSIDE their declared slots; do not tightly recrop and stretch.",
+  "specs": [
+    {
+      "key": "blocks-v4",
+      "canvas": [
+        1024,
+        1024
+      ],
+      "items": [
+        {
+          "name": "temple_obstacle",
+          "rect": [
+            96,
+            96,
+            320,
+            320
+          ],
+          "color": "#8597a6",
+          "part": "block"
+        },
+        {
+          "name": "wreck_obstacle",
+          "rect": [
+            608,
+            96,
+            320,
+            320
+          ],
+          "color": "#ac8c70",
+          "part": "block"
+        },
+        {
+          "name": "abyss_obstacle",
+          "rect": [
+            96,
+            608,
+            320,
+            320
+          ],
+          "color": "#7f879e",
+          "part": "block"
+        },
+        {
+          "name": "milk_obstacle",
+          "rect": [
+            608,
+            608,
+            320,
+            320
+          ],
+          "color": "#c4b28b",
+          "part": "block"
+        }
+      ]
+    },
+    {
+      "key": "rims-v4",
+      "canvas": [
+        1024,
+        1024
+      ],
+      "items": [
+        {
+          "name": "temple_rim",
+          "rect": [
+            96,
+            96,
+            300,
+            300
+          ],
+          "color": "#8597a6",
+          "part": "ring",
+          "border": 54
+        },
+        {
+          "name": "wreck_rim",
+          "rect": [
+            628,
+            96,
+            300,
+            300
+          ],
+          "color": "#ac8c70",
+          "part": "ring",
+          "border": 54
+        },
+        {
+          "name": "abyss_rim",
+          "rect": [
+            96,
+            628,
+            300,
+            300
+          ],
+          "color": "#7f879e",
+          "part": "ring",
+          "border": 54
+        },
+        {
+          "name": "milk_rim",
+          "rect": [
+            628,
+            628,
+            300,
+            300
+          ],
+          "color": "#c4b28b",
+          "part": "ring",
+          "border": 54
+        }
+      ]
+    },
+    {
+      "key": "mechanisms-v4",
+      "canvas": [
+        1536,
+        1536
+      ],
+      "items": [
+        {
+          "name": "spikes_idle",
+          "rect": [
+            112,
+            112,
+            160,
+            160
+          ],
+          "color": "#566879",
+          "part": "slot"
+        },
+        {
+          "name": "spikes_warn",
+          "rect": [
+            496,
+            112,
+            160,
+            160
+          ],
+          "color": "#566879",
+          "part": "slot"
+        },
+        {
+          "name": "spikes_on",
+          "rect": [
+            880,
+            112,
+            160,
+            160
+          ],
+          "color": "#566879",
+          "part": "slot"
+        },
+        {
+          "name": "current",
+          "rect": [
+            1184,
+            32,
+            320,
+            320
+          ],
+          "color": "#396875",
+          "part": "slot"
+        },
+        {
+          "name": "weed",
+          "rect": [
+            32,
+            416,
+            320,
+            320
+          ],
+          "color": "#3e6658",
+          "part": "slot"
+        },
+        {
+          "name": "barrel",
+          "rect": [
+            486,
+            461,
+            180,
+            230
+          ],
+          "color": "#79573c",
+          "part": "slot"
+        },
+        {
+          "name": "barrel_hit",
+          "rect": [
+            870,
+            461,
+            180,
+            230
+          ],
+          "color": "#79573c",
+          "part": "slot"
+        },
+        {
+          "name": "barrel_broken",
+          "rect": [
+            1239,
+            511,
+            210,
+            130
+          ],
+          "color": "#79573c",
+          "part": "slot"
+        },
+        {
+          "name": "mine",
+          "rect": [
+            117,
+            885,
+            150,
+            150
+          ],
+          "color": "#677887",
+          "part": "slot"
+        },
+        {
+          "name": "mine_lit",
+          "rect": [
+            501,
+            885,
+            150,
+            150
+          ],
+          "color": "#677887",
+          "part": "slot"
+        },
+        {
+          "name": "chest",
+          "rect": [
+            840,
+            835,
+            240,
+            250
+          ],
+          "color": "#79573c",
+          "part": "slot"
+        },
+        {
+          "name": "chest_open",
+          "rect": [
+            1224,
+            835,
+            240,
+            250
+          ],
+          "color": "#79573c",
+          "part": "slot"
+        },
+        {
+          "name": "crystal",
+          "rect": [
+            52,
+            1194,
+            280,
+            300
+          ],
+          "color": "#527486",
+          "part": "slot"
+        },
+        {
+          "name": "lantern",
+          "rect": [
+            526,
+            1259,
+            100,
+            170
+          ],
+          "color": "#a48b5c",
+          "part": "slot"
+        },
+        {
+          "name": "moss",
+          "rect": [
+            840,
+            1264,
+            240,
+            160
+          ],
+          "color": "#4c6852",
+          "part": "slot"
+        },
+        {
+          "name": "coral",
+          "rect": [
+            1244,
+            1244,
+            200,
+            200
+          ],
+          "color": "#75628d",
+          "part": "slot"
+        }
+      ]
+    },
+    {
+      "key": "hub-v4",
+      "canvas": [
+        1024,
+        1024
+      ],
+      "items": [
+        {
+          "name": "altar",
+          "rect": [
+            64,
+            64,
+            620,
+            620
+          ],
+          "color": "#8597a6",
+          "part": "slot"
+        },
+        {
+          "name": "pickup_coin",
+          "rect": [
+            820,
+            160,
+            80,
+            80
+          ],
+          "color": "#c0a05d",
+          "part": "slot"
+        },
+        {
+          "name": "pickup_health",
+          "rect": [
+            820,
+            400,
+            80,
+            80
+          ],
+          "color": "#a8585d",
+          "part": "slot"
+        },
+        {
+          "name": "pickup_energy",
+          "rect": [
+            820,
+            640,
+            80,
+            80
+          ],
+          "color": "#4baba4",
+          "part": "slot"
+        }
+      ]
+    },
+    {
+      "key": "effects-v4",
+      "canvas": [
+        1536,
+        1024
+      ],
+      "items": [
+        {
+          "name": "hazard_rock",
+          "rect": [
+            148,
+            56,
+            400,
+            400
+          ],
+          "color": "#b09d78",
+          "part": "slot"
+        },
+        {
+          "name": "hazard_milk",
+          "rect": [
+            920,
+            106,
+            440,
+            300
+          ],
+          "color": "#d8ceaf",
+          "part": "slot"
+        },
+        {
+          "name": "hazard_poison",
+          "rect": [
+            148,
+            568,
+            400,
+            400
+          ],
+          "color": "#6c7b43",
+          "part": "slot"
+        },
+        {
+          "name": "hazard_debris",
+          "rect": [
+            930,
+            628,
+            420,
+            280
+          ],
+          "color": "#8597a6",
+          "part": "slot"
+        }
+      ]
+    }
+  ]
+}

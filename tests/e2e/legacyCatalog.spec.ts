@@ -58,7 +58,14 @@ for (const seed of [0, 42, 12345, 0xffffffff])
       expect(result.floor).toBe(floor);
       expect(result.rows).toHaveLength(floor === 4 ? 2 : 8);
       expect(result.unchangedByFreeze).toBe(true);
-      expect(result.bounds).toEqual(floor === 4 ? LEGACY_V1.bounds : MODULAR_V2.bounds);
+      expect(result.bounds).toEqual(
+        floor === 4
+          ? {
+              ...LEGACY_V1.bounds,
+              height: LEGACY_V1.bounds.height + MODULAR_V2.southApron - MODULAR_V2.wall.faceHeight,
+            }
+          : { ...MODULAR_V2.bounds, height: MODULAR_V2.bounds.height - MODULAR_V2.wall.faceHeight },
+      );
       expect(result.center).toEqual(LEGACY_V1.anchors.player);
       for (const row of result.rows) {
         expect(row.templateId).toBe(row.expectedId);
@@ -67,16 +74,28 @@ for (const seed of [0, 42, 12345, 0xffffffff])
         expect(legacyId).toBe(recorded.templateIds[row.id]);
         const original = baseline.templates[legacyId as keyof typeof baseline.templates];
         expect(row.bodies).toEqual(
-          legacyId === 'legacy_v1/wreck/combat_1'
-            ? original.bodies.map((b) => ({ ...b, width: 56 }))
+          legacyId === 'legacy_v1/wreck/combat_1' || legacyId === 'legacy_v1/abyss/combat_3'
+            ? original.bodies.map((b) => ({ ...b, width: 60 }))
             : original.bodies,
         );
-        expect(row.traps).toEqual(
+        const positionedTraps =
           legacyId === 'legacy_v1/wreck/combat_2'
             ? original.traps.map((t, i) => (i < 2 ? { ...t, x: 240 + Math.sign(t.x - 240) * 24 } : t))
             : legacyId === 'legacy_v1/wreck/combat_1'
-              ? original.traps.map((t, i) => (i === 3 ? { ...t, x: 152 } : t))
-              : original.traps,
+              ? original.traps.map((t, i) => (i === 3 ? { ...t, x: 160 } : t))
+              : legacyId === 'legacy_v1/abyss/combat_2'
+                ? original.traps.map((t, i) => (i === 1 ? { ...t, y: 81 } : t))
+                : original.traps;
+        expect(row.traps).toEqual(
+          positionedTraps.map((t) =>
+            t.kind === 'spikes'
+              ? {
+                  ...t,
+                  width: t.width === 40 ? 48 : t.width,
+                  height: t.height === 56 ? 64 : t.height === 14 ? 16 : t.height,
+                }
+              : t,
+          ),
         );
         expect(row.staticObstacles).toEqual(original.staticObstacles);
         expect(row.form).toBe(row.kind === 'combat' || row.kind === 'boss' ? row.kind : 'empty');

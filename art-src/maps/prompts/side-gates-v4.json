@@ -1,0 +1,48 @@
+{
+  "version": "side-gates-v4-candidate",
+  "status": "awaiting user visual review; not integrated",
+  "scope": "east/west side gates, four themes, open/locked",
+  "targetFrame": [
+    80,
+    480
+  ],
+  "targetEndcaps": [
+    80,
+    80
+  ],
+  "targetMiddle": [
+    80,
+    320
+  ],
+  "sourceCanvas": [
+    1217,
+    1293
+  ],
+  "layout": {
+    "groups": [
+      [
+        "temple",
+        "wreck"
+      ],
+      [
+        "abyss",
+        "milk"
+      ]
+    ],
+    "withinGroup": [
+      "east_open",
+      "east_locked",
+      "west_open",
+      "west_locked"
+    ]
+  },
+  "generation": {
+    "tool": "built-in image_gen",
+    "prompt": "Use case: style-transfer. Pixel-art dungeon SIDE GATES, EAST and WEST, OPEN and LOCKED. Exactly16 separate slim vertical gate sprites.\n\nImage1 is the EDIT TARGET: exact layout, silhouettes and internal proportions. Preserve its1024x1088canvas and all16opaque80x480rectangles. Image2 is the USER-APPROVED wall set, primary material/pixel-style reference. Images3-4 are approved north and south gates, matching material, iron and locks. Do not rotate these horizontal gates. Redraw independent side-facing gates with consistent world lighting from upper left.\n\nLAYOUT: two rows, eight columns. Top-left group of4 is blue-gray temple; top-right group of4 is muted brown shipwreck. Bottom-left group of4 is gray-indigo abyss; bottom-right group of4 is subdued beige sandstone milk. Within EVERY group left-to-right: EAST OPEN, EAST LOCKED, WEST OPEN, WEST LOCKED. Match image1 exactly. Same-theme open and locked use identical frame, wear marks and palette; only the bars/lock change.\n\nHARD PROPORTIONS: each frame80wide x480tall, exactly1:6, equal to six wall-width modules. Top endcap80x80; middle passage80x320; bottom endcap80x80. Square endcaps cannot become wider than the narrow central strip. Small square raised pads36x36 centered on each endcap. Full outer contour straight-sided, no bulging or overhang. Coordinates x24,152,280,408,536,664,792,920; y40 and568. Do not zoom or resize individual sprites. Do not shorten central passage. A source sprite must fit the game with uniform scaling only.\n\nDIRECTION: for EAST gate, thin material outer beam lies along RIGHT edge of middle320span; dark passage on LEFT. For WEST gate, beam lies along LEFT edge; dark passage on RIGHT. Still light upper/left of BOTH orientations: independently paint highlights, do not mirror existing pixels or rotate the lighting. Beam20px wide, opening60px. Open passage unobstructed, quiet dark recess with subtle interior floor planes, no bars. Locked passage contains3slim dark iron longitudinal bars running from endcap to endcap,2thin cross-braces and1small bronze lock near center. Bars and lock all inside the middle320span, no glow.\n\nART: same muted matte stone/wood and crisp sparse pixel patches as approved references, square raised pads with shallow bevels, material-colored thin borders instead of black outer boxes. Top surfaces lighter, inside passage darker. Keep wear sparse and understated. Wood has short straight grain, no round knots. No ornate gold edges, thick black framing, shells, luminous crystal, photorealism, blur or noisy speckles. All16 consistent pixel scale. Every object's surrounding pixels fully transparent, no halo, haze, shadows, vignette or ambient glow. No text, labels, symbols, arrows or extra objects.\n\nPreserve exact template geometry. The long slender1:6 proportions and square80x80caps are essential."
+  },
+  "approved": false,
+  "validation": {
+    "frameCount": 16,
+    "geometry": "Target proportions supplied through exact template; generated opaque bounds vary approx98–100×573–574. Production crop, cap alignment, alpha edges and uniform-scale integration still require validation. No nonuniform scaling is permitted."
+  }
+}

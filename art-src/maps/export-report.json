@@ -53,106 +53,145 @@
   },
   {
     "name": "blocks",
-    "sourceFile": "blocks-v3.png",
+    "sourceFile": "blocks-v4.png",
     "size": [
-      1289,
-      1220
+      1254,
+      1254
     ],
-    "sourceBytes": 880454,
-    "runtimeBytes": 604656,
-    "sourceSha256": "411949d3f5a4943cc77352005f1f9c98a8aa888fa698b6f019742fb41a91c78d",
-    "runtimeSha256": "b1a1fd4e226a2d1b41bef5b88ee819f5279b5d78500e329fc912fafd3c95a5d5",
+    "sourceBytes": 966977,
+    "runtimeBytes": 585182,
+    "sourceSha256": "ef47a58f4b506f94c3da5ffd1f1dee539a42bc73c65b02eaf2a5ca4552162c3e",
+    "runtimeSha256": "0a4ed1c8db4692b86f5d607662858ed35bd1e0a37360362fc8c29c5e53790bb0",
     "decodedRGBAIdentical": true
   },
   {
     "name": "doors",
-    "sourceFile": "horizontal-v3.png",
+    "sourceFile": "north-gates-v4b.png",
     "size": [
-      1536,
-      1024
+      1254,
+      1254
     ],
-    "sourceBytes": 1982145,
-    "runtimeBytes": 1458902,
-    "sourceSha256": "cc82f7d9aa134e05e6abf128b2f0adcd39139f9f96a4dbe450cba680c51d3387",
-    "runtimeSha256": "76c5d8c2e7919323f81e9bbe5644d644828f67ef8fa016530161d960c4c9fc95",
+    "sourceBytes": 1489878,
+    "runtimeBytes": 922690,
+    "sourceSha256": "bb0bb18b37a1ee530a7e98de1f858a85fcdb0b3c16d3a6a97ed797d374e09c49",
+    "runtimeSha256": "085cc3aac7c55d86d9070334352d6545b495fc3031b21dfa3ee2b5c3aa7c1276",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "southDoors",
+    "sourceFile": "south-gates-v4b.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "sourceBytes": 1463201,
+    "runtimeBytes": 930008,
+    "sourceSha256": "9756ee0cebbd42bea822d1003c9ae960451a58c83b068196b1ffc0ab6e3e5497",
+    "runtimeSha256": "174a086094c2267906a55a18c7d07460b69aa956eec471f8d6d114d5010e06a0",
     "decodedRGBAIdentical": true
   },
   {
     "name": "sideDoors",
-    "sourceFile": "vertical-v3.png",
+    "sourceFile": "side-gates-v4d-approved.png",
     "size": [
-      1266,
-      1242
+      1216,
+      1294
     ],
-    "sourceBytes": 904532,
-    "runtimeBytes": 677810,
-    "sourceSha256": "98445ba2070b1dcd8fe23885164262cfd8533eb31357e4e25741a00bd8c7a2a5",
-    "runtimeSha256": "ca431c31cf8cd9c74d029f120e533867c7138ddc07c0fad4141005106872e950",
+    "sourceBytes": 1502245,
+    "runtimeBytes": 954658,
+    "sourceSha256": "3a95284ea6aacbbf77a408757f9adf525cbb70f7f96b8748cf745036e84ba556",
+    "runtimeSha256": "5518093f01e003bf042cdcfca1fbbdd5951c8f3632cf9603804b2bcb5aed2544",
     "decodedRGBAIdentical": true
   },
   {
     "name": "objects",
-    "sourceFile": "mechanisms-v3.png",
+    "sourceFile": "mechanisms-v4.png",
     "size": [
-      1268,
-      1240
+      1254,
+      1254
     ],
-    "sourceBytes": 1527712,
-    "runtimeBytes": 1225842,
-    "sourceSha256": "cc9dba45329f5791e033836ee268a9996a17646136a479ec16dcf586437842c2",
-    "runtimeSha256": "e2a1e5c67627585afd476b70b369f561930e10a9a418d0f7c18a05b4d7f8ecdf",
+    "sourceBytes": 1449262,
+    "runtimeBytes": 1123724,
+    "sourceSha256": "cbc31007b052a8f5bbfd8a0d1def6574c15b2d4fbd621b947ea2f889d9ef69f6",
+    "runtimeSha256": "3832f7e5033776bfae79e6d7dfb799a24cb0f88948dd798c259af6e416ab42ef",
     "decodedRGBAIdentical": true
   },
   {
     "name": "rims",
-    "sourceFile": "rims-v3.png",
+    "sourceFile": "rims-v4.png",
     "size": [
-      1536,
-      1024
+      1254,
+      1254
     ],
-    "sourceBytes": 1500494,
-    "runtimeBytes": 1017120,
-    "sourceSha256": "88019430945c544b5e2793066ffe1ed914fe7fea176c5e968b5558ab99099f03",
-    "runtimeSha256": "14dd7748001cd0ecb6054eb68da28460b426097e3b25930f5d7ee0637f595681",
+    "sourceBytes": 769768,
+    "runtimeBytes": 483196,
+    "sourceSha256": "ac0a0397bc67913e0f7d0a9635a7087175dedfbd6280d525b742e12fcc3993d9",
+    "runtimeSha256": "343427012b7ea2e04ccabc18c9b6ac13b581c681d2a42cce0ae4b4f72cb66942",
     "decodedRGBAIdentical": true
   },
   {
     "name": "hub",
-    "sourceFile": "hub-v3.png",
+    "sourceFile": "hub-v4.png",
     "size": [
-      1268,
-      1241
+      1254,
+      1254
     ],
-    "sourceBytes": 821552,
-    "runtimeBytes": 597106,
-    "sourceSha256": "76d7de394f73fb77b9c06d2e7f757f54c6f1355196a98a31cfd02f04d924ffe1",
-    "runtimeSha256": "266a7471c1260615ec35344476b6c8e0343d446496179e8293b43429b0e18710",
+    "sourceBytes": 885758,
+    "runtimeBytes": 552824,
+    "sourceSha256": "710b5642b34f81cc57ca44b8bb0469ef78d906cb3972bef2e0b147f24b33a27c",
+    "runtimeSha256": "4280c272541c64052a59daab84a94edbe2c48858f6c20e5f9c2d6df81eff5f3c",
     "decodedRGBAIdentical": true
   },
   {
     "name": "effects",
-    "sourceFile": "effects-v3.png",
+    "sourceFile": "effects-v4c.png",
     "size": [
       1536,
       1024
     ],
-    "sourceBytes": 1378524,
-    "runtimeBytes": 933582,
-    "sourceSha256": "44cecddd2bbf7342ec0cb9b7b995106259acc0db0926176e8af95a187dd0c3b2",
-    "runtimeSha256": "295b294663d68cc8aab6f33e13c8c2edd094dcbaae34e8c9e588b46db3f890ef",
+    "sourceBytes": 1316028,
+    "runtimeBytes": 873990,
+    "sourceSha256": "12e225b8bb092dbd716e4cfd6c203c9dcb901d2e801a1a5ad26912f078c1e192",
+    "runtimeSha256": "8268763bacba218aaf0cf85b7f0f652fbae2bf4d8581b99da435471eb8d3de77",
     "decodedRGBAIdentical": true
   },
   {
     "name": "walls",
-    "sourceFile": "wall-model-v18.png",
+    "sourceFile": "wall-variants-v19-approved.png",
     "size": [
-      1774,
-      887
+      1086,
+      1448
     ],
-    "sourceBytes": 1298234,
-    "runtimeBytes": 875818,
-    "sourceSha256": "489bf65c4c6a9a25aa38f4043b7e232184cfd5869e307520532da866c2e085c5",
-    "runtimeSha256": "32e46220cc8eae746187fdbb22fb0de7d0211f3d9319241a5569f90b460b3a75",
+    "sourceBytes": 1418900,
+    "runtimeBytes": 677524,
+    "sourceSha256": "e9cbf46c6b37fd01a26805ef2a62b2bc0d0e9e5e55db710b43839915fc24905f",
+    "runtimeSha256": "bf8600f884a03d77ad39bdcbc582992021081d45540e255b3e42f29bdab7e8ba",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "spikes",
+    "sourceFile": "spikes-themes-v4.png",
+    "size": [
+      1086,
+      1448
+    ],
+    "sourceBytes": 1310085,
+    "runtimeBytes": 873148,
+    "sourceSha256": "e07e784e31bc17acd02259f4a657cc65b9033741f88588ede45e29eff6831c9a",
+    "runtimeSha256": "153b573da3d93753ff5ae5ff013f740d0e2b24ddddc37c2a720f84ababf09d25",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "crystals",
+    "sourceFile": "crystals-themes-v4.png",
+    "size": [
+      1284,
+      1225
+    ],
+    "sourceBytes": 979427,
+    "runtimeBytes": 624300,
+    "sourceSha256": "eb7310a2f9bba9331f924db260d181f7b96cfb7622d056816a9892e417f65cc1",
+    "runtimeSha256": "9b962e40e38518424c6c086eb127207d44c6ebb9f28e51395a722d9e58500b83",
     "decodedRGBAIdentical": true
   }
 ]

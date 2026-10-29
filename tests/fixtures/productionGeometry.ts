@@ -21,6 +21,18 @@ import { DemoObjects } from '../../src/game/world/DemoObjects';
 import { compileRoom } from '../../src/sim/dungeon/compileRoom';
 import { roomTemplate } from '../../src/sim/dungeon/roomCatalog';
 
+interface WholeModelReport {
+  frame: string;
+  width: number;
+  height: number;
+  columns: number;
+  rows: number;
+  uniform: boolean;
+  physicalWidth: number;
+  physicalHeight: number;
+  centerError: number;
+}
+
 /** Real DemoSession, physics, art and pooled hazards. Only starting arrangements are fixtures.
  * No injected geometry provider, fake AI stages, velocities, actions or collision callbacks.
  */
@@ -83,6 +95,80 @@ class GeometryScene extends Scene {
     const player = sim.playerId!;
     this.cameras.main.setZoom(RENDER_SCALE * 1.5).centerOn(B.x + B.width / 2, B.y + B.height / 2);
     window.productionGeometry = {
+      wholeModels: (id, focus) => {
+        const template = roomTemplate(id)!;
+        const floor = ['temple', 'wreck', 'abyss', 'milk'].indexOf(template.theme) + 1;
+        const run = new DungeonRun(42, new EventBus(), floor);
+        run.roomId = run.map.rooms.find((r) => r.kind === 'combat')!.id;
+        sim.setTraps(-1, []); // Reset the fixture's previous room before real placement.
+        arena.show(run, id);
+        for (const trap of sim.traps) if (trap.kind === 'spikes') Object.assign(trap, { state: 'on' });
+        session.update();
+        const sprites = this.children.list.filter(
+          (o) => o.type === 'TileSprite' && (o as GameObjects.TileSprite).visible,
+        ) as GameObjects.TileSprite[];
+        const blocks = sprites.filter((o) => o.texture.key === MAP_ART.textures.blocks);
+        const spikes = sprites.filter((o) => o.texture.key === MAP_ART.textures.spikes);
+        const physical = (arena as unknown as { slots: Physics.Arcade.Image[] }).slots.filter(
+          (o) => o.body!.enable,
+        );
+        const describe = (
+          o: GameObjects.TileSprite,
+          width: number,
+          height: number,
+          x: number,
+          y: number,
+        ) => ({
+          frame: String(o.frame.name),
+          width: o.displayWidth,
+          height: o.displayHeight,
+          columns: o.width / (o.frame.width * o.tileScaleX),
+          rows: o.height / (o.frame.height * o.tileScaleY),
+          uniform: o.tileScaleX === o.tileScaleY && o.scaleX === o.scaleY,
+          physicalWidth: width,
+          physicalHeight: height,
+          centerError: Math.hypot(o.x - x, o.y - y),
+        });
+        const target = (focus === 'spikes' ? spikes : blocks)[0]!;
+        this.cameras.main.setZoom(12).centerOn(target.x, target.y);
+        return {
+          blocks: blocks.map((o, i) => {
+            const b = physical[i]!.body!;
+            return describe(o, b.width, b.height, b.center.x, b.center.y);
+          }),
+          spikes: spikes.map((o) => {
+            const t = sim.traps.find((t) => t.active && t.kind === 'spikes' && t.x === o.x && t.y === o.y)!;
+            return describe(o, t.width, t.height, t.x, t.y);
+          }),
+        };
+      },
+      themedAssets: (floor, state) => {
+        const theme = roomTheme(floor).art;
+        const run = new DungeonRun(42, new EventBus(), floor);
+        arena.show(run, `modular_v2/${theme}/empty`);
+        // Exercise all themes even when the current room catalogue has no spike room.
+        sim.setTraps(9000 + floor, [
+          { kind: 'spikes', x: 220, y: 130, width: 32, height: 32, radius: 0, angle: 0, delay: 0 },
+        ]);
+        Object.assign(sim.traps[0]!, { state });
+        session.dungeon.roomId = session.dungeon.map.rooms.find((r) => r.kind === 'exit')!.id;
+        session.update();
+        objects.update();
+        this.cameras.main.setZoom(10).centerOn(240, 135);
+        return this.children.list
+          .filter(
+            (o) =>
+              (o.type === 'Image' || o.type === 'TileSprite') &&
+              (o as GameObjects.Image).visible &&
+              [MAP_ART.textures.spikes, MAP_ART.textures.crystals].some(
+                (key) => key === (o as GameObjects.Image).texture.key,
+              ),
+          )
+          .map((o) => {
+            const image = o as GameObjects.Image;
+            return { frame: String(image.frame.name), scaleX: image.scaleX, scaleY: image.scaleY };
+          });
+      },
       wallCollision: (floor) => {
         const run = new DungeonRun(42, new EventBus(), floor);
         const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
@@ -142,7 +228,9 @@ class GeometryScene extends Scene {
             (o) =>
               (o.type === 'Image' || o.type === 'TileSprite') &&
               (o as GameObjects.Image).visible &&
-              (o as GameObjects.Image).texture.key === MAP_ART.textures.objects,
+              [MAP_ART.textures.objects, MAP_ART.textures.spikes].some(
+                (key) => key === (o as GameObjects.Image).texture.key,
+              ),
           )
           .map((o) => (o as GameObjects.Image).frame.name);
       },
@@ -160,7 +248,7 @@ class GeometryScene extends Scene {
             (o) =>
               o.type === 'Image' &&
               (o as GameObjects.Image).visible &&
-              [MAP_ART.textures.objects, MAP_ART.textures.hub].some(
+              [MAP_ART.textures.objects, MAP_ART.textures.hub, MAP_ART.textures.crystals].some(
                 (key) => key === (o as GameObjects.Image).texture.key,
               ),
           )
@@ -479,6 +567,17 @@ class GeometryScene extends Scene {
 declare global {
   interface Window {
     productionGeometry: {
+      wholeModels: (
+        id: string,
+        focus: 'blocks' | 'spikes',
+      ) => {
+        blocks: WholeModelReport[];
+        spikes: WholeModelReport[];
+      };
+      themedAssets: (
+        floor: number,
+        state: 'idle' | 'warn' | 'on',
+      ) => { frame: string; scaleX: number; scaleY: number }[];
       wallCollision: (floor: number) => {
         expectedY: number;
         actualY: number;

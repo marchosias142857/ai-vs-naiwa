@@ -7,6 +7,7 @@ import type { RoomTheme, TrapPlacement } from '../../data/schema/traps';
 import type { CompiledRoom } from '../../sim/dungeon/compileRoom';
 import type { Point } from '../../sim/geometry/RoomGeometry';
 import { Random } from '../../sim/core/Random';
+import { coverModel, rimSpan, wallVariant } from '../assets/mapArtGeometry';
 import type { RoomArt } from './RoomArt';
 
 const B = MODULAR_V2.bounds,
@@ -101,11 +102,10 @@ export class ModularRoomArt implements RoomArt {
     wall.clearRect(0, 0, this.wallCanvas.width, this.wallCanvas.height);
     wall.setTransform(d, 0, 0, d, -LEFT * d, -TOP * d);
     wall.imageSmoothingEnabled = false;
-    const module = this.wallModule(theme);
     // One y/x ordering for every orientation: the next top covers the previous cuboid's face.
     for (const cell of wallCells(boundary))
       wall.drawImage(
-        module,
+        this.wallModule(theme, wallVariant(floorSeed, theme, cell.x, cell.y)),
         cell.x,
         cell.y - MAP_ART.wallHeight,
         MAP_ART.wallWidth,
@@ -126,14 +126,12 @@ export class ModularRoomArt implements RoomArt {
         return;
       }
       const unit = Math.min(box.width, box.height);
-      // Fit whole squat obstacles along each divider; never clip a partial crate at an end.
-      const columns = Math.ceil(box.width / unit),
-        rows = Math.ceil(box.height / unit);
+      // Active room dimensions contain whole square models; one scale preserves every edge.
       image
         .setTexture(MAP_ART.textures.blocks, `${theme}_obstacle`)
         .setPosition(240 + box.x, 135 + box.y)
         .setSize(box.width, box.height)
-        .setTileScale(box.width / columns / frame[2], box.height / rows / frame[3])
+        .setTileScale(unit / frame[2])
         .setVisible(true);
     });
   }
@@ -145,36 +143,23 @@ export class ModularRoomArt implements RoomArt {
     c.closePath();
   }
 
-  private wallModule(theme: RoomTheme['art']): HTMLCanvasElement {
-    const cached = this.modules.get(theme);
+  private wallModule(theme: RoomTheme['art'], variant: 0 | 1 | 2): HTMLCanvasElement {
+    const name = `${theme}_wall_${variant}` as const;
+    const cached = this.modules.get(name);
     if (cached) return cached;
-    const size = MAP_ART.wallPixels,
-      faceHeight = MAP_ART.wallFacePixels;
     const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size + faceHeight;
+    canvas.width = MAP_ART.wallPixels;
+    canvas.height = MAP_ART.wallPixels + MAP_ART.wallFacePixels;
     const c = canvas.getContext('2d')!;
     c.imageSmoothingEnabled = false;
     c.fillStyle = MAP_ART.wallBacking[theme];
     c.fillRect(0, 0, canvas.width, canvas.height);
     const source = this.scene.textures.get(MAP_ART.textures.walls).getSourceImage() as HTMLImageElement;
-    // Normalize the cap and body regions of the connected wall model to an exact 80×80 cap and 80×96 body.
-    // Square opaque bounds keep all ornament inside the cap; nearest sampling preserves pixels.
-    for (const part of ['top', 'face'] as const) {
-      const frame = MAP_ART.frames[`${theme}_wall_${part}`];
-      c.drawImage(
-        source,
-        frame[0],
-        frame[1],
-        frame[2],
-        frame[3],
-        0,
-        part === 'top' ? 0 : size,
-        size,
-        part === 'top' ? size : faceHeight,
-      );
-    }
-    this.modules.set(theme, canvas);
+    const frame = MAP_ART.frames[name];
+    const fit = coverModel(frame[2], frame[3], canvas.width, canvas.height);
+    // One complete selected model: cap/body can never come from different variants.
+    c.drawImage(source, frame[0], frame[1], frame[2], frame[3], fit.x, fit.y, fit.width, fit.height);
+    this.modules.set(name, canvas);
     return canvas;
   }
 
@@ -196,21 +181,16 @@ export class ModularRoomArt implements RoomArt {
     const ys = [f[1], f[1] + sy, f[1] + f[3] - sy, f[1] + f[3]];
     const dx = [x - r, x, x + width, x + width + r],
       dy = [y - r, y, y + height, y + height + r];
-    for (let row = 0; row < 3; row++)
-      for (let col = 0; col < 3; col++) {
-        if (row === 1 && col === 1) continue;
-        c.drawImage(
-          source,
-          xs[col]!,
-          ys[row]!,
-          xs[col + 1]! - xs[col]!,
-          ys[row + 1]! - ys[row]!,
-          dx[col]!,
-          dy[row]!,
-          dx[col + 1]! - dx[col]!,
-          dy[row + 1]! - dy[row]!,
-        );
-      }
+    const scale = r / sx;
+    // Square corners at one scale. Straight runs repeat at that same scale.
+    for (const row of [0, 2])
+      for (const col of [0, 2]) c.drawImage(source, xs[col]!, ys[row]!, sx, sy, dx[col]!, dy[row]!, r, r);
+    for (const span of rimSpan(width, f[2] - sx * 2, scale))
+      for (const row of [0, 2])
+        c.drawImage(source, xs[1]!, ys[row]!, span.source, sy, x + span.offset, dy[row]!, span.target, r);
+    for (const span of rimSpan(height, f[3] - sy * 2, scale))
+      for (const col of [0, 2])
+        c.drawImage(source, xs[col]!, ys[1]!, sx, span.source, dx[col]!, y + span.offset, r, span.target);
   }
 
   private floorTile(

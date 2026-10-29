@@ -1,0 +1,1387 @@
+{
+  "date": "2026-10-29",
+  "base": "a400fbabaa171bfb1ce7dc5a0ce75fdad0d9f641",
+  "branch": "gpt/114-floor-style-redraw",
+  "checks": {
+    "npmRunCheck": "passed",
+    "unitFiles": 65,
+    "unitTests": 529,
+    "e2e": {
+      "startTime": "2026-10-29T03:41:13.707Z",
+      "duration": 631464.4010000001,
+      "expected": 105,
+      "skipped": 1,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "e2eFiles": [
+      "productionGeometry.spec.ts",
+      "mapLayers.spec.ts",
+      "pwa.spec.ts",
+      "smoke.spec.ts",
+      "save.spec.ts"
+    ],
+    "workers": 1,
+    "retries": 0,
+    "projects": ["desktop", "mobile-landscape"],
+    "webkit": false
+  },
+  "assets": {
+    "atlasCount": 15,
+    "namedFrames": 128,
+    "allDecodedRGBAIdentical": true,
+    "runtimeBytes": 11942478,
+    "previousRuntimeBytes": 10732070,
+    "decodedSourceRGBABytes": 94357984,
+    "previousDecodedSourceRGBABytes": 75492264,
+    "maxRuntimeBytes": 1123724,
+    "pwaEntries": 35,
+    "pwaBuildReportedKiB": 23228.34
+  },
+  "approvedWallSHA256": "e9cbf46c6b37fd01a26805ef2a62b2bc0d0e9e5e55db710b43839915fc24905f",
+  "screenshots": [
+    {
+      "path": "docs/testing/floor-style-redraw/wall-1-room.png",
+      "sha256": "99ed0bffb8a0c07ce50100d435deeffe01dcb6c63e865e1f27849039fea20c0f"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/wall-1-side-locked.png",
+      "sha256": "01d6c0e3ad3ab3aaf46b24ab0dc9b679dce9244df4f0c86a295965b402b75d3a"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/unified-zones-1.png",
+      "sha256": "08766ba312329882c334e988a6d988618701f796ce4c44f40437d65748430fcb"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/wall-2-room.png",
+      "sha256": "36fb679f275145bbdafbfd26e5f8cc6ec36dadc54f568523d711724591c31e34"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/wall-2-side-locked.png",
+      "sha256": "72ba66e27fdc77d00809af5ab954710b2ce1873a31de8758730fd04edb17c96d"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/unified-zones-2.png",
+      "sha256": "97c25ae712448e49a4596196e18c286c9c882579f3f89683abc7368002a1e9c0"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/wall-3-room.png",
+      "sha256": "37c745f043e46d885e5869789137d55d81c6b408ec2c1d7b2689274e7c670143"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/wall-3-side-locked.png",
+      "sha256": "728a16abbf650e8cefad8c218099d62c680756a162609bbffc949b61b1e14fcd"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/unified-zones-3.png",
+      "sha256": "620e4c76cd3645538b34d0ce23839df1c411da1b3a4926d60a9f625dad57150f"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/wall-4-room.png",
+      "sha256": "315d3bfa716470e48d53f630919b88eaa4083b81302e4f07898721ffafad8004"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/wall-4-side-locked.png",
+      "sha256": "ea16c0d3528d8a1a5a4e01a6b000bfdb1186deb6368c97a2ba90b3d074097ace"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/unified-zones-4.png",
+      "sha256": "c0b3872d4c77400f531326f1a7beda42812951755472c6f6c0212d6d3ec1b7b5"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/themed-temple-on.png",
+      "sha256": "9656faad5da2d7c101ab57369b9f5e7c1913d08715136ef02e2fa5f7b0d6741c"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/themed-wreck-on.png",
+      "sha256": "fce2fd2caa93af0bd37e9d7e10e9e211f21a817a4fa9b8525eacc619a2537923"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/themed-abyss-on.png",
+      "sha256": "83cac85e95ef2fac2ede5d1c840ceab20df11e56afbb31ebea86f93bb1319532"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/themed-milk-on.png",
+      "sha256": "107a43200a292c2bc32c1867fa6797b8f4f9f807ac46a21826691baf1bd1d7e8"
+    }
+  ],
+  "tests": [
+    {
+      "title": "temple: actors stay above reused obstacles and barrels from either side",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3543
+        }
+      ]
+    },
+    {
+      "title": "temple: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4412
+        }
+      ]
+    },
+    {
+      "title": "wreck: actors stay above reused obstacles and barrels from either side",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3236
+        }
+      ]
+    },
+    {
+      "title": "wreck: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4123
+        }
+      ]
+    },
+    {
+      "title": "abyss: actors stay above reused obstacles and barrels from either side",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3431
+        }
+      ]
+    },
+    {
+      "title": "abyss: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4530
+        }
+      ]
+    },
+    {
+      "title": "milk: actors stay above reused obstacles and barrels from either side",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3655
+        }
+      ]
+    },
+    {
+      "title": "milk: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4402
+        }
+      ]
+    },
+    {
+      "title": "temple: actors stay above reused obstacles and barrels from either side",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3758
+        }
+      ]
+    },
+    {
+      "title": "temple: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4113
+        }
+      ]
+    },
+    {
+      "title": "wreck: actors stay above reused obstacles and barrels from either side",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3400
+        }
+      ]
+    },
+    {
+      "title": "wreck: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4080
+        }
+      ]
+    },
+    {
+      "title": "abyss: actors stay above reused obstacles and barrels from either side",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3301
+        }
+      ]
+    },
+    {
+      "title": "abyss: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4074
+        }
+      ]
+    },
+    {
+      "title": "milk: actors stay above reused obstacles and barrels from either side",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3372
+        }
+      ]
+    },
+    {
+      "title": "milk: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3995
+        }
+      ]
+    },
+    {
+      "title": "solid wall tops stop real Arcade movement, projectiles and sight in all four themes",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3350
+        }
+      ]
+    },
+    {
+      "title": "production geometry: pillar",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4025
+        }
+      ]
+    },
+    {
+      "title": "production geometry: boundary",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3101
+        }
+      ]
+    },
+    {
+      "title": "production geometry: near-wall",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3761
+        }
+      ]
+    },
+    {
+      "title": "production geometry: rain",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4349
+        }
+      ]
+    },
+    {
+      "title": "production geometry: brood",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 2895
+        }
+      ]
+    },
+    {
+      "title": "production geometry: los",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3175
+        }
+      ]
+    },
+    {
+      "title": "production geometry: hop",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3032
+        }
+      ]
+    },
+    {
+      "title": "production geometry: fresh session restore sees the landed pool before the first step",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 15782
+        }
+      ]
+    },
+    {
+      "title": "map art dense showcase: floor 1",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4514
+        }
+      ]
+    },
+    {
+      "title": "map art dense showcase: floor 2",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4981
+        }
+      ]
+    },
+    {
+      "title": "map art dense showcase: floor 3",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 5302
+        }
+      ]
+    },
+    {
+      "title": "map art dense showcase: floor 4",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4577
+        }
+      ]
+    },
+    {
+      "title": "map wall review: floor 1",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 16607
+        }
+      ]
+    },
+    {
+      "title": "map wall review: floor 2",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 16494
+        }
+      ]
+    },
+    {
+      "title": "map wall review: floor 3",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 17173
+        }
+      ]
+    },
+    {
+      "title": "map wall review: floor 4",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 13736
+        }
+      ]
+    },
+    {
+      "title": "map object atlas missing uses graybox without missing object frames",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 2668
+        }
+      ]
+    },
+    {
+      "title": "unified trap states and inset borders: floor 1",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 7736
+        }
+      ]
+    },
+    {
+      "title": "unified trap states and inset borders: floor 2",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 8912
+        }
+      ]
+    },
+    {
+      "title": "unified trap states and inset borders: floor 3",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 8602
+        }
+      ]
+    },
+    {
+      "title": "unified chest, exit and supply pickups use actual game objects",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 6055
+        }
+      ]
+    },
+    {
+      "title": "unified environment zones stay visible on each floor and recycle their existing display slots",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 9971
+        }
+      ]
+    },
+    {
+      "title": "theme changes select matching crystals and all spike states without image stretching",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 27391
+        }
+      ]
+    },
+    {
+      "title": "solid wall tops stop real Arcade movement, projectiles and sight in all four themes",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 2508
+        }
+      ]
+    },
+    {
+      "title": "production geometry: pillar",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4327
+        }
+      ]
+    },
+    {
+      "title": "production geometry: boundary",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3024
+        }
+      ]
+    },
+    {
+      "title": "production geometry: near-wall",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4165
+        }
+      ]
+    },
+    {
+      "title": "production geometry: rain",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3426
+        }
+      ]
+    },
+    {
+      "title": "production geometry: brood",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3049
+        }
+      ]
+    },
+    {
+      "title": "production geometry: los",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 2967
+        }
+      ]
+    },
+    {
+      "title": "production geometry: hop",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 2627
+        }
+      ]
+    },
+    {
+      "title": "production geometry: fresh session restore sees the landed pool before the first step",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 13544
+        }
+      ]
+    },
+    {
+      "title": "map art dense showcase: floor 1",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4284
+        }
+      ]
+    },
+    {
+      "title": "map art dense showcase: floor 2",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4562
+        }
+      ]
+    },
+    {
+      "title": "map art dense showcase: floor 3",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4615
+        }
+      ]
+    },
+    {
+      "title": "map art dense showcase: floor 4",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4162
+        }
+      ]
+    },
+    {
+      "title": "map wall review: floor 1",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 14676
+        }
+      ]
+    },
+    {
+      "title": "map wall review: floor 2",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 14278
+        }
+      ]
+    },
+    {
+      "title": "map wall review: floor 3",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 14634
+        }
+      ]
+    },
+    {
+      "title": "map wall review: floor 4",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 11793
+        }
+      ]
+    },
+    {
+      "title": "map object atlas missing uses graybox without missing object frames",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 2402
+        }
+      ]
+    },
+    {
+      "title": "unified trap states and inset borders: floor 1",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 6618
+        }
+      ]
+    },
+    {
+      "title": "unified trap states and inset borders: floor 2",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 7207
+        }
+      ]
+    },
+    {
+      "title": "unified trap states and inset borders: floor 3",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 7324
+        }
+      ]
+    },
+    {
+      "title": "unified chest, exit and supply pickups use actual game objects",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 5450
+        }
+      ]
+    },
+    {
+      "title": "unified environment zones stay visible on each floor and recycle their existing display slots",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 8861
+        }
+      ]
+    },
+    {
+      "title": "theme changes select matching crystals and all spike states without image stretching",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 22370
+        }
+      ]
+    },
+    {
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 14342
+        }
+      ]
+    },
+    {
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 28913
+        }
+      ]
+    },
+    {
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 14580
+        }
+      ]
+    },
+    {
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 27669
+        }
+      ]
+    },
+    {
+      "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4432
+        }
+      ]
+    },
+    {
+      "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1200
+        }
+      ]
+    },
+    {
+      "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 935
+        }
+      ]
+    },
+    {
+      "title": "同步保存 both，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 965
+        }
+      ]
+    },
+    {
+      "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 2491
+        }
+      ]
+    },
+    {
+      "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 6081
+        }
+      ]
+    },
+    {
+      "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 6059
+        }
+      ]
+    },
+    {
+      "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "skipped",
+      "results": [
+        {
+          "status": "skipped",
+          "retry": 0,
+          "durationMs": 631
+        }
+      ]
+    },
+    {
+      "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4383
+        }
+      ]
+    },
+    {
+      "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1339
+        }
+      ]
+    },
+    {
+      "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 2170
+        }
+      ]
+    },
+    {
+      "title": "菜单兜底区分 updated，入口独立校验",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1341
+        }
+      ]
+    },
+    {
+      "title": "菜单兜底区分 invalid，入口独立校验",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 911
+        }
+      ]
+    },
+    {
+      "title": "菜单兜底区分 corrupt，入口独立校验",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1002
+        }
+      ]
+    },
+    {
+      "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1329
+        }
+      ]
+    },
+    {
+      "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 713
+        }
+      ]
+    },
+    {
+      "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1525
+        }
+      ]
+    },
+    {
+      "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4477
+        }
+      ]
+    },
+    {
+      "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1298
+        }
+      ]
+    },
+    {
+      "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1210
+        }
+      ]
+    },
+    {
+      "title": "同步保存 both，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1032
+        }
+      ]
+    },
+    {
+      "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 2670
+        }
+      ]
+    },
+    {
+      "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 6253
+        }
+      ]
+    },
+    {
+      "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 6091
+        }
+      ]
+    },
+    {
+      "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 6289
+        }
+      ]
+    },
+    {
+      "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 5019
+        }
+      ]
+    },
+    {
+      "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1466
+        }
+      ]
+    },
+    {
+      "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 2374
+        }
+      ]
+    },
+    {
+      "title": "菜单兜底区分 updated，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1303
+        }
+      ]
+    },
+    {
+      "title": "菜单兜底区分 invalid，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1013
+        }
+      ]
+    },
+    {
+      "title": "菜单兜底区分 corrupt，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1136
+        }
+      ]
+    },
+    {
+      "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1418
+        }
+      ]
+    },
+    {
+      "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 775
+        }
+      ]
+    },
+    {
+      "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 1982
+        }
+      ]
+    },
+    {
+      "title": "启动 → 菜单 → 灰盒房间，无报错",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4842
+        }
+      ]
+    },
+    {
+      "title": "?scene=Game 可以跳过菜单",
+      "project": "desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 4157
+        }
+      ]
+    },
+    {
+      "title": "启动 → 菜单 → 灰盒房间，无报错",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 5979
+        }
+      ]
+    },
+    {
+      "title": "?scene=Game 可以跳过菜单",
+      "project": "mobile-landscape",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "durationMs": 3949
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Chromium desktop and emulated Pixel 7 landscape only; no WebKit, physical-device or FPS benchmark in this batch.",
+    "Uniform cover clips small outer excess on approved wall/door models; no independent X/Y stretching.",
+    "Decoded RGBA size is source-texture arithmetic, not measured GPU or process memory."
+  ]
+}
