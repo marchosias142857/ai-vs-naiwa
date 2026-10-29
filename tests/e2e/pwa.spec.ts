@@ -95,6 +95,32 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
   expect(title.ok).toBe(true);
   expect(title.size).toBeGreaterThan(1000);
   expect(title.size).toBeLessThan(2 * 1024 * 1024);
+  // Every new UI image must decode from the service-worker cache under the deployment prefix.
+  const ui = await page.evaluate(async () => {
+    const files = [
+      'icons-v1.png',
+      'controls-v1.png',
+      ...['panel', 'normal', 'focus', 'pressed', 'disabled', 'well'].map((state) => `frame-${state}-v1.png`),
+    ];
+    return Promise.all(
+      files.map(async (file) => {
+        const response = await fetch(`assets/ui/${file}`),
+          blob = await response.blob();
+        const image = await createImageBitmap(blob);
+        const result = { file, ok: response.ok, bytes: blob.size, width: image.width, height: image.height };
+        image.close();
+        return result;
+      }),
+    );
+  });
+  for (const image of ui) {
+    expect(image.ok, image.file).toBe(true);
+    expect(image.bytes).toBeLessThan(2 * 1024 * 1024);
+    expect(image.width).toBe(image.file === 'icons-v1.png' || image.file === 'controls-v1.png' ? 384 : 128);
+    expect(image.height).toBe(
+      image.file === 'icons-v1.png' ? 384 : image.file === 'controls-v1.png' ? 256 : 128,
+    );
+  }
   await page.close();
   const reopened = await context.newPage();
   await reopened.goto(`${url}?scene=Game&seed=7`);

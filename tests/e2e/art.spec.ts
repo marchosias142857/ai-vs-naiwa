@@ -186,6 +186,8 @@ test('参考图角色：受击使用新图集，死亡完整落地且隐藏武�
   test.setTimeout(90_000);
   await page.goto('/?seed=42');
   await page.waitForFunction(() => window.__AVN__?.scene === 'Menu');
+  // Navigation invalidates CDP response bodies; finish capturing both atlases before reload.
+  await Promise.all([heroImage, reactionImage]);
   await page.evaluate(() => {
     localStorage.setItem('avn.settings.v1', JSON.stringify({ flashes: false, sound: false }));
     localStorage.setItem(

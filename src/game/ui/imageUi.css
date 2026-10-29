@@ -383,3 +383,17 @@ summary::-webkit-details-marker {
 .layout-item.vital {
   min-height: 0;
 }
+@media (max-width: 680px) {
+  .talent-tree {
+    grid-template-columns: repeat(3, minmax(210px, 1fr));
+    touch-action: pan-x pan-y;
+    scrollbar-width: thin;
+    scrollbar-color: #6f8ca5 #14232f;
+  }
+}
+@media (max-height: 480px) {
+  /* A pinned branch heading must not cover the selected node on a shallow viewport. */
+  .talent-tree h3 {
+    position: static;
+  }
+}
