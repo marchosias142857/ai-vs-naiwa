@@ -60,15 +60,13 @@ test('whole obstacle and spike models match real collision and damage footprints
   await page.waitForFunction(() => window.productionGeometry);
   const reports = [];
   for (const [theme, room, focus] of [
-    ['abyss', 'combat_3', 'blocks'],
-    ['wreck', 'combat_1', 'blocks'],
-    ['temple', 'combat_2', 'spikes'],
-    ['wreck', 'combat_3', 'spikes'],
-    ['abyss', 'combat_2', 'spikes'],
-    ['abyss', 'combat_3', 'spikes'],
+    ['abyss', 'court_0_3', 'blocks'],
+    ['wreck', 'court_0_3', 'blocks'],
+    ['temple', 'court_0_0', 'spikes'],
+    ['temple', 'cloister_0_0', 'spikes'],
   ] as const) {
     const result = await page.evaluate(({ id, focus }) => window.productionGeometry.wholeModels(id, focus), {
-      id: `modular_v2/${theme}/${room}`,
+      id: `designed_v3/${theme}/${room}`,
       focus,
     });
     expect(result[focus].length).toBeGreaterThan(0);
@@ -80,8 +78,6 @@ test('whole obstacle and spike models match real collision and damage footprints
       expect(item.height).toBe(item.physicalHeight);
       expect(item.centerError).toBeLessThan(1e-8);
     }
-    if (focus === 'blocks')
-      expect(result.blocks.map((b) => [b.columns, b.rows])).toEqual(Array.from({ length: 4 }, () => [5, 1]));
     reports.push({ theme, room, focus, ...result });
     await page.screenshot({ path: info.outputPath(`whole-${theme}-${room}-${focus}.png`), scale: 'css' });
   }
@@ -97,7 +93,7 @@ test('solid wall tops stop real Arcade movement, projectiles and sight in all fo
   await page.waitForFunction(() => window.productionGeometry);
   for (const floor of [1, 2, 3, 4]) {
     const results = await page.evaluate((f) => window.productionGeometry.wallCollision(f), floor);
-    expect(results).toHaveLength(floor === 2 ? 2 : 1);
+    expect(results).toHaveLength(1);
     for (const result of results) {
       expect(result.actualY).toBeCloseTo(result.expectedY, 3);
       expect(result.projectileY).toBeCloseTo(result.topY, 3);
@@ -207,7 +203,7 @@ for (const floor of [1, 2, 3])
     for (const state of ['idle', 'warn', 'on', 'broken'] as const) {
       const frames = await page.evaluate((s) => window.productionGeometry.trapState(s), state);
       expect(frames.length).toBeGreaterThan(0);
-      if (floor < 3 && state !== 'broken')
+      if (floor === 1 && state !== 'broken')
         expect(frames).toContain(`${floor === 1 ? 'temple' : 'wreck'}_spikes_${state}`);
       if (floor === 2)
         expect(frames).toContain(

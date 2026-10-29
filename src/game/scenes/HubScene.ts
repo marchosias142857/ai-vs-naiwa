@@ -7,7 +7,6 @@ import { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
 import { createInputFrame } from '../../sim/core/types';
 import { MAP_ART, mapDoorRect } from '../../data/mapArt';
-import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
 import { compileRoom } from '../../sim/dungeon/compileRoom';
 import { roomTemplate } from '../../sim/dungeon/roomCatalog';
 import { RoomGeometry } from '../../sim/geometry/RoomGeometry';
@@ -38,8 +37,8 @@ export class HubScene extends Scene {
     retryPendingRewards();
     configureCamera(this);
     // The hub uses the same solid rectangular wall projection as the fourth-floor rooms.
-    const room = compileRoom(roomTemplate('modular_v2/milk/empty')!);
-    const port = room.ports.find((p) => p.id === LEGACY_V1.ports[0]!.id)!;
+    const room = compileRoom(roomTemplate('designed_v3/temple/hub')!);
+    const port = room.ports.find((p) => p.id === 'north')!;
     createRoomArt(this)?.show('temple', [], room, [], [port]);
     const door = mapDoorRect(port);
     this.add

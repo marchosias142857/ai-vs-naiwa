@@ -1,7 +1,6 @@
 import { Physics, Scenes, type Scene } from 'phaser';
 import { COLORS, POOL_SIZES } from '../config';
 import { ENEMIES, type EnemyId } from '../data/enemies';
-import { ROOM_LAYOUTS } from '../data/layouts';
 import { PLAYER_RULES } from '../data/player';
 import { createCombatWorld } from '../sim/combat/api';
 import { Random } from '../sim/core/Random';
@@ -68,7 +67,7 @@ export class StressRun {
     this.bridge = new CombatBridge(scene, this.sim);
     this.bridge.actors.enableArt(scene);
     this.arena = new RoomArena(scene, this.bridge, fixed);
-    this.arena.setLayout(ROOM_LAYOUTS.length - 1);
+    this.arena.setLayout(0);
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, this.bus);
     new CombatAudio(scene, this.bus);
     scene.scene.launch(InputScene.KEY, { demo: true });

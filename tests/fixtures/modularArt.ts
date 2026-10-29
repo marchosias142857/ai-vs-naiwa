@@ -1,6 +1,7 @@
 import { Game, Scene, AUTO, type Textures } from 'phaser';
 import { MAP_ART, mapFrameTexture, mapDoorRect } from '../../src/data/mapArt';
 import { installMapDoors } from '../../src/game/assets/mapDoorArt';
+import { wallCells } from '../../src/sim/dungeon/wallGeometry';
 import { ModularRoomArt } from '../../src/game/world/ModularRoomArt';
 import { MODULAR_V2 } from '../../src/data/roomTemplates/modularV2';
 import { RoomGeometry, createGeometryHit, GeometryMask } from '../../src/sim/geometry/RoomGeometry';
@@ -26,6 +27,8 @@ function layout(i: number): CompiledRoom {
     bounds: B,
     boundary,
     artBoundary: boundary,
+    floorBoundary: boundary,
+    wallCells: wallCells(boundary),
     cuts: [{ x: x + w / 2, y: B.y + h / 2, width: w, height: h }],
     obstacles: [],
     spawns: [],
@@ -268,8 +271,8 @@ class ArtScene extends Scene {
         }
       const floor = ['temple', 'wreck', 'abyss', 'milk'].indexOf(theme) + 1;
       const template = resolveRoomTemplate(
-        `modular_v2/${theme}/${floor === 4 ? 'boss' : 'combat_0'}`,
-        floor,
+        `designed_v3/${theme}/${floor === 4 ? 'boss' : 'court_0_0'}`,
+        theme,
         floor === 4 ? 'boss' : 'combat',
       )!;
       let holes = 0,

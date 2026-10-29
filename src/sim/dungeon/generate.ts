@@ -1,4 +1,5 @@
-import { DUNGEON } from '../../data/dungeon';
+import type { DungeonDef } from '../../data/schema/dungeon';
+import { DUNGEON, DUNGEON_SEARCH_LIMIT } from '../../data/dungeon';
 import type { Random } from '../core/Random';
 
 export type RoomKind = 'start' | 'combat' | 'chest' | 'exit' | 'boss';
@@ -22,8 +23,19 @@ const DIRECTIONS = [
 ] as const;
 
 /** 只在生成楼层时分配。调用方传 rng.fork(`map:${floor}`)，不消耗战斗随机流。 */
-export function generateDungeon(rng: Random, boss = false): DungeonMap {
-  const size = DUNGEON.gridSize;
+export function generateDungeon(rng: Random, boss = false, config: DungeonDef = DUNGEON): DungeonMap {
+  if (
+    ![config.gridSize, config.mainRooms, config.branchRooms, config.floors].every(Number.isInteger) ||
+    config.gridSize < 3 ||
+    config.gridSize > 9 ||
+    config.mainRooms < 3 ||
+    config.branchRooms < 1 ||
+    config.floors < 1 ||
+    config.mainRooms + config.branchRooms > config.gridSize ** 2
+  )
+    throw new RangeError('invalid dungeon configuration');
+  const size = config.gridSize;
+  let searches = 0;
   const rooms: DungeonRoom[] = [];
   const occupied = new Set<number>();
   const add = (x: number, y: number, parent?: DungeonRoom): DungeonRoom => {
@@ -41,6 +53,7 @@ export function generateDungeon(rng: Random, boss = false): DungeonMap {
   // 回溯保证主路径达到目标长度；不靠失败后无界重试整个地图。
   const extend = (room: DungeonRoom, left: number): boolean => {
     if (!left) return true;
+    if (++searches > DUNGEON_SEARCH_LIMIT) throw new RangeError('dungeon path search budget exhausted');
     for (const [dx, dy] of rng.shuffle([...DIRECTIONS])) {
       const x = room.x + dx,
         y = room.y + dy;
@@ -53,11 +66,11 @@ export function generateDungeon(rng: Random, boss = false): DungeonMap {
     }
     return false;
   };
-  if (!extend(start, (boss ? 2 : DUNGEON.mainRooms) - 1)) throw new Error('无法生成地牢主路径');
+  if (!extend(start, (boss ? 2 : config.mainRooms) - 1)) throw new Error('无法生成地牢主路径');
   const exit = rooms[rooms.length - 1]!;
   exit.kind = boss ? 'boss' : 'exit';
   if (!boss) {
-    for (let i = 0; i < DUNGEON.branchRooms; i++) {
+    for (let i = 0; i < config.branchRooms; i++) {
       const candidates: { x: number; y: number; parent: DungeonRoom }[] = [];
       for (const parent of rooms)
         for (const [dx, dy] of DIRECTIONS) {
@@ -67,7 +80,8 @@ export function generateDungeon(rng: Random, boss = false): DungeonMap {
             candidates.push({ x, y, parent });
         }
       const spot = rng.pick(candidates);
-      if (spot) add(spot.x, spot.y, spot.parent).kind = i === 0 ? 'chest' : 'combat';
+      if (!spot) throw new RangeError('dungeon grid capacity exhausted');
+      add(spot.x, spot.y, spot.parent).kind = i === 0 ? 'chest' : 'combat';
     }
   }
   return { rooms, start: start.id, exit: exit.id };

@@ -11,7 +11,7 @@ import { MONSTER_TEXTURES, enemyAnimation } from '../../src/data/enemyArt';
 import { WEAPONS } from '../../src/data/weapons';
 import { ARSENAL_SHOT_ART } from '../../src/data/arsenalArt';
 import { ROOM_ART } from '../../src/data/roomArt';
-import { ROOM_THEMES } from '../../src/data/traps';
+import { ROOM_STYLES } from '../../src/data/roomStyles';
 import type { WeaponDef } from '../../src/data/schema';
 import {
   ArtFrameSchema,
@@ -193,7 +193,7 @@ describe('真实 PNG 图集与持握数据', () => {
       for (const sprite of [w.shot?.sprite, w.shot?.split?.sprite])
         if (sprite) expect(Object.hasOwn(ARSENAL_SHOT_ART, sprite), sprite).toBe(true);
     // 每个新主题都有地砖、嵌花、墙砖与障碍块（ADR 0032）；第 1 层沿用原有石殿图。
-    for (const { art } of ROOM_THEMES)
+    for (const { art } of Object.values(ROOM_STYLES))
       if (art !== 'temple')
         for (const part of ['floor', 'floor_alt', 'wall', 'block'])
           expect(Object.hasOwn(ROOM_ART, `${art}_${part}`), `${art}_${part}`).toBe(true);

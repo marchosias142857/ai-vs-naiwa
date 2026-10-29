@@ -1,4 +1,6 @@
-import { MODULAR_V2 } from '../../data/roomTemplates/modularV2';
+import { ROOM_METRICS } from '../../data/roomTemplates/metrics';
+import { DESIGNED_V3 } from '../../data/roomTemplates/designedV3';
+import { ROOM_STYLES, FLOOR_STYLE_POLICY } from '../../data/roomStyles';
 import { WEAPON_ART } from '../../data/art';
 import { CHARACTER_ART } from '../../data/characterArt';
 import { ATTACKS } from '../../data/attacks';
@@ -6,7 +8,6 @@ import { BALANCE } from '../../data/balance';
 import { CHARACTERS } from '../../data/characters';
 import { DUNGEON } from '../../data/dungeon';
 import { ENEMIES } from '../../data/enemies';
-import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
 import { TRAP_RULES } from '../../data/traps';
 import { ENCOUNTERS, LOOT_RULES } from '../../data/loot';
 import { NAVIGATION } from '../../data/navigation';
@@ -30,8 +31,10 @@ export const SAVE_VERSION = {
       CHARACTERS,
       DUNGEON,
       ENEMIES,
-      LEGACY_V1,
-      MODULAR_V2,
+      ROOM_METRICS,
+      DESIGNED_V3,
+      ROOM_STYLES,
+      FLOOR_STYLE_POLICY,
       TRAP_RULES,
       ENCOUNTERS,
       LOOT_RULES,

@@ -1,12 +1,11 @@
 import { ENEMIES } from '../../data/enemies';
-import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
-import { MODULAR_V2 } from '../../data/roomTemplates/modularV2';
+import { ROOM_METRICS as M, ROOM_PORTS } from '../../data/roomTemplates/metrics';
+import { ROOM_RULES } from '../../data/rooms';
 import { LOOT_RULES } from '../../data/loot';
 import { RoomGeometry, type Point, type GeometryObstacle } from '../geometry/RoomGeometry';
+import { roomColumns, physicalContour, wallCells } from './wallGeometry';
 import type { RoomTemplate } from './roomCatalog';
-
 const maxSpawnRadius = Math.max(...Object.values(ENEMIES).map((enemy) => enemy.radius));
-
 export interface Anchor extends Point {
   readonly id: string;
 }
@@ -21,6 +20,8 @@ export interface CompiledRoom {
   readonly boundary: readonly Point[];
   /** Grid-aligned wall bases; the physical boundary excludes their complete raised silhouette. */
   readonly artBoundary: readonly Point[];
+  readonly wallCells: readonly Point[];
+  readonly floorBoundary: readonly Point[];
   readonly cuts: readonly BoundaryBox[];
   readonly obstacles: readonly GeometryObstacle[];
   readonly ports: readonly {
@@ -33,49 +34,56 @@ export interface CompiledRoom {
   readonly spawns: readonly Anchor[];
   readonly anchors: Readonly<Record<'player' | 'chest' | 'reward' | 'exit', Point>>;
 }
-/** Compiles once when entering a room; the polygon and Arcade infill share one contour table. */
-export function compileRoom(t: RoomTemplate): CompiledRoom {
-  const origin = LEGACY_V1.bounds,
-    cx = origin.x + origin.width / 2,
-    cy = origin.y + origin.height / 2;
-  const modular = t.id.startsWith('modular_v2/');
-  const shape = modular ? MODULAR_V2.shapes[t.theme] : MODULAR_V2.shapes.milk;
-  const apron = modular ? MODULAR_V2.southApron : 0,
-    projection = modular ? MODULAR_V2.wall.faceHeight : 0;
-  const artBoundary = shape.points.map(([x, y]) => ({
-    x: origin.x + x,
-    y: origin.y + y + (y > origin.height / 2 ? apron : 0),
-  }));
-  // Clockwise contours: a horizontal edge travelling west faces the room from below.
-  // Its raised square and wall body are both solid, not just the unprojected base edge.
-  const boundary = artBoundary.map((p, i, points) => {
-    const prev = points[(i + points.length - 1) % points.length]!,
-      next = points[(i + 1) % points.length]!;
-    const south = (prev.y === p.y && prev.x > p.x) || (next.y === p.y && p.x > next.x);
-    return { x: p.x, y: p.y - (south ? projection : 0) };
+/** Conservative visible extents include rims and the tall barrel art, not only damage cores. */
+export function clearOfTraps(t: RoomTemplate, p: Point, radius: number): boolean {
+  return t.traps.every((trap) => {
+    const width = trap.width ?? (trap.kind === 'barrel' ? 18 : 16);
+    const height = trap.height ?? (trap.kind === 'barrel' ? 23 : 16);
+    const rim = trap.width ? M.rim : 0;
+    return (
+      Math.abs(p.x - M.center.x - trap.x) >= width / 2 + rim + radius ||
+      Math.abs(p.y - M.center.y - trap.y) >= height / 2 + rim + radius
+    );
   });
+}
+/** One wall-cell plan supplies art, exact stair-step geometry and Arcade infill. */
+export function compileRoom(t: RoomTemplate): CompiledRoom {
+  const cx = M.center.x,
+    cy = M.center.y;
+  const artBoundary = t.outline.map(([x, y]) => ({ x: cx + x, y: cy + y }));
+  const columns = roomColumns(artBoundary),
+    boundary = physicalContour(columns);
+  const floorBoundary = physicalContour(columns, 0);
   const x = Math.min(...boundary.map((p) => p.x)),
     y = Math.min(...boundary.map((p) => p.y));
-  const b = {
+  const bounds = {
     x,
     y,
     width: Math.max(...boundary.map((p) => p.x)) - x,
     height: Math.max(...boundary.map((p) => p.y)) - y,
   };
-  const artBottom = Math.max(...artBoundary.map((p) => p.y));
-  const shapeBottom = Math.max(...shape.points.map((p) => p[1]));
-  const cuts = shape.cuts.map(([x, y, width, height]) => ({
-    x: origin.x + x + width / 2,
-    y:
-      origin.y +
-      y +
-      (y > origin.height / 2 ? apron : 0) +
-      height / 2 -
-      (y + height === shapeBottom ? projection : 0),
-    width,
-    height,
-  }));
-  if (cuts.length > MODULAR_V2.maxBoundaryBodies) throw new RangeError('boundary pool exhausted');
+  const cuts: BoundaryBox[] = [];
+  const append = (left: number, top: number, bottom: number) => {
+    if (bottom <= top) return;
+    const last = cuts[cuts.length - 1];
+    if (
+      last &&
+      last.y === (top + bottom) / 2 &&
+      last.height === bottom - top &&
+      last.x + last.width / 2 === left
+    ) {
+      cuts[cuts.length - 1] = { ...last, x: last.x + M.wall.width / 2, width: last.width + M.wall.width };
+    } else
+      cuts.push({
+        x: left + M.wall.width / 2,
+        y: (top + bottom) / 2,
+        width: M.wall.width,
+        height: bottom - top,
+      });
+  };
+  for (const c of columns) append(c.x, bounds.y, c.top);
+  for (const c of columns) append(c.x, c.bottom - M.wall.faceHeight, bounds.y + bounds.height);
+  if (cuts.length > M.maxBoundaryBodies) throw new RangeError('boundary pool exhausted');
   const obstacles: GeometryObstacle[] = t.boxes.map((box, i) => {
     const x = cx + box.x,
       y = cy + box.y,
@@ -102,90 +110,64 @@ export function compileRoom(t: RoomTemplate): CompiledRoom {
       id: `barrel:${i}`,
       kind: 'barrel',
       mask: 15,
-      shape: { type: 'circle', x: cx + p.x, y: cy + p.y, radius: LEGACY_V1.trapRadii.barrel },
+      shape: { type: 'circle', x: cx + p.x, y: cy + p.y, radius: M.barrelRadius },
     }));
-  const interior = new RoomGeometry(boundary, [], 0);
-  const fits = (x: number, y: number, width: number, height: number) =>
-    x - width / 2 >= b.x &&
-    x + width / 2 <= b.x + b.width &&
-    y - height / 2 >= b.y &&
-    y + height / 2 <= b.y + b.height &&
-    !cuts.some(
-      (cut) =>
-        Math.abs(x - cut.x) < (width + cut.width) / 2 && Math.abs(y - cut.y) < (height + cut.height) / 2,
-    );
-  for (const box of t.boxes)
-    if (!fits(cx + box.x, cy + box.y, box.width, box.height))
-      throw new RangeError('obstacle outside contour');
-  for (const trap of t.traps) {
-    const p = { x: cx + trap.x, y: cy + trap.y };
-    const radius = trap.kind === 'barrel' || trap.kind === 'mine' ? LEGACY_V1.trapRadii[trap.kind] : 0;
-    if (radius ? !interior.canOccupy(p, radius, 'spawn') : !fits(p.x, p.y, trap.width ?? 0, trap.height ?? 0))
-      throw new RangeError('trap outside contour');
-  }
   const geometry = new RoomGeometry(boundary, [...obstacles, ...barrels], 0);
+  const interior = new RoomGeometry(boundary, [], 0);
+  for (const item of [...t.boxes, ...t.traps]) {
+    const w = item.width ?? 24,
+      h = item.height ?? 28;
+    for (const dx of [-w / 2, w / 2])
+      for (const dy of [-h / 2, h / 2])
+        if (!interior.canOccupy({ x: cx + item.x + dx, y: cy + item.y + dy }, 0, 'walk'))
+          throw new RangeError(`placement outside ${t.id}`);
+  }
+  const safe = (p: Point, radius: number) =>
+    geometry.canOccupy(p, radius, 'spawn') && clearOfTraps(t, p, radius);
   const spawns: Anchor[] = [];
-  for (
-    let y = b.y + MODULAR_V2.spawnMargin;
-    y <= b.y + b.height - MODULAR_V2.spawnMargin;
-    y += MODULAR_V2.spawnGrid
-  )
-    for (
-      let x = b.x + MODULAR_V2.spawnMargin;
-      x <= b.x + b.width - MODULAR_V2.spawnMargin;
-      x += MODULAR_V2.spawnGrid
-    )
-      if (geometry.canOccupy({ x, y }, maxSpawnRadius, 'spawn'))
+  for (let y = bounds.y + M.spawnMargin; y <= bounds.y + bounds.height - M.spawnMargin; y += M.spawnGrid)
+    for (let x = bounds.x + M.spawnMargin; x <= bounds.x + bounds.width - M.spawnMargin; x += M.spawnGrid)
+      if (safe({ x, y }, maxSpawnRadius))
         spawns.push({ id: `spawn:${String(spawns.length).padStart(3, '0')}`, x, y });
   if (!spawns.length) throw new RangeError('no safe spawn anchors');
-  const ports = LEGACY_V1.ports.map((p) => {
+  const middle = columns.find((c) => c.x <= cx && c.x + M.wall.width > cx)!;
+  const cross = columns.filter((c) => c.top <= cy && c.bottom - M.wall.faceHeight >= cy);
+  const ports = ROOM_PORTS.map((p) => {
     const dx = p.direction.x,
       dy = p.direction.y;
     const center = {
-      x: dx < 0 ? b.x : dx > 0 ? b.x + b.width : p.id === 'north' ? origin.x + shape.northX : cx,
-      y: dy < 0 ? b.y : dy > 0 ? b.y + b.height : cy,
+      x: dx < 0 ? cross[0]!.x : dx > 0 ? cross[cross.length - 1]!.x + M.wall.width : cx,
+      y: dy < 0 ? middle.top : dy > 0 ? middle.bottom - M.wall.faceHeight : cy,
     };
-    return {
-      ...p,
-      center,
-      artCenter: { x: center.x, y: dy > 0 ? artBottom : center.y },
-      entrance: {
-        x: center.x - dx * LEGACY_V1.doorRules.entranceInset,
-        y: center.y - dy * LEGACY_V1.doorRules.entranceInset,
-      },
+    const entrance = {
+      x: center.x - dx * ROOM_RULES.entranceInset,
+      y: center.y - dy * ROOM_RULES.entranceInset,
     };
+    if (!safe(entrance, maxSpawnRadius)) throw new RangeError(`blocked port ${t.id}/${p.id}`);
+    return { ...p, center, artCenter: { x: center.x, y: dy > 0 ? middle.bottom : center.y }, entrance };
   });
-  for (const p of ports)
-    if (!geometry.canOccupy(p.entrance, maxSpawnRadius, 'spawn')) throw new RangeError('blocked port');
-  const safe = (point: Point, reward = false): Point => {
+  const anchor = (reward = false): Point => {
     const legal = (p: Point) =>
-      geometry.canOccupy(p, MODULAR_V2.interactionRadius, 'spawn') &&
+      safe(p, M.interactionRadius) &&
       (!reward ||
         [-1, 1].every((sign) =>
-          geometry.canOccupy(
-            { x: p.x + sign * LOOT_RULES.rewardSpacing, y: p.y },
-            MODULAR_V2.interactionRadius,
-            'spawn',
-          ),
+          safe({ x: p.x + sign * LOOT_RULES.rewardSpacing, y: p.y }, M.interactionRadius),
         ));
-    if (legal(point)) return point;
-    const fallback = spawns.find(legal);
-    if (!fallback) throw new RangeError('blocked interaction anchor');
-    return fallback;
+    const first = { x: cx, y: cy };
+    const result = legal(first) ? first : spawns.find(legal);
+    if (!result) throw new RangeError('blocked interaction anchor');
+    return result;
   };
   return {
-    bounds: b,
+    bounds,
     boundary,
     artBoundary,
+    floorBoundary,
+    wallCells: wallCells(artBoundary),
     cuts,
     obstacles,
     ports,
     spawns,
-    anchors: {
-      player: safe(LEGACY_V1.anchors.player),
-      chest: safe(LEGACY_V1.anchors.chest),
-      reward: safe(LEGACY_V1.anchors.reward, true),
-      exit: safe(LEGACY_V1.anchors.exit),
-    },
+    anchors: { player: anchor(), chest: anchor(), exit: anchor(), reward: anchor(true) },
   };
 }

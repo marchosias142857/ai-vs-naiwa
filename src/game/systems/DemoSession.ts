@@ -334,7 +334,12 @@ export class DemoSession {
   private rebuildRoom(): void {
     // 一层只选一次；同构建恢复重新推导相同清单，重建房间不再按数组下标重抽。
     if (this.roomLayouts?.floor !== this.dungeon.floor)
-      this.roomLayouts = selectRoomLayouts(this.seed, this.dungeon.floor, this.dungeon.map.rooms);
+      this.roomLayouts = selectRoomLayouts(
+        this.seed,
+        this.dungeon.floor,
+        this.dungeon.map.rooms,
+        this.dungeon.style,
+      );
     this.templateId = this.roomLayouts.templateIds[this.dungeon.roomId]!;
     this.arena.show(this.dungeon, this.templateId);
     this.drawnRevision = this.dungeon.revision;

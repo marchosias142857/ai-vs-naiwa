@@ -4,7 +4,13 @@ import { PLAYER_RULES } from '../../../src/data/player';
 import { ROOM_LAYOUTS } from '../../../src/data/layouts';
 import { ROOM_RULES } from '../../../src/data/rooms';
 import { RoomThemeSchema, TrapRulesSchema, type TrapPlacement } from '../../../src/data/schema/traps';
-import { ROOM_THEMES, TRAP_RULES } from '../../../src/data/traps';
+import { TRAP_RULES } from '../../../src/data/traps';
+import { LEGACY_V1 } from '../../../src/data/roomTemplates/legacyV1';
+// Frozen pre-v3 schema regression only; production no longer imports these plans.
+const ROOM_THEMES = LEGACY_V1.themes.map(({ art, plans }) => ({
+  art,
+  plans: plans.map(({ layout, traps }) => ({ layout, traps })),
+}));
 import { WEAPONS } from '../../../src/data/weapons';
 import {
   createCombatWorld,
@@ -72,11 +78,11 @@ function setup(extra: Partial<CombatWorldOptions> = {}) {
 
 describe('地刺', () => {
   it('uses the resized whole-cell footprint for damage, including the new outer strip', () => {
-    const placement = roomTemplate('modular_v2/abyss/combat_2')!.traps[1]!;
-    expect([placement.width, placement.height]).toEqual([48, 16]);
+    const placement = roomTemplate('designed_v3/temple/court_0_0')!.traps[0]!;
+    expect([placement.width, placement.height]).toEqual([32, 16]);
     for (const [dx, dy, hit] of [
-      [23.5, 0, true],
-      [24.5, 0, false],
+      [15.5, 0, true],
+      [16.5, 0, false],
       [0, 7.5, true],
       [0, 8.5, false],
     ] as const) {

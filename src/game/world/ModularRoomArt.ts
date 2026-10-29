@@ -1,8 +1,10 @@
 import type { Textures, GameObjects, Scene } from 'phaser';
 import { DEPTH } from '../../config';
 import { MAP_ART, mapDoorRect } from '../../data/mapArt';
-import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
-import { MODULAR_V2 } from '../../data/roomTemplates/modularV2';
+import { GRAYBOX_BOUNDS } from './graybox';
+import { ROOM_METRICS as MODULAR_V2 } from '../../data/roomTemplates/metrics';
+import { wallCells } from '../../sim/dungeon/wallGeometry';
+export { wallCells } from '../../sim/dungeon/wallGeometry';
 import type { RoomTheme, TrapPlacement } from '../../data/schema/traps';
 import type { CompiledRoom } from '../../sim/dungeon/compileRoom';
 import type { Point } from '../../sim/geometry/RoomGeometry';
@@ -16,7 +18,7 @@ const LEFT = B.x - PAD,
   TOP = B.y - PAD;
 const WIDTH = B.width + PAD * 2,
   HEIGHT = B.height + PAD * 2;
-const RECT = LEGACY_V1.bounds;
+const RECT = GRAYBOX_BOUNDS;
 const DEFAULT_BOUNDARY = [
   { x: RECT.x, y: RECT.y },
   { x: RECT.x + RECT.width, y: RECT.y },
@@ -54,7 +56,7 @@ export class ModularRoomArt implements RoomArt {
           .setDepth(DEPTH.obstacles)
           .setVisible(false),
       );
-    this.show('temple', [], undefined, [], [LEGACY_V1.ports[0]!]);
+    this.show('temple', []);
     scene.events.once('shutdown', this.destroy);
   }
 
@@ -66,7 +68,7 @@ export class ModularRoomArt implements RoomArt {
     ports: CompiledRoom['ports'] = [],
     floorSeed = 0,
   ): void {
-    const boundary = room?.artBoundary ?? DEFAULT_BOUNDARY;
+    const boundary = room?.floorBoundary ?? DEFAULT_BOUNDARY;
     const c = this.texture.context,
       d = MAP_ART.density;
     c.setTransform(1, 0, 0, 1, 0, 0);
@@ -103,7 +105,7 @@ export class ModularRoomArt implements RoomArt {
     wall.setTransform(d, 0, 0, d, -LEFT * d, -TOP * d);
     wall.imageSmoothingEnabled = false;
     // One y/x ordering for every orientation: the next top covers the previous cuboid's face.
-    for (const cell of wallCells(boundary))
+    for (const cell of room?.wallCells ?? wallCells(boundary))
       wall.drawImage(
         this.wallModule(theme, wallVariant(floorSeed, theme, cell.x, cell.y)),
         cell.x,
@@ -237,40 +239,4 @@ export class ModularRoomArt implements RoomArt {
     this.wallCanvas.height = 0;
     this.scene.textures.remove(this.key);
   };
-}
-
-/** Raster footprints for the supported grid-aligned contours; physical boundaries are unchanged. */
-export function wallCells(boundary: readonly Point[]): Point[] {
-  const size = MAP_ART.wallWidth;
-  if (
-    boundary.some((a, i) => {
-      const b = boundary[(i + 1) % boundary.length]!;
-      return (a.x !== b.x && a.y !== b.y) || (a.x - B.x) % size !== 0 || (a.y - B.y) % size !== 0;
-    })
-  )
-    throw new RangeError('wall contour must use the supported axis-aligned module grid');
-  const cells: Point[] = [];
-  const inside = (x: number, y: number) => {
-    let result = false;
-    for (let i = 0, j = boundary.length - 1; i < boundary.length; j = i++) {
-      const a = boundary[i]!,
-        b = boundary[j]!;
-      if (a.y > y !== b.y > y && x < ((b.x - a.x) * (y - a.y)) / (b.y - a.y) + a.x) result = !result;
-    }
-    return result;
-  };
-  for (let y = B.y - size; y <= B.y + B.height; y += size)
-    for (let x = B.x - size; x <= B.x + B.width; x += size) {
-      const cx = x + size / 2,
-        cy = y + size / 2;
-      if (inside(cx, cy)) continue;
-      const near = boundary.some((a, i) => {
-        const b = boundary[(i + 1) % boundary.length]!;
-        const dx = Math.max(Math.min(a.x, b.x) - cx, 0, cx - Math.max(a.x, b.x));
-        const dy = Math.max(Math.min(a.y, b.y) - cy, 0, cy - Math.max(a.y, b.y));
-        return Math.max(dx, dy) < size;
-      });
-      if (near) cells.push({ x, y });
-    }
-  return cells;
 }

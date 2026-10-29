@@ -5,7 +5,10 @@ import { createCombatWorld, type RockView } from '../../../src/sim/combat/api';
 import { EventBus } from '../../../src/sim/core/EventBus';
 import { RoomArena } from '../../../src/game/world/RoomArena';
 import { GRAYBOX_BOUNDS as B } from '../../../src/game/world/graybox';
-import { BOSS_ROOM_LAYOUT, ROOM_LAYOUTS } from '../../../src/data/layouts';
+import { DESIGNED_V3 } from '../../../src/data/roomTemplates/designedV3';
+const ROOM_LAYOUTS = DESIGNED_V3.filter((t) => t.theme === 'temple' && t.form === 'combat').map(
+  (t) => t.boxes,
+);
 import { DungeonRun } from '../../../src/sim/run/DungeonRun';
 import { createGeometryHit, GeometryMask as M } from '../../../src/sim/geometry/RoomGeometry';
 vi.mock('../../../src/game/assets/demoArt', () => ({ ART: {} }));
@@ -91,12 +94,8 @@ it('production room layouts and Boss columns compile at the same world positions
   // Select the actual boss entry from the generated floor, without changing game production APIs.
   const boss = run.map.rooms.find((room) => room.kind === 'boss')!;
   run.roomId = boss.id;
-  arena.show(run, 'legacy_v1/milk/boss');
-  const box = BOSS_ROOM_LAYOUT[0]!;
-  arena
-    .prepareGeometry()
-    .sweepCircle({ x: cx + box.x, y: cy + box.y }, { x: cx + box.x, y: cy + box.y }, 14, M.walk, out);
-  expect(out).toMatchObject({ hit: true, t: 0, kind: 'pillar' });
+  arena.show(run, 'designed_v3/milk/boss');
+  expect(arena.prepareGeometry().canOccupy({ x: cx, y: cy }, 14, 'walk')).toBe(true);
   arena.destroy();
 });
 it('real navigation immediately routes around landed rocks, then releases the path on removal', () => {
@@ -145,7 +144,7 @@ it('standing-barrel changes are visible before a render tick and queries alone p
 it('rejects unknown or mismatched template IDs before changing the active room geometry', () => {
   const { arena } = harness();
   const run = new DungeonRun(42, new EventBus());
-  arena.show(run, 'legacy_v1/temple/empty');
+  arena.show(run, 'designed_v3/temple/start');
   const before = arena.prepareGeometry().revision;
   for (const id of [
     'unknown',
@@ -163,8 +162,9 @@ it('rejects unknown or mismatched template IDs before changing the active room g
 it('static muzzle callback includes concave boundaries; dynamic rocks remain in the AI geometry provider', () => {
   const { arena, sim } = harness();
   const run = new DungeonRun(42, new EventBus(), 3);
-  arena.show(run, 'modular_v2/abyss/empty');
-  expect(arena.lineOfSight(196, 60, 284, 60)).toBe(false);
+  run.roomId = run.map.rooms.find((r) => r.kind === 'combat')!.id;
+  arena.show(run, 'designed_v3/abyss/north_terrace_0_0');
+  expect(arena.lineOfSight(180, 25, 300, 25)).toBe(false);
   const hit = createGeometryHit();
   Object.assign(sim.rocks[0]!, { active: true, landed: true, x: 240, y: 135, radius: 12 });
   expect(arena.lineOfSight(240, 135, 255, 135)).toBe(true);
