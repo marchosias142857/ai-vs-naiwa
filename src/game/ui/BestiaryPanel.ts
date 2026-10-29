@@ -1,3 +1,4 @@
+import { decorateUi } from './decorateUi';
 import type { Scene } from 'phaser';
 import { DUNGEON } from '../../data/dungeon';
 import { bestiaryCards } from '../../sim/meta/bestiary';
@@ -6,7 +7,7 @@ import type { PauseState } from '../world/PauseState';
 import { BESTIARY_UI } from '../fx/params';
 import { bestiaryPortrait } from './bestiaryPortrait';
 import { BestiaryNavigation } from './BestiaryNavigation';
-import './bestiary.css';
+import './imageUi.css';
 
 let selectedId: string | undefined;
 /** 首次打开才构建；开关复用卡片、预览与监听，跨场景只保留 ID 和裁剪坐标。 */
@@ -123,6 +124,7 @@ export class BestiaryPanel {
       this.cards.findIndex((c) => c.id === selectedId),
     );
     this.select(this.index, portraits);
+    decorateUi(this.root);
     this.navigation = new BestiaryNavigation(
       ui,
       grid,

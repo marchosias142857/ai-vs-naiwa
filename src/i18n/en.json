@@ -89,7 +89,7 @@
   "hud.health": "HP",
   "hud.armor": "ARMOR",
   "hud.energy": "ENERGY",
-  "hud.coins": "◆ COINS {coins}",
+  "hud.coins": "COINS {coins}",
   "input.ready": "READY TO RESUME",
   "hint.start.keyboard": "Explore through a doorway · WASD move · Mouse fire · Projectiles auto-aim; lasers/melee aim manually",
   "hint.start.touch": "Explore through a doorway · Left stick move · Hold right wheel to attack · Drag to aim lasers/melee",
@@ -277,5 +277,11 @@
   "bestiary.open": "Bestiary",
   "bestiary.shortcut": "Open bestiary: I / gamepad X",
   "bestiary.back": "Back",
-  "bestiary.controls": "Arrows / left stick: select · PageUp/PageDown / right stick: scroll details · Esc / B: back"
+  "bestiary.controls": "Arrows / left stick: select · PageUp/PageDown / right stick: scroll details · Esc / B: back",
+  "ui.loading": "Loading…",
+  "ui.rotate": "Please rotate your device",
+  "ui.update": "Update available",
+  "ui.refresh": "Refresh",
+  "ui.later": "Later",
+  "ui.updateFailed": "Update failed. Try again."
 }

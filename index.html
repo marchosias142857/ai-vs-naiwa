@@ -14,74 +14,76 @@
     <link rel="icon" type="image/png" href="./icons/pwa_192.png" />
     <title>AI娘大战奶蛙</title>
     <style>
-      html,
-      body {
-        margin: 0;
-        height: 100%;
-        background: #0b0d14;
-        overflow: hidden;
-        overscroll-behavior: none;
-        touch-action: none;
-        -webkit-user-select: none;
-        user-select: none;
-      }
-      #game {
-        position: fixed;
-        inset: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
-          env(safe-area-inset-left);
-      }
-      #game canvas {
-        image-rendering: auto;
-      }
-      #rotate-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 5;
-        box-sizing: border-box;
-        padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right))
-          max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
-        background: #0b0d14;
-        color: #e8ecff;
-        text-align: center;
-        font:
-          20px system-ui,
-          sans-serif;
-      }
-      #rotate-overlay:not([hidden]) {
-        display: grid;
-        place-content: center;
-      }
-      #pwa-update {
-        position: fixed;
-        z-index: 10;
-        top: calc(var(--game-canvas-top, env(safe-area-inset-top)) + 56px);
-        right: max(12px, env(safe-area-inset-right));
-        max-width: calc(100vw - 48px - env(safe-area-inset-left) - env(safe-area-inset-right));
-        padding: 12px;
-        border: 1px solid #59628a;
-        border-radius: 8px;
-        background: #1b2030;
-        color: #e8ecff;
-        font:
-          14px system-ui,
-          sans-serif;
-      }
-      #pwa-update:not([hidden]) {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      #pwa-update button {
-        min-height: 44px;
-        padding: 8px 12px;
-        border: 1px solid #7ee8ff;
-        border-radius: 4px;
-        background: #0b0d14;
-        color: #7ee8ff;
-        font: inherit;
-        cursor: pointer;
-        touch-action: manipulation;
+      @layer uiLayout {
+        html,
+        body {
+          margin: 0;
+          height: 100%;
+          background: #0b0d14;
+          overflow: hidden;
+          overscroll-behavior: none;
+          touch-action: none;
+          -webkit-user-select: none;
+          user-select: none;
+        }
+        #game {
+          position: fixed;
+          inset: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+            env(safe-area-inset-left);
+        }
+        #game canvas {
+          image-rendering: auto;
+        }
+        #rotate-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 5;
+          box-sizing: border-box;
+          padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right))
+            max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+          background: #0b0d14;
+          color: #e8ecff;
+          text-align: center;
+          font:
+            20px system-ui,
+            sans-serif;
+        }
+        #rotate-overlay:not([hidden]) {
+          display: grid;
+          place-content: center;
+        }
+        #pwa-update {
+          position: fixed;
+          z-index: 10;
+          top: calc(var(--game-canvas-top, env(safe-area-inset-top)) + 56px);
+          right: max(12px, env(safe-area-inset-right));
+          max-width: calc(100vw - 48px - env(safe-area-inset-left) - env(safe-area-inset-right));
+          padding: 12px;
+          border: 1px solid #59628a;
+          border-radius: 8px;
+          background: #1b2030;
+          color: #e8ecff;
+          font:
+            14px system-ui,
+            sans-serif;
+        }
+        #pwa-update:not([hidden]) {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        #pwa-update button {
+          min-height: 44px;
+          padding: 8px 12px;
+          border: 1px solid #7ee8ff;
+          border-radius: 4px;
+          background: #0b0d14;
+          color: #7ee8ff;
+          font: inherit;
+          cursor: pointer;
+          touch-action: manipulation;
+        }
       }
     </style>
   </head>

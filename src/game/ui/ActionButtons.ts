@@ -1,7 +1,8 @@
+import { uiIcon } from '../assets/uiArt';
 import { t } from '../../i18n/t';
 import type { Scene } from 'phaser';
 import { UI_LAYOUT_CHANGED, placeUi, type UiKey } from '../../services/uiLayout';
-import './layout.css';
+import './imageUi.css';
 import type { InputController } from '../input/InputController';
 
 /** 输入 UI 场景的动作按钮，固定 CSS 触控尺寸，避免随画布缩小到难以点击。 */
@@ -27,6 +28,7 @@ export class ActionButtons {
       button.textContent = label;
       button.dataset.action = code;
       button.dataset.layout = key;
+      uiIcon(button, key);
       button.addEventListener(
         'pointerdown',
         (event) => {

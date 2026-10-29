@@ -1,4 +1,5 @@
-import { uiLayout, uiEditor } from '../../services/uiLayout';
+import { InputImages } from './InputImages';
+import { uiEditor } from '../../services/uiLayout';
 import { configureCamera } from '../configureCamera';
 import { t } from '../../i18n/t';
 import { PausePanel } from './PausePanel';
@@ -11,7 +12,6 @@ import { InputController } from '../input/InputController';
 import { setInputProbe } from '../testHooks';
 import { textStyle } from './text';
 import { combatPause } from '../world/combatPause';
-import { RESUME_UI } from '../fx/params';
 import { ResumeCaption } from './ResumeCaption';
 
 /** 独立 UI 持有输入与恢复入口；#15 从 controls.frame 读取战斗输入。 */
@@ -25,9 +25,8 @@ export class InputScene extends Scene {
   private resumeLabel!: GameObjects.Text;
   private layoutScale = 0;
   private layoutWidth = 0;
-  private pauseLabel!: GameObjects.Text;
+  private images!: InputImages;
   private countdownHint!: ResumeCaption;
-  private countdown!: GameObjects.Text;
   /** 鼠标瞄准原点：由战斗场景在物理后发布的玩家身体中心。 */
   playerX = GAME_WIDTH / 2;
   playerY = GAME_HEIGHT / 2 + 40;
@@ -48,12 +47,8 @@ export class InputScene extends Scene {
       .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, t('input.resume'), textStyle(10))
       .setOrigin(0.5)
       .setDepth(DEPTH.touchControls);
-    this.pauseLabel = this.add.text(0, 0, 'Ⅱ', textStyle(12)).setOrigin(0.5).setDepth(DEPTH.touchControls);
-    this.countdown = this.add
-      .text(GAME_WIDTH / 2, GAME_HEIGHT / 2, '', textStyle(RESUME_UI.fontSize))
-      .setOrigin(0.5)
-      .setDepth(DEPTH.touchControls)
-      .setVisible(false);
+    this.images = new InputImages(this);
+    this.resumeLabel.setDepth(DEPTH.touchControls + 1);
     this.countdownHint = new ResumeCaption(this);
     const togglePause = () => {
       if (uiEditor.open) return;
@@ -113,24 +108,8 @@ export class InputScene extends Scene {
     const paused = c.manualPaused,
       locked = c.battle.physics.world.isPaused,
       canPause = pause ? !pause.has('finished') : !locked;
-    this.countdown
-      .setText(String(Math.ceil(pause?.remaining ?? 0)))
-      .setVisible(!!pause?.has('restore') && !paused && !pause.has('lifecycle'));
-    this.countdownHint.setVisible(this.countdown.visible);
-    if (this.countdown.visible) {
-      g.fillStyle(RESUME_UI.fill, 0.94).fillCircle(width / 2, GAME_HEIGHT / 2, RESUME_UI.radius);
-      g.lineStyle(2, RESUME_UI.ring, 0.9)
-        .beginPath()
-        .arc(
-          width / 2,
-          GAME_HEIGHT / 2,
-          RESUME_UI.radius,
-          -Math.PI / 2,
-          -Math.PI / 2 + Math.PI * 2 * ((pause?.remaining ?? 0) % 1),
-        )
-        .strokePath();
-    }
-    this.pauseLabel.setVisible(canPause);
+    const counting = !!pause?.has('restore') && !paused && !pause.has('lifecycle');
+    this.countdownHint.setVisible(counting);
     this.pausePanel?.update(paused);
     this.resumeLabel.setVisible(paused && !this.pausePanel);
     this.actions?.setVisible(c.touchVisible && !paused && !locked);
@@ -138,69 +117,22 @@ export class InputScene extends Scene {
       this.layoutWidth = width;
       this.cameras.main.setViewport(0, 0, this.scale.width, this.scale.height);
       this.resumeLabel.setPosition(width / 2, GAME_HEIGHT / 2);
-      this.countdown.setPosition(width / 2, GAME_HEIGHT / 2);
       this.layoutScale = s;
       this.resumeLabel.setFontSize(UI.resume.fontSize / s);
-      this.pauseLabel
-        .setPosition(width - UI.pause.inset / s, UI.pause.inset / s)
-        .setFontSize(UI.pause.fontSize / s);
     }
     if (paused && !uiEditor.open) {
       g.fillStyle(UI.look.pauseColor, UI.look.pauseAlpha).fillRect(0, 0, width, GAME_HEIGHT);
-      this.circle(width / 2, GAME_HEIGHT / 2, UI.resume.radius / s, false, 1);
     }
-    if (canPause) this.circle(width - UI.pause.inset / s, UI.pause.inset / s, UI.pause.radius / s, paused, 1);
-    if (c.touchVisible && !paused && !locked) {
-      const t = c.touch;
-      this.circle(t.x / s, t.y / s, t.moveRadius / s, false, uiLayout.move.opacity);
-      this.circle(
-        (t.x + t.dx) / s,
-        (t.y + t.dy) / s,
-        (UI.joystick.knobRadius * t.moveRadius) / UI.joystick.radius / s,
-        t.moveId !== null,
-        uiLayout.move.opacity,
-      );
-      if (!this.hub) {
-        const x = t.fireX / s,
-          y = t.fireY / s,
-          held = t.fireId !== null,
-          alpha = uiLayout.fire.opacity;
-        this.circle(x, y, t.fireRadius / s, held, alpha);
-        this.circle(
-          x + t.fireDx / s,
-          y + t.fireDy / s,
-          (UI.aimWheel.knobRadius * t.fireRadius) / UI.aimWheel.radius / s,
-          held,
-          alpha,
-        );
-        const r = UI.aimWheel.iconRadius / s;
-        g.lineStyle(UI.outline / s, UI.look.pressedColor, alpha)
-          .lineBetween(x - r, y, x + r, y)
-          .lineBetween(x, y - r, x, y + r);
-      }
-    }
-    const mouse = !this.hub && c.frame.source === 'keyboard' && c.frame.aim !== null && !paused && !locked;
-    this.game.canvas.style.cursor = mouse ? 'none' : '';
-    if (mouse) {
-      const x = Math.floor(c.mouse.x / s) + 0.5,
-        y = Math.floor(c.mouse.y / s) + 0.5;
-      g.lineStyle(UI.crosshair.outline, 0x000000)
-        .lineBetween(x - UI.crosshair.radius, y, x + UI.crosshair.radius, y)
-        .lineBetween(x, y - UI.crosshair.radius, x, y + UI.crosshair.radius);
-      g.lineStyle(UI.crosshair.stroke, 0xffffff)
-        .lineBetween(x - UI.crosshair.radius, y, x + UI.crosshair.radius, y)
-        .lineBetween(x, y - UI.crosshair.radius, x, y + UI.crosshair.radius);
-    }
-  }
-  private circle(x: number, y: number, r: number, pressed: boolean, alpha: number): void {
-    this.graphics
-      .fillStyle(
-        pressed ? UI.look.pressedColor : 0,
-        (pressed ? UI.look.pressedFillAlpha : UI.look.idleFillAlpha) * alpha,
-      )
-      .fillCircle(x, y, r);
-    this.graphics
-      .lineStyle(UI.outline / (this.controls.rect.height / GAME_HEIGHT), 0xffffff, alpha)
-      .strokeCircle(x, y, r);
+    this.images.update(
+      c,
+      s,
+      width,
+      this.hub,
+      paused,
+      locked,
+      canPause,
+      paused && !this.pausePanel && !uiEditor.open,
+      counting ? pause!.remaining : 0,
+    );
   }
 }

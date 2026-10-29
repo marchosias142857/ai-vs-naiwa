@@ -1,3 +1,4 @@
+import { uiIcon } from '../assets/uiArt';
 import { unlockSound, silenceSound } from '../../services/Sound';
 import { t } from '../../i18n/t';
 import { settings, setSettings } from '../../services/settings';
@@ -10,6 +11,9 @@ export function addSettings(root: HTMLElement, signal: AbortSignal, refreshLangu
   flashes.id = 'settings-flashes';
   language.id = 'settings-language';
   const refresh = () => {
+    uiIcon(sound, settings.sound ? 'sound' : 'mute');
+    sound.setAttribute('aria-pressed', String(settings.sound));
+    flashes.setAttribute('aria-pressed', String(settings.flashes));
     sound.textContent = t('settings.sound', { value: t(settings.sound ? 'settings.on' : 'settings.off') });
     flashes.textContent = t('settings.flash', {
       value: t(settings.flashes ? 'settings.on' : 'settings.off'),

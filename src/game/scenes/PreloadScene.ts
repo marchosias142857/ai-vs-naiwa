@@ -1,7 +1,9 @@
+import { t } from '../../i18n/t';
+import '../ui/imageUi.css';
 import { prepareRunVersion } from '../save/runStorage';
 import { configureCamera } from '../configureCamera';
 import { Scene } from 'phaser';
-import { COLORS, GAME_HEIGHT, GAME_WIDTH, SCENES } from '../../config';
+import { SCENES } from '../../config';
 import { debugParams } from '../../debug/params';
 import { preloadDemoArt, installDemoArt } from '../assets/demoArt';
 import { createPlaceholderTextures } from '../assets/placeholders';
@@ -16,14 +18,19 @@ export class PreloadScene extends Scene {
 
   preload(): void {
     configureCamera(this);
-    const barW = 160;
-    const x = (GAME_WIDTH - barW) / 2;
-    const y = GAME_HEIGHT / 2;
-    this.add.rectangle(GAME_WIDTH / 2, y, barW + 4, 8).setStrokeStyle(1, COLORS.wallTop);
-    const bar = this.add.rectangle(x, y, 1, 4, 0x7ee8ff).setOrigin(0, 0.5);
+    const panel = document.createElement('div'),
+      progress = document.createElement('progress');
+    panel.id = 'loading-panel';
+    panel.textContent = t('ui.loading');
+    progress.max = 1;
+    progress.value = 0;
+    progress.setAttribute('aria-label', t('ui.loading'));
+    panel.append(progress);
+    document.body.append(panel);
     this.load.on('progress', (p: number) => {
-      bar.width = Math.max(1, barW * p);
+      progress.value = p;
     });
+    this.events.once('shutdown', () => panel.remove());
     preloadDemoArt(this);
   }
 

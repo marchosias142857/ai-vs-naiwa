@@ -12,7 +12,7 @@ export class ResumeCaption {
     this.root.textContent = t('input.ready');
     this.root.setAttribute('role', 'status');
     this.root.hidden = true;
-    this.root.style.cssText = `position:fixed;z-index:3;pointer-events:none;transform:translate(-50%,-50%);white-space:nowrap;color:#e8ecff;background:${RESUME_UI.captionBackground};padding:${RESUME_UI.captionPadding}px;font:${RESUME_UI.captionSize}px/1.4 ${FONT_FAMILY};`;
+    this.root.style.cssText = `position:fixed;z-index:3;pointer-events:none;transform:translate(-50%,-50%);white-space:nowrap;color:#e8ecff;padding:${RESUME_UI.captionPadding}px;font:${RESUME_UI.captionSize}px/1.4 ${FONT_FAMILY};`;
     document.body.append(this.root);
     this.layout();
     scene.scale.on('resize', this.layout);

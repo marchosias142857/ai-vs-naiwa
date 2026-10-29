@@ -1,3 +1,5 @@
+import { uiIcon, uiAsset } from '../assets/uiArt';
+import { decorateUi } from './decorateUi';
 import type { Scene } from 'phaser';
 import { TALENTS, type TalentId } from '../../data/talents';
 import { availablePoints } from '../../sim/meta/profile';
@@ -6,7 +8,7 @@ import { t, type TextKey } from '../../i18n/t';
 import { changeTalent, readProfile } from '../save/metaProfile';
 import type { PauseState } from '../world/PauseState';
 import { MenuNavigation } from './MenuNavigation';
-import './talents.css';
+import './imageUi.css';
 
 const ids = Object.keys(TALENTS) as TalentId[];
 const point = (id: TalentId) => ({ x: 50 + TALENTS[id].lane * 25, y: 114 - TALENTS[id].tier * 32 });
@@ -29,6 +31,7 @@ export class TalentPanel {
     signal: AbortSignal,
     close: () => void,
   ) {
+    this.balance.id = 'talent-balance';
     this.root.id = 'talent-panel';
     this.root.className = 'demo-dialog';
     this.root.hidden = true;
@@ -87,9 +90,18 @@ export class TalentPanel {
           button = document.createElement('button');
         for (const requirement of node.requires) {
           const from = point(requirement.id),
-            line = document.createElementNS(svg.namespaceURI, 'line');
-          for (const [attr, value] of Object.entries({ x1: from.x, y1: from.y, x2: pos.x, y2: pos.y }))
-            line.setAttribute(attr, String(value));
+            line = document.createElementNS(svg.namespaceURI, 'image');
+          const dx = pos.x - from.x,
+            dy = pos.y - from.y;
+          line.setAttribute('href', uiAsset('frame-focus-v1.png'));
+          line.setAttribute('x', '-0.6');
+          line.setAttribute('width', '1.2');
+          line.setAttribute('height', String(Math.hypot(dx, dy)));
+          line.setAttribute('preserveAspectRatio', 'none');
+          line.setAttribute(
+            'transform',
+            `translate(${from.x} ${from.y}) rotate(${(-Math.atan2(dx, dy) * 180) / Math.PI})`,
+          );
           svg.append(line);
         }
         button.dataset.talent = id;
@@ -119,6 +131,7 @@ export class TalentPanel {
     action.append(this.buy, this.message);
     footer.append(this.detail, action);
     this.root.append(header, tree, footer);
+    decorateUi(this.root);
     this.navigation = new MenuNavigation(this.root, ui);
     window.addEventListener(
       'keydown',
@@ -159,7 +172,6 @@ export class TalentPanel {
   private refresh(): void {
     const { profile } = readProfile(),
       points = availablePoints(profile);
-    this.balance.id = 'talent-balance';
     this.balance.textContent = t('talent.balance', { points });
     this.reset.textContent = t(this.confirming ? 'talent.confirmReset' : 'talent.reset');
     this.reset.disabled = Object.keys(profile.talents).length === 0;
@@ -170,8 +182,16 @@ export class TalentPanel {
         rank = profile.talents[id] ?? 0;
       const block = unlockBlock(profile.talents, points, id);
       button.dataset.state = block ?? 'available';
+      uiIcon(
+        button,
+        block === 'locked' ? 'lock' : block === 'points' ? 'coin' : block === 'maxed' ? 'check' : 'talent',
+      );
       button.setAttribute('aria-pressed', String(id === this.selected));
       button.textContent = `${t(node.name)}\n${rank}/${node.costs.length} · ${block === 'maxed' ? t('talent.block.maxed') : t('talent.cost', { points: nextCost(profile.talents, id) ?? 0 })}`;
+      button.setAttribute(
+        'aria-label',
+        `${button.textContent}${block ? ` · ${t(`talent.block.${block}`)}` : ''}`,
+      );
     }
     const node = TALENTS[this.selected],
       rank = profile.talents[this.selected] ?? 0;
@@ -191,6 +211,10 @@ export class TalentPanel {
       nodes: node.requires.map((r) => `${t(TALENTS[r.id].name)} ${r.rank}`).join(' · ') || t('talent.none'),
     });
     this.detail.replaceChildren(name, effect, requires);
+    uiIcon(
+      this.buy,
+      block === 'maxed' ? 'check' : block === 'locked' ? 'lock' : block === 'points' ? 'coin' : 'unlock',
+    );
     this.buy.disabled = !!block || this.confirming;
     this.buy.textContent = block
       ? t(`talent.block.${block}`)

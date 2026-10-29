@@ -1,3 +1,4 @@
+import { preloadUiArt, installUiArt } from './uiArt';
 import type { Scene } from 'phaser';
 import { Textures } from 'phaser';
 import { DOOR_ART, ENEMY_ART, ENVIRONMENT_ART, WEAPON_ART } from '../../data/art';
@@ -28,6 +29,7 @@ export function weaponTexture(id: WeaponId): string {
 }
 /** 命名帧只切 Texture 坐标，不复制图片像素；全部图集进入 PWA 预缓存。 */
 export function preloadDemoArt(scene: Scene): void {
+  preloadUiArt(scene);
   const base = `${import.meta.env.BASE_URL}assets/demo/`;
   for (const kind of Object.keys(MAP_ART.sources) as (keyof typeof MAP_ART.sources)[])
     scene.load.image(MAP_ART.textures[kind], `${base}${MAP_ART.sources[kind]}`);
@@ -46,6 +48,7 @@ export function preloadDemoArt(scene: Scene): void {
     if (used.has(name as keyof typeof MONSTER_TEXTURES)) scene.load.image(t.key, `${base}${t.source}`);
 }
 export function installDemoArt(scene: Scene): void {
+  installUiArt(scene);
   for (const key of Object.values(MAP_ART.textures))
     if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Textures.FilterMode.NEAREST);
   // 仅游戏图集保留像素边缘；画布与文字仍按完整渲染分辨率绘制。

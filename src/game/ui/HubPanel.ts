@@ -1,3 +1,4 @@
+import { decorateUi } from './decorateUi';
 import type { Scene } from 'phaser';
 import { TalentPanel } from './TalentPanel';
 import { BestiaryPanel } from './BestiaryPanel';
@@ -9,7 +10,7 @@ import { readSavedRun } from '../save/runStorage';
 import type { PauseState } from '../world/PauseState';
 import { guardGameUi } from './guardGameUi';
 import { MenuNavigation } from './MenuNavigation';
-import './demo.css';
+import './imageUi.css';
 
 /** 门口确认暂停移动；取消后清空输入，必须重新按下才能交互。 */
 export class HubPanel {
@@ -114,6 +115,7 @@ export class HubPanel {
       },
       { signal: this.abort.signal },
     );
+    decorateUi(this.root);
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
     this.navigation = new MenuNavigation(this.modal, ui);

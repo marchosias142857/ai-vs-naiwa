@@ -1,3 +1,4 @@
+import { decorateUi } from './decorateUi';
 import { addLayoutSettings } from './LayoutEditor';
 import { uiEditor } from '../../services/uiLayout';
 import { guardGameUi } from './guardGameUi';
@@ -8,7 +9,7 @@ import { MenuNavigation } from './MenuNavigation';
 import type { Scene } from 'phaser';
 import { SCENES } from '../../config';
 import { readSavedRun } from '../save/runStorage';
-import './demo.css';
+import './imageUi.css';
 
 /** 主城入口与续玩分开；去主城不读入、清除或覆盖冒险存档。 */
 export class MenuPanel {
@@ -64,6 +65,9 @@ export class MenuPanel {
     actions.append(start, resume, status, saveNotice, options);
     this.root.append(title, actions);
     document.documentElement.lang = settings.language;
+    const rotate = document.getElementById('rotate-overlay');
+    if (rotate) rotate.textContent = t('ui.rotate');
+    decorateUi(this.root);
     guardGameUi(this.root, scene, this.abort.signal);
     document.body.append(this.root);
     this.layout();
