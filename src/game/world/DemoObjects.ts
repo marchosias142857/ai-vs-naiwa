@@ -2,7 +2,6 @@ import { ART, weaponTexture } from '../assets/demoArt';
 import { WEAPON_ART } from '../../data/art';
 import { MAP_ART, MAP_THEME_FRAMES } from '../../data/mapArt';
 import type { GameObjects, Scene } from 'phaser';
-import { t } from '../../i18n/t';
 import { COLORS, DEPTH } from '../../config';
 import type { DemoSession } from '../systems/DemoSession';
 import { textStyle } from '../ui/text';
@@ -15,7 +14,6 @@ export class DemoObjects {
   private readonly chest?: GameObjects.Image;
   private readonly exitArt?: GameObjects.Image;
   private readonly loot: GameObjects.Text[] = [];
-  private readonly portal: GameObjects.Text;
   private revision = -1;
   constructor(
     scene: Scene,
@@ -59,17 +57,11 @@ export class DemoObjects {
         .setDisplaySize(28, 30)
         .setDepth(DEPTH.floorDecals);
     }
-    this.portal = scene.add
-      .text(B.x + B.width / 2, B.y + B.height / 2, t('hint.portal'), textStyle(12, COLORS.accent))
-      .setOrigin(0.5)
-      .setDepth(DEPTH.floorDecals);
   }
   update(): void {
     const s = this.session;
-    this.portal.setVisible(s.dungeon.room.kind === 'exit');
     const exit = s.arena.anchor('exit'),
       chest = s.arena.anchor('chest');
-    this.portal.setPosition(exit.x, exit.y + 22);
     this.exitArt?.setPosition(exit.x, exit.y);
     const crystal = MAP_THEME_FRAMES[s.arena.artTheme].crystal;
     if (this.exitArt && this.exitArt.frame.name !== crystal) this.exitArt.setFrame(crystal);

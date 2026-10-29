@@ -4,8 +4,7 @@ import { createHash } from 'node:crypto';
 import { MAP_ART, mapFrameTexture, mapDoorRect } from '../../src/data/mapArt';
 import { MODULAR_V2 } from '../../src/data/roomTemplates/modularV2';
 import { compileRoom } from '../../src/sim/dungeon/compileRoom';
-import { resolveRoomTemplate } from '../../src/sim/dungeon/roomCatalog';
-import { LEGACY_V1 } from '../../src/data/roomTemplates/legacyV1';
+import { DESIGNED_V3 } from '../../src/data/roomTemplates/designedV3';
 import report from '../../art-src/maps/export-report.json' with { type: 'json' };
 
 it('keeps every module frame inside its source and every lossless runtime asset within PWA budget', () => {
@@ -78,23 +77,17 @@ it('keeps wall cap/body ratios and reserves six whole modules for both gate orie
 
 it('aligns every supported room gate to complete wall cells after projection', () => {
   let ports = 0;
-  for (let floor = 1; floor <= 4; floor++) {
-    const theme = LEGACY_V1.themes[floor - 1]!;
-    for (const def of [theme.empty, ...theme.plans, ...(floor === 4 ? [theme.boss] : [])]) {
-      const kind = def.form === 'empty' ? 'start' : def.form;
-      const id = def.id.replace('legacy_v1/', 'modular_v2/');
-      const template = resolveRoomTemplate(id, floor, kind)!;
-      for (const port of compileRoom(template).ports) {
-        const r = mapDoorRect(port);
-        expect((r.x - MODULAR_V2.bounds.x) / 8).toBeCloseTo(Math.round((r.x - MODULAR_V2.bounds.x) / 8), 8);
-        const y = (r.y + MAP_ART.wallHeight - MODULAR_V2.bounds.y) / 8;
-        expect(y).toBeCloseTo(Math.round(y), 8);
-        expect(port.direction.x ? r.height : r.width).toBe(48);
-        ports++;
-      }
+  for (const template of DESIGNED_V3) {
+    for (const port of compileRoom(template).ports) {
+      const r = mapDoorRect(port);
+      expect((r.x - MODULAR_V2.bounds.x) / 8).toBeCloseTo(Math.round((r.x - MODULAR_V2.bounds.x) / 8), 8);
+      const y = (r.y + MAP_ART.wallHeight - MODULAR_V2.bounds.y) / 8;
+      expect(y).toBeCloseTo(Math.round(y), 8);
+      expect(port.direction.x ? r.height : r.width).toBe(48);
+      ports++;
     }
   }
-  expect(ports).toBe(76);
+  expect(ports).toBe(DESIGNED_V3.length * 4);
 });
 
 it('provides ten square source cells per theme and uses exactly one wall-width floor module', () => {

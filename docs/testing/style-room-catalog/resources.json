@@ -1,0 +1,32 @@
+{
+  "base": "2bc0e1a189185c65b6d5d1244156fe78e9742415",
+  "rows": [
+    {
+      "label": "base",
+      "gameJsBytes": 1695781,
+      "gameJsGzipBytes": 459345,
+      "buildFileBytes": 35608428,
+      "mapWebpCount": 15,
+      "mapWebpBytes": 11942478,
+      "overPrecacheBudget": []
+    },
+    {
+      "label": "candidate",
+      "gameJsBytes": 1977109,
+      "gameJsGzipBytes": 470345,
+      "buildFileBytes": 35869482,
+      "mapWebpCount": 15,
+      "mapWebpBytes": 11942478,
+      "overPrecacheBudget": []
+    }
+  ],
+  "canvasRGBABytes": {
+    "basePerCanvas": 20824064,
+    "candidatePerCanvas": 35602432,
+    "baseTwoCanvases": 41648128,
+    "candidateTwoCanvases": 71204864,
+    "additionalTwoCanvasBytes": 29556736
+  },
+  "note": "two canvases: baked ground + reusable wall composite; theoretical RGBA only, excludes GPU copies, decoded atlases and engine overhead",
+  "approvedWallSHA256": "e9cbf46c6b37fd01a26805ef2a62b2bc0d0e9e5e55db710b43839915fc24905f"
+}

@@ -1,0 +1,5 @@
+{
+  "fileCount": 189,
+  "inputSha256": "fead21b7186546b3b141898521ca0e0f2befa379b0b0c33b159bbbfe349dd041",
+  "scope": "sorted src/** paths+contents, then sorted together with vite.config.ts; excludes documentation and screenshots"
+}

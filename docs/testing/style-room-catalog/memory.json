@@ -1,0 +1,59 @@
+{
+  "browser": "153.0.8010.0",
+  "viewport": "1280x720 DPR1, game buffer1920x1080",
+  "scenario": "cold start seed42, pause and collectGarbage, ABBA; concurrent E2E load: readiness timing is observational, not a benchmark; heap excludes GPU/canvas/image memory",
+  "rows": [
+    {
+      "label": "base",
+      "readyMs": 3261.645289,
+      "jsHeapUsed": 10555516,
+      "jsHeapTotal": 11603968,
+      "children": 1026,
+      "canvas": {
+        "width": 1920,
+        "height": 1080
+      },
+      "resources": 0,
+      "errors": []
+    },
+    {
+      "label": "candidate",
+      "readyMs": 2905.278376,
+      "jsHeapUsed": 11654200,
+      "jsHeapTotal": 12681216,
+      "children": 1117,
+      "canvas": {
+        "width": 1920,
+        "height": 1080
+      },
+      "resources": 0,
+      "errors": []
+    },
+    {
+      "label": "candidate",
+      "readyMs": 2663.1464749999996,
+      "jsHeapUsed": 10826256,
+      "jsHeapTotal": 12943360,
+      "children": 1117,
+      "canvas": {
+        "width": 1920,
+        "height": 1080
+      },
+      "resources": 0,
+      "errors": []
+    },
+    {
+      "label": "base",
+      "readyMs": 3341.4603030000017,
+      "jsHeapUsed": 9973616,
+      "jsHeapTotal": 12128256,
+      "children": 1026,
+      "canvas": {
+        "width": 1920,
+        "height": 1080
+      },
+      "resources": 0,
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "total": 529,
+  "styles": {
+    "temple": {
+      "combat": 128,
+      "normalizedShells": 32,
+      "distinctInteriors": 128,
+      "distinctAt32UnitGrid": 128
+    },
+    "wreck": {
+      "combat": 128,
+      "normalizedShells": 32,
+      "distinctInteriors": 128,
+      "distinctAt32UnitGrid": 128
+    },
+    "abyss": {
+      "combat": 128,
+      "normalizedShells": 32,
+      "distinctInteriors": 128,
+      "distinctAt32UnitGrid": 128
+    },
+    "milk": {
+      "combat": 128,
+      "normalizedShells": 32,
+      "distinctInteriors": 128,
+      "distinctAt32UnitGrid": 128
+    }
+  },
+  "crossStyleDuplicateInteriors": 0
+}

@@ -68,6 +68,7 @@ export default defineConfig({
   ],
   server: { port: 5173 },
   build: {
+    emptyOutDir: true,
     target: 'es2022',
     sourcemap: true,
     chunkSizeWarningLimit: 2000,

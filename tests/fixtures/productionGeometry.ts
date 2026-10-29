@@ -3,7 +3,7 @@ import { AUTO, Game, Scene, Scale, type Physics, type GameObjects } from 'phaser
 import { GAME_WIDTH, GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
 import { BOSS_ROOM_LAYOUT } from '../../src/data/layouts';
 import { ENEMIES } from '../../src/data/enemies';
-import { roomTheme } from '../../src/data/traps';
+import { floorStyle } from '../../src/sim/dungeon/floorStyle';
 import type { RoomArt } from '../../src/game/world/RoomArt';
 import { installDemoArt, preloadDemoArt } from '../../src/game/assets/demoArt';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
@@ -74,7 +74,7 @@ class GeometryScene extends Scene {
         art: RoomArt | null;
         setBoxes: (b: typeof items, k: typeof kind) => void;
       };
-      fixtureArena.art?.show(roomTheme(session.dungeon.floor).art, items);
+      fixtureArena.art?.show(session.dungeon.style, items);
       fixtureArena.setBoxes(items, kind);
     };
     const pin = (id: number, x: number, y: number) => {
@@ -143,9 +143,9 @@ class GeometryScene extends Scene {
         };
       },
       themedAssets: (floor, state) => {
-        const theme = roomTheme(floor).art;
+        const theme = floorStyle(42, floor);
         const run = new DungeonRun(42, new EventBus(), floor);
-        arena.show(run, `modular_v2/${theme}/empty`);
+        arena.show(run, `designed_v3/${theme}/start`);
         // Exercise all themes even when the current room catalogue has no spike room.
         sim.setTraps(9000 + floor, [
           { kind: 'spikes', x: 220, y: 130, width: 32, height: 32, radius: 0, angle: 0, delay: 0 },
@@ -172,7 +172,7 @@ class GeometryScene extends Scene {
       wallCollision: (floor) => {
         const run = new DungeonRun(42, new EventBus(), floor);
         const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
-        const id = `modular_v2/${theme}/empty`;
+        const id = `designed_v3/${theme}/start`;
         arena.show(run, id);
         const room = compileRoom(roomTemplate(id)!);
         const edges = room.artBoundary.flatMap((a, i, points) => {
@@ -237,7 +237,7 @@ class GeometryScene extends Scene {
       objects: (kind) => {
         const run = session.dungeon;
         run.roomId = run.map.rooms.find((r) => r.kind === kind)!.id;
-        arena.show(run, 'modular_v2/temple/empty');
+        arena.show(run, `designed_v3/temple/${kind}`);
         session.loot.clear();
         session.loot.reward(240, 150);
         session.update();
@@ -265,14 +265,14 @@ class GeometryScene extends Scene {
                 : focus === 'west'
                   ? { x: -1, y: 0 }
                   : undefined;
-        let run = new DungeonRun(42, new EventBus(), floor);
+        let run = new DungeonRun(42, new EventBus(), 1);
         const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
         for (let seed = 42; seed < 170; seed++) {
-          run = new DungeonRun(seed, new EventBus(), floor);
+          run = new DungeonRun(seed, new EventBus(), 1);
           const room = run.map.rooms
             .filter(
               (r) =>
-                r.kind === (floor === 4 ? 'boss' : 'combat') &&
+                r.kind === 'combat' &&
                 (!direction ||
                   r.links.some(
                     (id) =>
@@ -287,11 +287,9 @@ class GeometryScene extends Scene {
           }
           if (seed === 169) throw Error('No generated room with requested gate direction');
         }
+        Object.defineProperty(run, 'style', { value: theme });
         run.phase = focus === 'side-locked' ? 'fighting' : 'exploring';
-        arena.show(
-          run,
-          `modular_v2/${theme}/${floor === 4 ? 'boss' : floor === 3 || focus === 'obstacle' ? 'combat_1' : 'combat_0'}`,
-        );
+        arena.show(run, `designed_v3/${theme}/court_0_3`);
         bridge.actors.apply();
         session.update();
         const adjacent =
@@ -366,10 +364,7 @@ class GeometryScene extends Scene {
         const run = new DungeonRun(42, new EventBus(), floor);
         const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
         run.roomId = run.map.rooms.find((r) => r.kind === (floor === 4 ? 'boss' : 'combat'))!.id;
-        arena.show(
-          run,
-          `modular_v2/${theme}/${floor === 4 ? 'boss' : floor === 3 ? 'combat_1' : 'combat_0'}`,
-        );
+        arena.show(run, `designed_v3/${theme}/${floor === 4 ? 'boss' : 'court_0_3'}`);
         const candidates = arena.spawnAnchors();
         const kinds = ['naiwa_scout', 'naiwa_turret', 'naiwa_burrower', 'naiwa_tank'] as const;
         for (let i = 0; i < 30; i++) {
@@ -454,6 +449,9 @@ class GeometryScene extends Scene {
       run: (scenario: 'pillar' | 'boundary' | 'near-wall' | 'rain' | 'brood' | 'los' | 'hop') => {
         const errors: string[] = [];
         let checked = 0;
+        const run = new DungeonRun(42, new EventBus(), 4);
+        run.roomId = run.map.exit;
+        arena.show(run, 'designed_v3/milk/boss');
         if (scenario === 'brood') {
           const r = ENEMIES.naiwa_brood.radius;
           const id = sim.spawnEnemy('naiwa_brood', B.x + r, B.y + r);

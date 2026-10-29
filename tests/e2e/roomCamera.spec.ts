@@ -3,7 +3,7 @@ import { GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
 import { CHARACTERS } from '../../src/data/characters';
 import { compileRoom } from '../../src/sim/dungeon/compileRoom';
 import { roomTemplate } from '../../src/sim/dungeon/roomCatalog';
-const room = compileRoom(roomTemplate('modular_v2/temple/empty')!);
+const room = compileRoom(roomTemplate('designed_v3/temple/start')!);
 import type { DemoProbe } from '../../src/game/testHooks';
 import { worldToScreen } from './helpers/camera';
 import { startAdventure } from './helpers/town';
@@ -131,11 +131,9 @@ test('真实移动到四个墙角时人物持续居中，房间外露出黑色�
       {
         dx,
         dy,
-        // The north-east diagonal reaches the cut's left jamb, not the old rectangle corner.
+        // The fixed square start supplies all four corner positions.
         corner: {
-          x:
-            (dx < 0 ? room.bounds.x : dy < 0 ? room.boundary[1]!.x : room.bounds.x + room.bounds.width) -
-            dx * CHARACTERS.ai_proto.radius,
+          x: (dx < 0 ? room.bounds.x : room.bounds.x + room.bounds.width) - dx * CHARACTERS.ai_proto.radius,
           y: (dy < 0 ? room.bounds.y : room.bounds.y + room.bounds.height) - dy * CHARACTERS.ai_proto.radius,
         },
       },
@@ -223,7 +221,7 @@ test('移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击�
   await page.goto('/?scene=Game&seed=42&god=1');
   await page.waitForFunction(() => (window.__AVN__?.demo?.camera.zoom ?? 0) >= 6);
   await page.keyboard.down('s');
-  await page.waitForFunction(() => window.__AVN__!.demo!.y > 175);
+  await page.waitForFunction(() => window.__AVN__!.demo!.y > 165);
   await page.keyboard.up('s');
   await expect.poll(() => page.evaluate(() => Math.abs(window.__AVN__!.input!.move.y))).toBe(0);
   // 必须在多个已推进的模拟帧中稳定，避免低帧率时两次协议读取落在同一帧。

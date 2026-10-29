@@ -1,3 +1,4 @@
+import { floorStyle } from '../dungeon/floorStyle';
 import { DUNGEON } from '../../data/dungeon';
 import { ROOM_RULES } from '../../data/rooms';
 import type { EventBus } from '../core/EventBus';
@@ -110,6 +111,9 @@ export class DungeonRun {
     return true;
   }
 
+  get style() {
+    return floorStyle(this.seed, this.floor);
+  }
   get room(): DungeonRoom {
     return this.map.rooms[this.roomId]!;
   }

@@ -194,7 +194,8 @@ class DemoHarness extends Scene {
       const input = createInputFrame(),
         children = this.children.length;
       let steps = 0,
-        hits = 0;
+        hits = 0,
+        effects = 0;
       bus.on('bullet:hit', (e) => {
         if (e.targetId !== null) hits++;
       });
@@ -205,9 +206,10 @@ class DemoHarness extends Scene {
           this.physics.world.update((++steps * 1000) / 60, 1000 / 60);
           this.physics.world.postUpdate();
           session.update();
+          effects = Math.max(effects, session.fx.activeCount);
         }
       };
-      const id = session.sim.spawnEnemy('naiwa_tank', 330, 135);
+      const id = session.sim.spawnEnemy('naiwa_tank', 280, 135);
       tick(1);
       const telegraphHidden = !session.bridge.actors.slots.find((s) => s.id === id)!.image.visible;
       tick(45);
@@ -218,17 +220,19 @@ class DemoHarness extends Scene {
         dy = enemy.y - (p.y - p.radius),
         length = Math.hypot(dx, dy);
       input.aim = { x: dx / length, y: dy / length };
+      effects = 0;
       input.fire = true;
       tick(30);
       input.fire = false;
-      const effects = session.fx.activeCount;
+      // Sample activity while firing, independent of the hit-to-final-frame distance.
+      const hitEffects = effects;
       session.sim.debugKillEnemies();
       tick(1);
       const delayedDeath = session.sim.getActor(id)?.phase === 'dead';
       tick(30);
       return {
         hits,
-        effects,
+        effects: hitEffects,
         telegraphHidden,
         delayedDeath,
         recycled: !session.sim.getActor(id),

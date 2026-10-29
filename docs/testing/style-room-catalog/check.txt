@@ -1,0 +1,65 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ai-vs-naiwa@0.0.1 check
+> npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ai-vs-naiwa@0.0.1 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ai-vs-naiwa@0.0.1 lint
+> eslint .
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ai-vs-naiwa@0.0.1 typecheck
+> tsc --noEmit
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ai-vs-naiwa@0.0.1 test
+> vitest run
+
+
+ RUN  v5.0.5 /workspace/scratch/49d74c865796/room-catalog-115
+
+
+ Test Files  67 passed (67)
+      Tests  1047 passed (1047)
+   Start at  13:25:38
+   Duration  11.98s (tests 81%, import 12%, transform 6%, worker 1%)
+
+    Isolate  67 workers spawned · ~193ms startup each (spawn + environment, per file)
+             at least ~1.65s faster with isolate: false — reuses workers across files instead of one per file
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ai-vs-naiwa@0.0.1 build
+> vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 169 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/manifest.webmanifest                            0.56 kB
+dist/index.html                                      2.57 kB │ gzip:   1.12 kB
+dist/assets/index-WdZzTa8z.css                      13.09 kB │ gzip:   3.54 kB
+dist/assets/workbox-window.prod.es5-Bd17z0YL.js      5.71 kB │ gzip:   2.25 kB │ map:     13.44 kB
+dist/assets/index-CdN94nmt.js                    1,977.10 kB │ gzip: 477.69 kB │ map: 11,610.89 kB
+
+✓ built in 1.46s
+
+PWA v2.0.0
+mode      generateSW
+precache  35 entries (23503.95 KiB)
+files generated
+  dist/sw.js.map
+  dist/sw.js
+  dist/workbox-d8ed3718.js.map
+  dist/workbox-d8ed3718.js

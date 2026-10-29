@@ -1,5 +1,5 @@
 import { MAP_ART_FRAMES } from './mapArtFrames';
-import { MODULAR_V2 } from './roomTemplates/modularV2';
+import { ROOM_METRICS } from './roomTemplates/metrics';
 import type { RoomTheme } from './schema/traps';
 
 /** World sizes are presentation only; collision footprints remain in room templates. */
@@ -39,11 +39,11 @@ export const MAP_ART = {
     effects: 'map-effects-v4c.webp',
   },
   density: 8,
-  wallWidth: MODULAR_V2.wall.width,
+  wallWidth: ROOM_METRICS.wall.width,
   wallPixels: 80,
   wallFacePixels: 96,
   wallVariants: [0, 1, 2],
-  wallHeight: MODULAR_V2.wall.faceHeight,
+  wallHeight: ROOM_METRICS.wall.faceHeight,
   canvasPadding: 20,
   // Six complete 8-unit modules. Projection shifts the entire side opening with the wall caps.
   doorModules: 6,
@@ -52,13 +52,13 @@ export const MAP_ART = {
   rimWidth: 3,
   rimSlice: 0.18,
   wallBacking: { temple: '#30445b', wreck: '#513722', abyss: '#192b47', milk: '#928673' },
-  floorTile: MODULAR_V2.wall.width,
+  floorTile: ROOM_METRICS.wall.width,
   floorVariants: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
   // Exclude the generated atlas grid; rebuild one exact material-colored pixel per edge.
   floorSourceInset: 8,
   floorBorderPixels: 1,
   floorBorder: { temple: '#4a5761', wreck: '#624c40', abyss: '#3c4154', milk: '#685947' },
-  fieldTile: MODULAR_V2.spikeTile,
+  fieldTile: ROOM_METRICS.spikeTile,
   naturalFieldTile: 32,
   frames: MAP_ART_FRAMES,
 } as const;

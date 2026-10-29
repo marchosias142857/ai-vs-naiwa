@@ -1,0 +1,122 @@
+[
+  {
+    "path": "docs/testing/style-room-catalog/abyss-boss.png",
+    "bytes": 599929,
+    "gitBlob": "00741c3fc21e2c6fad375eeb59421f790cbb638b"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/abyss-chest.png",
+    "bytes": 495171,
+    "gitBlob": "7787c004752a4101f680392db3b758a86b8a3829"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/abyss-cloister_0_0.png",
+    "bytes": 664373,
+    "gitBlob": "58f1b4a51deda0f2814ee6ce48df6b55f6ecc6ec"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/abyss-exit.png",
+    "bytes": 467487,
+    "gitBlob": "5d70faf613105703e0f55be3b5d12c710fef0abf"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/abyss-north_terrace_0_0.png",
+    "bytes": 661823,
+    "gitBlob": "b09c1b14f2ef78927f9b4fa6b8c3be13ce319ed5"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/abyss-start.png",
+    "bytes": 464762,
+    "gitBlob": "aa931de1b5b2d2dfa2d4331fca103ed340b8c898"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/milk-boss.png",
+    "bytes": 615894,
+    "gitBlob": "6dc3245fc565e8d316fcbb09bf1135176074a7b1"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/milk-chest.png",
+    "bytes": 502731,
+    "gitBlob": "b056590e282ff415045509d36bb851b1b36a1c4f"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/milk-cloister_0_0.png",
+    "bytes": 681295,
+    "gitBlob": "d5d07bfba29a7b10bd8e88c61613798058cf2d8b"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/milk-exit.png",
+    "bytes": 475132,
+    "gitBlob": "11eeb44578930168a01a617e9dc16a53ce6d7916"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/milk-north_terrace_0_0.png",
+    "bytes": 679321,
+    "gitBlob": "44dc76fbcf46b8676b3e5b10d76e45c46c17b8b3"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/milk-start.png",
+    "bytes": 471968,
+    "gitBlob": "5765713d7d7e4ed07487f95e740bd88032f10571"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/temple-boss.png",
+    "bytes": 601504,
+    "gitBlob": "09c1f272b97a3165601e13b478f0a35bc4d783a3"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/temple-chest.png",
+    "bytes": 484062,
+    "gitBlob": "e36a035cbd1e43c3b7707d3c8c1763045e4fb467"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/temple-cloister_0_0.png",
+    "bytes": 662321,
+    "gitBlob": "a1231beda3df9719755ed0992d2751804e68bbfd"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/temple-exit.png",
+    "bytes": 452336,
+    "gitBlob": "fb38eac9e7a243ab8935e253d621990937a5e5d6"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/temple-north_terrace_0_0.png",
+    "bytes": 656210,
+    "gitBlob": "012c04ad6a5fb64911db39459b8e4dbf37749f41"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/temple-start.png",
+    "bytes": 449438,
+    "gitBlob": "5d7535251fc3481fc55d4dbb840540d94e042179"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/wreck-boss.png",
+    "bytes": 637379,
+    "gitBlob": "653886bcfa4c85959d80a9edfff751257e4a7d12"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/wreck-chest.png",
+    "bytes": 524241,
+    "gitBlob": "18caca605af66107fcab504eba5ad8756166ff85"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/wreck-cloister_0_0.png",
+    "bytes": 703580,
+    "gitBlob": "9f790c9c43d2e561f280dcf89b554aeb80cdf84c"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/wreck-exit.png",
+    "bytes": 489087,
+    "gitBlob": "7c7d690148d91643ee4d3220008fde8a7e4dc54c"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/wreck-north_terrace_0_0.png",
+    "bytes": 703291,
+    "gitBlob": "44769b1b71ba3c5fd4cf4f26b58f55d63f42bd4c"
+  },
+  {
+    "path": "docs/testing/style-room-catalog/wreck-start.png",
+    "bytes": 486694,
+    "gitBlob": "4fb274be5dca3de6e2cd70ea2d5185ba93b4939c"
+  }
+]

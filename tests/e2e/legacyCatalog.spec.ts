@@ -1,12 +1,13 @@
-import baseline from '../fixtures/legacyV1/production-baseline.json' with { type: 'json' };
 import { expect, test } from '@playwright/test';
 import { build } from 'vite';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { LEGACY_V1 } from '../../src/data/roomTemplates/legacyV1';
-import { MODULAR_V2 } from '../../src/data/roomTemplates/modularV2';
+import { compileRoom } from '../../src/sim/dungeon/compileRoom';
+import { roomTemplate } from '../../src/sim/dungeon/roomCatalog';
+import { floorStyle } from '../../src/sim/dungeon/floorStyle';
+import { DUNGEON } from '../../src/data/dungeon';
 import type {} from '../fixtures/legacyCatalog';
 
 let directory: string, url: string, server: ReturnType<typeof createServer>;
@@ -56,49 +57,18 @@ for (const seed of [0, 42, 12345, 0xffffffff])
       const result = await page.evaluate(() => window.legacyCatalog.inspectFloor());
       reports.push(result);
       expect(result.floor).toBe(floor);
-      expect(result.rows).toHaveLength(floor === 4 ? 2 : 8);
-      expect(result.unchangedByFreeze).toBe(true);
-      expect(result.bounds).toEqual(
-        floor === 4
-          ? {
-              ...LEGACY_V1.bounds,
-              height: LEGACY_V1.bounds.height + MODULAR_V2.southApron - MODULAR_V2.wall.faceHeight,
-            }
-          : { ...MODULAR_V2.bounds, height: MODULAR_V2.bounds.height - MODULAR_V2.wall.faceHeight },
+      expect(result.rows).toHaveLength(
+        floor === DUNGEON.floors + 1 ? 2 : DUNGEON.mainRooms + DUNGEON.branchRooms,
       );
-      expect(result.center).toEqual(LEGACY_V1.anchors.player);
+      expect(result.unchangedByFreeze).toBe(true);
+      const start = compileRoom(roomTemplate(`designed_v3/${floorStyle(seed, floor)}/start`)!);
+      expect(result.bounds).toEqual(start.bounds);
+      expect(result.center).toEqual(start.anchors.player);
+      expect(new Set(result.rows.map((r) => r.templateId)).size).toBe(result.rows.length);
       for (const row of result.rows) {
         expect(row.templateId).toBe(row.expectedId);
-        const recorded = baseline.selections[String(seed) as keyof typeof baseline.selections][floor - 1]!;
-        const legacyId = row.expectedId.replace('modular_v2/', 'legacy_v1/');
-        expect(legacyId).toBe(recorded.templateIds[row.id]);
-        const original = baseline.templates[legacyId as keyof typeof baseline.templates];
-        expect(row.bodies).toEqual(
-          legacyId === 'legacy_v1/wreck/combat_1' || legacyId === 'legacy_v1/abyss/combat_3'
-            ? original.bodies.map((b) => ({ ...b, width: 60 }))
-            : original.bodies,
-        );
-        const positionedTraps =
-          legacyId === 'legacy_v1/wreck/combat_2'
-            ? original.traps.map((t, i) => (i < 2 ? { ...t, x: 240 + Math.sign(t.x - 240) * 24 } : t))
-            : legacyId === 'legacy_v1/wreck/combat_1'
-              ? original.traps.map((t, i) => (i === 3 ? { ...t, x: 160 } : t))
-              : legacyId === 'legacy_v1/abyss/combat_2'
-                ? original.traps.map((t, i) => (i === 1 ? { ...t, y: 81 } : t))
-                : original.traps;
-        expect(row.traps).toEqual(
-          positionedTraps.map((t) =>
-            t.kind === 'spikes'
-              ? {
-                  ...t,
-                  width: t.width === 40 ? 48 : t.width,
-                  height: t.height === 56 ? 64 : t.height === 14 ? 16 : t.height,
-                }
-              : t,
-          ),
-        );
-        expect(row.staticObstacles).toEqual(original.staticObstacles);
-        expect(row.form).toBe(row.kind === 'combat' || row.kind === 'boss' ? row.kind : 'empty');
+        expect(row.templateId.startsWith(`designed_v3/${floorStyle(seed, floor)}/`)).toBe(true);
+        expect(row.form).toBe(row.kind);
         expect(row.bodies).toEqual(row.expectedBodies);
         expect(row.staticObstacles).toEqual(row.expectedObstacles);
         expect(row.traps).toEqual(row.expectedTraps);
@@ -137,7 +107,7 @@ for (const seed of [0, 42, 12345, 0xffffffff])
     });
   });
 
-test('graybox contours block real Arcade movement and use template ports for every linked door', async ({
+test('every generated linked door uses the selected template port and safe destination', async ({
   page,
 }, info) => {
   await page.goto(`${url}?seed=42`);
@@ -147,17 +117,6 @@ test('graybox contours block real Arcade movement and use template ports for eve
     const report = await page.evaluate(() => window.legacyCatalog.probeShape());
     reports.push(report);
     expect(report.floor).toBe(floor);
-    if (floor < 4) {
-      expect(report.expansion?.legal).toBe(true);
-      expect(report.expansion?.x).toBeCloseTo(102, 1);
-    } else expect(report.expansion).toBeNull();
-    expect(report.collisions.length).toBe([1, 2, 1, 0][floor - 1]);
-    for (const collision of report.collisions) {
-      expect(collision.legal).toBe(true);
-      expect(collision.stopped).toBe(true);
-      expect(collision.fired).toBeGreaterThan(0);
-    }
-    if (floor === 3) expect(report.navigation).toEqual({ legal: true, crossed: true, blockedLOS: true });
     expect(report.doors.length).toBeGreaterThan(0);
     for (const door of report.doors) expect(door).toEqual({ entered: true, landed: true });
     await page.screenshot({ path: info.outputPath(`graybox-floor-${floor}.png`) });

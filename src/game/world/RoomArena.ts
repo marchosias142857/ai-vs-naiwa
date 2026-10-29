@@ -1,7 +1,6 @@
-import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
-import { compileRoom, type CompiledRoom } from '../../sim/dungeon/compileRoom';
-import { MODULAR_V2 } from '../../data/roomTemplates/modularV2';
-import { resolveRoomTemplate } from '../../sim/dungeon/roomCatalog';
+import { clearOfTraps, compileRoom, type CompiledRoom } from '../../sim/dungeon/compileRoom';
+import { ROOM_METRICS as MODULAR_V2 } from '../../data/roomTemplates/metrics';
+import { roomTemplate, resolveRoomTemplate, type RoomTemplate } from '../../sim/dungeon/roomCatalog';
 import { ROOM_BLOCKS, createRoomArt, type RoomArt } from './RoomArt';
 import { TRAP_RULES } from '../../data/traps';
 import { DUNGEON } from '../../data/dungeon';
@@ -16,7 +15,7 @@ import { NavigationGrid } from '../../sim/dungeon/NavigationGrid';
 import type { Vec2 } from '../../sim/core/types';
 import type { GameObjects, Physics, Scene } from 'phaser';
 import { COLORS, DEPTH, TILE_SIZE } from '../../config';
-import { ROOM_LAYOUTS } from '../../data/layouts';
+import { DESIGNED_V3 } from '../../data/roomTemplates/designedV3';
 import { ROOM_RULES } from '../../data/rooms';
 import type { DungeonRun } from '../../sim/run/DungeonRun';
 import { Random } from '../../sim/core/Random';
@@ -42,7 +41,8 @@ export class RoomArena {
   private readonly art: RoomArt | null;
   private readonly modularArt: boolean;
   private theme: RoomTheme['art'] = 'temple';
-  private room: CompiledRoom | null = null;
+  private room: CompiledRoom = compileRoom(roomTemplate('designed_v3/temple/start')!);
+  private template: RoomTemplate | null = null;
   private readonly boundarySlots: Physics.Arcade.Image[] = [];
   private readonly navigation: NavigationGrid;
   private readonly graphics: GameObjects.Graphics;
@@ -112,7 +112,7 @@ export class RoomArena {
   };
   /** Resolve the selected stable ID before placing art, Arcade bodies or sim obstacles. */
   show(run: DungeonRun, templateId: string): void {
-    const template = resolveRoomTemplate(templateId, run.floor, run.room.kind);
+    const template = resolveRoomTemplate(templateId, run.style, run.room.kind);
     if (!template) throw new RangeError('room template does not match the generated room');
     const room = compileRoom(template);
     if (template.boxes.length > this.slots.length) throw new RangeError('obstacle pool exhausted');
@@ -123,20 +123,8 @@ export class RoomArena {
     }
     this.room = room;
     this.theme = template.theme;
-    this.bridge.setRoomBounds(room.bounds);
-    for (let i = 0; i < this.boundarySlots.length; i++) {
-      const image = this.boundarySlots[i]!,
-        box = room.cuts[i];
-      if (!box) {
-        image.disableBody(true, true);
-        continue;
-      }
-      image
-        .enableBody(true, box.x, box.y, true, true)
-        .setDisplaySize(box.width, box.height)
-        .refreshBody()
-        .setAlpha(0);
-    }
+    this.template = template;
+    this.installBoundary(room);
     this.art?.show(
       template.theme,
       template.boxes,
@@ -155,6 +143,22 @@ export class RoomArena {
     this.placeTraps(run.floor * DUNGEON.gridSize ** 2 + run.roomId, template.traps);
     this.prepareGeometry();
     this.draw(run);
+  }
+  private installBoundary(room: CompiledRoom): void {
+    this.bridge.setRoomBounds(room.bounds);
+    for (let i = 0; i < this.boundarySlots.length; i++) {
+      const image = this.boundarySlots[i]!,
+        box = room.cuts[i];
+      if (!box) {
+        image.disableBody(true, true);
+        continue;
+      }
+      image
+        .enableBody(true, box.x, box.y, true, true)
+        .setDisplaySize(box.width, box.height)
+        .refreshBody()
+        .setAlpha(0);
+    }
   }
   /** 机关换算成世界坐标交给 sim；与当前摆放相同时 sim 保留进行中的状态（存档恢复）。 */
   private placeTraps(room: number, traps: readonly TrapPlacement[]): void {
@@ -179,9 +183,14 @@ export class RoomArena {
   }
   /** 压测也复用正式房间的墙体、视线与导航缓存。 */
   setLayout(layout: number): void {
-    const boxes = ROOM_LAYOUTS[layout % ROOM_LAYOUTS.length]!;
-    this.art?.show('temple', boxes);
-    this.setBoxes(boxes);
+    const options = DESIGNED_V3.filter((t) => t.theme === 'temple' && t.form === 'combat');
+    const template = roomTemplate(options[layout % options.length]!.id)!;
+    this.room = compileRoom(template);
+    this.theme = template.theme;
+    this.installBoundary(this.room);
+    this.template = null;
+    this.art?.show(template.theme, template.boxes, this.room);
+    this.setBoxes(template.boxes);
   }
   private setBoxes(boxes: readonly Box[], kind: 'wall' | 'pillar' = 'wall', mask = 15): void {
     // 新主题的内墙由 RoomArt 平铺障碍块画出来，这里的墙体只保留碰撞。
@@ -339,13 +348,13 @@ export class RoomArena {
     return this.geometry;
   }
   port(dx: number, dy: number) {
-    const ports = this.room?.ports ?? LEGACY_V1.ports;
+    const ports = this.room.ports;
     const port = ports.find((p) => p.direction.x === dx && p.direction.y === dy);
     if (!port) throw new RangeError('missing room port');
     return port;
   }
   anchor(kind: keyof CompiledRoom['anchors']): Readonly<Vec2> {
-    return this.room?.anchors[kind] ?? LEGACY_V1.anchors[kind];
+    return this.room.anchors[kind];
   }
   readonly spawnAnchors = () => this.room?.spawns ?? [];
   /** Dynamic blockers can invalidate a static anchor. Never return an unchecked position. */
@@ -357,7 +366,10 @@ export class RoomArena {
     this.prepareGeometry();
     this.from.x = x;
     this.from.y = y;
-    return this.geometry.canOccupy(this.from, r, 'spawn');
+    return (
+      this.geometry.canOccupy(this.from, r, 'spawn') &&
+      (!this.template || clearOfTraps(this.template, this.from, r))
+    );
   };
   private readonly canWalk = (x: number, y: number, r: number): boolean => {
     this.from.x = x;

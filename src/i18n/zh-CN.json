@@ -65,7 +65,6 @@
   "menu.confirmNew": "确认开始新一局",
   "hud.empty": "空槽",
   "hud.slots": "武器槽：{primary} / {secondary}",
-  "hint.portal": "[ ↑ 出口 ]",
   "menu.continueEntry": "继续第 {floor} 层（从入口恢复）",
   "save.updated": "游戏已更新，旧冒险已结束；天赋与局外资源已保留",
   "save.invalid": "存档异常，从本层入口继续",

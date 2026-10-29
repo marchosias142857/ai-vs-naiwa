@@ -1,0 +1,1883 @@
+{
+  "files": 13,
+  "total": 194,
+  "counts": {
+    "passed": 190,
+    "skipped": 4
+  },
+  "autoRetries": 0,
+  "environment": {
+    "browser": "Chromium 153.0.8010.0",
+    "renderer": "WebGL / SwiftShader",
+    "projects": ["Desktop Chrome", "Pixel 7 landscape"],
+    "workers": 1,
+    "testOnlyFlags": ["--disable-accelerated-2d-canvas"]
+  },
+  "batches": [
+    {
+      "file": "designedCatalog.spec.ts",
+      "startTime": "2026-10-29T15:29:04.122Z",
+      "duration": 257966.506,
+      "expected": 16,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "startTime": "2026-10-29T15:33:22.739Z",
+      "duration": 374540.388,
+      "expected": 50,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "startTime": "2026-10-29T15:39:37.939Z",
+      "duration": 44192.259,
+      "expected": 10,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "mapArtMatrix.spec.ts",
+      "startTime": "2026-10-29T15:40:22.772Z",
+      "duration": 123005.592,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "startTime": "2026-10-29T15:42:26.478Z",
+      "duration": 61597.352999999996,
+      "expected": 16,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "startTime": "2026-10-29T15:43:28.756Z",
+      "duration": 220481.21999999997,
+      "expected": 10,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "startTime": "2026-10-29T15:47:10.131Z",
+      "duration": 217624.31100000002,
+      "expected": 18,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "startTime": "2026-10-29T15:50:48.555Z",
+      "duration": 117045.33099999999,
+      "expected": 8,
+      "skipped": 2,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "startTime": "2026-10-29T15:52:46.247Z",
+      "duration": 94660.38900000001,
+      "expected": 33,
+      "skipped": 1,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "resumeProduction.spec.ts",
+      "startTime": "2026-10-29T15:54:21.557Z",
+      "duration": 34123.691,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "pwa.spec.ts",
+      "startTime": "2026-10-29T15:54:56.383Z",
+      "duration": 103425.209,
+      "expected": 4,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "startTime": "2026-10-29T15:56:40.417Z",
+      "duration": 48777.594999999994,
+      "expected": 10,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "file": "hub.spec.ts",
+      "startTime": "2026-10-29T15:57:29.844Z",
+      "duration": 60132.781,
+      "expected": 5,
+      "skipped": 1,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  ],
+  "tests": [
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "new catalog renders full models in every style, including diagonal walls and fixed squares",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 113621,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "authored temple Boss pillars stun a real charging Boss through Arcade",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3281,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "authored wreck Boss pillars stun a real charging Boss through Arcade",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2851,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "authored abyss Boss pillars stun a real charging Boss through Arcade",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3042,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "authored milk Boss pillars stun a real charging Boss through Arcade",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2648,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "actual Arcade motion and sim LOS both stop at diagonal/step wall silhouettes",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2959,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "production selector, revisit and complete JSON restore preserve the manifest and root stream",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 17681,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "repeated themed room changes keep display and texture pools bounded",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 5535,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "new catalog renders full models in every style, including diagonal walls and fixed squares",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 61835,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "authored temple Boss pillars stun a real charging Boss through Arcade",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2968,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "authored wreck Boss pillars stun a real charging Boss through Arcade",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2526,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "authored abyss Boss pillars stun a real charging Boss through Arcade",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2594,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "authored milk Boss pillars stun a real charging Boss through Arcade",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2593,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "actual Arcade motion and sim LOS both stop at diagonal/step wall silhouettes",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2917,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "production selector, revisit and complete JSON restore preserve the manifest and root stream",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 17082,
+      "retry": 0
+    },
+    {
+      "file": "designedCatalog.spec.ts",
+      "title": "repeated themed room changes keep display and texture pools bounded",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 5729,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "whole obstacle and spike models match real collision and damage footprints",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 7543,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "solid wall tops stop real Arcade movement, projectiles and sight in all four themes",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4131,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: pillar",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3135,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: boundary",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2683,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: near-wall",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3490,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: rain",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4146,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: brood",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2883,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: los",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3120,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: hop",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3284,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: fresh session restore sees the landed pool before the first step",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 16541,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map art dense showcase: floor 1",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4235,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map art dense showcase: floor 2",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4357,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map art dense showcase: floor 3",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4370,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map art dense showcase: floor 4",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4472,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map wall review: floor 1",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 15652,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map wall review: floor 2",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 15809,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map wall review: floor 3",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 16067,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map wall review: floor 4",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 15891,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map object atlas missing uses graybox without missing object frames",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2859,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "unified trap states and inset borders: floor 1",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 7443,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "unified trap states and inset borders: floor 2",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 7662,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "unified trap states and inset borders: floor 3",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 8521,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "unified chest, exit and supply pickups use actual game objects",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6549,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "unified environment zones stay visible on each floor and recycle their existing display slots",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 8593,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "theme changes select matching crystals and all spike states without image stretching",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 23813,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "whole obstacle and spike models match real collision and damage footprints",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6265,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "solid wall tops stop real Arcade movement, projectiles and sight in all four themes",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3436,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: pillar",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2846,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: boundary",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2717,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: near-wall",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3319,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: rain",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4013,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: brood",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2587,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: los",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3004,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: hop",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2647,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "production geometry: fresh session restore sees the landed pool before the first step",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 15332,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map art dense showcase: floor 1",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4035,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map art dense showcase: floor 2",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4761,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map art dense showcase: floor 3",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4625,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map art dense showcase: floor 4",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4337,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map wall review: floor 1",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 12376,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map wall review: floor 2",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 12228,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map wall review: floor 3",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 11400,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map wall review: floor 4",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 11548,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "map object atlas missing uses graybox without missing object frames",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2838,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "unified trap states and inset borders: floor 1",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6552,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "unified trap states and inset borders: floor 2",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6411,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "unified trap states and inset borders: floor 3",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6588,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "unified chest, exit and supply pickups use actual game objects",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4711,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "unified environment zones stay visible on each floor and recycle their existing display slots",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 8578,
+      "retry": 0
+    },
+    {
+      "file": "productionGeometry.spec.ts",
+      "title": "theme changes select matching crystals and all spike states without image stretching",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 19947,
+      "retry": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "title": "unified hub uses the same wall, gate, floor and redrawn altar",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3208,
+      "retry": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "title": "modular production art floor 1",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4166,
+      "retry": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "title": "modular production art floor 2",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3993,
+      "retry": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "title": "modular production art floor 3",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3986,
+      "retry": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "title": "modular production art floor 4",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3839,
+      "retry": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "title": "unified hub uses the same wall, gate, floor and redrawn altar",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3367,
+      "retry": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "title": "modular production art floor 1",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4448,
+      "retry": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "title": "modular production art floor 2",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4621,
+      "retry": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "title": "modular production art floor 3",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4250,
+      "retry": 0
+    },
+    {
+      "file": "mapArt.spec.ts",
+      "title": "modular production art floor 4",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4188,
+      "retry": 0
+    },
+    {
+      "file": "mapArtMatrix.spec.ts",
+      "title": "200 connected layouts per theme reuse the same art and fixed scene objects",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 47992,
+      "retry": 0
+    },
+    {
+      "file": "mapArtMatrix.spec.ts",
+      "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3395,
+      "retry": 0
+    },
+    {
+      "file": "mapArtMatrix.spec.ts",
+      "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3409,
+      "retry": 0
+    },
+    {
+      "file": "mapArtMatrix.spec.ts",
+      "title": "unified gates have opaque integer-module joins and field rims meet the floor without gaps",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4527,
+      "retry": 0
+    },
+    {
+      "file": "mapArtMatrix.spec.ts",
+      "title": "200 connected layouts per theme reuse the same art and fixed scene objects",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 49230,
+      "retry": 0
+    },
+    {
+      "file": "mapArtMatrix.spec.ts",
+      "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3644,
+      "retry": 0
+    },
+    {
+      "file": "mapArtMatrix.spec.ts",
+      "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3130,
+      "retry": 0
+    },
+    {
+      "file": "mapArtMatrix.spec.ts",
+      "title": "unified gates have opaque integer-module joins and field rims meet the floor without gaps",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3921,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "temple: actors stay above reused obstacles and barrels from either side",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3132,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "temple: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3927,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "wreck: actors stay above reused obstacles and barrels from either side",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3395,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "wreck: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4021,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "abyss: actors stay above reused obstacles and barrels from either side",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3063,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "abyss: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3689,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "milk: actors stay above reused obstacles and barrels from either side",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3106,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "milk: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4259,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "temple: actors stay above reused obstacles and barrels from either side",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3368,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "temple: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4077,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "wreck: actors stay above reused obstacles and barrels from either side",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3280,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "wreck: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3862,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "abyss: actors stay above reused obstacles and barrels from either side",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3302,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "abyss: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3844,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "milk: actors stay above reused obstacles and barrels from either side",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3144,
+      "retry": 0
+    },
+    {
+      "file": "mapLayers.spec.ts",
+      "title": "milk: random wall-width tiles keep uniform borders and stable revisits",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3955,
+      "retry": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 24231,
+      "retry": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 24344,
+      "retry": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 25205,
+      "retry": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 28777,
+      "retry": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "title": "every generated linked door uses the selected template port and safe destination",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1385,
+      "retry": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 30405,
+      "retry": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 27797,
+      "retry": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 26347,
+      "retry": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 26501,
+      "retry": 0
+    },
+    {
+      "file": "legacyCatalog.spec.ts",
+      "title": "every generated linked door uses the selected template port and safe destination",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1294,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 12863,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 15742,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4442,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6694,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 10396,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 27278,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 14775,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3352,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3312,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 14109,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 16849,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4606,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 7254,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 10931,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 35892,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 16862,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3955,
+      "retry": 0
+    },
+    {
+      "file": "demo.spec.ts",
+      "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3635,
+      "retry": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "title": "不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 10433,
+      "retry": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "title": "真实移动到四个墙角时人物持续居中，房间外露出黑色背景",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 32192,
+      "retry": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "title": "跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6578,
+      "retry": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "title": "移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 5972,
+      "retry": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "title": "主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动",
+      "project": "desktop",
+      "outcome": "skipped",
+      "status": "skipped",
+      "durationMs": 1111,
+      "retry": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "title": "不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 10111,
+      "retry": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "title": "真实移动到四个墙角时人物持续居中，房间外露出黑色背景",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 32645,
+      "retry": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "title": "跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6010,
+      "retry": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "title": "移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击",
+      "project": "mobile-landscape",
+      "outcome": "skipped",
+      "status": "skipped",
+      "durationMs": 1089,
+      "retry": 0
+    },
+    {
+      "file": "roomCamera.spec.ts",
+      "title": "主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 7733,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4877,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1690,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1492,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "同步保存 both，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1506,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2667,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 5949,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6337,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "outcome": "skipped",
+      "status": "skipped",
+      "durationMs": 631,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4400,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1519,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2434,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "菜单兜底区分 updated，入口独立校验",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1536,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "菜单兜底区分 invalid，入口独立校验",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1209,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "菜单兜底区分 corrupt，入口独立校验",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1177,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1416,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 777,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1712,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4668,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1438,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1040,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "同步保存 both，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1079,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2729,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6419,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6357,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6508,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4911,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1618,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2763,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "菜单兜底区分 updated，入口独立校验",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1305,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "菜单兜底区分 invalid，入口独立校验",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1394,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "菜单兜底区分 corrupt，入口独立校验",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1803,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 1769,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 886,
+      "retry": 0
+    },
+    {
+      "file": "save.spec.ts",
+      "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 2126,
+      "retry": 0
+    },
+    {
+      "file": "resumeProduction.spec.ts",
+      "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 14406,
+      "retry": 0
+    },
+    {
+      "file": "resumeProduction.spec.ts",
+      "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 15728,
+      "retry": 0
+    },
+    {
+      "file": "pwa.spec.ts",
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 17988,
+      "retry": 0
+    },
+    {
+      "file": "pwa.spec.ts",
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 35393,
+      "retry": 0
+    },
+    {
+      "file": "pwa.spec.ts",
+      "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 15688,
+      "retry": 0
+    },
+    {
+      "file": "pwa.spec.ts",
+      "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 30817,
+      "retry": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 5257,
+      "retry": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "title": "production graybox screenshot floor 1",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3423,
+      "retry": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "title": "production graybox screenshot floor 2",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4345,
+      "retry": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "title": "production graybox screenshot floor 3",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4688,
+      "retry": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "title": "production graybox screenshot floor 4",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4375,
+      "retry": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4972,
+      "retry": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "title": "production graybox screenshot floor 1",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 3831,
+      "retry": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "title": "production graybox screenshot floor 2",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4685,
+      "retry": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "title": "production graybox screenshot floor 3",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4920,
+      "retry": 0
+    },
+    {
+      "file": "updateBoundary.spec.ts",
+      "title": "production graybox screenshot floor 4",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 4363,
+      "retry": 0
+    },
+    {
+      "file": "hub.spec.ts",
+      "title": "主城不改写旧局，门可取消；续玩原局，新冒险才替换",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 16461,
+      "retry": 0
+    },
+    {
+      "file": "hub.spec.ts",
+      "title": "手柄走到门口后需松开再确认，不会一次按键穿过对话框",
+      "project": "desktop",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 6231,
+      "retry": 0
+    },
+    {
+      "file": "hub.spec.ts",
+      "title": "手机只用左摇杆与门按钮即可进入地牢，开屏控件不溢出",
+      "project": "desktop",
+      "outcome": "skipped",
+      "status": "skipped",
+      "durationMs": 848,
+      "retry": 0
+    },
+    {
+      "file": "hub.spec.ts",
+      "title": "主城不改写旧局，门可取消；续玩原局，新冒险才替换",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 17821,
+      "retry": 0
+    },
+    {
+      "file": "hub.spec.ts",
+      "title": "手柄走到门口后需松开再确认，不会一次按键穿过对话框",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 7860,
+      "retry": 0
+    },
+    {
+      "file": "hub.spec.ts",
+      "title": "手机只用左摇杆与门按钮即可进入地牢，开屏控件不溢出",
+      "project": "mobile-landscape",
+      "outcome": "expected",
+      "status": "passed",
+      "durationMs": 7863,
+      "retry": 0
+    }
+  ]
+}

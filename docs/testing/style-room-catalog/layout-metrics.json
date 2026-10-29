@@ -1,0 +1,3633 @@
+{
+  "definition": "Conservative rectangular visible trap footprints including 3-unit rims and 24x28 defaults for circular props, divided by 1-unit sampled empty physical floor. Nonoverlap validated separately. This is placed-object density, not future explosion/attack reach.",
+  "familyCounts": {
+    "temple": {
+      "court": 20,
+      "cloister": 12,
+      "corner_hall": 16,
+      "side_galleries": 16,
+      "north_terrace": 16,
+      "offset_wings": 16,
+      "south_hall": 16,
+      "long_octagon": 16
+    },
+    "wreck": {
+      "court": 20,
+      "cloister": 12,
+      "corner_hall": 16,
+      "side_galleries": 16,
+      "north_terrace": 16,
+      "offset_wings": 16,
+      "south_hall": 16,
+      "long_octagon": 16
+    },
+    "abyss": {
+      "court": 20,
+      "cloister": 12,
+      "corner_hall": 16,
+      "side_galleries": 16,
+      "north_terrace": 16,
+      "offset_wings": 16,
+      "south_hall": 16,
+      "long_octagon": 16
+    },
+    "milk": {
+      "court": 20,
+      "cloister": 12,
+      "corner_hall": 16,
+      "side_galleries": 16,
+      "north_terrace": 16,
+      "offset_wings": 16,
+      "south_hall": 16,
+      "long_octagon": 16
+    }
+  },
+  "minimum": 0.01846942382467303,
+  "maximum": 0.050204918032786885,
+  "rows": [
+    {
+      "id": "designed_v3/temple/court_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.021239837398373984
+    },
+    {
+      "id": "designed_v3/temple/court_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.03419715447154471
+    },
+    {
+      "id": "designed_v3/temple/court_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.021239837398373984
+    },
+    {
+      "id": "designed_v3/temple/court_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.044817073170731705
+    },
+    {
+      "id": "designed_v3/temple/cloister_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.021807178631051752
+    },
+    {
+      "id": "designed_v3/temple/cloister_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.03511060100166945
+    },
+    {
+      "id": "designed_v3/temple/cloister_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.04601419031719533
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.02173460898502496
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.03499376039933444
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.02173460898502496
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.04586106489184692
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.023793260473588342
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.03830828779599271
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.023793260473588342
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.050204918032786885
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.022102368866328256
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.035585871404399325
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.022102368866328256
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.04663705583756345
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.021843645484949832
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.035169314381270904
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.021843645484949832
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.046091137123745816
+    },
+    {
+      "id": "designed_v3/temple/south_hall_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.021880234505862645
+    },
+    {
+      "id": "designed_v3/temple/south_hall_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.03522822445561139
+    },
+    {
+      "id": "designed_v3/temple/south_hall_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.021880234505862645
+    },
+    {
+      "id": "designed_v3/temple/south_hall_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.04616834170854271
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.021916946308724834
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.0352873322147651
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.021916946308724834
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.046245805369127514
+    },
+    {
+      "id": "designed_v3/temple/court_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.020228416569879986
+    },
+    {
+      "id": "designed_v3/temple/court_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.0325687185443283
+    },
+    {
+      "id": "designed_v3/temple/court_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.020228416569879986
+    },
+    {
+      "id": "designed_v3/temple/court_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.042682926829268296
+    },
+    {
+      "id": "designed_v3/temple/cloister_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.02074235807860262
+    },
+    {
+      "id": "designed_v3/temple/cloister_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.03339618896387456
+    },
+    {
+      "id": "designed_v3/temple/cloister_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.04376736800317586
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.020676691729323307
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.033290462999604274
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.020676691729323307
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.04362880886426593
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.02253126347563605
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.03627641224665804
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.02253126347563605
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.04754204398447607
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.021009248090068357
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.03382589465219139
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.021009248090068357
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.044330518697225575
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.02077534791252485
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.033449304174950296
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.02077534791252485
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.04383697813121273
+    },
+    {
+      "id": "designed_v3/temple/south_hall_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.020808442851453605
+    },
+    {
+      "id": "designed_v3/temple/south_hall_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.03350258861011549
+    },
+    {
+      "id": "designed_v3/temple/south_hall_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.020808442851453605
+    },
+    {
+      "id": "designed_v3/temple/south_hall_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.04390681003584229
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.020841643398484246
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.03355604307937774
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.020841643398484246
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.04397686477861987
+    },
+    {
+      "id": "designed_v3/temple/court_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.019308943089430895
+    },
+    {
+      "id": "designed_v3/temple/court_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.031088322246858834
+    },
+    {
+      "id": "designed_v3/temple/court_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.019308943089430895
+    },
+    {
+      "id": "designed_v3/temple/court_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.04074279379157428
+    },
+    {
+      "id": "designed_v3/temple/cloister_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.01977668433005299
+    },
+    {
+      "id": "designed_v3/temple/cloister_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.031841408024224076
+    },
+    {
+      "id": "designed_v3/temple/cloister_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.04172975018925057
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.01971698113207547
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.03174528301886793
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.01971698113207547
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.04160377358490566
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.021396396396396396
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.034449221949221946
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.021396396396396396
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.045147420147420146
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.020019157088122606
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.03223180076628353
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.020019157088122606
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.04224137931034483
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.019806671721000757
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.031889689158453374
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.019806671721000757
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.04179302501895375
+    },
+    {
+      "id": "designed_v3/temple/south_hall_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.01983675018982536
+    },
+    {
+      "id": "designed_v3/temple/south_hall_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.03193811693242217
+    },
+    {
+      "id": "designed_v3/temple/south_hall_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.01983675018982536
+    },
+    {
+      "id": "designed_v3/temple/south_hall_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.04185649202733485
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.019866920152091256
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.03198669201520912
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.019866920152091256
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.041920152091254756
+    },
+    {
+      "id": "designed_v3/temple/court_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.01846942382467303
+    },
+    {
+      "id": "designed_v3/temple/court_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.029736656062212798
+    },
+    {
+      "id": "designed_v3/temple/court_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.01846942382467303
+    },
+    {
+      "id": "designed_v3/temple/court_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.03897136797454931
+    },
+    {
+      "id": "designed_v3/temple/cloister_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.018896925858951176
+    },
+    {
+      "id": "designed_v3/temple/cloister_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.0304249547920434
+    },
+    {
+      "id": "designed_v3/temple/cloister_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.039873417721518985
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.018842408943382617
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.03033717994951316
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.018842408943382617
+    },
+    {
+      "id": "designed_v3/temple/corner_hall_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.039758384421204475
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.020370370370370372
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.03279727095516569
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.020370370370370372
+    },
+    {
+      "id": "designed_v3/temple/side_galleries_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.04298245614035088
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.01911818514452982
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.030781192828393707
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.01911818514452982
+    },
+    {
+      "id": "designed_v3/temple/north_terrace_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.040340285400658614
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.018924302788844622
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.0304690329590728
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.018924302788844622
+    },
+    {
+      "id": "designed_v3/temple/offset_wings_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.03993118435349511
+    },
+    {
+      "id": "designed_v3/temple/south_hall_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.01895175915850562
+    },
+    {
+      "id": "designed_v3/temple/south_hall_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.030513239027928907
+    },
+    {
+      "id": "designed_v3/temple/south_hall_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.01895175915850562
+    },
+    {
+      "id": "designed_v3/temple/south_hall_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.03998911860718172
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.01897929531420269
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.030557573556120595
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.01897929531420269
+    },
+    {
+      "id": "designed_v3/temple/long_octagon_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.04004722121322194
+    },
+    {
+      "id": "designed_v3/temple/court_4_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.019942748091603055
+    },
+    {
+      "id": "designed_v3/temple/court_4_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.032108778625954196
+    },
+    {
+      "id": "designed_v3/temple/court_4_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.019942748091603055
+    },
+    {
+      "id": "designed_v3/temple/court_4_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.04208015267175572
+    },
+    {
+      "id": "designed_v3/wreck/court_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.021239837398373984
+    },
+    {
+      "id": "designed_v3/wreck/court_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.03419715447154471
+    },
+    {
+      "id": "designed_v3/wreck/court_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.021239837398373984
+    },
+    {
+      "id": "designed_v3/wreck/court_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.044817073170731705
+    },
+    {
+      "id": "designed_v3/wreck/cloister_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.021807178631051752
+    },
+    {
+      "id": "designed_v3/wreck/cloister_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.03511060100166945
+    },
+    {
+      "id": "designed_v3/wreck/cloister_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.04601419031719533
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.02173460898502496
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.03499376039933444
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.02173460898502496
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.04586106489184692
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.023793260473588342
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.03830828779599271
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.023793260473588342
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.050204918032786885
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.022102368866328256
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.035585871404399325
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.022102368866328256
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.04663705583756345
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.021843645484949832
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.035169314381270904
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.021843645484949832
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.046091137123745816
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.021880234505862645
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.03522822445561139
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.021880234505862645
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.04616834170854271
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.021916946308724834
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.0352873322147651
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.021916946308724834
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.046245805369127514
+    },
+    {
+      "id": "designed_v3/wreck/court_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.020228416569879986
+    },
+    {
+      "id": "designed_v3/wreck/court_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.0325687185443283
+    },
+    {
+      "id": "designed_v3/wreck/court_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.020228416569879986
+    },
+    {
+      "id": "designed_v3/wreck/court_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.042682926829268296
+    },
+    {
+      "id": "designed_v3/wreck/cloister_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.02074235807860262
+    },
+    {
+      "id": "designed_v3/wreck/cloister_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.03339618896387456
+    },
+    {
+      "id": "designed_v3/wreck/cloister_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.04376736800317586
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.020676691729323307
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.033290462999604274
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.020676691729323307
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.04362880886426593
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.02253126347563605
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.03627641224665804
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.02253126347563605
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.04754204398447607
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.021009248090068357
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.03382589465219139
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.021009248090068357
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.044330518697225575
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.02077534791252485
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.033449304174950296
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.02077534791252485
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.04383697813121273
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.020808442851453605
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.03350258861011549
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.020808442851453605
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.04390681003584229
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.020841643398484246
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.03355604307937774
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.020841643398484246
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.04397686477861987
+    },
+    {
+      "id": "designed_v3/wreck/court_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.019308943089430895
+    },
+    {
+      "id": "designed_v3/wreck/court_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.031088322246858834
+    },
+    {
+      "id": "designed_v3/wreck/court_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.019308943089430895
+    },
+    {
+      "id": "designed_v3/wreck/court_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.04074279379157428
+    },
+    {
+      "id": "designed_v3/wreck/cloister_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.01977668433005299
+    },
+    {
+      "id": "designed_v3/wreck/cloister_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.031841408024224076
+    },
+    {
+      "id": "designed_v3/wreck/cloister_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.04172975018925057
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.01971698113207547
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.03174528301886793
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.01971698113207547
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.04160377358490566
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.021396396396396396
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.034449221949221946
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.021396396396396396
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.045147420147420146
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.020019157088122606
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.03223180076628353
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.020019157088122606
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.04224137931034483
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.019806671721000757
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.031889689158453374
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.019806671721000757
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.04179302501895375
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.01983675018982536
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.03193811693242217
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.01983675018982536
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.04185649202733485
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.019866920152091256
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.03198669201520912
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.019866920152091256
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.041920152091254756
+    },
+    {
+      "id": "designed_v3/wreck/court_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.01846942382467303
+    },
+    {
+      "id": "designed_v3/wreck/court_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.029736656062212798
+    },
+    {
+      "id": "designed_v3/wreck/court_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.01846942382467303
+    },
+    {
+      "id": "designed_v3/wreck/court_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.03897136797454931
+    },
+    {
+      "id": "designed_v3/wreck/cloister_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.018896925858951176
+    },
+    {
+      "id": "designed_v3/wreck/cloister_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.0304249547920434
+    },
+    {
+      "id": "designed_v3/wreck/cloister_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.039873417721518985
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.018842408943382617
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.03033717994951316
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.018842408943382617
+    },
+    {
+      "id": "designed_v3/wreck/corner_hall_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.039758384421204475
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.020370370370370372
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.03279727095516569
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.020370370370370372
+    },
+    {
+      "id": "designed_v3/wreck/side_galleries_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.04298245614035088
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.01911818514452982
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.030781192828393707
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.01911818514452982
+    },
+    {
+      "id": "designed_v3/wreck/north_terrace_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.040340285400658614
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.018924302788844622
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.0304690329590728
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.018924302788844622
+    },
+    {
+      "id": "designed_v3/wreck/offset_wings_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.03993118435349511
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.01895175915850562
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.030513239027928907
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.01895175915850562
+    },
+    {
+      "id": "designed_v3/wreck/south_hall_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.03998911860718172
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.01897929531420269
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.030557573556120595
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.01897929531420269
+    },
+    {
+      "id": "designed_v3/wreck/long_octagon_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.04004722121322194
+    },
+    {
+      "id": "designed_v3/wreck/court_4_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.019942748091603055
+    },
+    {
+      "id": "designed_v3/wreck/court_4_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.032108778625954196
+    },
+    {
+      "id": "designed_v3/wreck/court_4_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.019942748091603055
+    },
+    {
+      "id": "designed_v3/wreck/court_4_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.04208015267175572
+    },
+    {
+      "id": "designed_v3/abyss/court_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.021239837398373984
+    },
+    {
+      "id": "designed_v3/abyss/court_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.03419715447154471
+    },
+    {
+      "id": "designed_v3/abyss/court_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.021239837398373984
+    },
+    {
+      "id": "designed_v3/abyss/court_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.044817073170731705
+    },
+    {
+      "id": "designed_v3/abyss/cloister_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.021807178631051752
+    },
+    {
+      "id": "designed_v3/abyss/cloister_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.03511060100166945
+    },
+    {
+      "id": "designed_v3/abyss/cloister_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.04601419031719533
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.02173460898502496
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.03499376039933444
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.02173460898502496
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.04586106489184692
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.023793260473588342
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.03830828779599271
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.023793260473588342
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.050204918032786885
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.022102368866328256
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.035585871404399325
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.022102368866328256
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.04663705583756345
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.021843645484949832
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.035169314381270904
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.021843645484949832
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.046091137123745816
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.021880234505862645
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.03522822445561139
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.021880234505862645
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.04616834170854271
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.021916946308724834
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.0352873322147651
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.021916946308724834
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.046245805369127514
+    },
+    {
+      "id": "designed_v3/abyss/court_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.020228416569879986
+    },
+    {
+      "id": "designed_v3/abyss/court_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.0325687185443283
+    },
+    {
+      "id": "designed_v3/abyss/court_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.020228416569879986
+    },
+    {
+      "id": "designed_v3/abyss/court_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.042682926829268296
+    },
+    {
+      "id": "designed_v3/abyss/cloister_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.02074235807860262
+    },
+    {
+      "id": "designed_v3/abyss/cloister_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.03339618896387456
+    },
+    {
+      "id": "designed_v3/abyss/cloister_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.04376736800317586
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.020676691729323307
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.033290462999604274
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.020676691729323307
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.04362880886426593
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.02253126347563605
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.03627641224665804
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.02253126347563605
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.04754204398447607
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.021009248090068357
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.03382589465219139
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.021009248090068357
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.044330518697225575
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.02077534791252485
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.033449304174950296
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.02077534791252485
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.04383697813121273
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.020808442851453605
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.03350258861011549
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.020808442851453605
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.04390681003584229
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.020841643398484246
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.03355604307937774
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.020841643398484246
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.04397686477861987
+    },
+    {
+      "id": "designed_v3/abyss/court_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.019308943089430895
+    },
+    {
+      "id": "designed_v3/abyss/court_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.031088322246858834
+    },
+    {
+      "id": "designed_v3/abyss/court_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.019308943089430895
+    },
+    {
+      "id": "designed_v3/abyss/court_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.04074279379157428
+    },
+    {
+      "id": "designed_v3/abyss/cloister_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.01977668433005299
+    },
+    {
+      "id": "designed_v3/abyss/cloister_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.031841408024224076
+    },
+    {
+      "id": "designed_v3/abyss/cloister_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.04172975018925057
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.01971698113207547
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.03174528301886793
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.01971698113207547
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.04160377358490566
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.021396396396396396
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.034449221949221946
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.021396396396396396
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.045147420147420146
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.020019157088122606
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.03223180076628353
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.020019157088122606
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.04224137931034483
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.019806671721000757
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.031889689158453374
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.019806671721000757
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.04179302501895375
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.01983675018982536
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.03193811693242217
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.01983675018982536
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.04185649202733485
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.019866920152091256
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.03198669201520912
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.019866920152091256
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.041920152091254756
+    },
+    {
+      "id": "designed_v3/abyss/court_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.01846942382467303
+    },
+    {
+      "id": "designed_v3/abyss/court_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.029736656062212798
+    },
+    {
+      "id": "designed_v3/abyss/court_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.01846942382467303
+    },
+    {
+      "id": "designed_v3/abyss/court_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.03897136797454931
+    },
+    {
+      "id": "designed_v3/abyss/cloister_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.018896925858951176
+    },
+    {
+      "id": "designed_v3/abyss/cloister_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.0304249547920434
+    },
+    {
+      "id": "designed_v3/abyss/cloister_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.039873417721518985
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.018842408943382617
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.03033717994951316
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.018842408943382617
+    },
+    {
+      "id": "designed_v3/abyss/corner_hall_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.039758384421204475
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.020370370370370372
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.03279727095516569
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.020370370370370372
+    },
+    {
+      "id": "designed_v3/abyss/side_galleries_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.04298245614035088
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.01911818514452982
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.030781192828393707
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.01911818514452982
+    },
+    {
+      "id": "designed_v3/abyss/north_terrace_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.040340285400658614
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.018924302788844622
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.0304690329590728
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.018924302788844622
+    },
+    {
+      "id": "designed_v3/abyss/offset_wings_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.03993118435349511
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.01895175915850562
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.030513239027928907
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.01895175915850562
+    },
+    {
+      "id": "designed_v3/abyss/south_hall_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.03998911860718172
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.01897929531420269
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.030557573556120595
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.01897929531420269
+    },
+    {
+      "id": "designed_v3/abyss/long_octagon_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.04004722121322194
+    },
+    {
+      "id": "designed_v3/abyss/court_4_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.019942748091603055
+    },
+    {
+      "id": "designed_v3/abyss/court_4_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.032108778625954196
+    },
+    {
+      "id": "designed_v3/abyss/court_4_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.019942748091603055
+    },
+    {
+      "id": "designed_v3/abyss/court_4_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.04208015267175572
+    },
+    {
+      "id": "designed_v3/milk/court_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.021239837398373984
+    },
+    {
+      "id": "designed_v3/milk/court_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.03419715447154471
+    },
+    {
+      "id": "designed_v3/milk/court_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.021239837398373984
+    },
+    {
+      "id": "designed_v3/milk/court_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 78720,
+      "visibleTrapFraction": 0.044817073170731705
+    },
+    {
+      "id": "designed_v3/milk/cloister_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.021807178631051752
+    },
+    {
+      "id": "designed_v3/milk/cloister_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.03511060100166945
+    },
+    {
+      "id": "designed_v3/milk/cloister_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76672,
+      "visibleTrapFraction": 0.04601419031719533
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.02173460898502496
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.03499376039933444
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.02173460898502496
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76928,
+      "visibleTrapFraction": 0.04586106489184692
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.023793260473588342
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.03830828779599271
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.023793260473588342
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 70272,
+      "visibleTrapFraction": 0.050204918032786885
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.022102368866328256
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.035585871404399325
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.022102368866328256
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 75648,
+      "visibleTrapFraction": 0.04663705583756345
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.021843645484949832
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.035169314381270904
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.021843645484949832
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76544,
+      "visibleTrapFraction": 0.046091137123745816
+    },
+    {
+      "id": "designed_v3/milk/south_hall_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.021880234505862645
+    },
+    {
+      "id": "designed_v3/milk/south_hall_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.03522822445561139
+    },
+    {
+      "id": "designed_v3/milk/south_hall_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.021880234505862645
+    },
+    {
+      "id": "designed_v3/milk/south_hall_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76416,
+      "visibleTrapFraction": 0.04616834170854271
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_0_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.021916946308724834
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_0_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.0352873322147651
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_0_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.021916946308724834
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_0_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 76288,
+      "visibleTrapFraction": 0.046245805369127514
+    },
+    {
+      "id": "designed_v3/milk/court_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.020228416569879986
+    },
+    {
+      "id": "designed_v3/milk/court_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.0325687185443283
+    },
+    {
+      "id": "designed_v3/milk/court_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.020228416569879986
+    },
+    {
+      "id": "designed_v3/milk/court_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 82656,
+      "visibleTrapFraction": 0.042682926829268296
+    },
+    {
+      "id": "designed_v3/milk/cloister_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.02074235807860262
+    },
+    {
+      "id": "designed_v3/milk/cloister_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.03339618896387456
+    },
+    {
+      "id": "designed_v3/milk/cloister_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80608,
+      "visibleTrapFraction": 0.04376736800317586
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.020676691729323307
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.033290462999604274
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.020676691729323307
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80864,
+      "visibleTrapFraction": 0.04362880886426593
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.02253126347563605
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.03627641224665804
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.02253126347563605
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 74208,
+      "visibleTrapFraction": 0.04754204398447607
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.021009248090068357
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.03382589465219139
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.021009248090068357
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 79584,
+      "visibleTrapFraction": 0.044330518697225575
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.02077534791252485
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.033449304174950296
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.02077534791252485
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80480,
+      "visibleTrapFraction": 0.04383697813121273
+    },
+    {
+      "id": "designed_v3/milk/south_hall_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.020808442851453605
+    },
+    {
+      "id": "designed_v3/milk/south_hall_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.03350258861011549
+    },
+    {
+      "id": "designed_v3/milk/south_hall_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.020808442851453605
+    },
+    {
+      "id": "designed_v3/milk/south_hall_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80352,
+      "visibleTrapFraction": 0.04390681003584229
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_1_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.020841643398484246
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_1_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.03355604307937774
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_1_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.020841643398484246
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_1_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 80224,
+      "visibleTrapFraction": 0.04397686477861987
+    },
+    {
+      "id": "designed_v3/milk/court_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.019308943089430895
+    },
+    {
+      "id": "designed_v3/milk/court_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.031088322246858834
+    },
+    {
+      "id": "designed_v3/milk/court_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.019308943089430895
+    },
+    {
+      "id": "designed_v3/milk/court_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 86592,
+      "visibleTrapFraction": 0.04074279379157428
+    },
+    {
+      "id": "designed_v3/milk/cloister_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.01977668433005299
+    },
+    {
+      "id": "designed_v3/milk/cloister_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.031841408024224076
+    },
+    {
+      "id": "designed_v3/milk/cloister_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84544,
+      "visibleTrapFraction": 0.04172975018925057
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.01971698113207547
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.03174528301886793
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.01971698113207547
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84800,
+      "visibleTrapFraction": 0.04160377358490566
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.021396396396396396
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.034449221949221946
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.021396396396396396
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 78144,
+      "visibleTrapFraction": 0.045147420147420146
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.020019157088122606
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.03223180076628353
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.020019157088122606
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 83520,
+      "visibleTrapFraction": 0.04224137931034483
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.019806671721000757
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.031889689158453374
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.019806671721000757
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84416,
+      "visibleTrapFraction": 0.04179302501895375
+    },
+    {
+      "id": "designed_v3/milk/south_hall_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.01983675018982536
+    },
+    {
+      "id": "designed_v3/milk/south_hall_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.03193811693242217
+    },
+    {
+      "id": "designed_v3/milk/south_hall_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.01983675018982536
+    },
+    {
+      "id": "designed_v3/milk/south_hall_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84288,
+      "visibleTrapFraction": 0.04185649202733485
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_2_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.019866920152091256
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_2_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.03198669201520912
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_2_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.019866920152091256
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_2_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 84160,
+      "visibleTrapFraction": 0.041920152091254756
+    },
+    {
+      "id": "designed_v3/milk/court_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.01846942382467303
+    },
+    {
+      "id": "designed_v3/milk/court_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.029736656062212798
+    },
+    {
+      "id": "designed_v3/milk/court_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.01846942382467303
+    },
+    {
+      "id": "designed_v3/milk/court_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 90528,
+      "visibleTrapFraction": 0.03897136797454931
+    },
+    {
+      "id": "designed_v3/milk/cloister_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.018896925858951176
+    },
+    {
+      "id": "designed_v3/milk/cloister_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.0304249547920434
+    },
+    {
+      "id": "designed_v3/milk/cloister_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88480,
+      "visibleTrapFraction": 0.039873417721518985
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.018842408943382617
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.03033717994951316
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.018842408943382617
+    },
+    {
+      "id": "designed_v3/milk/corner_hall_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88736,
+      "visibleTrapFraction": 0.039758384421204475
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.020370370370370372
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.03279727095516569
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.020370370370370372
+    },
+    {
+      "id": "designed_v3/milk/side_galleries_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 82080,
+      "visibleTrapFraction": 0.04298245614035088
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.01911818514452982
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.030781192828393707
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.01911818514452982
+    },
+    {
+      "id": "designed_v3/milk/north_terrace_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 87456,
+      "visibleTrapFraction": 0.040340285400658614
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.018924302788844622
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.0304690329590728
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.018924302788844622
+    },
+    {
+      "id": "designed_v3/milk/offset_wings_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88352,
+      "visibleTrapFraction": 0.03993118435349511
+    },
+    {
+      "id": "designed_v3/milk/south_hall_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.01895175915850562
+    },
+    {
+      "id": "designed_v3/milk/south_hall_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.030513239027928907
+    },
+    {
+      "id": "designed_v3/milk/south_hall_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.01895175915850562
+    },
+    {
+      "id": "designed_v3/milk/south_hall_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88224,
+      "visibleTrapFraction": 0.03998911860718172
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_3_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.01897929531420269
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_3_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.030557573556120595
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_3_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.01897929531420269
+    },
+    {
+      "id": "designed_v3/milk/long_octagon_3_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 88096,
+      "visibleTrapFraction": 0.04004722121322194
+    },
+    {
+      "id": "designed_v3/milk/court_4_0",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.019942748091603055
+    },
+    {
+      "id": "designed_v3/milk/court_4_1",
+      "trapCount": 3,
+      "conservativeVisibleTrapArea": 2692,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.032108778625954196
+    },
+    {
+      "id": "designed_v3/milk/court_4_2",
+      "trapCount": 2,
+      "conservativeVisibleTrapArea": 1672,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.019942748091603055
+    },
+    {
+      "id": "designed_v3/milk/court_4_3",
+      "trapCount": 4,
+      "conservativeVisibleTrapArea": 3528,
+      "emptyFloorArea": 83840,
+      "visibleTrapFraction": 0.04208015267175572
+    }
+  ]
+}
