@@ -1,0 +1,758 @@
+{
+  "phase": "Broad regression before final charge-release facing fix; readiness-only failure rerun separately",
+  "stats": {
+    "startTime": "2026-10-29T18:26:22.043Z",
+    "duration": 812104.5569999999,
+    "expected": 105,
+    "skipped": 18,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "checks": [
+    {
+      "name": "arena：手动瞄准射线从身体中心穿过光标",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3453
+    },
+    {
+      "name": "dungeon：手动瞄准射线从身体中心穿过光标",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 5050
+    },
+    {
+      "name": "arena：手动瞄准射线从身体中心穿过光标",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 85
+    },
+    {
+      "name": "dungeon：手动瞄准射线从身体中心穿过光标",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 70
+    },
+    {
+      "name": "触屏轮盘：横屏微小偏移、双指方向、拖出与回中",
+      "project": "desktop",
+      "status": "skipped",
+      "durationMs": 991
+    },
+    {
+      "name": "触屏轮盘：小屏微小偏移、双指方向、拖出与回中",
+      "project": "desktop",
+      "status": "skipped",
+      "durationMs": 65
+    },
+    {
+      "name": "触屏轮盘：第三指动作、取消、暂停与后台恢复不遗留输入",
+      "project": "desktop",
+      "status": "skipped",
+      "durationMs": 47
+    },
+    {
+      "name": "触屏轮盘：横屏微小偏移、双指方向、拖出与回中",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3628
+    },
+    {
+      "name": "触屏轮盘：小屏微小偏移、双指方向、拖出与回中",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 4050
+    },
+    {
+      "name": "触屏轮盘：第三指动作、取消、暂停与后台恢复不遗留输入",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 5175
+    },
+    {
+      "name": "真实主城输入冻结、恢复和开关/重进：DOM、纹理、监听与 alpha 扫描不增长",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 10592
+    },
+    {
+      "name": "真实主城输入冻结、恢复和开关/重进：DOM、纹理、监听与 alpha 扫描不增长",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 7700
+    },
+    {
+      "name": "开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来（固定种子不变）",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 16554
+    },
+    {
+      "name": "移动中（含暂停恢复后）鼠标瞄准以玩家当前身体中心为原点",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3991
+    },
+    {
+      "name": "未固定种子时重来换新种子；点暂停键不会重来",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 12523
+    },
+    {
+      "name": "开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来（固定种子不变）",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 15686
+    },
+    {
+      "name": "移动中（含暂停恢复后）鼠标瞄准以玩家当前身体中心为原点",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 690
+    },
+    {
+      "name": "未固定种子时重来换新种子；点暂停键不会重来",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 11430
+    },
+    {
+      "name": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 17454
+    },
+    {
+      "name": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 15862
+    },
+    {
+      "name": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 5154
+    },
+    {
+      "name": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 8770
+    },
+    {
+      "name": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 14185
+    },
+    {
+      "name": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 28067
+    },
+    {
+      "name": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 19049
+    },
+    {
+      "name": "demo：存储被禁用仍可开局，明确显示未保存状态",
+      "project": "desktop",
+      "status": "failed",
+      "durationMs": 8963,
+      "error": "Error: expect(locator).toContainText(expected) failed\n\nLocator: locator('.demo-hint')\nExpected substring: \"无法保存进度\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toContainText\" locator('.demo-hint') with timeout 5000ms\n  - waiting for locator('.demo-hint')\n"
+    },
+    {
+      "name": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3514
+    },
+    {
+      "name": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 13910
+    },
+    {
+      "name": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 14909
+    },
+    {
+      "name": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 4296
+    },
+    {
+      "name": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 6652
+    },
+    {
+      "name": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 9968
+    },
+    {
+      "name": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 26844
+    },
+    {
+      "name": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 15454
+    },
+    {
+      "name": "demo：存储被禁用仍可开局，明确显示未保存状态",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3362
+    },
+    {
+      "name": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3409
+    },
+    {
+      "name": "键鼠、暂停恢复、后台清空；更新提示在暂停键下方",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4744
+    },
+    {
+      "name": "触屏多指移动和射击互不串扰，取消释放；CSS 大小与缩放",
+      "project": "desktop",
+      "status": "skipped",
+      "durationMs": 1009
+    },
+    {
+      "name": "Phaser 手柄插件：摇杆、RT、Start 与断连清零",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3230
+    },
+    {
+      "name": "键鼠、暂停恢复、后台清空；更新提示在暂停键下方",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 4608
+    },
+    {
+      "name": "触屏多指移动和射击互不串扰，取消释放；CSS 大小与缩放",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3365
+    },
+    {
+      "name": "Phaser 手柄插件：摇杆、RT、Start 与断连清零",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3201
+    },
+    {
+      "name": "竖屏：桌面留黑边继续运行，触屏显示遮罩并暂停；转横屏恢复",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3649
+    },
+    {
+      "name": "后台暂停与输入设备的竖屏策略独立",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3158
+    },
+    {
+      "name": "竖窗口切换触屏模式时实时显示或移除遮罩",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 2391
+    },
+    {
+      "name": "竖屏：桌面留黑边继续运行，触屏显示遮罩并暂停；转横屏恢复",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3364
+    },
+    {
+      "name": "后台暂停与输入设备的竖屏策略独立",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 2773
+    },
+    {
+      "name": "竖窗口切换触屏模式时实时显示或移除遮罩",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 2564
+    },
+    {
+      "name": "有符号触点 -1：右轮盘拖拽和中心长按都实际出弹",
+      "project": "desktop",
+      "status": "skipped",
+      "durationMs": 140
+    },
+    {
+      "name": "有符号触点 -42：右轮盘拖拽和中心长按都实际出弹",
+      "project": "desktop",
+      "status": "skipped",
+      "durationMs": 41
+    },
+    {
+      "name": "有符号触点 -2147483648：右轮盘拖拽和中心长按都实际出弹",
+      "project": "desktop",
+      "status": "skipped",
+      "durationMs": 45
+    },
+    {
+      "name": "正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹",
+      "project": "desktop",
+      "status": "skipped",
+      "durationMs": 44
+    },
+    {
+      "name": "手机基础手枪按住可出弹；能量不足有提示并能切回手枪",
+      "project": "desktop",
+      "status": "skipped",
+      "durationMs": 48
+    },
+    {
+      "name": "有符号触点 -1：右轮盘拖拽和中心长按都实际出弹",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 7915
+    },
+    {
+      "name": "有符号触点 -42：右轮盘拖拽和中心长按都实际出弹",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 9658
+    },
+    {
+      "name": "有符号触点 -2147483648：右轮盘拖拽和中心长按都实际出弹",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 8226
+    },
+    {
+      "name": "正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 9468
+    },
+    {
+      "name": "手机基础手枪按住可出弹；能量不足有提示并能切回手枪",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 11894
+    },
+    {
+      "name": "production aim: pointer pistol_basic",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3422
+    },
+    {
+      "name": "production aim: gamepad pistol_basic",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4093
+    },
+    {
+      "name": "production aim: pointer fin_boomerang",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3982
+    },
+    {
+      "name": "production aim: gamepad fin_boomerang",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4102
+    },
+    {
+      "name": "production aim: pointer lantern_beam",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4147
+    },
+    {
+      "name": "production aim: gamepad lantern_beam",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3984
+    },
+    {
+      "name": "production aim: pointer cutlass",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4092
+    },
+    {
+      "name": "production aim: gamepad cutlass",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4048
+    },
+    {
+      "name": "production LOS blocks auto target and preserves mouse fallback",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3318
+    },
+    {
+      "name": "production aim: pointer pistol_basic",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3484
+    },
+    {
+      "name": "production aim: gamepad pistol_basic",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 896
+    },
+    {
+      "name": "production aim: pointer fin_boomerang",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3715
+    },
+    {
+      "name": "production aim: gamepad fin_boomerang",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 684
+    },
+    {
+      "name": "production aim: pointer lantern_beam",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3135
+    },
+    {
+      "name": "production aim: gamepad lantern_beam",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 654
+    },
+    {
+      "name": "production aim: pointer cutlass",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3061
+    },
+    {
+      "name": "production aim: gamepad cutlass",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 768
+    },
+    {
+      "name": "production LOS blocks auto target and preserves mouse fallback",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 43
+    },
+    {
+      "name": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 14464
+    },
+    {
+      "name": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 30888
+    },
+    {
+      "name": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 13663
+    },
+    {
+      "name": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 27525
+    },
+    {
+      "name": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 14591
+    },
+    {
+      "name": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 14757
+    },
+    {
+      "name": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4520
+    },
+    {
+      "name": "同步保存 hidden，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1341
+    },
+    {
+      "name": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1052
+    },
+    {
+      "name": "同步保存 both，BFCache 复用本局且监听不增长",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1021
+    },
+    {
+      "name": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 2676
+    },
+    {
+      "name": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 6238
+    },
+    {
+      "name": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 6122
+    },
+    {
+      "name": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+      "project": "desktop",
+      "status": "skipped",
+      "durationMs": 634
+    },
+    {
+      "name": "恢复后手柄长按须先中立，随后新按键才能射击",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4352
+    },
+    {
+      "name": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1587
+    },
+    {
+      "name": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 2195
+    },
+    {
+      "name": "菜单兜底区分 updated，入口独立校验",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1218
+    },
+    {
+      "name": "菜单兜底区分 invalid，入口独立校验",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1220
+    },
+    {
+      "name": "菜单兜底区分 corrupt，入口独立校验",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1010
+    },
+    {
+      "name": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1202
+    },
+    {
+      "name": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 821
+    },
+    {
+      "name": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1674
+    },
+    {
+      "name": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 4921
+    },
+    {
+      "name": "同步保存 hidden，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 1257
+    },
+    {
+      "name": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 1208
+    },
+    {
+      "name": "同步保存 both，BFCache 复用本局且监听不增长",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 1202
+    },
+    {
+      "name": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 2705
+    },
+    {
+      "name": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 6288
+    },
+    {
+      "name": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 7199
+    },
+    {
+      "name": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 7042
+    },
+    {
+      "name": "恢复后手柄长按须先中立，随后新按键才能射击",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 5184
+    },
+    {
+      "name": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 1685
+    },
+    {
+      "name": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 2487
+    },
+    {
+      "name": "菜单兜底区分 updated，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 1211
+    },
+    {
+      "name": "菜单兜底区分 invalid，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 1340
+    },
+    {
+      "name": "菜单兜底区分 corrupt，入口独立校验",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 1228
+    },
+    {
+      "name": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 1453
+    },
+    {
+      "name": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 751
+    },
+    {
+      "name": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 1653
+    },
+    {
+      "name": "stress=1：混合怪、柱子、测量导出与退出清理",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 30029
+    },
+    {
+      "name": "stress=combat：混合怪、柱子、测量导出与退出清理",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 12745
+    },
+    {
+      "name": "stress=1：混合怪、柱子、测量导出与退出清理",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 28413
+    },
+    {
+      "name": "stress=combat：混合怪、柱子、测量导出与退出清理",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 12161
+    },
+    {
+      "name": "暂停编辑：拖动、大小透明度、真实触控与刷新恢复均使用保存布局",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 11176
+    },
+    {
+      "name": "标题设置可编辑；取消不保存，默认值须保存，重叠与存储失败有反馈",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 9282
+    },
+    {
+      "name": "暂停编辑：拖动、大小透明度、真实触控与刷新恢复均使用保存布局",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 14165
+    },
+    {
+      "name": "标题设置可编辑；取消不保存，默认值须保存，重叠与存储失败有反馈",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 10216
+    }
+  ]
+}

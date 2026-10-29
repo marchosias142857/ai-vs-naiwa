@@ -4,7 +4,6 @@ import type { Scene } from 'phaser';
 import { InputController } from '../../../src/game/input/InputController';
 import { createCombatWorld } from '../../../src/sim/combat/api';
 import { EventBus } from '../../../src/sim/core/EventBus';
-import { INPUT_UI as UI } from '../../../src/game/fx/params';
 
 vi.mock('phaser', () => ({
   Math: {
@@ -74,7 +73,6 @@ afterEach(() => {
 describe('DOM 触控到战斗开火', () => {
   it.each([-1, -42, -2147483648])('触点编号 %i：拖拽出弹、回中长按、双指所有权及释放', (id) => {
     const { controls, sample, touch, pointer } = setup();
-    const clock = vi.spyOn(performance, 'now').mockReturnValue(0);
     const moveId = id + 10;
     touch('touchstart', [
       [moveId, 100, 350],
@@ -97,8 +95,7 @@ describe('DOM 触控到战斗开火', () => {
     touch('touchcancel', [[id]]);
     expect(sample()).toMatchObject({ fire: false, aim: null });
     touch('touchstart', [[id, 712, 362]]);
-    expect(sample().fire).toBe(false);
-    clock.mockReturnValue(UI.aimWheel.firstShotDelayMs + 1);
+    expect(sample().fire).toBe(true);
     expect(sample().fire).toBe(true);
     touch('touchend', [[id]]);
     expect(sample().fire).toBe(false);
@@ -107,10 +104,8 @@ describe('DOM 触控到战斗开火', () => {
 
   it('原生触摸按住中心出弹，不依赖 pointerdown 或捕获；销毁移除监听', () => {
     const { controls, sample, touch, canvas } = setup();
-    const clock = vi.spyOn(performance, 'now').mockReturnValue(0);
     expect(touch('touchstart', [[0, 712, 362]]).defaultPrevented).toBe(true);
-    expect(sample().fire).toBe(false);
-    clock.mockReturnValue(UI.aimWheel.firstShotDelayMs + 1);
+    expect(sample().fire).toBe(true);
     const world = createCombatWorld({ seed: 42, bus: new EventBus() });
     world.spawnPlayer('ai_proto', 240, 135);
     expect(world.step(1 / 60, sample()).bulletSpawns.length).toBeGreaterThan(0);

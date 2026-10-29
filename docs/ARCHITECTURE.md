@@ -33,7 +33,7 @@
 
 每个渲染帧只 sample 一次。InputScene 按其输入插件时序采样，战斗 PRE_UPDATE 取得缓存帧交给 bridge。物理后的 GameScene.update 发布玩家当前位置作为下一帧瞄准原点。
 
-角色坐标、Arcade 碰撞圆与瞄准原点均为身体中心（ADR 0023）。触屏轮盘每次按下先保持 `fire=false`，拖出死区立即定向首发，留在死区达到 `INPUT_UI.aimWheel.firstShotDelayMs`（初值 120 ms）才朝当前面向首发；鼠标与手柄不经过该等待。sim 仍按「瞄准 > 移动 > 保持」决定朝向。
+角色坐标、Arcade 碰撞圆与瞄准原点均为身体中心（ADR 0023）。触屏攻击轮盘按下即 `fire=true`，相对固定圆心的任意可表示非零偏移立即产生单位方向，精确回中为 `aim=null`；移动与硬件手柄死区保留。`InputFrame.aim` 始终表示原始手动方向。sim 在固定 WORLD_STEP 为正在攻击的弹体武器选择射程内最近、视线可达的活动敌人，同距离按实体 ID；无目标、激光与近战沿用手动/移动/保持规则。详见 [ADR 0043](adr/0043-projectile-auto-aim.md)。
 
 Arcade 完成本物理步移动与 overlap 后，WORLD_STEP 依注册顺序执行：
 

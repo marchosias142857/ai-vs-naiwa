@@ -73,7 +73,7 @@ export interface DemoProbe {
   time: number;
   resumeRemaining: number;
   physicsPaused: boolean;
-  /** 活动阶段敌人的脚底位置；只给测试瞄准用（玩家没有自动瞄准，ADR 0020）。 */
+  /** 活动阶段敌人的身体中心；仅供浏览器测试读取。 */
   enemies: { x: number; y: number }[];
 }
 let readDemo: (() => DemoProbe) | undefined;

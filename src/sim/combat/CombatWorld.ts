@@ -1278,7 +1278,23 @@ class CombatWorldImpl implements CombatWorld {
     if (input.aim && (input.aim.x !== 0 || input.aim.y !== 0)) {
       actor.facing = Math.atan2(input.aim.y, input.aim.x);
     } else if (moving || input.source === 'touch') actor.facing = moveAngle;
-    this.playerBodyFacing = input.fire || p.burstLeft > 0 || this.melee.active ? actor.facing : moveAngle;
+    // 选敌与设备无关；蓄力松手、未发完的 burst 也使用本步目标。无锁定状态，读档不漂移。
+    const attacking = input.fire || p.burstLeft > 0 || p.charge > 0;
+    if ((p.weapon.attack === 'projectile' || p.weapon.attack === 'shot') && attacking) {
+      let target: Actor | undefined;
+      let nearest = p.weapon.range ** 2;
+      for (const enemy of this.actors) {
+        if (enemy.team === actor.team || enemy.phase !== 'active' || EnemyAi.hidden(enemy.brain)) continue;
+        const distance = (enemy.x - actor.x) ** 2 + (enemy.y - actor.y) ** 2;
+        if (distance === 0 || distance > nearest || (distance === nearest && target && enemy.id > target.id))
+          continue;
+        if (!this.los(actor.x, actor.y, enemy.x, enemy.y)) continue;
+        nearest = distance;
+        target = enemy;
+      }
+      if (target) actor.facing = Math.atan2(target.y - actor.y, target.x - actor.x);
+    }
+    this.playerBodyFacing = attacking || this.melee.active ? actor.facing : moveAngle;
 
     this.pullTrigger(actor, p, input.fire, dt);
     this.applyLunge(actor);

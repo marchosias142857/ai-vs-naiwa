@@ -1,5 +1,7 @@
 # 大肥鱼 demo：制作交付与自审
 
+> 历史记录：本文的 120 ms 等待、射击死区与原定向规则已由 [ADR 0043](../adr/0043-projectile-auto-aim.md) 替代。新批次结果另见 [#116/#129 验证](player-auto-aim.md)。
+
 负责人授权 GPT 独立完成 demo，包括 sim 与共享契约；不等待 Claude 评审或画面方案确认。所有 PR 由负责人合并。**只有负责人宣布 demo 完成后，才进入 GPT 与 Claude 合作细化阶段。** 本文是当前版本入口；旧灰盒验收保留在 demo-acceptance.md。
 
 ## 当前可玩内容

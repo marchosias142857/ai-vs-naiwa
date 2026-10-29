@@ -1,0 +1,25 @@
+{
+  "phase": "Final runtime; charge-release facing included",
+  "stats": {
+    "startTime": "2026-10-29T18:45:18.246Z",
+    "duration": 15042.435,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "checks": [
+    {
+      "name": "demo：存储被禁用仍可开局，明确显示未保存状态",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 5940
+    },
+    {
+      "name": "demo：存储被禁用仍可开局，明确显示未保存状态",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3829
+    }
+  ]
+}

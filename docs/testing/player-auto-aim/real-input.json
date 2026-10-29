@@ -1,0 +1,631 @@
+{
+  "phase": "Final runtime; charge-release facing included",
+  "stats": {
+    "startTime": "2026-10-29T18:45:03.817Z",
+    "duration": 162673.61,
+    "expected": 19,
+    "skipped": 5,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "checks": [
+    {
+      "name": "production aim: pointer pistol_basic",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3181,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "keyboard"
+        },
+        "shots": [
+          {
+            "ownerId": 1,
+            "weaponId": "pistol_basic",
+            "x": 246.77499999999998,
+            "y": 145.175,
+            "angle": 1.5707963267948966
+          }
+        ],
+        "facing": 1.5707963267948966,
+        "bodyFacing": 1.5707963267948966,
+        "melee": {
+          "active": false,
+          "angle": 0
+        },
+        "beam": {
+          "active": false,
+          "angle": 0
+        },
+        "bullets": [
+          {
+            "x": -2.1219995338152295,
+            "y": 259.99134046729034
+          }
+        ],
+        "specialShots": []
+      }
+    },
+    {
+      "name": "production aim: gamepad pistol_basic",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3707,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "gamepad"
+        },
+        "shots": [
+          {
+            "ownerId": 1,
+            "weaponId": "pistol_basic",
+            "x": 246.77499999999998,
+            "y": 145.175,
+            "angle": 1.5707963267948966
+          }
+        ],
+        "facing": 1.5707963267948966,
+        "bodyFacing": 1.5707963267948966,
+        "melee": {
+          "active": false,
+          "angle": 0
+        },
+        "beam": {
+          "active": false,
+          "angle": 0
+        },
+        "bullets": [
+          {
+            "x": -2.1219995338152295,
+            "y": 259.99134046729034
+          }
+        ],
+        "specialShots": []
+      }
+    },
+    {
+      "name": "production aim: pointer fin_boomerang",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3674,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "keyboard"
+        },
+        "shots": [
+          {
+            "ownerId": 1,
+            "weaponId": "fin_boomerang",
+            "x": 247.86666666666665,
+            "y": 143.8,
+            "angle": 1.5707963267948966
+          }
+        ],
+        "facing": 1.5707963267948966,
+        "bodyFacing": 1.5707963267948966,
+        "melee": {
+          "active": false,
+          "angle": 0
+        },
+        "beam": {
+          "active": false,
+          "angle": 0
+        },
+        "bullets": [],
+        "specialShots": [
+          {
+            "vx": 1.5308084989341916e-14,
+            "vy": 250
+          }
+        ]
+      }
+    },
+    {
+      "name": "production aim: gamepad fin_boomerang",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 7071,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "gamepad"
+        },
+        "shots": [
+          {
+            "ownerId": 1,
+            "weaponId": "fin_boomerang",
+            "x": 247.86666666666665,
+            "y": 143.8,
+            "angle": 1.5707963267948966
+          }
+        ],
+        "facing": 1.5707963267948966,
+        "bodyFacing": 1.5707963267948966,
+        "melee": {
+          "active": false,
+          "angle": 0
+        },
+        "beam": {
+          "active": false,
+          "angle": 0
+        },
+        "bullets": [],
+        "specialShots": [
+          {
+            "vx": 1.5308084989341916e-14,
+            "vy": 250
+          }
+        ]
+      }
+    },
+    {
+      "name": "production aim: pointer lantern_beam",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 5852,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "keyboard"
+        },
+        "shots": [
+          {
+            "ownerId": 1,
+            "weaponId": "lantern_beam",
+            "x": 223.63333333333335,
+            "y": 134.46666666666667,
+            "angle": 3.141592653589793
+          }
+        ],
+        "facing": 3.141592653589793,
+        "bodyFacing": 3.141592653589793,
+        "melee": {
+          "active": false,
+          "angle": 0
+        },
+        "beam": {
+          "active": true,
+          "angle": 3.141592653589793
+        },
+        "bullets": [],
+        "specialShots": []
+      }
+    },
+    {
+      "name": "production aim: gamepad lantern_beam",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 5309,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "gamepad"
+        },
+        "shots": [
+          {
+            "ownerId": 1,
+            "weaponId": "lantern_beam",
+            "x": 223.63333333333335,
+            "y": 134.46666666666667,
+            "angle": 3.141592653589793
+          }
+        ],
+        "facing": 3.141592653589793,
+        "bodyFacing": 3.141592653589793,
+        "melee": {
+          "active": false,
+          "angle": 0
+        },
+        "beam": {
+          "active": true,
+          "angle": 3.141592653589793
+        },
+        "bullets": [],
+        "specialShots": []
+      }
+    },
+    {
+      "name": "production aim: pointer cutlass",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4135,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "keyboard"
+        },
+        "shots": [],
+        "facing": 3.141592653589793,
+        "bodyFacing": 3.141592653589793,
+        "melee": {
+          "active": true,
+          "angle": 3.141592653589793
+        },
+        "beam": {
+          "active": false,
+          "angle": 0
+        },
+        "bullets": [],
+        "specialShots": []
+      }
+    },
+    {
+      "name": "production aim: gamepad cutlass",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3752,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "gamepad"
+        },
+        "shots": [],
+        "facing": 3.141592653589793,
+        "bodyFacing": 3.141592653589793,
+        "melee": {
+          "active": true,
+          "angle": 3.141592653589793
+        },
+        "beam": {
+          "active": false,
+          "angle": 0
+        },
+        "bullets": [],
+        "specialShots": []
+      }
+    },
+    {
+      "name": "production LOS blocks auto target and preserves mouse fallback",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 3330
+    },
+    {
+      "name": "charge release keeps its original trigger and faces the auto target on the release step",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 2977
+    },
+    {
+      "name": "production aim: pointer pistol_basic",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3168,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "touch"
+        },
+        "shots": [
+          {
+            "ownerId": 1,
+            "weaponId": "pistol_basic",
+            "x": 246.77499999999998,
+            "y": 145.175,
+            "angle": 1.5707963267948966
+          }
+        ],
+        "facing": 1.5707963267948966,
+        "bodyFacing": 1.5707963267948966,
+        "melee": {
+          "active": false,
+          "angle": 0
+        },
+        "beam": {
+          "active": false,
+          "angle": 0
+        },
+        "bullets": [
+          {
+            "x": -2.1219995338152295,
+            "y": 259.99134046729034
+          }
+        ],
+        "specialShots": []
+      }
+    },
+    {
+      "name": "production aim: gamepad pistol_basic",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 677
+    },
+    {
+      "name": "production aim: pointer fin_boomerang",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3219,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "touch"
+        },
+        "shots": [
+          {
+            "ownerId": 1,
+            "weaponId": "fin_boomerang",
+            "x": 247.86666666666665,
+            "y": 143.8,
+            "angle": 1.5707963267948966
+          }
+        ],
+        "facing": 1.5707963267948966,
+        "bodyFacing": 1.5707963267948966,
+        "melee": {
+          "active": false,
+          "angle": 0
+        },
+        "beam": {
+          "active": false,
+          "angle": 0
+        },
+        "bullets": [],
+        "specialShots": [
+          {
+            "vx": 1.5308084989341916e-14,
+            "vy": 250
+          }
+        ]
+      }
+    },
+    {
+      "name": "production aim: gamepad fin_boomerang",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 764
+    },
+    {
+      "name": "production aim: pointer lantern_beam",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3053,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "touch"
+        },
+        "shots": [
+          {
+            "ownerId": 1,
+            "weaponId": "lantern_beam",
+            "x": 223.63333333333335,
+            "y": 134.46666666666667,
+            "angle": 3.141592653589793
+          }
+        ],
+        "facing": 3.141592653589793,
+        "bodyFacing": 3.141592653589793,
+        "melee": {
+          "active": false,
+          "angle": 0
+        },
+        "beam": {
+          "active": true,
+          "angle": 3.141592653589793
+        },
+        "bullets": [],
+        "specialShots": []
+      }
+    },
+    {
+      "name": "production aim: gamepad lantern_beam",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 582
+    },
+    {
+      "name": "production aim: pointer cutlass",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 3344,
+      "observation": {
+        "input": {
+          "move": {
+            "x": 0,
+            "y": 0
+          },
+          "aim": {
+            "x": -1,
+            "y": 0
+          },
+          "fire": true,
+          "skillPressed": false,
+          "swapPressed": false,
+          "interactPressed": false,
+          "pausePressed": false,
+          "source": "touch"
+        },
+        "shots": [],
+        "facing": 3.141592653589793,
+        "bodyFacing": 3.141592653589793,
+        "melee": {
+          "active": true,
+          "angle": 3.141592653589793
+        },
+        "beam": {
+          "active": false,
+          "angle": 0
+        },
+        "bullets": [],
+        "specialShots": []
+      }
+    },
+    {
+      "name": "production aim: gamepad cutlass",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 761
+    },
+    {
+      "name": "production LOS blocks auto target and preserves mouse fallback",
+      "project": "mobile-landscape",
+      "status": "skipped",
+      "durationMs": 48
+    },
+    {
+      "name": "charge release keeps its original trigger and faces the auto target on the release step",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 2778
+    },
+    {
+      "name": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 14514
+    },
+    {
+      "name": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 31848
+    },
+    {
+      "name": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 13793
+    },
+    {
+      "name": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+      "project": "mobile-landscape",
+      "status": "passed",
+      "durationMs": 32061
+    }
+  ]
+}
