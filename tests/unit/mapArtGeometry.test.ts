@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { MAP_ART, mapFrameTexture } from '../../src/data/mapArt';
+import { MAP_ART, MAP_THEME_FRAMES, mapFrameTexture } from '../../src/data/mapArt';
 import { coverModel, rimSpan, wallVariant } from '../../src/game/assets/mapArtGeometry';
 import { Random } from '../../src/sim/core/Random';
 
@@ -21,10 +21,12 @@ it('fits all selected wall and gate models with one uniform scale and limited ed
 it('provides theme-specific crystals and all three spike states in consistent logical frames', () => {
   for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
     const crystal = `${theme}_crystal` as const;
+    expect(MAP_THEME_FRAMES[theme].crystal).toBe(crystal);
     expect(mapFrameTexture(crystal)).toBe(MAP_ART.textures.crystals);
     expect(MAP_ART.frames[crystal][2] / MAP_ART.frames[crystal][3]).toBe(28 / 30);
     for (const state of ['idle', 'warn', 'on'] as const) {
       const name = `${theme}_spikes_${state}` as const;
+      expect(MAP_THEME_FRAMES[theme].spikes[state]).toBe(name);
       expect(mapFrameTexture(name)).toBe(MAP_ART.textures.spikes);
       expect(MAP_ART.frames[name].slice(2)).toEqual([280, 280]);
     }
@@ -54,8 +56,8 @@ it('keeps wall selection stable across render order without advancing any shared
   const variants = cells.map(([x, y]) => wallVariant(seed, 'temple', x, y));
   expect(new Set(variants).size).toBe(3);
   expect(
-    cells
-      .toReversed()
+    [...cells]
+      .reverse()
       .map(([x, y]) => wallVariant(seed, 'temple', x, y))
       .reverse(),
   ).toEqual(variants);

@@ -2,6 +2,7 @@ import { createInputFrame } from '../../src/sim/core/types';
 import { compileRoom } from '../../src/sim/dungeon/compileRoom';
 import { AUTO, Game, Scene, type Physics } from 'phaser';
 import { LEGACY_V1 } from '../../src/data/roomTemplates/legacyV1';
+import { MODULAR_V2 } from '../../src/data/roomTemplates/modularV2';
 import { UPGRADES, type UpgradeId } from '../../src/data/player';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import type { SessionSnapshot } from '../../src/game/save/RunSnapshot';
@@ -126,13 +127,16 @@ class CatalogScene extends Scene {
           return {
             id: port.id,
             actual: { x: session.player!.x, y: session.player!.y },
-            expected:
-              run.floor === 4
-                ? port.entrance
-                : {
-                    x: run.floor === 3 && port.id === 'north' ? 168 : port.entrance.x + port.direction.x * 8,
-                    y: port.entrance.y + port.direction.y * 8,
-                  },
+            expected: {
+              x:
+                run.floor === 3 && port.id === 'north'
+                  ? 168
+                  : port.entrance.x + (run.floor === 4 ? 0 : port.direction.x * 8),
+              y:
+                port.entrance.y +
+                (run.floor === 4 ? 0 : port.direction.y * 8) +
+                (port.direction.y > 0 ? MODULAR_V2.southApron - MODULAR_V2.wall.faceHeight : 0),
+            },
           };
         });
         session.arena.teleport();

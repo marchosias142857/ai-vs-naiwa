@@ -1,6 +1,6 @@
 import { ART, weaponTexture } from '../assets/demoArt';
 import { WEAPON_ART } from '../../data/art';
-import { MAP_ART } from '../../data/mapArt';
+import { MAP_ART, MAP_THEME_FRAMES } from '../../data/mapArt';
 import type { GameObjects, Scene } from 'phaser';
 import { t } from '../../i18n/t';
 import { COLORS, DEPTH } from '../../config';
@@ -54,7 +54,7 @@ export class DemoObjects {
           B.x + B.width / 2,
           B.y + B.height / 2,
           MAP_ART.textures.crystals,
-          `${session.arena.artTheme}_crystal`,
+          MAP_THEME_FRAMES[session.arena.artTheme].crystal,
         )
         .setDisplaySize(28, 30)
         .setDepth(DEPTH.floorDecals);
@@ -70,7 +70,9 @@ export class DemoObjects {
     const exit = s.arena.anchor('exit'),
       chest = s.arena.anchor('chest');
     this.portal.setPosition(exit.x, exit.y + 22);
-    this.exitArt?.setPosition(exit.x, exit.y).setFrame(`${s.arena.artTheme}_crystal`);
+    this.exitArt?.setPosition(exit.x, exit.y);
+    const crystal = MAP_THEME_FRAMES[s.arena.artTheme].crystal;
+    if (this.exitArt && this.exitArt.frame.name !== crystal) this.exitArt.setFrame(crystal);
     this.chest?.setPosition(chest.x, chest.y - 15);
     this.chest?.setVisible(s.dungeon.room.kind === 'chest');
     this.exitArt?.setVisible(s.dungeon.room.kind === 'exit');

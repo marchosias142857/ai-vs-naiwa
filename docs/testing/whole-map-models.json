@@ -1,0 +1,1537 @@
+{
+  "date": "2026-10-29",
+  "reviewedHead": "75f142c1c92367a4761db1c976f542ce820fe890",
+  "review": 5692835751,
+  "check": {
+    "passed": true,
+    "unitFiles": 65,
+    "unitTests": 531,
+    "cellSize": 1
+  },
+  "e2e": {
+    "uniqueCombinations": 24,
+    "latestPassed": 24,
+    "workers": 1,
+    "retries": 0,
+    "initial": {
+      "stats": {
+        "startTime": "2026-10-29T04:35:56.013Z",
+        "duration": 140163.276,
+        "expected": 16,
+        "skipped": 0,
+        "unexpected": 8,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+          "project": "desktop",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 435,
+              "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"height\": 208,\n+   \"height\": 198.4,\n    \"width\": 288,\n    \"x\": 96,\n    \"y\": 39,\n  }"
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+          "project": "desktop",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 479,
+              "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"height\": 208,\n+   \"height\": 198.4,\n    \"width\": 288,\n    \"x\": 96,\n    \"y\": 39,\n  }"
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+          "project": "desktop",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 473,
+              "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"height\": 208,\n+   \"height\": 198.4,\n    \"width\": 288,\n    \"x\": 96,\n    \"y\": 39,\n  }"
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+          "project": "desktop",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 537,
+              "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"height\": 208,\n+   \"height\": 198.4,\n    \"width\": 288,\n    \"x\": 96,\n    \"y\": 39,\n  }"
+            }
+          ]
+        },
+        {
+          "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 1098,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+          "project": "mobile-landscape",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 448,
+              "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"height\": 208,\n+   \"height\": 198.4,\n    \"width\": 288,\n    \"x\": 96,\n    \"y\": 39,\n  }"
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+          "project": "mobile-landscape",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 484,
+              "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"height\": 208,\n+   \"height\": 198.4,\n    \"width\": 288,\n    \"x\": 96,\n    \"y\": 39,\n  }"
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+          "project": "mobile-landscape",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 441,
+              "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"height\": 208,\n+   \"height\": 198.4,\n    \"width\": 288,\n    \"x\": 96,\n    \"y\": 39,\n  }"
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+          "project": "mobile-landscape",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 474,
+              "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 1\n\n  Object {\n-   \"height\": 208,\n+   \"height\": 198.4,\n    \"width\": 288,\n    \"x\": 96,\n    \"y\": 39,\n  }"
+            }
+          ]
+        },
+        {
+          "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 1086,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "whole obstacle and spike models match real collision and damage footprints",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 12463,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "solid wall tops stop real Arcade movement, projectiles and sight in all four themes",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 3810,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "theme changes select matching crystals and all spike states without image stretching",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 27924,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "whole obstacle and spike models match real collision and damage footprints",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 11127,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "solid wall tops stop real Arcade movement, projectiles and sight in all four themes",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 3392,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "theme changes select matching crystals and all spike states without image stretching",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 25004,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 4741,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 5019,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 2657,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 1574,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 4957,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 5106,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 4015,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 2375,
+              "error": ""
+            }
+          ]
+        }
+      ]
+    },
+    "catalogRerun": {
+      "stats": {
+        "startTime": "2026-10-29T04:38:43.616Z",
+        "duration": 190584.835,
+        "expected": 10,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 23107,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 22545,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 22706,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 22904,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+          "project": "desktop",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 982,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 24151,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 22792,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 22996,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 24067,
+              "error": ""
+            }
+          ]
+        },
+        {
+          "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+          "project": "mobile-landscape",
+          "status": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 1058,
+              "error": ""
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "area": [
+    {
+      "id": "modular_v2/temple/empty",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 49808,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 55488,
+      "legacyCenterArea": 42640,
+      "footprintRelativeToLegacy": 1.1590909090909092,
+      "centersRelativeToLegacy": 1.1681050656660412,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8976355247981546,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/empty",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 51667,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 55488,
+      "legacyCenterArea": 44352,
+      "footprintRelativeToLegacy": 1.1590909090909092,
+      "centersRelativeToLegacy": 1.1649305555555556,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.9311382641291811,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/combat_0",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 49808,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 55488,
+      "legacyCenterArea": 42640,
+      "footprintRelativeToLegacy": 1.1590909090909092,
+      "centersRelativeToLegacy": 1.1681050656660412,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8976355247981546,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/combat_0",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 51667,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 55488,
+      "legacyCenterArea": 44352,
+      "footprintRelativeToLegacy": 1.1590909090909092,
+      "centersRelativeToLegacy": 1.1649305555555556,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.9311382641291811,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/combat_1",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 0.9792387543252595,
+      "reachableCenterArea": 47280,
+      "legacyFootprintArea": 46720,
+      "footprintArea": 54336,
+      "legacyCenterArea": 40112,
+      "footprintRelativeToLegacy": 1.163013698630137,
+      "centersRelativeToLegacy": 1.1786996410051855,
+      "relativeToEmptyCenters": 0.9492451011885641,
+      "relativeToInterior": 0.8520761245674741,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/combat_1",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 0.9792387543252595,
+      "reachableCenterArea": 49643,
+      "legacyFootprintArea": 46720,
+      "footprintArea": 54336,
+      "legacyCenterArea": 42328,
+      "footprintRelativeToLegacy": 1.163013698630137,
+      "centersRelativeToLegacy": 1.1728170478170479,
+      "relativeToEmptyCenters": 0.9608260591867149,
+      "relativeToInterior": 0.8946619088811996,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/combat_2",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 0.9711649365628604,
+      "reachableCenterArea": 45840,
+      "legacyFootprintArea": 46272,
+      "footprintArea": 53888,
+      "legacyCenterArea": 38672,
+      "footprintRelativeToLegacy": 1.1645919778699863,
+      "centersRelativeToLegacy": 1.1853537443111295,
+      "relativeToEmptyCenters": 0.9203340828782525,
+      "relativeToInterior": 0.8261245674740484,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/combat_2",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 0.9711649365628604,
+      "reachableCenterArea": 48579,
+      "legacyFootprintArea": 46272,
+      "footprintArea": 53888,
+      "legacyCenterArea": 41264,
+      "footprintRelativeToLegacy": 1.1645919778699863,
+      "centersRelativeToLegacy": 1.1772731678945327,
+      "relativeToEmptyCenters": 0.9402326436603635,
+      "relativeToInterior": 0.8754865916955017,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/combat_3",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 0.976643598615917,
+      "reachableCenterArea": 46736,
+      "legacyFootprintArea": 46576,
+      "footprintArea": 54192,
+      "legacyCenterArea": 39568,
+      "footprintRelativeToLegacy": 1.1635176915149432,
+      "centersRelativeToLegacy": 1.1811564900930045,
+      "relativeToEmptyCenters": 0.9383231609380019,
+      "relativeToInterior": 0.8422722029988466,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/combat_3",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 0.976643598615917,
+      "reachableCenterArea": 49255,
+      "legacyFootprintArea": 46576,
+      "footprintArea": 54192,
+      "legacyCenterArea": 41940,
+      "footprintRelativeToLegacy": 1.1635176915149432,
+      "centersRelativeToLegacy": 1.174415832141154,
+      "relativeToEmptyCenters": 0.9533164302165793,
+      "relativeToInterior": 0.8876694059976932,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/combat_4",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 0.9717416378316033,
+      "reachableCenterArea": 44656,
+      "legacyFootprintArea": 46304,
+      "footprintArea": 53920,
+      "legacyCenterArea": 37488,
+      "footprintRelativeToLegacy": 1.164478230822391,
+      "centersRelativeToLegacy": 1.1912078531796841,
+      "relativeToEmptyCenters": 0.8965628011564407,
+      "relativeToInterior": 0.8047866205305652,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/temple/combat_4",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 55488,
+      "footprintFreeFraction": 0.9717416378316033,
+      "reachableCenterArea": 47891,
+      "legacyFootprintArea": 46304,
+      "footprintArea": 53920,
+      "legacyCenterArea": 40576,
+      "footprintRelativeToLegacy": 1.164478230822391,
+      "centersRelativeToLegacy": 1.1802789826498423,
+      "relativeToEmptyCenters": 0.926916600538061,
+      "relativeToInterior": 0.8630875144175317,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/empty",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 49306,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 42640,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.1563320825515948,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8968640861466822,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/empty",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 46589,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 40132,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.1608940496362006,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8474425203725262,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/empty",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 47486,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 40960,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.159326171875,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8637587310826542,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_0",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9886495925494762,
+      "reachableCenterArea": 47146,
+      "legacyFootprintArea": 47248,
+      "footprintArea": 54352,
+      "legacyCenterArea": 40480,
+      "footprintRelativeToLegacy": 1.1503555706061632,
+      "centersRelativeToLegacy": 1.1646739130434782,
+      "relativeToEmptyCenters": 0.9561919441852919,
+      "relativeToInterior": 0.8575742142025611,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_0",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9886495925494762,
+      "reachableCenterArea": 43341,
+      "legacyFootprintArea": 47248,
+      "footprintArea": 54352,
+      "legacyCenterArea": 36884,
+      "footprintRelativeToLegacy": 1.1503555706061632,
+      "centersRelativeToLegacy": 1.1750623576618588,
+      "relativeToEmptyCenters": 0.9302839726115607,
+      "relativeToInterior": 0.7883621944121071,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_0",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9886495925494762,
+      "reachableCenterArea": 44622,
+      "legacyFootprintArea": 47248,
+      "footprintArea": 54352,
+      "legacyCenterArea": 38096,
+      "footprintRelativeToLegacy": 1.1503555706061632,
+      "centersRelativeToLegacy": 1.1713040739185216,
+      "relativeToEmptyCenters": 0.939687486838226,
+      "relativeToInterior": 0.8116632712456344,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_1",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9391006984866124,
+      "reachableCenterArea": 40902,
+      "legacyFootprintArea": 44332,
+      "footprintArea": 51628,
+      "legacyCenterArea": 33852,
+      "footprintRelativeToLegacy": 1.1645763782369394,
+      "centersRelativeToLegacy": 1.2082594824530308,
+      "relativeToEmptyCenters": 0.8295542124690707,
+      "relativeToInterior": 0.7439973806752037,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_1",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9391006984866124,
+      "reachableCenterArea": 35185,
+      "legacyFootprintArea": 44332,
+      "footprintArea": 51628,
+      "legacyCenterArea": 28208,
+      "footprintRelativeToLegacy": 1.1645763782369394,
+      "centersRelativeToLegacy": 1.247341179807147,
+      "relativeToEmptyCenters": 0.7552211895511816,
+      "relativeToInterior": 0.6400065483119907,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_1",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9391006984866124,
+      "reachableCenterArea": 37042,
+      "legacyFootprintArea": 44332,
+      "footprintArea": 51628,
+      "legacyCenterArea": 30060,
+      "footprintRelativeToLegacy": 1.1645763782369394,
+      "centersRelativeToLegacy": 1.2322687957418497,
+      "relativeToEmptyCenters": 0.7800614918081119,
+      "relativeToInterior": 0.673784924330617,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_2",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9600552968568102,
+      "reachableCenterArea": 43734,
+      "legacyFootprintArea": 45676,
+      "footprintArea": 52780,
+      "legacyCenterArea": 37068,
+      "footprintRelativeToLegacy": 1.155530256589894,
+      "centersRelativeToLegacy": 1.1798316607316284,
+      "relativeToEmptyCenters": 0.8869914412039103,
+      "relativeToInterior": 0.7955107683352736,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_2",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9600552968568102,
+      "reachableCenterArea": 38923,
+      "legacyFootprintArea": 45676,
+      "footprintArea": 52780,
+      "legacyCenterArea": 32486,
+      "footprintRelativeToLegacy": 1.155530256589894,
+      "centersRelativeToLegacy": 1.1981468940466662,
+      "relativeToEmptyCenters": 0.8354547210714975,
+      "relativeToInterior": 0.7079998544819558,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_2",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9600552968568102,
+      "reachableCenterArea": 40530,
+      "legacyFootprintArea": 45676,
+      "footprintArea": 52780,
+      "legacyCenterArea": 34004,
+      "footprintRelativeToLegacy": 1.155530256589894,
+      "centersRelativeToLegacy": 1.1919185978120221,
+      "relativeToEmptyCenters": 0.8535147201280378,
+      "relativeToInterior": 0.7372307916181606,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_3",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9700960419091967,
+      "reachableCenterArea": 43822,
+      "legacyFootprintArea": 46228,
+      "footprintArea": 53332,
+      "legacyCenterArea": 37156,
+      "footprintRelativeToLegacy": 1.1536730985549883,
+      "centersRelativeToLegacy": 1.1794057487350629,
+      "relativeToEmptyCenters": 0.8887762138482131,
+      "relativeToInterior": 0.7971114668218859,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_3",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9700960419091967,
+      "reachableCenterArea": 38445,
+      "legacyFootprintArea": 46228,
+      "footprintArea": 53332,
+      "legacyCenterArea": 31960,
+      "footprintRelativeToLegacy": 1.1536730985549883,
+      "centersRelativeToLegacy": 1.202909887359199,
+      "relativeToEmptyCenters": 0.8251947884693812,
+      "relativeToInterior": 0.699305151338766,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/wreck/combat_3",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9700960419091967,
+      "reachableCenterArea": 40231,
+      "legacyFootprintArea": 46228,
+      "footprintArea": 53332,
+      "legacyCenterArea": 33700,
+      "footprintRelativeToLegacy": 1.1536730985549883,
+      "centersRelativeToLegacy": 1.1937982195845698,
+      "relativeToEmptyCenters": 0.84721812744809,
+      "relativeToInterior": 0.7317920547147846,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/empty",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 48920,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 42640,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.1472795497185742,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8898428405122235,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/empty",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 50902,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 44352,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.147682178932179,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.9258949359720605,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/empty",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 46010,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 40132,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.1464666600219275,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8369106519208381,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/empty",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 46968,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 40960,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.1466796875,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.854336437718277,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/empty",
+      "radius": 5,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 49906,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 43492,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.1474753977743033,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.9077779394644936,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_0",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 48920,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 42640,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.1472795497185742,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8898428405122235,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_0",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 50902,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 44352,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.147682178932179,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.9258949359720605,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_0",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 46010,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 40132,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.1464666600219275,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8369106519208381,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_0",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 46968,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 40960,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.1466796875,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.854336437718277,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_0",
+      "radius": 5,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 49906,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 54976,
+      "legacyCenterArea": 43492,
+      "footprintRelativeToLegacy": 1.1483957219251337,
+      "centersRelativeToLegacy": 1.1474753977743033,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.9077779394644936,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_1",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9708963911525029,
+      "reachableCenterArea": 44952,
+      "legacyFootprintArea": 46272,
+      "footprintArea": 53376,
+      "legacyCenterArea": 38672,
+      "footprintRelativeToLegacy": 1.1535269709543567,
+      "centersRelativeToLegacy": 1.1623913942904427,
+      "relativeToEmptyCenters": 0.9188879803761243,
+      "relativeToInterior": 0.8176658905704307,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_1",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9708963911525029,
+      "reachableCenterArea": 47814,
+      "legacyFootprintArea": 46272,
+      "footprintArea": 53376,
+      "legacyCenterArea": 41264,
+      "footprintRelativeToLegacy": 1.1535269709543567,
+      "centersRelativeToLegacy": 1.1587340054284607,
+      "relativeToEmptyCenters": 0.9393344072924443,
+      "relativeToInterior": 0.8697249708963911,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_1",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9708963911525029,
+      "reachableCenterArea": 40506,
+      "legacyFootprintArea": 46272,
+      "footprintArea": 53376,
+      "legacyCenterArea": 34628,
+      "footprintRelativeToLegacy": 1.1535269709543567,
+      "centersRelativeToLegacy": 1.169747025528474,
+      "relativeToEmptyCenters": 0.8803738317757009,
+      "relativeToInterior": 0.7367942374854481,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_1",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9708963911525029,
+      "reachableCenterArea": 41976,
+      "legacyFootprintArea": 46272,
+      "footprintArea": 53376,
+      "legacyCenterArea": 35968,
+      "footprintRelativeToLegacy": 1.1535269709543567,
+      "centersRelativeToLegacy": 1.1670373665480427,
+      "relativeToEmptyCenters": 0.8937148696985181,
+      "relativeToInterior": 0.7635331781140862,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_1",
+      "radius": 5,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9708963911525029,
+      "reachableCenterArea": 46386,
+      "legacyFootprintArea": 46272,
+      "footprintArea": 53376,
+      "legacyCenterArea": 39972,
+      "footprintRelativeToLegacy": 1.1535269709543567,
+      "centersRelativeToLegacy": 1.1604623236265386,
+      "relativeToEmptyCenters": 0.929467398709574,
+      "relativeToInterior": 0.84375,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_2",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9714784633294529,
+      "reachableCenterArea": 43768,
+      "legacyFootprintArea": 46304,
+      "footprintArea": 53408,
+      "legacyCenterArea": 37488,
+      "footprintRelativeToLegacy": 1.1534208707671043,
+      "centersRelativeToLegacy": 1.167520273154076,
+      "relativeToEmptyCenters": 0.8946852003270646,
+      "relativeToInterior": 0.7961292200232829,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_2",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9714784633294529,
+      "reachableCenterArea": 47126,
+      "legacyFootprintArea": 46304,
+      "footprintArea": 53408,
+      "legacyCenterArea": 40576,
+      "footprintRelativeToLegacy": 1.1534208707671043,
+      "centersRelativeToLegacy": 1.1614254731861198,
+      "relativeToEmptyCenters": 0.9258182389689993,
+      "relativeToInterior": 0.8572104190919674,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_2",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9714784633294529,
+      "reachableCenterArea": 38442,
+      "legacyFootprintArea": 46304,
+      "footprintArea": 53408,
+      "legacyCenterArea": 32564,
+      "footprintRelativeToLegacy": 1.1534208707671043,
+      "centersRelativeToLegacy": 1.1805060803341112,
+      "relativeToEmptyCenters": 0.8355140186915888,
+      "relativeToInterior": 0.6992505820721769,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_2",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9714784633294529,
+      "reachableCenterArea": 40152,
+      "legacyFootprintArea": 46304,
+      "footprintArea": 53408,
+      "legacyCenterArea": 34144,
+      "footprintRelativeToLegacy": 1.1534208707671043,
+      "centersRelativeToLegacy": 1.1759606373008435,
+      "relativeToEmptyCenters": 0.8548799182422074,
+      "relativeToInterior": 0.7303550640279395,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_2",
+      "radius": 5,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9714784633294529,
+      "reachableCenterArea": 45458,
+      "legacyFootprintArea": 46304,
+      "footprintArea": 53408,
+      "legacyCenterArea": 39044,
+      "footprintRelativeToLegacy": 1.1534208707671043,
+      "centersRelativeToLegacy": 1.1642762012088925,
+      "relativeToEmptyCenters": 0.9108724401875526,
+      "relativeToInterior": 0.8268699068684517,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_3",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9476135040745053,
+      "reachableCenterArea": 42136,
+      "legacyFootprintArea": 44800,
+      "footprintArea": 52096,
+      "legacyCenterArea": 35472,
+      "footprintRelativeToLegacy": 1.1628571428571428,
+      "centersRelativeToLegacy": 1.1878664862426702,
+      "relativeToEmptyCenters": 0.8613246116107931,
+      "relativeToInterior": 0.7664435389988359,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_3",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9476135040745053,
+      "reachableCenterArea": 45510,
+      "legacyFootprintArea": 44800,
+      "footprintArea": 52096,
+      "legacyCenterArea": 38640,
+      "footprintRelativeToLegacy": 1.1628571428571428,
+      "centersRelativeToLegacy": 1.1777950310559007,
+      "relativeToEmptyCenters": 0.8940709598836981,
+      "relativeToInterior": 0.8278157741559954,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_3",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9476135040745053,
+      "reachableCenterArea": 36922,
+      "legacyFootprintArea": 44800,
+      "footprintArea": 52096,
+      "legacyCenterArea": 30564,
+      "footprintRelativeToLegacy": 1.1628571428571428,
+      "centersRelativeToLegacy": 1.2080225101426514,
+      "relativeToEmptyCenters": 0.8024777222342969,
+      "relativeToInterior": 0.6716021536670547,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_3",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9476135040745053,
+      "reachableCenterArea": 38648,
+      "legacyFootprintArea": 44800,
+      "footprintArea": 52096,
+      "legacyCenterArea": 32192,
+      "footprintRelativeToLegacy": 1.1628571428571428,
+      "centersRelativeToLegacy": 1.2005467196819086,
+      "relativeToEmptyCenters": 0.8228581161641969,
+      "relativeToInterior": 0.7029976717112922,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/abyss/combat_3",
+      "radius": 5,
+      "cellSize": 1,
+      "interiorArea": 54976,
+      "footprintFreeFraction": 0.9476135040745053,
+      "reachableCenterArea": 43826,
+      "legacyFootprintArea": 44800,
+      "footprintArea": 52096,
+      "legacyCenterArea": 37060,
+      "footprintRelativeToLegacy": 1.1628571428571428,
+      "centersRelativeToLegacy": 1.1825688073394496,
+      "relativeToEmptyCenters": 0.878170961407446,
+      "relativeToInterior": 0.7971842258440046,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/empty",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 44200,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 49504,
+      "legacyCenterArea": 42640,
+      "footprintRelativeToLegacy": 1.0340909090909092,
+      "centersRelativeToLegacy": 1.0365853658536586,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8928571428571429,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/empty",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 45936,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 49504,
+      "legacyCenterArea": 44352,
+      "footprintRelativeToLegacy": 1.0340909090909092,
+      "centersRelativeToLegacy": 1.0357142857142858,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.9279250161603103,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/empty",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 41656,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 49504,
+      "legacyCenterArea": 40132,
+      "footprintRelativeToLegacy": 1.0340909090909092,
+      "centersRelativeToLegacy": 1.0379746835443038,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8414673561732385,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/empty",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 42496,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 49504,
+      "legacyCenterArea": 40960,
+      "footprintRelativeToLegacy": 1.0340909090909092,
+      "centersRelativeToLegacy": 1.0375,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8584356819650937,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/empty",
+      "radius": 5,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 45064,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 49504,
+      "legacyCenterArea": 43492,
+      "footprintRelativeToLegacy": 1.0340909090909092,
+      "centersRelativeToLegacy": 1.036144578313253,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.9103102779573368,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/combat_0",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 44200,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 49504,
+      "legacyCenterArea": 42640,
+      "footprintRelativeToLegacy": 1.0340909090909092,
+      "centersRelativeToLegacy": 1.0365853658536586,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8928571428571429,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/combat_0",
+      "radius": 4,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 45936,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 49504,
+      "legacyCenterArea": 44352,
+      "footprintRelativeToLegacy": 1.0340909090909092,
+      "centersRelativeToLegacy": 1.0357142857142858,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.9279250161603103,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/combat_0",
+      "radius": 9,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 41656,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 49504,
+      "legacyCenterArea": 40132,
+      "footprintRelativeToLegacy": 1.0340909090909092,
+      "centersRelativeToLegacy": 1.0379746835443038,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8414673561732385,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/combat_0",
+      "radius": 8,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 42496,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 49504,
+      "legacyCenterArea": 40960,
+      "footprintRelativeToLegacy": 1.0340909090909092,
+      "centersRelativeToLegacy": 1.0375,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.8584356819650937,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/combat_0",
+      "radius": 5,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 1,
+      "reachableCenterArea": 45064,
+      "legacyFootprintArea": 47872,
+      "footprintArea": 49504,
+      "legacyCenterArea": 43492,
+      "footprintRelativeToLegacy": 1.0340909090909092,
+      "centersRelativeToLegacy": 1.036144578313253,
+      "relativeToEmptyCenters": 1,
+      "relativeToInterior": 0.9103102779573368,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/boss",
+      "radius": 6,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 0.9608920491273433,
+      "reachableCenterArea": 39704,
+      "legacyFootprintArea": 45936,
+      "footprintArea": 47568,
+      "legacyCenterArea": 38144,
+      "footprintRelativeToLegacy": 1.0355276907001045,
+      "centersRelativeToLegacy": 1.0408976510067114,
+      "relativeToEmptyCenters": 0.8982805429864253,
+      "relativeToInterior": 0.8020361990950227,
+      "components": 1
+    },
+    {
+      "id": "modular_v2/milk/boss",
+      "radius": 14,
+      "cellSize": 1,
+      "interiorArea": 49504,
+      "footprintFreeFraction": 0.9608920491273433,
+      "reachableCenterArea": 28248,
+      "legacyFootprintArea": 45936,
+      "footprintArea": 47568,
+      "legacyCenterArea": 26784,
+      "footprintRelativeToLegacy": 1.0355276907001045,
+      "centersRelativeToLegacy": 1.0546594982078854,
+      "relativeToEmptyCenters": 0.7517564402810304,
+      "relativeToInterior": 0.5706205559146735,
+      "components": 1
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/testing/floor-style-redraw/whole-abyss-combat_2-spikes.png",
+      "sha256": "c91722f1bbfbe69484f36405db342d5d9d018b01eb4b48a0a1de43e6f44dd1f9"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/whole-abyss-combat_3-blocks.png",
+      "sha256": "7e1dd54f86d0fd5da1f9585bbb901ee973002668a0ddbedec3319204297a9639"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/whole-abyss-combat_3-spikes.png",
+      "sha256": "67b6585fa9345bac7c39802c3fbac611efd9bba989fe9f0478722c8f968a5d2b"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/whole-temple-combat_2-spikes.png",
+      "sha256": "726a18675f0e0ac87a9413ec4dbd851c78a14212277bbb98fdf02b7d862cf1cf"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/whole-wreck-combat_1-blocks.png",
+      "sha256": "1b2593c0decabb485c5ba911e105cfe41a00d635f83b50ee8950259d98d8d8be"
+    },
+    {
+      "path": "docs/testing/floor-style-redraw/whole-wreck-combat_3-spikes.png",
+      "sha256": "01ccb6e95717667b3ddd678c6ee5575f5c23b75f422d36e5183ecd8fcb9d03e6"
+    }
+  ],
+  "runtimeImagesChanged": false,
+  "legacyV1Changed": false
+}

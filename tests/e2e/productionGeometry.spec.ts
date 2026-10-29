@@ -52,6 +52,42 @@ test.afterAll(async () => {
     });
   if (directory) await rm(directory, { recursive: true, force: true });
 });
+
+test('whole obstacle and spike models match real collision and damage footprints', async ({ page }, info) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto(url);
+  await page.waitForFunction(() => window.productionGeometry);
+  const reports = [];
+  for (const [theme, room, focus] of [
+    ['abyss', 'combat_3', 'blocks'],
+    ['wreck', 'combat_1', 'blocks'],
+    ['temple', 'combat_2', 'spikes'],
+    ['wreck', 'combat_3', 'spikes'],
+    ['abyss', 'combat_2', 'spikes'],
+    ['abyss', 'combat_3', 'spikes'],
+  ] as const) {
+    const result = await page.evaluate(({ id, focus }) => window.productionGeometry.wholeModels(id, focus), {
+      id: `modular_v2/${theme}/${room}`,
+      focus,
+    });
+    expect(result[focus].length).toBeGreaterThan(0);
+    for (const item of [...result.blocks, ...result.spikes]) {
+      expect(item.columns).toBeCloseTo(Math.round(item.columns), 10);
+      expect(item.rows).toBeCloseTo(Math.round(item.rows), 10);
+      expect(item.uniform).toBe(true);
+      expect(item.width).toBe(item.physicalWidth);
+      expect(item.height).toBe(item.physicalHeight);
+      expect(item.centerError).toBeLessThan(1e-8);
+    }
+    if (focus === 'blocks')
+      expect(result.blocks.map((b) => [b.columns, b.rows])).toEqual(Array.from({ length: 4 }, () => [5, 1]));
+    reports.push({ theme, room, focus, ...result });
+    await page.screenshot({ path: info.outputPath(`whole-${theme}-${room}-${focus}.png`), scale: 'css' });
+  }
+  expect(errors).toEqual([]);
+  await info.attach('whole-models', { body: JSON.stringify(reports), contentType: 'application/json' });
+});
 test('solid wall tops stop real Arcade movement, projectiles and sight in all four themes', async ({
   page,
 }, info) => {

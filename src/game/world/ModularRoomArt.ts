@@ -126,7 +126,7 @@ export class ModularRoomArt implements RoomArt {
         return;
       }
       const unit = Math.min(box.width, box.height);
-      // Repeat square models at one scale; clip the final tile instead of deforming it.
+      // Active room dimensions contain whole square models; one scale preserves every edge.
       image
         .setTexture(MAP_ART.textures.blocks, `${theme}_obstacle`)
         .setPosition(240 + box.x, 135 + box.y)

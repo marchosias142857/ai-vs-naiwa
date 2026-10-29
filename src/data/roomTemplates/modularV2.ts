@@ -8,7 +8,11 @@ export const MODULAR_V2 = freeze({
   southApron: 16,
   wall: { width: 8, faceHeight: 9.6 },
   // Shorter cargo dividers keep player-centre clearance above 80%, including standing barrels.
-  cargoDividerWidth: 56,
+  cargoDividerWidth: 60,
+  abyssDividerWidth: 60,
+  // Physical spike footprints and their visual cells share this world-space size.
+  spikeTile: 16,
+  abyssNorthSpikeY: -54,
   cargoBarrelX: 24,
   cargoEdgeBarrelX: -80,
   maxBoundaryBodies: 4,

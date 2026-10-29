@@ -1,5 +1,6 @@
 import { MAP_ART_FRAMES } from './mapArtFrames';
 import { MODULAR_V2 } from './roomTemplates/modularV2';
+import type { RoomTheme } from './schema/traps';
 
 /** World sizes are presentation only; collision footprints remain in room templates. */
 export const MAP_ART = {
@@ -57,11 +58,34 @@ export const MAP_ART = {
   floorSourceInset: 8,
   floorBorderPixels: 1,
   floorBorder: { temple: '#4a5761', wreck: '#624c40', abyss: '#3c4154', milk: '#685947' },
-  fieldTile: 16,
+  fieldTile: MODULAR_V2.spikeTile,
   naturalFieldTile: 32,
   frames: MAP_ART_FRAMES,
 } as const;
 export type MapFrame = keyof typeof MAP_ART_FRAMES;
+
+/** Static frame names avoid allocating strings during pooled object updates. */
+export const MAP_THEME_FRAMES = {
+  temple: {
+    crystal: 'temple_crystal',
+    spikes: { idle: 'temple_spikes_idle', warn: 'temple_spikes_warn', on: 'temple_spikes_on' },
+  },
+  wreck: {
+    crystal: 'wreck_crystal',
+    spikes: { idle: 'wreck_spikes_idle', warn: 'wreck_spikes_warn', on: 'wreck_spikes_on' },
+  },
+  abyss: {
+    crystal: 'abyss_crystal',
+    spikes: { idle: 'abyss_spikes_idle', warn: 'abyss_spikes_warn', on: 'abyss_spikes_on' },
+  },
+  milk: {
+    crystal: 'milk_crystal',
+    spikes: { idle: 'milk_spikes_idle', warn: 'milk_spikes_warn', on: 'milk_spikes_on' },
+  },
+} as const satisfies Record<
+  RoomTheme['art'],
+  { crystal: MapFrame; spikes: Record<'idle' | 'warn' | 'on', MapFrame> }
+>;
 
 export function mapFrameTexture(frame: string): string {
   if (frame.endsWith('_rim')) return MAP_ART.textures.rims;
