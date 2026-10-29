@@ -1,0 +1,6 @@
+{
+  "bytes": 2097153,
+  "limit": 2097152,
+  "rejected": true,
+  "message": "Error: \n  Configure \"workbox.maximumFileSizeToCacheInBytes\" to change the limit: the default value is 2 MiB.\n  Check https://vite-pwa-org.netlify.app/guide/faq.html#missing-assets-from-sw-precache-manifest for more information.\n  Assets exceeding the limit:\n  - budget-probe.json is 2.1 MB, and won't be precached.\n"
+}

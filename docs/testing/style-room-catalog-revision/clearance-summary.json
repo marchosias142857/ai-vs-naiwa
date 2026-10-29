@@ -1,0 +1,11 @@
+{
+  "templates": 529,
+  "combinations": 3605,
+  "distinctGeometry": 529,
+  "minFreeFraction": 0.9506221521205749,
+  "minPlayerFraction": 0.8892464659467448,
+  "minFreeArea": 77760,
+  "minPlayerArea": 67324,
+  "legacyFreeArea": 47872,
+  "legacyPlayerArea": 42640
+}

@@ -50,7 +50,7 @@ export function roomColumns(points: readonly Point[]): RoomColumn[] {
   }
   return columns;
 }
-/** One outside course of complete, unrotated cuboids; diagonal neighbors advance (8,8). */
+/** One course of cuboids. Only runs of at least three diagonal blocks are slopes. */
 export function wallCells(points: readonly Point[]): Point[] {
   const columns = roomColumns(points),
     step = M.wall.width;
@@ -70,6 +70,23 @@ export function wallCells(points: readonly Point[]): Point[] {
           key = `${x}:${py}`;
         if (!filled.has(key)) outside.set(key, { x, y: py });
       }
+  // Inspect the original course: newly filled corners must not create false diagonal runs.
+  const course = new Map(outside);
+  const has = (x: number, y: number) => course.has(`${x}:${y}`);
+  for (const a of course.values())
+    for (const dy of [-step, step]) {
+      const b = { x: a.x + step, y: a.y + dy };
+      if (!has(b.x, b.y)) continue;
+      if (has(a.x - step, a.y - dy) || has(b.x + step, b.y + dy)) continue;
+      const joins = [
+        { x: a.x, y: b.y },
+        { x: b.x, y: a.y },
+      ];
+      // At a concave turn the inner join already belongs to the outside course.
+      // Reuse it, instead of filling the other quadrant or protruding into the floor.
+      if (joins.some((p) => has(p.x, p.y))) continue;
+      for (const p of joins) if (!filled.has(`${p.x}:${p.y}`)) outside.set(`${p.x}:${p.y}`, p);
+    }
   return [...outside.values()].sort((a, b) => a.y - b.y || a.x - b.x);
 }
 /** Exact staircase of drawn wall silhouettes, shared by Arcade infill and sim queries. */

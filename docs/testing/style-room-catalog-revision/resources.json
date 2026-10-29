@@ -1,0 +1,14 @@
+{
+  "mainJsBytes": 1843884,
+  "priorMainJsBytes": 1977109,
+  "reductionBytes": 133225,
+  "precacheLimitBytes": 2097152,
+  "headroomBytes": 253268,
+  "approvedWallSha256": "e9cbf46c6b37fd01a26805ef2a62b2bc0d0e9e5e55db710b43839915fc24905f",
+  "runtimeArtUnchanged": true,
+  "canvasRGBABytes": 71204864,
+  "canvasDeltaFromMainBytes": 29556736,
+  "canvasDeltaFromMainMiB": 28.1875,
+  "browser": "Chromium 153.0.8010.0 / SwiftShader",
+  "physicalDeviceMeasured": false
+}

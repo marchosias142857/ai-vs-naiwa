@@ -40,9 +40,11 @@ export function clearOfTraps(t: RoomTemplate, p: Point, radius: number): boolean
     const width = trap.width ?? (trap.kind === 'barrel' ? 18 : 16);
     const height = trap.height ?? (trap.kind === 'barrel' ? 23 : 16);
     const rim = trap.width ? M.rim : 0;
+    // The upright barrel sprite is anchored at 0.65 of its height, above its collision center.
+    const y = trap.y + (trap.kind === 'barrel' ? height * (0.5 - 0.65) : 0);
     return (
       Math.abs(p.x - M.center.x - trap.x) >= width / 2 + rim + radius ||
-      Math.abs(p.y - M.center.y - trap.y) >= height / 2 + rim + radius
+      Math.abs(p.y - M.center.y - y) >= height / 2 + rim + radius
     );
   });
 }

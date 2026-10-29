@@ -7,6 +7,8 @@ import { roomTemplate, selectRoomLayouts } from '../../src/sim/dungeon/roomCatal
 import { RoomGeometry } from '../../src/sim/geometry/RoomGeometry';
 import { createInputFrame } from '../../src/sim/core/types';
 import { EventBus } from '../../src/sim/core/EventBus';
+import type { GameEvents } from '../../src/sim/core/events';
+import type { RoomStyleId } from '../../src/data/roomStyles';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import { preloadDemoArt, installDemoArt } from '../../src/game/assets/demoArt';
 import { DemoSession } from '../../src/game/systems/DemoSession';
@@ -26,9 +28,10 @@ class CatalogScene extends Scene {
     installDemoArt(this);
     this.physics.disableUpdate();
     this.scene.launch(InputScene.KEY, { demo: true });
+    const bus = new EventBus<GameEvents>();
     const session = new DemoSession(
       this,
-      new EventBus(),
+      bus,
       this.scene.get(InputScene.KEY) as InputScene,
       42,
       true,
@@ -47,14 +50,14 @@ class CatalogScene extends Scene {
     };
     const staticBodies = (arena as unknown as { slots: Physics.Arcade.Image[] }).slots;
     const input = createInputFrame();
-    const pin = (x: number, y: number) => {
-      const image = bridge.actors.slots.find((s) => s.id === sim.playerId)!.image,
+    const pin = (x: number, y: number, id = sim.playerId!) => {
+      const image = bridge.actors.slots.find((s) => s.id === id)!.image,
         body = image.body as Physics.Arcade.Body;
       body.reset(x, y);
       body.updateFromGameObject();
       body.prev.copy(body.position);
       body.prevFrame.copy(body.position);
-      sim.syncPosition(sim.playerId!, x, y);
+      sim.syncPosition(id, x, y);
     };
     const show = (id: string) => {
       const t = roomTemplate(id)!;
@@ -116,6 +119,31 @@ class CatalogScene extends Scene {
       generation,
       ids: DESIGNED_V3.filter((t) => t.form !== 'hub').map((t) => t.id),
       show,
+      bossCharge: (theme) => {
+        show(`designed_v3/${theme}/boss`);
+        const t = roomTemplate(`designed_v3/${theme}/boss`)!;
+        const column = t.boxes[0]!,
+          x = 240 + column.x,
+          y = 135 + column.y;
+        const boss = sim.spawnEnemy('naiwa_boss', x + 54, y);
+        bridge.actors.apply();
+        let action = '',
+          dashing = false;
+        bus.on('enemy:acted', (e) => {
+          if (e.id === boss && (e.action === 'stun' || e.action === 'crash')) action = e.action;
+        });
+        for (let i = 0; i < 1500 && !action; i++) {
+          pin(x - 36, y);
+          if (!dashing) pin(x + 54, y, boss);
+          session.setInput(input);
+          this.physics.world.update((i * 1000) / 60, 1000 / 60);
+          this.physics.world.postUpdate();
+          session.update();
+          const a = sim.getActor(boss)!;
+          dashing ||= a.move === 'bump' && a.stage === 'dash';
+        }
+        return { action, pillars: compileRoom(t).obstacles.map((p) => p.kind) };
+      },
       manifest: () => selectRoomLayouts(42, dungeon.floor, dungeon.map.rooms, dungeon.style),
       selected: () => inspector.templateId,
       root: () => inspector.root.snapshot,
@@ -198,6 +226,7 @@ declare global {
         childCount: number;
         textureCount: number;
       };
+      bossCharge: (theme: RoomStyleId) => { action: string; pillars: string[] };
       manifest: () => ReturnType<typeof selectRoomLayouts>;
       selected: () => string;
       root: () => number;

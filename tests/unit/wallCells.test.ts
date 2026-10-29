@@ -34,3 +34,81 @@ it('rejects off-grid and unsupported slopes', () => {
     ]),
   ).toThrow('module grid');
 });
+
+it('restores the rectangular perimeter plus four external corner blocks (128)', async () => {
+  const { MODULAR_V2 } = await import('../../src/data/roomTemplates/modularV2');
+  const b = MODULAR_V2.bounds;
+  const cells = wallCells([
+    { x: b.x, y: b.y },
+    { x: b.x + b.width, y: b.y },
+    { x: b.x + b.width, y: b.y + b.height },
+    { x: b.x, y: b.y + b.height },
+  ]);
+  expect(cells).toHaveLength((2 * (b.width + b.height)) / 8 + 4);
+  expect(cells).toHaveLength(128);
+  for (const x of [b.x - 8, b.x + b.width])
+    for (const y of [b.y - 8, b.y + b.height]) expect(cells).toContainEqual({ x, y });
+});
+
+it('keeps runs of at least three diagonal blocks single-course, including 135-degree endpoints', async () => {
+  const { roomColumns } = await import('../../src/sim/dungeon/wallGeometry');
+  for (const length of [24, 32, 48, 64]) {
+    const p = [
+      [-64 + length, -64],
+      [64, -64],
+      [64, 64],
+      [-64, 64],
+      [-64, -64 + length],
+    ].map(([x, y]) => ({ x: 240 + x!, y: 135 + y! }));
+    const cols = roomColumns(p),
+      floor = new Set<string>(),
+      course = new Set<string>();
+    for (const c of cols) for (let y = c.top; y < c.bottom; y += 8) floor.add(`${c.x}:${y}`);
+    for (const c of cols)
+      for (let y = c.top; y < c.bottom; y += 8)
+        for (const [dx, dy] of [
+          [-8, 0],
+          [8, 0],
+          [0, -8],
+          [0, 8],
+        ]) {
+          const key = `${c.x + dx!}:${y + dy!}`;
+          if (!floor.has(key)) course.add(key);
+        }
+    const added = wallCells(p).filter((c) => !course.has(`${c.x}:${c.y}`));
+    // Only the three remaining 90-degree convex vertices need new cells.
+    expect(added).toEqual([
+      { x: 304, y: 63 },
+      { x: 168, y: 199 },
+      { x: 304, y: 199 },
+    ]);
+  }
+});
+
+it('fills a two-block diagonal contact as a corner, and reuses the inner concave join', () => {
+  const rectangle = [
+    [-64, -64],
+    [64, -64],
+    [64, 64],
+    [-64, 64],
+  ].map(([x, y]) => ({ x: 240 + x!, y: 135 + y! }));
+  const cells = wallCells(rectangle);
+  expect(cells).toContainEqual({ x: 168, y: 63 });
+  expect(cells).toContainEqual({ x: 176, y: 63 });
+  expect(cells).toContainEqual({ x: 168, y: 71 });
+  const notch = [
+    [-64, -64],
+    [-24, -64],
+    [-24, -40],
+    [24, -40],
+    [24, -64],
+    [64, -64],
+    [64, 64],
+    [-64, 64],
+  ].map(([x, y]) => ({ x: 240 + x!, y: 135 + y! }));
+  const bent = wallCells(notch);
+  // Both re-entrant corners close on the notch side without adding a second row on the floor.
+  for (const x of [216, 256]) expect(bent).toContainEqual({ x, y: 87 });
+  for (const x of [208, 264]) expect(bent).not.toContainEqual({ x, y: 95 });
+  expect(wallCells([...notch].reverse())).toEqual(bent);
+});

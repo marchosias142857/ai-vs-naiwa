@@ -1,0 +1,248 @@
+{
+  "count": 48,
+  "totalBytes": 32187931,
+  "files": [
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-boss.png",
+      "bytes": 607745,
+      "gitBlob": "91414e11ec8d24a9452e88c2eff2587ebbe2ad9b"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-chest.png",
+      "bytes": 503795,
+      "gitBlob": "619fec358aa7c8173a773877317a1baa98ac8c09"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-cloister_2_0.png",
+      "bytes": 748537,
+      "gitBlob": "a9e38cebc2ed63f039290e8875b992003aa9ac4b"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-corner_hall_2_0.png",
+      "bytes": 736155,
+      "gitBlob": "9eb45bf9cb92ea628a8bd7c59a0fc931e1a756fd"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-court_2_0.png",
+      "bytes": 740660,
+      "gitBlob": "aeb8811fdaa99a82adf6895ebb8322230ff4dd1d"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-exit.png",
+      "bytes": 475938,
+      "gitBlob": "ff97867335e05337ba484a2d8b2557685ff64cd5"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-long_octagon_2_0.png",
+      "bytes": 713614,
+      "gitBlob": "1c9931e445d4e8f6b856e3694035263e018485c2"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-north_terrace_2_0.png",
+      "bytes": 741132,
+      "gitBlob": "e217deefcd377a3be5d7d351af899493d9f9d9d0"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-offset_wings_2_0.png",
+      "bytes": 734479,
+      "gitBlob": "14f34d6c53bad6542949720f08eb575536414fbf"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-side_galleries_2_0.png",
+      "bytes": 689848,
+      "gitBlob": "741b5de07517572a6af86600cf5582cbe04f30bf"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-south_hall_2_0.png",
+      "bytes": 743807,
+      "gitBlob": "849926cc45c4b7c445ff32dd6dc900e4fe18311c"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/abyss-start.png",
+      "bytes": 472475,
+      "gitBlob": "63c2438da48e028934fbf79ad7ca5e3ae014cfbc"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-boss.png",
+      "bytes": 622004,
+      "gitBlob": "87542fb638e485bcbd11b72d0102a6ca057804f1"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-chest.png",
+      "bytes": 511320,
+      "gitBlob": "26e71177ae9279f98b4b89ff3bbbf058789680e8"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-cloister_3_0.png",
+      "bytes": 734634,
+      "gitBlob": "b8cb78e23aa32b11c5d11a903fb5142e18d620fb"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-corner_hall_3_0.png",
+      "bytes": 749835,
+      "gitBlob": "bc7f20ca5104e46f946f8aaa07ba2cdd7dd113b6"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-court_3_0.png",
+      "bytes": 771016,
+      "gitBlob": "dbdfe4c85a2b89da1f5097f4b7a3de4a732e8609"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-exit.png",
+      "bytes": 481767,
+      "gitBlob": "1cda2b965fc9eab730cfebc373428b0526034196"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-long_octagon_3_0.png",
+      "bytes": 718821,
+      "gitBlob": "c1df6ab4f7ede44c182197f1e7ad35990ad5acc9"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-north_terrace_3_0.png",
+      "bytes": 745743,
+      "gitBlob": "aadd73b9eb3146ce55367f741ac5c2036f5b39bb"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-offset_wings_3_0.png",
+      "bytes": 733115,
+      "gitBlob": "9a8301f84ac421f992101dfadd131a1c3e660137"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-side_galleries_3_0.png",
+      "bytes": 706149,
+      "gitBlob": "1b3ef62cc48969c3a4484fcf194d2bc7cde9beaa"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-south_hall_3_0.png",
+      "bytes": 742164,
+      "gitBlob": "d7f979be6618ba6792f26a22f649b93c3ed405a4"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/milk-start.png",
+      "bytes": 478357,
+      "gitBlob": "ba3a06acce769cb4697c73895227d1f86974cd63"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-boss.png",
+      "bytes": 609242,
+      "gitBlob": "31ecd68358e1cdbb512f895748f0545a4a971ffd"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-chest.png",
+      "bytes": 493985,
+      "gitBlob": "4f100e75dd3bdc832e9b17370600ec870f202bca"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-cloister_0_0.png",
+      "bytes": 751739,
+      "gitBlob": "2f3410448ec50878647f7c97d22e2ee061f771ac"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-corner_hall_0_0.png",
+      "bytes": 752115,
+      "gitBlob": "4fb1f40a67a847110894fc0a2c22e73b77fdd864"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-court_0_0.png",
+      "bytes": 763699,
+      "gitBlob": "229df53a6093016e8a6c60c814a3459515355b4e"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-exit.png",
+      "bytes": 458360,
+      "gitBlob": "690379f3b42d3b8727b0b91d88d6f5f666aca921"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-long_octagon_0_0.png",
+      "bytes": 731287,
+      "gitBlob": "8b9755828eb53378086666b42e1d9d7c304b62b5"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-north_terrace_0_0.png",
+      "bytes": 734671,
+      "gitBlob": "e9296dd6ec64831eb82ddbcac8c0f6926308b083"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-offset_wings_0_0.png",
+      "bytes": 743744,
+      "gitBlob": "eb25d9e000d931173f532d2cadd893af225fdbe2"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-side_galleries_0_0.png",
+      "bytes": 711759,
+      "gitBlob": "48a4c41c0ce60070241c8f259a987de93ad83609"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-south_hall_0_0.png",
+      "bytes": 712306,
+      "gitBlob": "9f5d372b344b5df50d13c990c0d1e8db81007a8f"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/temple-start.png",
+      "bytes": 455389,
+      "gitBlob": "0a1cb7820af275fca74191160822045fc428f48f"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-boss.png",
+      "bytes": 646257,
+      "gitBlob": "aabb6b3a8f2ca3d07b534d495ce0c97b0ead9f4e"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-chest.png",
+      "bytes": 536707,
+      "gitBlob": "b32a0003f78415ab2be434fd6426005ac43d3640"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-cloister_1_0.png",
+      "bytes": 770125,
+      "gitBlob": "6d99cf6c7849f4b6236dc943083a11c065372490"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-corner_hall_1_0.png",
+      "bytes": 791111,
+      "gitBlob": "727a001967a010cc10f16581954add50dd4dc5c0"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-court_1_0.png",
+      "bytes": 799651,
+      "gitBlob": "059702aa0d24bed4521dcc76dbcb43d2f33e0f71"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-exit.png",
+      "bytes": 499452,
+      "gitBlob": "3dce69322181def4ff8734fd9feaa7720adeab6e"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-long_octagon_1_0.png",
+      "bytes": 766799,
+      "gitBlob": "09d207728bf0b9241761c71e0801fa539796649c"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-north_terrace_1_0.png",
+      "bytes": 765822,
+      "gitBlob": "4fe9d35797e88025496b62046edbe91414bcf08e"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-offset_wings_1_0.png",
+      "bytes": 776948,
+      "gitBlob": "f939eb60c3b3be30695a3e1ef7d52d9c43c3388b"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-side_galleries_1_0.png",
+      "bytes": 746180,
+      "gitBlob": "74017bd545d8d5d58f8d5f5581a85632029deca6"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-south_hall_1_0.png",
+      "bytes": 771158,
+      "gitBlob": "b18ddbdf3803f9a28e22f83b41b1cb79f7e50c19"
+    },
+    {
+      "path": "docs/testing/style-room-catalog-revision/wreck-start.png",
+      "bytes": 496315,
+      "gitBlob": "a17e2be8b6da43f56443f01c97638c1a72115328"
+    }
+  ],
+  "uploadCommit": "0bd3c501b991ad50ce3a681f2142eecfcca210e2",
+  "remoteVerified": true
+}

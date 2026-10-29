@@ -56,13 +56,25 @@ test.afterAll(async () => {
 test('new catalog renders full models in every style, including diagonal walls and fixed squares', async ({
   page,
 }, info) => {
+  test.setTimeout(180000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto(url);
   await page.waitForFunction(() => window.designedCatalog);
   const ids = await page.evaluate(() => window.designedCatalog.ids);
-  for (const theme of ['temple', 'wreck', 'abyss', 'milk']) {
-    for (const suffix of ['cloister_0_0', 'north_terrace_0_0', 'start', 'chest', 'exit', 'boss']) {
+  const themes = ['temple', 'wreck', 'abyss', 'milk'];
+  const families = [
+    'court',
+    'cloister',
+    'corner_hall',
+    'side_galleries',
+    'north_terrace',
+    'offset_wings',
+    'south_hall',
+    'long_octagon',
+  ];
+  for (const [profile, theme] of themes.entries()) {
+    for (const suffix of [...families.map((f) => `${f}_${profile}_0`), 'start', 'chest', 'exit', 'boss']) {
       const id = `designed_v3/${theme}/${suffix}`;
       expect(ids).toContain(id);
       const r = await page.evaluate((id) => window.designedCatalog.show(id), id);
@@ -94,6 +106,14 @@ test('new catalog renders full models in every style, including diagonal walls a
   }
   expect(errors).toEqual([]);
 });
+for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const)
+  test(`authored ${theme} Boss pillars stun a real charging Boss through Arcade`, async ({ page }) => {
+    await page.goto(url);
+    await page.waitForFunction(() => window.designedCatalog);
+    const result = await page.evaluate((theme) => window.designedCatalog.bossCharge(theme), theme);
+    expect(result.pillars).toEqual(['pillar', 'pillar', 'pillar', 'pillar']);
+    expect(result.action).toBe('stun');
+  });
 test('actual Arcade motion and sim LOS both stop at diagonal/step wall silhouettes', async ({ page }) => {
   await page.goto(url);
   await page.waitForFunction(() => window.designedCatalog);

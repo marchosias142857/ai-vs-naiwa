@@ -1,0 +1,10 @@
+{
+  "identicalAfterRegeneration": true,
+  "sha256": {
+    "src/data/roomTemplates/designedV3.json": "5db158bdf32be76f27e9dd48fda595a5d5ffd970fbe4d3bef2d35da2216ae6bc",
+    "docs/testing/style-room-catalog-revision/expanded.json": "56433cd443073c0829f832eb33c403c1c05bf738035f09bc615896f007c3a52e",
+    "docs/testing/style-room-catalog-revision/counts.json": "c949d7132a31e3b4599d1083ceb29b68bc3ea743a5d08c96a4a5e00c979f4218",
+    "docs/testing/style-room-catalog-revision/catalog.html": "359a0a332d1ec0b3ae27aa55c6ceca303fed2994a9aab2f2a3f25dd8144fea89",
+    "docs/testing/style-room-catalog-revision/shells.svg": "890f6d98235f8efda670f7d920806c4ae44fbadd7ef6d61ec39f66375b425e1c"
+  }
+}

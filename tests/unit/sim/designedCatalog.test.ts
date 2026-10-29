@@ -20,7 +20,7 @@ for (const theme of ROOM_STYLE_IDS)
         'chest',
         'exit',
         'boss',
-        'hub',
+        ...(theme === 'temple' ? ['hub'] : []),
       ]);
       expect(new Set(rooms.map((t) => t.id)).size).toBe(rooms.length);
       for (const t of rooms) {
