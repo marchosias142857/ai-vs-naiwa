@@ -48,6 +48,7 @@ export interface RoomArt {
     room?: CompiledRoom,
     traps?: readonly TrapPlacement[],
     ports?: CompiledRoom['ports'],
+    floorSeed?: number,
   ): void;
 }
 export class LegacyRoomArt implements RoomArt {

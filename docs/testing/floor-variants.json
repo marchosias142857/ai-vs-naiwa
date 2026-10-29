@@ -1,0 +1,595 @@
+{
+  "base": "e14ea32d4a5488da233be927e989d9907783734d",
+  "branch": "gpt/137-floor-variants",
+  "environment": {
+    "node": "v22.23.4",
+    "browser": "Chromium 153.0.8010.0, SwiftShader",
+    "workers": 1,
+    "retries": 0
+  },
+  "earlierBatch": {
+    "selection": "mapLayers.spec.ts mapArt.spec.ts mapArtMatrix.spec.ts, excluding 200 connected layouts",
+    "passed": 24,
+    "failed": 8,
+    "skipped": 0,
+    "note": "Previous session run completed; eight floor pixel reference failures. No production changes after this batch. Test-only fix isolates reference canvases; strict pixel checks unchanged. Initial log kept; its JSON file was overwritten by the rerun reporter."
+  },
+  "floorRerun": {
+    "stats": {
+      "startTime": "2026-10-29T01:28:28.380Z",
+      "duration": 35548.301,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "tests": [
+      {
+        "title": "temple: random wall-width tiles keep uniform borders and stable revisits",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3987,
+        "retry": 0,
+        "attachments": [
+          {
+            "name": "temple",
+            "contentType": "application/json"
+          }
+        ]
+      },
+      {
+        "title": "wreck: random wall-width tiles keep uniform borders and stable revisits",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3743,
+        "retry": 0,
+        "attachments": [
+          {
+            "name": "wreck",
+            "contentType": "application/json"
+          }
+        ]
+      },
+      {
+        "title": "abyss: random wall-width tiles keep uniform borders and stable revisits",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3980,
+        "retry": 0,
+        "attachments": [
+          {
+            "name": "abyss",
+            "contentType": "application/json"
+          }
+        ]
+      },
+      {
+        "title": "milk: random wall-width tiles keep uniform borders and stable revisits",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3966,
+        "retry": 0,
+        "attachments": [
+          {
+            "name": "milk",
+            "contentType": "application/json"
+          }
+        ]
+      },
+      {
+        "title": "temple: random wall-width tiles keep uniform borders and stable revisits",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4417,
+        "retry": 0,
+        "attachments": [
+          {
+            "name": "temple",
+            "contentType": "application/json"
+          }
+        ]
+      },
+      {
+        "title": "wreck: random wall-width tiles keep uniform borders and stable revisits",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4141,
+        "retry": 0,
+        "attachments": [
+          {
+            "name": "wreck",
+            "contentType": "application/json"
+          }
+        ]
+      },
+      {
+        "title": "abyss: random wall-width tiles keep uniform borders and stable revisits",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3885,
+        "retry": 0,
+        "attachments": [
+          {
+            "name": "abyss",
+            "contentType": "application/json"
+          }
+        ]
+      },
+      {
+        "title": "milk: random wall-width tiles keep uniform borders and stable revisits",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4020,
+        "retry": 0,
+        "attachments": [
+          {
+            "name": "milk",
+            "contentType": "application/json"
+          }
+        ]
+      }
+    ]
+  },
+  "joinsAndOffline": {
+    "stats": {
+      "startTime": "2026-10-29T01:31:00.491Z",
+      "duration": 165517.404,
+      "expected": 10,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "tests": [
+      {
+        "title": "map wall review: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 17279,
+        "retry": 0,
+        "attachments": []
+      },
+      {
+        "title": "map wall review: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 16490,
+        "retry": 0,
+        "attachments": []
+      },
+      {
+        "title": "map wall review: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 17210,
+        "retry": 0,
+        "attachments": []
+      },
+      {
+        "title": "map wall review: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 13836,
+        "retry": 0,
+        "attachments": []
+      },
+      {
+        "title": "map wall review: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 16647,
+        "retry": 0,
+        "attachments": []
+      },
+      {
+        "title": "map wall review: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 20001,
+        "retry": 0,
+        "attachments": []
+      },
+      {
+        "title": "map wall review: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 15175,
+        "retry": 0,
+        "attachments": []
+      },
+      {
+        "title": "map wall review: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 12072,
+        "retry": 0,
+        "attachments": []
+      },
+      {
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 14155,
+        "retry": 0,
+        "attachments": []
+      },
+      {
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 13651,
+        "retry": 0,
+        "attachments": []
+      }
+    ]
+  },
+  "check": {
+    "command": "npm run check",
+    "status": "passed",
+    "unitTests": 525,
+    "testFiles": 64,
+    "logSHA256": "0a517b2e3408fba968992e528fe25b57593468a3f10945d38711fa6657aa968c"
+  },
+  "limitations": [
+    "Not full E2E suite.",
+    "No new 800-layout matrix, FPS ABAB, WebKit/Safari or physical phone run.",
+    "Floor 42→77→42 is a renderer rebuild probe, not an end-to-end save/load flow.",
+    "Full-scene screenshots from fixture use camera framing; production screenshots preserve normal view."
+  ],
+  "floorPixelEvidence": [
+    {
+      "theme": "temple",
+      "project": "desktop",
+      "report": {
+        "first": {
+          "counts": [45, 48, 46, 32, 39, 41, 26, 37, 26, 44],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 3593664904,
+          "objects": 673,
+          "textures": 31
+        },
+        "other": {
+          "counts": [29, 29, 42, 54, 35, 46, 32, 38, 40, 39],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 701101611,
+          "objects": 673,
+          "textures": 31
+        },
+        "restored": {
+          "counts": [45, 48, 46, 32, 39, 41, 26, 37, 26, 44],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 3593664904,
+          "objects": 673,
+          "textures": 31
+        }
+      }
+    },
+    {
+      "theme": "wreck",
+      "project": "desktop",
+      "report": {
+        "first": {
+          "counts": [52, 30, 39, 38, 48, 34, 37, 41, 32, 33],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 726934267,
+          "objects": 673,
+          "textures": 31
+        },
+        "other": {
+          "counts": [42, 34, 38, 35, 43, 33, 45, 45, 32, 37],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 1823282333,
+          "objects": 673,
+          "textures": 31
+        },
+        "restored": {
+          "counts": [52, 30, 39, 38, 48, 34, 37, 41, 32, 33],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 726934267,
+          "objects": 673,
+          "textures": 31
+        }
+      }
+    },
+    {
+      "theme": "abyss",
+      "project": "desktop",
+      "report": {
+        "first": {
+          "counts": [34, 41, 41, 37, 39, 46, 29, 38, 42, 37],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 3297200842,
+          "objects": 673,
+          "textures": 31
+        },
+        "other": {
+          "counts": [38, 40, 32, 37, 41, 43, 46, 29, 36, 42],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 902728133,
+          "objects": 673,
+          "textures": 31
+        },
+        "restored": {
+          "counts": [34, 41, 41, 37, 39, 46, 29, 38, 42, 37],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 3297200842,
+          "objects": 673,
+          "textures": 31
+        }
+      }
+    },
+    {
+      "theme": "milk",
+      "project": "desktop",
+      "report": {
+        "first": {
+          "counts": [47, 33, 47, 36, 34, 47, 41, 43, 26, 30],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 2469592866,
+          "objects": 673,
+          "textures": 31
+        },
+        "other": {
+          "counts": [43, 38, 29, 41, 36, 40, 40, 40, 42, 35],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 1639807387,
+          "objects": 673,
+          "textures": 31
+        },
+        "restored": {
+          "counts": [47, 33, 47, 36, 34, 47, 41, 43, 26, 30],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 2469592866,
+          "objects": 673,
+          "textures": 31
+        }
+      }
+    },
+    {
+      "theme": "temple",
+      "project": "mobile-landscape",
+      "report": {
+        "first": {
+          "counts": [45, 48, 46, 32, 39, 41, 26, 37, 26, 44],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 3593664904,
+          "objects": 673,
+          "textures": 31
+        },
+        "other": {
+          "counts": [29, 29, 42, 54, 35, 46, 32, 38, 40, 39],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 701101611,
+          "objects": 673,
+          "textures": 31
+        },
+        "restored": {
+          "counts": [45, 48, 46, 32, 39, 41, 26, 37, 26, 44],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 3593664904,
+          "objects": 673,
+          "textures": 31
+        }
+      }
+    },
+    {
+      "theme": "wreck",
+      "project": "mobile-landscape",
+      "report": {
+        "first": {
+          "counts": [52, 30, 39, 38, 48, 34, 37, 41, 32, 33],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 726934267,
+          "objects": 673,
+          "textures": 31
+        },
+        "other": {
+          "counts": [42, 34, 38, 35, 43, 33, 45, 45, 32, 37],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 1823282333,
+          "objects": 673,
+          "textures": 31
+        },
+        "restored": {
+          "counts": [52, 30, 39, 38, 48, 34, 37, 41, 32, 33],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 726934267,
+          "objects": 673,
+          "textures": 31
+        }
+      }
+    },
+    {
+      "theme": "abyss",
+      "project": "mobile-landscape",
+      "report": {
+        "first": {
+          "counts": [34, 41, 41, 37, 39, 46, 29, 38, 42, 37],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 3297200842,
+          "objects": 673,
+          "textures": 31
+        },
+        "other": {
+          "counts": [38, 40, 32, 37, 41, 43, 46, 29, 36, 42],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 902728133,
+          "objects": 673,
+          "textures": 31
+        },
+        "restored": {
+          "counts": [34, 41, 41, 37, 39, 46, 29, 38, 42, 37],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 3297200842,
+          "objects": 673,
+          "textures": 31
+        }
+      }
+    },
+    {
+      "theme": "milk",
+      "project": "mobile-landscape",
+      "report": {
+        "first": {
+          "counts": [47, 33, 47, 36, 34, 47, 41, 43, 26, 30],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 2469592866,
+          "objects": 673,
+          "textures": 31
+        },
+        "other": {
+          "counts": [43, 38, 29, 41, 36, 40, 40, 40, 42, 35],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 1639807387,
+          "objects": 673,
+          "textures": 31
+        },
+        "restored": {
+          "counts": [47, 33, 47, 36, 34, 47, 41, 43, 26, 30],
+          "unmatched": 0,
+          "wrongBorder": 0,
+          "digest": 2469592866,
+          "objects": 673,
+          "textures": 31
+        }
+      }
+    }
+  ],
+  "assets": {
+    "publicBaseBytes": 18613274,
+    "publicBytes": 20859436,
+    "precacheEntries": 32,
+    "precacheBytes": 22574613,
+    "removedPrecacheRefs": [],
+    "floorSourceDecodedBytes": 25160304,
+    "previousFloorSourceDecodedBytes": 6290064,
+    "floorCacheBytes": 655360,
+    "previousFloorCacheBytes": 1048576
+  },
+  "screenshots": [
+    {
+      "file": "floor-v7-temple-production.png",
+      "source": "/workspace/scratch/b82bcc13d770/137-final-results/mapArt-modular-production-art-floor-1-desktop/modular-floor-1.png",
+      "bytes": 528283,
+      "sha256": "bd90ccd959ae0d278ee4bbed701a8f8e1481b7bad9af049b592929391b91e821"
+    },
+    {
+      "file": "floor-v7-temple-room.png",
+      "source": "/workspace/scratch/49d74c865796/137-extra-results/productionGeometry-map-wall-review-floor-1-desktop/wall-1-room.png",
+      "bytes": 633777,
+      "sha256": "ecfd9d513fc459e358b0851e4ca14e56a6b6237484839f10d3b5c22267c10682"
+    },
+    {
+      "file": "floor-v7-wreck-production.png",
+      "source": "/workspace/scratch/b82bcc13d770/137-final-results/mapArt-modular-production-art-floor-2-desktop/modular-floor-2.png",
+      "bytes": 574829,
+      "sha256": "7b99147f58a76b26abd497fd0b064a67f678b54853a4a7c51a04a7cab51aa3aa"
+    },
+    {
+      "file": "floor-v7-wreck-room.png",
+      "source": "/workspace/scratch/49d74c865796/137-extra-results/productionGeometry-map-wall-review-floor-2-desktop/wall-2-room.png",
+      "bytes": 605584,
+      "sha256": "08250c4f45e94b2faed789b698d6021408ae53d9205dd8838915f5525a87d6c6"
+    },
+    {
+      "file": "floor-v7-abyss-production.png",
+      "source": "/workspace/scratch/b82bcc13d770/137-final-results/mapArt-modular-production-art-floor-3-desktop/modular-floor-3.png",
+      "bytes": 557600,
+      "sha256": "35696aa2324df6de6bf5bff5847c89123da070301106875569a56a6df3c5a116"
+    },
+    {
+      "file": "floor-v7-abyss-room.png",
+      "source": "/workspace/scratch/49d74c865796/137-extra-results/productionGeometry-map-wall-review-floor-3-desktop/wall-3-room.png",
+      "bytes": 591734,
+      "sha256": "64fea7cd5a786f7bf8c9fa31d769ceb139544e8248b5d2d7a21274d245e7b5bf"
+    },
+    {
+      "file": "floor-v7-milk-production.png",
+      "source": "/workspace/scratch/b82bcc13d770/137-final-results/mapArt-modular-production-art-floor-4-desktop/modular-floor-4.png",
+      "bytes": 532315,
+      "sha256": "5706ce1b5924c20f4a3c1435bdf07714e143bc84fd58fd0a81a24ae3a40bc1c6"
+    },
+    {
+      "file": "floor-v7-milk-room.png",
+      "source": "/workspace/scratch/49d74c865796/137-extra-results/productionGeometry-map-wall-review-floor-4-desktop/wall-4-room.png",
+      "bytes": 503173,
+      "sha256": "0f18d08364a15d3933936cf13c0c9a6d3eb5e024e5e54684fd8d08e391b1a3c3"
+    },
+    {
+      "file": "floor-v7-temple-north.png",
+      "source": "/workspace/scratch/49d74c865796/137-extra-results/productionGeometry-map-wall-review-floor-1-desktop/wall-1-north.png",
+      "bytes": 383973,
+      "sha256": "0fb233159e040402a7134b49b352876d7e6ea869772d00ae4e298f2b32772557"
+    },
+    {
+      "file": "floor-v7-temple-south.png",
+      "source": "/workspace/scratch/49d74c865796/137-extra-results/productionGeometry-map-wall-review-floor-1-desktop/wall-1-south.png",
+      "bytes": 350843,
+      "sha256": "0581dcea55854dbed56d45cac96ad08caaea171d245ebabe455f747898160e49"
+    },
+    {
+      "file": "floor-v7-temple-east.png",
+      "source": "/workspace/scratch/49d74c865796/137-extra-results/productionGeometry-map-wall-review-floor-1-desktop/wall-1-east.png",
+      "bytes": 452836,
+      "sha256": "f7ab3ea6d8120f5023240e02fff81abe8149d9a3c4bce0a3a1693683109f91b4"
+    },
+    {
+      "file": "floor-v7-temple-west.png",
+      "source": "/workspace/scratch/49d74c865796/137-extra-results/productionGeometry-map-wall-review-floor-1-desktop/wall-1-west.png",
+      "bytes": 448890,
+      "sha256": "92b505e1b47c85d85c0828bd46e06e85b1752838bb7c64f5ea41bd986f86e654"
+    },
+    {
+      "file": "floor-v7-wreck-mobile.png",
+      "source": "/workspace/scratch/b82bcc13d770/137-final-results/mapArt-modular-production-art-floor-2-mobile-landscape/modular-floor-2.png",
+      "bytes": 368843,
+      "sha256": "736d0a776d0eef18f6bdd6a9ebb609362287ff2f75600f3b7c234e4f60f76990"
+    },
+    {
+      "file": "floor-v7-hub.png",
+      "source": "/workspace/scratch/b82bcc13d770/137-final-results/mapArt-unified-hub-uses-th-aa903-ate-floor-and-redrawn-altar-desktop/unified-hub.png",
+      "bytes": 527666,
+      "sha256": "a1d12e32863f25b7b67254e06e82dd394979d935707bdb50d23d841f551c6739"
+    }
+  ],
+  "inputSHA256": {
+    "art-src/maps/export-report.json": "a826a22aa45788f8315ba066264bb90d66a15a63be441bd0cb5888f2fdc2c106",
+    "art-src/maps/export_modules.py": "4b9c59ac320bb2ad3c0b0d14701192eccfc8c1d9263d800d1ea8a0957a0e17ef",
+    "public/assets/demo/map-ground-abyss-v7.webp": "68fc13dc67660aa85741b61ac80bbdf2b696078e97e96b0f0df32973e8162637",
+    "public/assets/demo/map-ground-milk-v7.webp": "a9d115c87aa401895c5f0c149fe5369b162fe80a60583061c89b945d72e1d73c",
+    "public/assets/demo/map-ground-temple-v7.webp": "00b374e5b4b0f0bdf316ba51522d6b13fb1d3ad0682e2744f587ce20c89e1342",
+    "public/assets/demo/map-ground-wreck-v7.webp": "bfcf71d0ee17c9dc5b517bbcdf498097eb1d3f7834d77481716f0d0f046362b7",
+    "public/assets/demo/map-wall-model-v18.webp": "32e46220cc8eae746187fdbb22fb0de7d0211f3d9319241a5569f90b460b3a75",
+    "src/data/mapArt.ts": "f7f3ac6f05583309e1f9f72f322b12abce5917f2a9b2daf02d60e0035ae0499c",
+    "src/data/mapArtFrames.ts": "d18c0c305c0b740d6abbe69a65b401c38fbc7b03f64c2cd1d3e9a4abc3ece9fd",
+    "src/game/world/ModularRoomArt.ts": "4def403be1e57e04b2f0fdc7ece9c515bd7708cb9ba8d15be9dee98e86a5837f",
+    "src/game/world/RoomArena.ts": "ed2005f07900f921327d2699458f29f94ac09624019d2136d90470721d683750",
+    "src/game/world/RoomArt.ts": "c144ca252315063ea07fe67f2b04c0d2036e86c5840516f95315d9f7619e21e5",
+    "tests/e2e/mapLayers.spec.ts": "29e0fe0ff9830d2439a87b5dbd34cf90bf3531433ea6692a6a3875e645974dcc",
+    "tests/fixtures/mapLayers.ts": "59f8cc714e9e1d4543be916a57b4f0be785afa03cc35c4bfce56d902f3e66b68",
+    "tests/fixtures/skillAnimation.ts": "f2835bd9c4fada63f6dfb2e46f0b885bd0bd403cd01e687015a53d3408b1494a",
+    "tests/unit/mapArt.test.ts": "b338195c09da3ebfee223e092ee2493d7c57ae522e94c01762c623fb580e5efb"
+  }
+}

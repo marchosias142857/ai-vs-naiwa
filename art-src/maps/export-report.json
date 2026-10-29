@@ -1,15 +1,54 @@
 [
   {
-    "name": "ground",
-    "sourceFile": "ground-v6.png",
+    "name": "templeGround",
+    "sourceFile": "ground-temple-v7.png",
     "size": [
-      1254,
-      1254
+      1983,
+      793
     ],
-    "sourceBytes": 1537333,
-    "runtimeBytes": 1136944,
-    "sourceSha256": "a5a889ce00eaac2770d5d429be4aef48677956efe0c9ef966251805b11067c23",
-    "runtimeSha256": "b9619a4d5ec9be54d99bd25dd0550c9d4de52e86fe3893a681699f539dc863ff",
+    "sourceBytes": 1203881,
+    "runtimeBytes": 750424,
+    "sourceSha256": "ec3cf2f01cf54b9d4e23205b42a0f1a5d2b228328ef821a41991e8dbb2b4a7eb",
+    "runtimeSha256": "00b374e5b4b0f0bdf316ba51522d6b13fb1d3ad0682e2744f587ce20c89e1342",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "wreckGround",
+    "sourceFile": "ground-wreck-v7.png",
+    "size": [
+      1983,
+      793
+    ],
+    "sourceBytes": 1323422,
+    "runtimeBytes": 849936,
+    "sourceSha256": "554c59323e3fad2a33a21aaf6aa4a4cd1558d6cef4150d31071850964d466e2b",
+    "runtimeSha256": "bfcf71d0ee17c9dc5b517bbcdf498097eb1d3f7834d77481716f0d0f046362b7",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "abyssGround",
+    "sourceFile": "ground-abyss-v7.png",
+    "size": [
+      1983,
+      793
+    ],
+    "sourceBytes": 1414309,
+    "runtimeBytes": 888950,
+    "sourceSha256": "3feede303edb221540ee2f16ed536bf2a9ad80c9dc3bb57eedbd147dabef1563",
+    "runtimeSha256": "68fc13dc67660aa85741b61ac80bbdf2b696078e97e96b0f0df32973e8162637",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "milkGround",
+    "sourceFile": "ground-milk-v7.png",
+    "size": [
+      1983,
+      793
+    ],
+    "sourceBytes": 1340013,
+    "runtimeBytes": 851924,
+    "sourceSha256": "370231426280a24b138a9ca554347b4c40fdb6abbfb79bd949ac192025ae2c4c",
+    "runtimeSha256": "a9d115c87aa401895c5f0c149fe5369b162fe80a60583061c89b945d72e1d73c",
     "decodedRGBAIdentical": true
   },
   {
@@ -105,15 +144,15 @@
   },
   {
     "name": "walls",
-    "sourceFile": "wall-model-v17.png",
+    "sourceFile": "wall-model-v18.png",
     "size": [
       1774,
       887
     ],
-    "sourceBytes": 1224132,
-    "runtimeBytes": 833946,
-    "sourceSha256": "0226d0fc518bc892dd284311e51c44b8c05f721038f83846a10786019e514ddf",
-    "runtimeSha256": "871687aeb3471ee39504a4c1ed26962f59a65b6e357a5ff3df3c0367573cbd5b",
+    "sourceBytes": 1298234,
+    "runtimeBytes": 875818,
+    "sourceSha256": "489bf65c4c6a9a25aa38f4043b7e232184cfd5869e307520532da866c2e085c5",
+    "runtimeSha256": "32e46220cc8eae746187fdbb22fb0de7d0211f3d9319241a5569f90b460b3a75",
     "decodedRGBAIdentical": true
   }
 ]

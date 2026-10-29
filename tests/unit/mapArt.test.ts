@@ -103,3 +103,16 @@ it('aligns every supported room gate to complete wall cells after projection', (
   }
   expect(ports).toBe(76);
 });
+
+it('provides ten square source cells per theme and uses exactly one wall-width floor module', () => {
+  expect(MAP_ART.floorTile).toBe(MAP_ART.wallWidth);
+  expect(MAP_ART.floorVariants).toHaveLength(10);
+  for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
+    const rectangles = MAP_ART.floorVariants.map((i) => MAP_ART.frames[`${theme}_ground_${i}`]);
+    expect(new Set(rectangles.map((f) => JSON.stringify(f))).size).toBe(10);
+    for (const [i, f] of rectangles.entries()) {
+      expect(Math.abs(f[2] - f[3])).toBeLessThanOrEqual(1);
+      expect(mapFrameTexture(`${theme}_ground_${i}`)).toBe(MAP_ART.textures[`${theme}Ground`]);
+    }
+  }
+});

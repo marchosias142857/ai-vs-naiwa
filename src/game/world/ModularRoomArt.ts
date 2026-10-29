@@ -6,6 +6,7 @@ import { MODULAR_V2 } from '../../data/roomTemplates/modularV2';
 import type { RoomTheme, TrapPlacement } from '../../data/schema/traps';
 import type { CompiledRoom } from '../../sim/dungeon/compileRoom';
 import type { Point } from '../../sim/geometry/RoomGeometry';
+import { Random } from '../../sim/core/Random';
 import type { RoomArt } from './RoomArt';
 
 const B = MODULAR_V2.bounds,
@@ -30,7 +31,7 @@ export class ModularRoomArt implements RoomArt {
   private readonly texture: Textures.CanvasTexture;
   private readonly ground: GameObjects.Image;
   private readonly blocks: GameObjects.TileSprite[] = [];
-  private readonly patterns = new Map<string, CanvasPattern>();
+  private readonly floorTiles = new Map<string, HTMLCanvasElement>();
   private readonly key: string;
   private readonly wallCanvas = document.createElement('canvas');
   private readonly modules = new Map<string, HTMLCanvasElement>();
@@ -62,6 +63,7 @@ export class ModularRoomArt implements RoomArt {
     room?: CompiledRoom,
     traps: readonly TrapPlacement[] = [],
     ports: CompiledRoom['ports'] = [],
+    floorSeed = 0,
   ): void {
     const boundary = room?.artBoundary ?? DEFAULT_BOUNDARY;
     const c = this.texture.context,
@@ -73,8 +75,18 @@ export class ModularRoomArt implements RoomArt {
     c.save();
     this.path(c, boundary);
     c.clip();
-    c.fillStyle = this.pattern(theme);
-    c.fillRect(LEFT, TOP, WIDTH, HEIGHT);
+    // Fixed grid/order and a private visual stream keep revisits/restores identical.
+    // Neither room shape, obstacles nor trap state consume gameplay randomness.
+    const rng = new Random(floorSeed).fork(`floor-tiles:${theme}`);
+    for (let y = B.y; y < B.y + B.height; y += MAP_ART.floorTile)
+      for (let x = B.x; x < B.x + B.width; x += MAP_ART.floorTile)
+        c.drawImage(
+          this.floorTile(theme, rng.pick(MAP_ART.floorVariants)),
+          x,
+          y,
+          MAP_ART.floorTile,
+          MAP_ART.floorTile,
+        );
     for (const t of traps) {
       if (!t.width || !t.height) continue;
       const x = 240 + t.x - t.width / 2,
@@ -201,33 +213,45 @@ export class ModularRoomArt implements RoomArt {
       }
   }
 
-  private pattern(theme: RoomTheme['art']): CanvasPattern {
-    const name = `${theme}_ground` as const;
-    const cached = this.patterns.get(name);
+  private floorTile(
+    theme: RoomTheme['art'],
+    variant: (typeof MAP_ART.floorVariants)[number],
+  ): HTMLCanvasElement {
+    const name = `${theme}_ground_${variant}` as const;
+    const cached = this.floorTiles.get(name);
     if (cached) return cached;
     const frame = MAP_ART.frames[name];
-    const width = MAP_ART.floorTile,
-      height = width;
     const canvas = document.createElement('canvas');
-    const cellWidth = width * MAP_ART.density,
-      cellHeight = height * MAP_ART.density;
-    canvas.width = cellWidth;
-    canvas.height = cellHeight;
+    const size = MAP_ART.floorTile * MAP_ART.density,
+      edge = MAP_ART.floorBorderPixels,
+      inset = MAP_ART.floorSourceInset;
+    canvas.width = canvas.height = size;
     const context = canvas.getContext('2d')!;
     context.imageSmoothingEnabled = false;
-    const source = this.scene.textures.get(MAP_ART.textures.ground).getSourceImage() as HTMLImageElement;
-    context.drawImage(source, frame[0], frame[1], frame[2], frame[3], 0, 0, cellWidth, cellHeight);
-    // Repeat the complete material unchanged, without rotation, mirroring or added seams.
-    const pattern = this.texture.context.createPattern(canvas, 'repeat')!;
-    pattern.setTransform(new DOMMatrix().scale(1 / MAP_ART.density));
-    this.patterns.set(name, pattern);
-    return pattern;
+    const source = this.scene.textures
+      .get(MAP_ART.textures[`${theme}Ground`])
+      .getSourceImage() as HTMLImageElement;
+    context.fillStyle = MAP_ART.floorBorder[theme];
+    context.fillRect(0, 0, size, size);
+    context.drawImage(
+      source,
+      frame[0] + inset,
+      frame[1] + inset,
+      frame[2] - inset * 2,
+      frame[3] - inset * 2,
+      edge,
+      edge,
+      size - edge * 2,
+      size - edge * 2,
+    );
+    this.floorTiles.set(name, canvas);
+    return canvas;
   }
 
   private readonly destroy = (): void => {
     this.ground.destroy();
     for (const block of this.blocks) block.destroy();
-    this.patterns.clear();
+    this.floorTiles.clear();
     this.modules.clear();
     this.wallCanvas.width = 0;
     this.wallCanvas.height = 0;

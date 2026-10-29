@@ -25,8 +25,8 @@ class SkillScene extends Scene {
     this.physics.disableUpdate();
     // Same floor atlas as the game; the fixed camera keeps the full 220px bump tell visible.
     this.add
-      .tileSprite(240, 135, 480, 270, MAP_ART.textures.ground, 'temple_ground')
-      .setTileScale(MAP_ART.floorTile / MAP_ART.frames.temple_ground[2])
+      .tileSprite(240, 135, 480, 270, MAP_ART.textures.templeGround, 'temple_ground_0')
+      .setTileScale(MAP_ART.floorTile / MAP_ART.frames.temple_ground_0[2])
       .setDepth(DEPTH.floor);
     const bus = new EventBus<GameEvents>();
     let sim = createCombatWorld({ seed: 8, bus, godMode: true });

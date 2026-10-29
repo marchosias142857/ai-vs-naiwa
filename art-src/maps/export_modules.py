@@ -1,5 +1,5 @@
 """Lossless encoding and measured frame metadata; never paints, resizes or alters alpha.
-Unified originals use wall-model-v17; v5 ground replaces v4. Door/brick normalization is runtime-only.
+Unified originals use wall-model-v18 and four ground-v7 atlases. Normalization is runtime-only.
 """
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -10,9 +10,10 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = Path(__file__).resolve().parent / 'sources'
 THEMES = ['temple', 'wreck', 'abyss', 'milk']
-ASSETS = {'ground': 'ground-v6', 'blocks': 'blocks-v3', 'doors': 'horizontal-v3',
+ASSETS = {**{f'{theme}Ground': f'ground-{theme}-v7' for theme in THEMES},
+          'blocks': 'blocks-v3', 'doors': 'horizontal-v3',
           'sideDoors': 'vertical-v3', 'objects': 'mechanisms-v3', 'rims': 'rims-v3',
-          'hub': 'hub-v3', 'effects': 'effects-v3', 'walls': 'wall-model-v17'}
+          'hub': 'hub-v3', 'effects': 'effects-v3', 'walls': 'wall-model-v18'}
 frames, reports = {}, []
 
 def frame(im, name, region, threshold=16, inset=0):
@@ -42,9 +43,12 @@ for name, asset in ASSETS.items():
         for i, theme in enumerate(THEMES):
             for part, y, bottom in [('top', 0, 456), ('face', 456, im.height)]:
                 frame(im, f'{theme}_wall_{part}', (i*im.width//4, y, (i+1)*im.width//4, bottom))
-    elif name == 'ground':
-        for i, theme in enumerate(THEMES):
-            frames[f'{theme}_ground'] = [(i%2)*im.width//2, (i//2)*im.height//2, im.width//2, im.height//2]
+    elif name.endswith('Ground'):
+        theme = name.removesuffix('Ground')
+        for i in range(10):
+            x, y = (i%5)*im.width//5, (i//5)*im.height//2
+            right, bottom = (i%5+1)*im.width//5, (i//5+1)*im.height//2
+            frames[f'{theme}_ground_{i}'] = [x, y, right-x, bottom-y]
     elif name in ['blocks', 'rims']:
         for i, theme in enumerate(THEMES):
             frame(im, f'{theme}_{"obstacle" if name == "blocks" else "rim"}',

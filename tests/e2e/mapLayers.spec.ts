@@ -62,15 +62,30 @@ for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
     await page.screenshot({ path: info.outputPath(`layers-${theme}.png`) });
     expect(errors).toEqual([]);
   });
-  test(`${theme}: full material tiles directly and boundary contrast stays within the texture`, async ({
+  test(`${theme}: random wall-width tiles keep uniform borders and stable revisits`, async ({
     page,
   }, info) => {
     await page.goto(url);
     await page.waitForFunction(() => window.floorPatternProbe);
-    const report = await page.evaluate((t) => window.floorPatternProbe(t), theme);
-    await info.attach(theme, { body: JSON.stringify(report), contentType: 'application/json' });
-    expect(report.differences).toBe(0);
-    for (const axis of report.axes) expect(axis.seam).toBeLessThanOrEqual(axis.internalMax);
-    await page.screenshot({ path: info.outputPath(`pure-floor-${theme}.png`) });
+    const probe = (seed: number) =>
+      page.evaluate(({ theme, seed }) => window.floorPatternProbe(theme, seed), { theme, seed });
+    const first = await probe(42),
+      other = await probe(77),
+      restored = await probe(42);
+    await info.attach(theme, {
+      body: JSON.stringify({ first, other, restored }),
+      contentType: 'application/json',
+    });
+    for (const report of [first, other, restored]) {
+      expect(report.unmatched).toBe(0);
+      expect(report.wrongBorder).toBe(0);
+      expect(report.counts.every((n) => n > 0)).toBe(true);
+      expect(report.objects).toBe(first.objects);
+      expect(report.textures).toBe(first.textures);
+    }
+    expect(first.counts.reduce((a, b) => a + b)).toBe(384);
+    expect(other.digest).not.toBe(first.digest);
+    expect(restored.digest).toBe(first.digest);
+    await page.screenshot({ path: info.outputPath(`variant-floor-${theme}.png`) });
   });
 }
