@@ -211,24 +211,13 @@ export class ModularRoomArt implements RoomArt {
     const canvas = document.createElement('canvas');
     const cellWidth = width * MAP_ART.density,
       cellHeight = height * MAP_ART.density;
-    canvas.width = cellWidth * 2;
-    canvas.height = cellHeight * 2;
+    canvas.width = cellWidth;
+    canvas.height = cellHeight;
     const context = canvas.getContext('2d')!;
     context.imageSmoothingEnabled = false;
     const source = this.scene.textures.get(MAP_ART.textures.ground).getSourceImage() as HTMLImageElement;
     context.drawImage(source, frame[0], frame[1], frame[2], frame[3], 0, 0, cellWidth, cellHeight);
-    // Reflect adjacent texture cells across their shared edge, including repeat boundaries.
-    // Use the complete approved brickwork instead of constructing separate paver joints.
-    context.save();
-    context.translate(canvas.width, 0);
-    context.scale(-1, 1);
-    context.drawImage(canvas, 0, 0, cellWidth, cellHeight, 0, 0, cellWidth, cellHeight);
-    context.restore();
-    context.save();
-    context.translate(0, canvas.height);
-    context.scale(1, -1);
-    context.drawImage(canvas, 0, 0, canvas.width, cellHeight, 0, 0, canvas.width, cellHeight);
-    context.restore();
+    // Repeat the complete brickwork unchanged so its joint layout and lighting stay consistent.
     const pattern = this.texture.context.createPattern(canvas, 'repeat')!;
     pattern.setTransform(new DOMMatrix().scale(1 / MAP_ART.density));
     this.patterns.set(name, pattern);

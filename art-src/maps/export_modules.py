@@ -1,5 +1,5 @@
 """Lossless encoding and measured frame metadata; never paints, resizes or alters alpha.
-Unified originals use wall-model-v17; v4 ground replaces v3. Door/brick normalization is runtime-only.
+Unified originals use wall-model-v17; v5 ground replaces v4. Door/brick normalization is runtime-only.
 """
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -10,7 +10,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = Path(__file__).resolve().parent / 'sources'
 THEMES = ['temple', 'wreck', 'abyss', 'milk']
-ASSETS = {'ground': 'ground-v4', 'blocks': 'blocks-v3', 'doors': 'horizontal-v3',
+ASSETS = {'ground': 'ground-v5', 'blocks': 'blocks-v3', 'doors': 'horizontal-v3',
           'sideDoors': 'vertical-v3', 'objects': 'mechanisms-v3', 'rims': 'rims-v3',
           'hub': 'hub-v3', 'effects': 'effects-v3', 'walls': 'wall-model-v17'}
 frames, reports = {}, []
