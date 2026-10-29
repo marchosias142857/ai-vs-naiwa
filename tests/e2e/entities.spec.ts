@@ -1,3 +1,6 @@
+import { compileRoom } from '../../src/sim/dungeon/compileRoom';
+import { resolveRoomTemplate } from '../../src/sim/dungeon/roomCatalog';
+import { DUNGEON } from '../../src/data/dungeon';
 import { TALENTS } from '../../src/data/talents';
 import { POOL_SIZES } from '../../src/config';
 import { LOOT_RULES } from '../../src/data/loot';
@@ -210,8 +213,11 @@ test('真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中
   expect(r.bullets).toBe(0);
   expect(r.bodyX).toBeCloseTo(r.simX, 6);
   expect(r.bodyY).toBeCloseTo(r.simY, 6);
-  expect(r.simX).toBe(128);
-  expect(r.simY).toBe(135);
+  const entrance = compileRoom(
+    resolveRoomTemplate('designed_v3/temple/court_0_0', 'temple', 'combat')!,
+  ).ports.find((p) => p.id === 'west')!.entrance;
+  expect(r.simX).toBe(entrance.x);
+  expect(r.simY).toBe(entrance.y);
   await page.locator('canvas').screenshot({ path: `test-results/room-${info.project.name}.png` });
 });
 
@@ -221,8 +227,8 @@ test('真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用'
   const result = await page.evaluate(() => window.demoScenario());
   expect(result.phase).toBe('won');
   expect(result.settled).toBe(true);
-  expect(result.floor).toBe(4);
-  expect(result.rooms).toBe(16);
+  expect(result.floor).toBe(DUNGEON.floors + 1);
+  expect(result.rooms).toBe(DUNGEON.floors * (DUNGEON.mainRooms - 1) + 1);
   expect(result.kills).toBeGreaterThan(0);
   expect(result.childrenStable).toBe(true);
 });

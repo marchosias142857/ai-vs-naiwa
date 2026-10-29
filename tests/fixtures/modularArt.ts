@@ -3,12 +3,13 @@ import { MAP_ART, mapFrameTexture, mapDoorRect } from '../../src/data/mapArt';
 import { installMapDoors } from '../../src/game/assets/mapDoorArt';
 import { wallCells } from '../../src/sim/dungeon/wallGeometry';
 import { ModularRoomArt } from '../../src/game/world/ModularRoomArt';
-import { MODULAR_V2 } from '../../src/data/roomTemplates/modularV2';
+import { ROOM_METRICS } from '../../src/data/roomTemplates/metrics';
+import { wallVariant } from '../../src/game/assets/mapArtGeometry';
 import { RoomGeometry, createGeometryHit, GeometryMask } from '../../src/sim/geometry/RoomGeometry';
 import { compileRoom, type CompiledRoom } from '../../src/sim/dungeon/compileRoom';
 import { resolveRoomTemplate } from '../../src/sim/dungeon/roomCatalog';
 
-const B = MODULAR_V2.bounds;
+const B = ROOM_METRICS.bounds;
 function layout(i: number): CompiledRoom {
   const x = 128 + Math.floor(i / 25) * 8,
     w = 16 + (i % 5) * 8,
@@ -157,8 +158,13 @@ class ArtScene extends Scene {
       }
       return { samples, rimGaps, holes, outsideChanges, interiorChanges, frames, doorPixels, doorHoles };
     };
-    window.modularArt = (theme) => {
-      for (const room of rooms) art.show(theme, [], room, [], room.ports);
+    window.modularArt = async (theme) => {
+      for (let i = 0; i < rooms.length; i++) {
+        const room = rooms[i]!;
+        art.show(theme, [], room, [], room.ports);
+        // Give WebGL a frame to consume uploads instead of queuing 200 large canvases at once.
+        if (i % 10 === 9) await new Promise<void>((done) => requestAnimationFrame(() => done()));
+      }
       return {
         unique,
         allConnected,
@@ -220,14 +226,18 @@ class ArtScene extends Scene {
         T = B.y,
         R = B.x + B.width,
         D = B.y + B.height;
+      const boundary = [
+        { x: L, y: T },
+        { x: R, y: T },
+        { x: R, y: D },
+        { x: L, y: D },
+      ];
       const rectangle = {
         ...rooms[0]!,
-        boundary: [
-          { x: L, y: T },
-          { x: R, y: T },
-          { x: R, y: D },
-          { x: L, y: D },
-        ],
+        boundary,
+        floorBoundary: boundary,
+        artBoundary: boundary,
+        wallCells: wallCells(boundary),
         ports: [],
       };
       const texture = this.textures.get('modular-ground:ArtMatrix') as Textures.CanvasTexture;
@@ -243,30 +253,39 @@ class ArtScene extends Scene {
       let data = pixels(),
         topDifferences = 0,
         samples = 0;
-      // Unrotated top faces remain identical on horizontal and vertical walls. Later rows
-      // cover earlier bases; the exposed bases along the north/south rows stay identical too.
+      // Compare complete, upright modules with the SAME coordinate-selected variant.
+      // Random variants need not share pixels, but their orientation and scale must agree.
+      const referenceX = (x: number, y: number) => {
+        const variant = wallVariant(0, theme, x, y);
+        for (let northX = L; northX < R; northX += w)
+          if (wallVariant(0, theme, northX, T - w) === variant) return northX;
+        throw Error('north wall lacks comparison variant');
+      };
       let baseDifferences = 0,
         verticalDifferences = 0;
       for (let i = 0; i < w * d; i++)
         for (let j = d; j < (w - 1) * d; j++) {
           const u = (i + 0.5) / d,
             v = (j + 0.5) / d;
-          const reference = pixel(data, L + 64 + u, T - w - h + v);
           for (const [x, y] of [
-            [R + u, T + 64 - h + v],
-            [L + 40 + u, D - h + v],
-            [L - w + u, T + 64 - h + v],
+            [R, T + 64],
+            [L + 40, D],
+            [L - w, T + 64],
           ]) {
-            if (pixel(data, x!, y!) !== reference) topDifferences++;
+            const reference = pixel(data, referenceX(x!, y!) + u, T - w - h + v);
+            if (pixel(data, x! + u, y! - h + v) !== reference) topDifferences++;
             samples++;
           }
-          if (pixel(data, L - w + u, T + 72 - h + v) !== reference) verticalDifferences++;
+          const x = L - w,
+            y = T + 72;
+          if (pixel(data, x + u, y - h + v) !== pixel(data, referenceX(x, y) + u, T - w - h + v))
+            verticalDifferences++;
         }
       for (let i = 0; i < w * d; i++)
         for (let j = 0; j + 0.5 < h * d; j++) {
           const u = (i + 0.5) / d,
             v = (j + 0.5) / d;
-          if (pixel(data, L + 64 + u, T - h + v) !== pixel(data, L + 40 + u, D + w - h + v))
+          if (pixel(data, referenceX(L + 40, D) + u, T - h + v) !== pixel(data, L + 40 + u, D + w - h + v))
             baseDifferences++;
         }
       const floor = ['temple', 'wreck', 'abyss', 'milk'].indexOf(theme) + 1;
@@ -282,36 +301,23 @@ class ArtScene extends Scene {
       for (const room of [compileRoom(template), rooms[199]!]) {
         art.show(theme, [], room, [], room.ports);
         data = pixels();
-        const inside = (x: number, y: number) => {
-          let result = false;
-          for (let i = 0, j = room.boundary.length - 1; i < room.boundary.length; j = i++) {
-            const a = room.boundary[i]!,
-              b = room.boundary[j]!;
-            if (a.y > y !== b.y > y && x < ((b.x - a.x) * (y - a.y)) / (b.y - a.y) + a.x) result = !result;
-          }
-          return result;
-        };
-        for (let y = T - 7.5; y < D + 8; y++)
-          for (let x = L - 7.5; x < R + 8; x++) {
-            if (
-              inside(x, y) ||
-              room.ports.some((p) => {
-                const r = mapDoorRect(p);
-                return x >= r.x - 1 && x <= r.x + r.width + 1 && y >= r.y - 1 && y <= r.y + r.height + 1;
-              })
-            )
-              continue;
-            const near = room.boundary.some((a, i) => {
-              const b = room.boundary[(i + 1) % room.boundary.length]!;
-              const dx = Math.max(Math.min(a.x, b.x) - x, 0, x - Math.max(a.x, b.x));
-              const dy = Math.max(Math.min(a.y, b.y) - y, 0, y - Math.max(a.y, b.y));
-              return Math.max(dx, dy) < 7.5;
-            });
-            if (near) {
+        // Test every actual complete block, including diagonal stairs and inward corners.
+        // Empty exterior corner cells are intentionally not blocks.
+        for (const cell of room.wallCells)
+          for (let v = 0.5; v < w + h; v++)
+            for (let u = 0.5; u < w; u++) {
+              const x = cell.x + u,
+                y = cell.y - h + v;
+              if (
+                room.ports.some((p) => {
+                  const r = mapDoorRect(p);
+                  return x >= r.x - 1 && x <= r.x + r.width + 1 && y >= r.y - 1 && y <= r.y + r.height + 1;
+                })
+              )
+                continue;
               coverage++;
               if (!pixel(data, x, y).endsWith(',255')) holes++;
             }
-          }
         for (const p of room.ports) {
           const r = mapDoorRect(p);
           // #133 separates physical centers from projected wall/gate art centers.
@@ -373,11 +379,11 @@ declare global {
       doorWallPixels: number;
       openPorts: number;
     };
-    modularArt: (theme: 'temple' | 'wreck' | 'abyss' | 'milk') => {
+    modularArt: (theme: 'temple' | 'wreck' | 'abyss' | 'milk') => Promise<{
       unique: number;
       allConnected: boolean;
       before: { objects: number; textures: string[] };
       after: { objects: number; textures: string[] };
-    };
+    }>;
   }
 }

@@ -1,6 +1,6 @@
 import { AUTO, Game, GameObjects, Scene, type Textures } from 'phaser';
 import { MAP_ART } from '../../src/data/mapArt';
-import { MODULAR_V2 } from '../../src/data/roomTemplates/modularV2';
+import { ROOM_METRICS } from '../../src/data/roomTemplates/metrics';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import { installDemoArt, preloadDemoArt } from '../../src/game/assets/demoArt';
 import { ActorArt } from '../../src/game/entities/ActorArt';
@@ -76,7 +76,7 @@ class LayerScene extends Scene {
     window.floorPatternProbe = (theme, seed) => {
       art.show(theme, [], undefined, [], [], seed);
       const texture = this.textures.get('modular-ground:Layers') as Textures.CanvasTexture;
-      const B = MODULAR_V2.bounds,
+      const B = ROOM_METRICS.bounds,
         d = MAP_ART.density,
         n = MAP_ART.floorTile * d;
       const columns = 24,

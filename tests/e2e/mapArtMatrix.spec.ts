@@ -42,8 +42,9 @@ test.afterAll(async () => {
   if (directory) await rm(directory, { recursive: true, force: true });
 });
 test('200 connected layouts per theme reuse the same art and fixed scene objects', async ({ page }, info) => {
-  // This intentionally bakes 800 rooms synchronously; software WebGL exceeds the default 30 seconds.
-  test.setTimeout(120_000);
+  // Keep all 800 full-density WebGL layouts. Software raster environments can exceed
+  // the default deadline; this is a reuse census, not a frame-rate benchmark.
+  test.setTimeout(300_000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto(url);
