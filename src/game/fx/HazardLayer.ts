@@ -4,6 +4,7 @@ import { DEPTH, DEPTH_Y_SORT } from '../../config';
 import { BALANCE } from '../../data/balance';
 import { ENEMIES, type EnemyId } from '../../data/enemies';
 import { BOSS_DEATH, enemyAnimation } from '../../data/enemyArt';
+import { MAP_ART } from '../../data/mapArt';
 import type { CombatWorld } from '../../sim/combat/api';
 import type { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
@@ -41,6 +42,7 @@ export class HazardLayer {
   private readonly marks: GameObjects.Graphics;
   private readonly rocks: Physics.Arcade.Image[] = [];
   private readonly rockArt: GameObjects.Image[] = [];
+  private readonly zoneArt: GameObjects.Image[] = [];
   private readonly landed: boolean[] = [];
   private readonly bursts: Burst[] = [];
   private readonly group: Physics.Arcade.StaticGroup;
@@ -60,12 +62,25 @@ export class HazardLayer {
     this.ground = scene.add.graphics().setDepth(DEPTH.floorDecals);
     this.marks = scene.add.graphics().setDepth(DEPTH.fx);
     if (!scene.textures.exists(ROCK_TEXTURE)) makeRockTexture(scene);
+    const unified = scene.textures.exists(MAP_ART.textures.effects);
+    if (unified)
+      for (let i = 0; i < BALANCE.zoneCapacity; i++)
+        this.zoneArt.push(
+          scene.add
+            .image(0, 0, MAP_ART.textures.effects, 'hazard_milk')
+            .setDepth(DEPTH.floorDecals)
+            .setVisible(false),
+        );
     this.group = scene.physics.add.staticGroup();
     for (let i = 0; i < BALANCE.rockCapacity; i++) {
       const body = this.group.create(0, 0, ROCK_TEXTURE) as Physics.Arcade.Image;
       body.setAlpha(0).disableBody(true, true);
       this.rocks.push(body);
-      this.rockArt.push(scene.add.image(0, 0, ROCK_TEXTURE).setVisible(false));
+      this.rockArt.push(
+        scene.add
+          .image(0, 0, unified ? MAP_ART.textures.effects : ROCK_TEXTURE, unified ? 'hazard_rock' : undefined)
+          .setVisible(false),
+      );
       this.landed.push(false);
     }
     for (let i = 0; i < H.burstPool; i++)
@@ -165,16 +180,28 @@ export class HazardLayer {
   }
 
   private drawZones(g: GameObjects.Graphics): void {
-    for (const z of this.sim.zones) {
+    for (let i = 0; i < this.sim.zones.length; i++) {
+      const z = this.sim.zones[i]!,
+        art = this.zoneArt[i];
+      art?.setVisible(z.active);
       if (!z.active) continue;
       const fade = Math.min(1, z.remaining / H.zoneFade, (z.duration - z.remaining) / H.zoneFade + 0.2);
+      if (art) {
+        const milk = z.kind === 'milk';
+        art
+          .setFrame(milk ? 'hazard_milk' : 'hazard_poison')
+          .setPosition(z.x, z.y)
+          .setDisplaySize(z.radius * (milk ? 2.2 : 2), z.radius * (milk ? 1.5 : 2))
+          .setAlpha((milk ? H.milkAlpha : H.poisonArtAlpha) * fade);
+        if (milk) continue;
+      }
       if (z.kind === 'milk') {
         g.fillStyle(H.milkColor, H.milkAlpha * fade).fillEllipse(z.x, z.y, z.radius * 2.2, z.radius * 1.5);
         g.fillStyle(0xffffff, 0.5 * fade);
         g.fillEllipse(z.x - z.radius * 0.35, z.y - z.radius * 0.2, z.radius * 0.6, 3);
         continue;
       }
-      g.fillStyle(H.poisonColor, H.poisonAlpha * fade).fillCircle(z.x, z.y, z.radius);
+      if (!art) g.fillStyle(H.poisonColor, H.poisonAlpha * fade).fillCircle(z.x, z.y, z.radius);
       g.lineStyle(1, H.poisonRim, 0.6 * fade).strokeCircle(z.x, z.y, z.radius);
       // 冒泡：位置由时间与区域坐标决定，不用随机。
       for (let k = 0; k < H.bubbles; k++) {
@@ -199,7 +226,7 @@ export class HazardLayer {
         art.setVisible(false);
         continue;
       }
-      const size = (r.radius * 2) / ROCK_PIXELS[0]!.length;
+      const size = (r.radius * 2) / art.width;
       if (r.landed) {
         const crumble = Math.min(1, r.time / H.rockCrumble);
         art
@@ -298,6 +325,7 @@ export class HazardLayer {
     }
     this.group.destroy(true, true);
     for (const art of this.rockArt) art.destroy();
+    for (const art of this.zoneArt) art.destroy();
     this.ground.destroy();
     this.marks.destroy();
   };

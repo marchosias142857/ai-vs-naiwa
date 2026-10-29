@@ -11,6 +11,8 @@ export const HAZARD_FX = {
   milkAlpha: 0.7,
   poisonColor: 0x7bd36b,
   poisonAlpha: 0.22,
+  /** 新云雾贴图自身有透明像素，不能再沿用纯色填充的低透明度。 */
+  poisonArtAlpha: 0.85,
   poisonRim: 0xb9f59a,
   bubbles: 5,
   bubbleSpeed: 0.8,

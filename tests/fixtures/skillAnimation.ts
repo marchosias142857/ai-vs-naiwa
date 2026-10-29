@@ -1,6 +1,7 @@
 import { AUTO, Game, Scene, GameObjects, Scale } from 'phaser';
 import { DEPTH, GAME_WIDTH, GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
-import { ART, installDemoArt, preloadDemoArt } from '../../src/game/assets/demoArt';
+import { installDemoArt, preloadDemoArt } from '../../src/game/assets/demoArt';
+import { MAP_ART } from '../../src/data/mapArt';
 import { createPlaceholderTextures } from '../../src/game/assets/placeholders';
 import { EnemyArt } from '../../src/game/entities/EnemyArt';
 import { CombatBridge } from '../../src/game/world/CombatBridge';
@@ -23,11 +24,10 @@ class SkillScene extends Scene {
     installDemoArt(this);
     this.physics.disableUpdate();
     // Same floor atlas as the game; the fixed camera keeps the full 220px bump tell visible.
-    const floorFrame = this.textures
-      .get(ART.rooms)
-      .getFrameNames()
-      .find((name) => name.includes('floor'))!;
-    this.add.tileSprite(240, 135, 480, 270, ART.rooms, floorFrame).setTileScale(0.5).setDepth(DEPTH.floor);
+    this.add
+      .tileSprite(240, 135, 480, 270, MAP_ART.textures.ground, 'temple_ground')
+      .setTileScale(MAP_ART.floorTile / MAP_ART.frames.temple_ground[2])
+      .setDepth(DEPTH.floor);
     const bus = new EventBus<GameEvents>();
     let sim = createCombatWorld({ seed: 8, bus, godMode: true });
     let bridge = new CombatBridge(this, sim);
@@ -172,7 +172,8 @@ class SkillScene extends Scene {
           const fallingArt = this.children.list.filter(
             (o): o is GameObjects.Image =>
               o instanceof GameObjects.Image &&
-              o.texture.key === 'hz_rock' &&
+              o.texture.key === MAP_ART.textures.effects &&
+              o.frame.name === 'hazard_rock' &&
               o.visible &&
               o.depth > DEPTH.actors + 10,
           );
@@ -183,6 +184,12 @@ class SkillScene extends Scene {
           if (sample.label.startsWith('rock')) {
             const r = sim.rocks.find((r) => r.active)!;
             const progress = 1 - r.time / r.fall;
+            const expectedFalling = sim.rocks.filter(
+              (rock) => rock.active && !rock.landed && 1 - rock.time / rock.fall > 0.35,
+            ).length;
+            check(fallingArt.length === expectedFalling, `${sample.label}: falling art count differs`);
+            if (sample.label === 'rock-0.9' || sample.label === 'rock-1')
+              check(fallingArt.length > 0, `${sample.label}: falling art probe is empty`);
             if (sample.label === 'rock-0') check(progress === 0, 'rock spawn is not exact t=0');
             if (sample.label === 'rock-0.3')
               check(progress >= 0.3 && progress < 0.35, 'missing early-rock sample');

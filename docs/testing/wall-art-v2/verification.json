@@ -1,0 +1,1143 @@
+{
+  "candidateImplementation": "d45feff1e649eca26904bd8fbcc8fe1ab5fe287a",
+  "candidateSrcTree": "32d34f236225f4cb55b32e2b366673ad1be46eb8",
+  "candidatePublicTree": "75f326c09d32698c44a03a8e67ea228405f1c3a7",
+  "baseMain": "0ea5e721bf2329276f262a2c4e72643437be5f0a",
+  "oldReviewHead": "f3865490d928ad1056e0c3ff1f08101ec58ae0c4",
+  "acceptedSource": "wall-model-v17.png",
+  "fullCheck": {
+    "unitFiles": 64,
+    "unitTests": 522,
+    "format": true,
+    "eslint": true,
+    "typescript": true,
+    "build": true,
+    "logSha256": "ba2a7a5bd7fa43dea64870b3dc00c6c2325608f2a637e72a8bc406d9c9f3fcf1"
+  },
+  "browser": {
+    "projects": ["desktop", "mobile-landscape"],
+    "engine": "Chromium / SwiftShader",
+    "webKitRun": false,
+    "physicalPhoneRun": false,
+    "stats": {
+      "startTime": "2026-10-28T20:27:06.621Z",
+      "duration": 290413.54500000004,
+      "expected": 32,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "tests": [
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4430,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 5227,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4318,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4632,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3951,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4445,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4041,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "title": "modular production art floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 4099,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4128,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12516,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12208,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3123,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3994
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3853
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 4406
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 2722
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3735,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12656,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12516,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "topDifferences": 0,
+              "baseDifferences": 0,
+              "verticalDifferences": 0,
+              "seams": 0,
+              "samples": 9216,
+              "holes": 0,
+              "coverage": 12208,
+              "doorWallPixels": 0,
+              "openPorts": 5
+            }
+          }
+        ]
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3214,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "temple",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3994
+            }
+          },
+          {
+            "name": "wreck",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 3853
+            }
+          },
+          {
+            "name": "abyss",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 4406
+            }
+          },
+          {
+            "name": "milk",
+            "data": {
+              "changedFloorPixels": 0,
+              "holes": 0,
+              "samples": 9920,
+              "transparentModelPixels": 2722
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 3416,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "temple",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 74
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4995,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "wreck",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 62
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4448,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "abyss",
+              "rocks": 7,
+              "actors": 29,
+              "traps": [
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "armed"
+                }
+              ],
+              "bullets": 51
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 4222,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "milk",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [],
+              "bullets": 34
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 15212,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 15065,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 14960,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 14107,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3026,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "temple",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "weed",
+                  "state": "on"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 74
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3929,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "wreck",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "barrel",
+                  "state": "armed"
+                },
+                {
+                  "kind": "spikes",
+                  "state": "idle"
+                }
+              ],
+              "bullets": 62
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3931,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "abyss",
+              "rocks": 7,
+              "actors": 29,
+              "traps": [
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "current",
+                  "state": "on"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "idle"
+                },
+                {
+                  "kind": "mine",
+                  "state": "armed"
+                }
+              ],
+              "bullets": 51
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map art dense showcase: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 3864,
+        "retry": 0,
+        "annotations": [],
+        "attachments": [
+          {
+            "name": "dense-scene",
+            "data": {
+              "theme": "milk",
+              "rocks": 7,
+              "actors": 30,
+              "traps": [],
+              "bullets": 34
+            }
+          }
+        ]
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 13153,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 12641,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 13305,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "title": "map wall review: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 11876,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 14852,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+        "project": "desktop",
+        "status": "passed",
+        "milliseconds": 29695,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 14084,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      },
+      {
+        "file": "pwa.spec.ts",
+        "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "milliseconds": 29965,
+        "retry": 0,
+        "annotations": [],
+        "attachments": []
+      }
+    ],
+    "rawReportSha256": "af11c306a4cc834078a108aac0536a1c77e5569a30cdcccd0491fe2ca1b34324"
+  },
+  "screenshots": [
+    {
+      "path": "docs/testing/wall-art-v2/temple-room.png",
+      "bytes": 887263,
+      "sha256": "0e0ce18d9275530ffc72ad6409455c684701d548febf7620d6a7a7d15da2c150",
+      "gitBlob": "4d04fa19fced50eddae296b42cbe2fadc97b824b"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-door.png",
+      "bytes": 708437,
+      "sha256": "9478c6c5ed667fea21ae8bac7a7fc17d1cdcda032f4552e03ba13e015891ad54",
+      "gitBlob": "af6f08c13c038a0a7670af84811110385b3c26c7"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-corner.png",
+      "bytes": 926411,
+      "sha256": "4f155eb51bfcaaac16aa219ce02628c87a377e6e7900ed4e7ba0c0e77b49a59a",
+      "gitBlob": "90d810068ec58e47ade65d1a39ea713e6813a23c"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-side-open.png",
+      "bytes": 805300,
+      "sha256": "6a90c6373ab5c5263374ccbe87ca00610dbed94601a8802ca23a3b52937e047e",
+      "gitBlob": "872adaff4855033f70a8f603ad06d470304fdae9"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-side-locked.png",
+      "bytes": 805759,
+      "sha256": "c23c7ddfdacd6a0e7b958cfcbd2a32bdc258896ec7e9b93788bd45cb269686b8",
+      "gitBlob": "65cfa9a421e90a129478bf66d44a901abd08e481"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-obstacle.png",
+      "bytes": 1266980,
+      "sha256": "7086c6207dbab0cccf97ff7394e704b07d06e75cfb7db1691a099920f2494d70",
+      "gitBlob": "831f2856fb086d0bc309bcc79c74d4cd96565950"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-north.png",
+      "bytes": 708437,
+      "sha256": "9478c6c5ed667fea21ae8bac7a7fc17d1cdcda032f4552e03ba13e015891ad54",
+      "gitBlob": "af6f08c13c038a0a7670af84811110385b3c26c7"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-south.png",
+      "bytes": 603295,
+      "sha256": "ed7d56ca3337ff19d56363b5485e4196bc1f71b2341494a340f5ab3ad717aae6",
+      "gitBlob": "1c7c78eb212e22243a85a4fb1ef69f8235f95b95"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-east.png",
+      "bytes": 806883,
+      "sha256": "1822244966896db730e89c8f63f57a9414b8d07497d59bc1d64a55b67cf733b1",
+      "gitBlob": "c2ef62d466220165c96ac9db32b98eb44bb7fe70"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-west.png",
+      "bytes": 805300,
+      "sha256": "6a90c6373ab5c5263374ccbe87ca00610dbed94601a8802ca23a3b52937e047e",
+      "gitBlob": "872adaff4855033f70a8f603ad06d470304fdae9"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-production.png",
+      "bytes": 939397,
+      "sha256": "37177e4d45340bc1ac990a51ee0453d21b2542c0c7a1406867c3350e14accbce",
+      "gitBlob": "243feffbae15bcecfa1233594aea4ff040296399"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/temple-dense-mobile.png",
+      "bytes": 391259,
+      "sha256": "a7c7fb9ebb324ea7012e209fc2bb2e768c364da03178551d44c0118d804c6178",
+      "gitBlob": "9002920b99a436f0e468a4ccab937aa238fccc20"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-room.png",
+      "bytes": 752559,
+      "sha256": "db3f9df4f8ed7d10ea2bbe77066e26b8736f0ebe00ca37d88425da0bfa441c56",
+      "gitBlob": "cdc6d068adb1aec684bdc74d9f400098cdca27ec"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-door.png",
+      "bytes": 618793,
+      "sha256": "d5df54aba30379ac3e16ee8cc52c3a15358dcf51764c0bd0e0f1978658c44a80",
+      "gitBlob": "a99fe0a94169caf1c5b5a56c33268747d3f7993b"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-corner.png",
+      "bytes": 748944,
+      "sha256": "1e25dd97d7cad75b530bc45b18808a55dc44b552b738ba47835cbcc3ddf81860",
+      "gitBlob": "ec2bd018c30fecced86121fb99e49d66064ef3c0"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-side-open.png",
+      "bytes": 700043,
+      "sha256": "9508c4721467b4eaa9c8f342531d5a277d667d5cb797b4036849a0a70a0cbaae",
+      "gitBlob": "5a20662a45ed52cfb3cc6c2a30a5aa604247be09"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-side-locked.png",
+      "bytes": 701776,
+      "sha256": "f74c35c6d89dc37a7840e8aa3b012f863f07ffb8ce181929393d4310977da05b",
+      "gitBlob": "3c4eca70b2e9a1874e3843ee2ffe4fc3704480fe"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-obstacle.png",
+      "bytes": 1082850,
+      "sha256": "1c5fcb02a5f57d91cad887caaa3e259d1f3cdd8875509b4008c364f603833607",
+      "gitBlob": "342e955d2804ef179f2b055a8665ec2fbdd67e08"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-north.png",
+      "bytes": 618793,
+      "sha256": "d5df54aba30379ac3e16ee8cc52c3a15358dcf51764c0bd0e0f1978658c44a80",
+      "gitBlob": "a99fe0a94169caf1c5b5a56c33268747d3f7993b"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-south.png",
+      "bytes": 509839,
+      "sha256": "ddabf7cee22cd244e4bf947fb2a27f61b172bf90972d57a94e5ae174dcf8dedc",
+      "gitBlob": "dc3501eb6535a4335b763ebb0c869d7af4e8bc0f"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-east.png",
+      "bytes": 700043,
+      "sha256": "9508c4721467b4eaa9c8f342531d5a277d667d5cb797b4036849a0a70a0cbaae",
+      "gitBlob": "5a20662a45ed52cfb3cc6c2a30a5aa604247be09"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-west.png",
+      "bytes": 693521,
+      "sha256": "b1ee57f6f984cd72c07bd3a733fa5ba39d7f69af085ac0868fe1427dac841991",
+      "gitBlob": "ae6c7012f0691e396ee003a3959268e4ed8f3458"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-production.png",
+      "bytes": 779107,
+      "sha256": "11bb9b499e71203d242de45516d62d279062f718a12c3a67abe8108e404a22ee",
+      "gitBlob": "a9a2588a724e6e60fec1e1ce241133d223ceea8c"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/wreck-dense-mobile.png",
+      "bytes": 348251,
+      "sha256": "5b1b6ab07a1dd6132169311736a2d8997420346f84fd525aed9df65e3051b57e",
+      "gitBlob": "1f7c548af9ee0a184abfdd9ce34767ecea64f177"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-room.png",
+      "bytes": 870567,
+      "sha256": "cb163dde7049d1f01a422dd18ed869f0bc42356b228881c271eb3180641b32af",
+      "gitBlob": "189c703ce5845e54c7497614c8903ed31f3c73bc"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-door.png",
+      "bytes": 728185,
+      "sha256": "3cadb88a1ce5ad80aa04178f1b2227a086c07fa7e7b1ef333f1a65fc9449560c",
+      "gitBlob": "1e318ae97637b18d35a380122403cb769f01281f"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-corner.png",
+      "bytes": 1045629,
+      "sha256": "3ed918b8912704dccf3d4e5c84e83c3f669d108b141252a0610b7998f350c397",
+      "gitBlob": "149aa9da261a9114e13e5007ab521b71e23392fc"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-side-open.png",
+      "bytes": 835279,
+      "sha256": "1c1708fc62e86911a70f565c6f51d40ee6f3535a942eedd357930daa9437985f",
+      "gitBlob": "c36e98dd15eb56f556b032ce957953d8334b1090"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-side-locked.png",
+      "bytes": 835729,
+      "sha256": "08557cabb88771f395eff6723095e113c212a4e02e58d4eb42cea3ec13731200",
+      "gitBlob": "a0ad6f0bdeef0bd7a32bff6dbd568d2411403470"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-obstacle.png",
+      "bytes": 1307188,
+      "sha256": "52a4fbb0c94fc25db609ac8a0a5c410d5ac6d12d0fa242c43bec85c45e7ad558",
+      "gitBlob": "ef6a1c6d91b83c58ce978ef7c845863547b9386c"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-north.png",
+      "bytes": 728185,
+      "sha256": "3cadb88a1ce5ad80aa04178f1b2227a086c07fa7e7b1ef333f1a65fc9449560c",
+      "gitBlob": "1e318ae97637b18d35a380122403cb769f01281f"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-south.png",
+      "bytes": 582349,
+      "sha256": "67b96e71132dff527f70067d98bc9d4583da660abbbbdb9df23bec6e7ac5a466",
+      "gitBlob": "af660fa9e56bb28c52795e2a1bc1e0779cae15e2"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-east.png",
+      "bytes": 835279,
+      "sha256": "1c1708fc62e86911a70f565c6f51d40ee6f3535a942eedd357930daa9437985f",
+      "gitBlob": "c36e98dd15eb56f556b032ce957953d8334b1090"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-west.png",
+      "bytes": 835917,
+      "sha256": "1bf83f41a4f93eaa00b946d5fe3a962170be65ef1b16b1c5081a044710cdc505",
+      "gitBlob": "702fe97935b1c147ab1d30e85a7affc2e13a7490"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-production.png",
+      "bytes": 967644,
+      "sha256": "0c90874f302e8b7e2f135dc34f198502dacd6e7af96b4d3e558510949f84aee7",
+      "gitBlob": "ad824ad897eea46a965ec9f863a81a20dba50719"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/abyss-dense-mobile.png",
+      "bytes": 396519,
+      "sha256": "dd8763524d6d16e8cbd9080523a494ffffbb805b9f891a5ad1ff7e2e1984f0ee",
+      "gitBlob": "547bc645d42644c8d430141821936336bc7895d5"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-room.png",
+      "bytes": 751997,
+      "sha256": "d29c7fb0fe603e0e08aee0e33403028c0faaedad6c1856824fba5f0dd73d43a0",
+      "gitBlob": "a09c98239dda6a9597559d4f927eb3fc0e454706"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-door.png",
+      "bytes": 866062,
+      "sha256": "e1776ad211fb25e1c2f7a64624de8067143b2bdf3f2e49ea55205cbc11050d12",
+      "gitBlob": "edf358a180e95106fa1755e63c399eca4a5e920d"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-corner.png",
+      "bytes": 470332,
+      "sha256": "bd3338baa4209f5c8939e339753c8a734ae3bc62dfe7ca1333820d8743d993eb",
+      "gitBlob": "e28e1b905626f194414211c4f95a98e17954bd53"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-side-open.png",
+      "bytes": 866062,
+      "sha256": "e1776ad211fb25e1c2f7a64624de8067143b2bdf3f2e49ea55205cbc11050d12",
+      "gitBlob": "edf358a180e95106fa1755e63c399eca4a5e920d"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-side-locked.png",
+      "bytes": 868138,
+      "sha256": "e0d775eaf4e0e1d20c5dab4bf28bf69912fe3b59413ab33ed4ee09232008c1c4",
+      "gitBlob": "a1bbf6033e48517a3fd13a9d55ca2d7aa1d218fe"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-obstacle.png",
+      "bytes": 1317609,
+      "sha256": "fc5a19fa3c151aa5646f66a9f01feb2bb1d133324f75962bf1ecafd705de9b12",
+      "gitBlob": "9427f8e943d8203f21214220a6450530d4b95a49"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-north.png",
+      "bytes": 711264,
+      "sha256": "a21a7794639819fe4fa0879cd9d7d0d9b3b79295621c59dbbc2b688d837c4536",
+      "gitBlob": "712bc85c34369e63cca6ee406b1216e97e8802c3"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-south.png",
+      "bytes": 610230,
+      "sha256": "7c2d6ed95d876d0e2d5e63df902760676773f1e7a21e40e53070095835f0e059",
+      "gitBlob": "edbf25114b0aed8a22c27d936c2fc5b635043412"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-east.png",
+      "bytes": 866062,
+      "sha256": "e1776ad211fb25e1c2f7a64624de8067143b2bdf3f2e49ea55205cbc11050d12",
+      "gitBlob": "edf358a180e95106fa1755e63c399eca4a5e920d"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-west.png",
+      "bytes": 865949,
+      "sha256": "5cfa40e11a316717c3403d14991548c1ba1d3af9d98e9e049e3d4950a5290e89",
+      "gitBlob": "21978dedb9a53d14182326db277087307bbf73c7"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-production.png",
+      "bytes": 904242,
+      "sha256": "fac37f52bea227a643789dca07227b9cf42d14532fcdcc486cf26d7005ed0616",
+      "gitBlob": "6caddecb8afcc47cf837e3c56c8958f42f160178"
+    },
+    {
+      "path": "docs/testing/wall-art-v2/milk-dense-mobile.png",
+      "bytes": 357342,
+      "sha256": "1b3a0d9a42c2453c8cff520d756888323a795704f29a72aa81cbb074da43e928",
+      "gitBlob": "e8e8f60ade0fb7689817fdcc3d3f90b7fe7c143b"
+    }
+  ],
+  "resources": [
+    {
+      "path": "art-src/maps/sources/terrain-v1.png",
+      "bytes": 2767824,
+      "gitBlob": "afefddbbe419b9b40a20a005e5561f0da49ae798"
+    },
+    {
+      "path": "public/assets/demo/map-terrain-v1.webp",
+      "bytes": 2061738,
+      "gitBlob": "55ee2c2f6257d6e96aebcee7d1e839668fff375f"
+    },
+    {
+      "path": "art-src/maps/sources/doors-v1.png",
+      "bytes": 2296001,
+      "gitBlob": "181b1407a76606249f9edcc9a2c872de754eb08d"
+    },
+    {
+      "path": "public/assets/demo/map-doors-v1.webp",
+      "bytes": 1660546,
+      "gitBlob": "200543fc2bfb3e468f13e0a53eca9c76cfb526c3"
+    },
+    {
+      "path": "art-src/maps/sources/objects-v1.png",
+      "bytes": 1245161,
+      "gitBlob": "3a35cb6de4dd4a3d840793bf7706bf9034002b2b"
+    },
+    {
+      "path": "public/assets/demo/map-objects-v1.webp",
+      "bytes": 940436,
+      "gitBlob": "4a4435c006fa1590ff89888a4131298262355512"
+    },
+    {
+      "path": "art-src/maps/sources/ground-v2.png",
+      "bytes": 2800033,
+      "gitBlob": "f21178cc934d1e045617c07e6ca5d94cac43d78c"
+    },
+    {
+      "path": "public/assets/demo/map-ground-v2.webp",
+      "bytes": 1901304,
+      "gitBlob": "8a033cac16f00dabb71443ab898e17fa31086673"
+    },
+    {
+      "path": "art-src/maps/sources/blocks-v2.png",
+      "bytes": 1145647,
+      "gitBlob": "027735e27ba1d22b5e0cd89595c78d3f6db3947c"
+    },
+    {
+      "path": "public/assets/demo/map-blocks-v2.webp",
+      "bytes": 814706,
+      "gitBlob": "e6751761a28b15d8a35144fe93b86bfd5fd12808"
+    },
+    {
+      "path": "art-src/maps/sources/wall-model-v17.png",
+      "bytes": 1224132,
+      "gitBlob": "b28ecefc941f4da26da062832f6ddd4eb0534061"
+    },
+    {
+      "path": "public/assets/demo/map-wall-model-v17.webp",
+      "bytes": 833946,
+      "gitBlob": "39f211db03c903dc68c741f3c941fb9c4e4e799f"
+    },
+    {
+      "path": "art-src/maps/sources/side-doors-v2.png",
+      "bytes": 1048670,
+      "gitBlob": "890e475e77c2e874162c949722969c26e7062574"
+    },
+    {
+      "path": "public/assets/demo/map-side-doors-v2.webp",
+      "bytes": 781852,
+      "gitBlob": "9121f6598416713e12a983d60dd4c9e30313b1af"
+    }
+  ],
+  "retainedIntermediateV4": {
+    "stats": {
+      "startTime": "2026-10-28T19:17:55.396Z",
+      "duration": 777849.596,
+      "expected": 62,
+      "skipped": 2,
+      "unexpected": 8,
+      "flaky": 0
+    },
+    "failure": "Eight art-load assertions counted six rather than seven atlases because listener hard-coded old wall filename; changed test to MAP_ART.sources. Production source not failing."
+  },
+  "notes": [
+    "Owner accepted source art, not in-game or phone acceptance.",
+    "Screenshots are direct browser captures; wall closeups use test camera zoom 12, overview 4.25. Production camera unchanged.",
+    "Final 32-case batch targets rendering/doors/floor/PWA. Earlier 85ce678 batch covered 800-layout reuse, geometry, saves and cameras; retained separately, not rerun as part of final 32.",
+    "Old area and spawning measurements were not rerun: sim, geometry, data templates and collision bodies unchanged relative to f386549.",
+    "ABAB performance and negative control are separate JSON files; no concurrent browser tests during benchmark."
+  ],
+  "finalPrecache": {
+    "files": 27,
+    "bytes": 20832628
+  },
+  "history": [
+    "verification-before-floor-fix.json at 85ce678: 70 passed, 2 conditional skips; screenshot commit 0dc175b.",
+    "verification-floor-fix.json at 4bae910: initial 28 passed/4 failed, corrected empty-room closeup fixture and reran all 8 wall cases. That intermediate screenshot set has only hashes retained; current files are final v17.",
+    "Final v17 owner acceptance includes brighter raised-square cap and darker pixel wall face. North/south original door art retained; south y offset -3.6."
+  ],
+  "doorAlignment": {
+    "southYOffset": -3.6,
+    "capTop": "port.y - wallHeight",
+    "sideOutwardOffset": 6,
+    "physicalPortMoved": false
+  }
+}

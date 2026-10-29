@@ -55,6 +55,7 @@ export class DemoSession {
   private roomLayouts: FloorRoomLayouts | null = null;
   private templateId = '';
   private drawnRevision = -1;
+  private readonly roomBounds = { ...B };
 
   constructor(
     private readonly scene: Scene,
@@ -89,7 +90,7 @@ export class DemoSession {
       navigation: (x, y, tx, ty, radius, out) => this.arena?.steer(x, y, tx, ty, radius, out) ?? false,
       lineOfSight: (x1, y1, x2, y2) => this.arena?.lineOfSight(x1, y1, x2, y2) ?? true,
       geometry: () => this.arena?.prepareGeometry() ?? null,
-      bounds: B,
+      bounds: this.roomBounds,
     });
     if (!restored) {
       this.sim.spawnPlayer(kind, B.x + B.width / 2, B.y + B.height / 2);
@@ -106,9 +107,9 @@ export class DemoSession {
       this.sim.restorePlayer(checkpoint);
     }
     if (!restored && weapon && Object.hasOwn(WEAPONS, weapon)) this.sim.takeWeapon(weapon as WeaponId);
-    this.bridge = new CombatBridge(scene, this.sim);
+    this.bridge = new CombatBridge(scene, this.sim, this.roomBounds);
     this.bridge.actors.enableArt(scene);
-    this.arena = new RoomArena(scene, this.bridge, false, true);
+    this.arena = new RoomArena(scene, this.bridge);
     this.fx = new CombatFeedback(scene, this.sim, this.bridge, bus);
     this.hazards = new HazardLayer(scene, this.sim, this.bridge, bus);
     this.weaponFx = new WeaponFx(scene, this.sim, bus);
@@ -126,7 +127,7 @@ export class DemoSession {
       this.sim,
       this.dungeon,
       this.root,
-      B,
+      this.roomBounds,
       this.arena.isFree,
       POOL_SIZES.actors,
       this.arena.spawnAnchors,

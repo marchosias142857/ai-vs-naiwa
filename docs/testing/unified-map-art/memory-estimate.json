@@ -1,0 +1,19 @@
+{
+  "mapAtlasRGBABytes": {
+    "baseline": 44038784,
+    "candidate": 56622024
+  },
+  "stoppedPreloadLegacyRGBABytes": {
+    "environment.png": 6294152,
+    "doors.png": 6294152,
+    "rooms-v1.png": 278528,
+    "talent-altar-v1.png": 1115136
+  },
+  "normalizedGateRGBABytes": 5038080,
+  "floorPatternMaxRGBABytes": {
+    "baseline": 16777216,
+    "candidate": 4194304
+  },
+  "roomCanvasRGBABytesEach": 19480576,
+  "note": "Theoretical pixel storage only, not measured browser/GPU memory. Source image decoding and texture upload may each retain a copy; includes no driver overhead."
+}

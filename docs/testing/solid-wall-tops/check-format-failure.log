@@ -1,0 +1,15 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ai-vs-naiwa@0.0.1 check
+> npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ai-vs-naiwa@0.0.1 format:check
+> prettier --check .
+
+Checking formatting...
+[warn] docs/testing/solid-wall-tops/browser-launch-failure.json
+[warn] docs/testing/solid-wall-tops/browser.json
+[warn] docs/testing/solid-wall-tops/unit.json
+[warn] Code style issues found in 3 files. Run Prettier with --write to fix.

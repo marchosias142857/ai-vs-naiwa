@@ -1,0 +1,5717 @@
+{
+  "runtimeCommit": "23cf5978af6a81ec6942a05774a5e9b3cca87bd6",
+  "baseMain": "0ea5e721bf2329276f262a2c4e72643437be5f0a",
+  "incrementBaseline": "e653d0a05fddbbe5262c0195a1cbe3f927ac5c2c",
+  "srcTree": "543bf2aa051c7b7c028ed314ea08b6d0b45a00fa",
+  "publicTree": "61e8264e51b08aa9c2a4428421c1416e07cb3487",
+  "check": {
+    "files": 64,
+    "unitTests": 523,
+    "format": true,
+    "lint": true,
+    "types": true,
+    "build": true
+  },
+  "environment": "Existing @sparticuz Chromium / SwiftShader, desktop and mobile-landscape; one worker, no automatic retries. Removed --no-zygote and --single-process from verification-only launch args; no production or repository config changes. WebKit and physical devices not newly verified.",
+  "batches": [
+    {
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d",
+      "source": "unified-v3-final-results.json",
+      "stats": {
+        "startTime": "2026-10-28T21:31:44.556Z",
+        "duration": 733726.782,
+        "expected": 142,
+        "skipped": 1,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "entities.spec.ts",
+          "line": 66,
+          "title": "预热500、超限退回sim、寿命回收且不新建贴图",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 767,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 80,
+          "title": "实时物理坐标、墙边界、碰撞只报告sim、阶段与死亡回收",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 471,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 126,
+          "title": "场景关闭安全清理，已存活子弹退回sim",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 329,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 141,
+          "title": "一帧 0 个物理步：边沿恰好消费一次，复制输入向量",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 310,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 141,
+          "title": "一帧 1 个物理步：边沿恰好消费一次，复制输入向量",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 377,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 141,
+          "title": "一帧 2 个物理步：边沿恰好消费一次，复制输入向量",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 399,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 157,
+          "title": "真实 sim + Arcade：1/60 秒锁步击退距离与同时间对照组相符",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 831,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 157,
+          "title": "真实 sim + Arcade：1/120 秒锁步击退距离与同时间对照组相符",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 777,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 201,
+          "title": "真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中心一致",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 832,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 218,
+          "title": "真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1207,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 230,
+          "title": "真实命中反馈使用预热池，预警隐藏与死亡延迟回收",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 561,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 243,
+          "title": "出口升级界面可买补给，再选择升级进入下一层",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1088,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 260,
+          "title": "真实 Arcade 中追击怪绕过内墙接近玩家",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 514,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 269,
+          "title": "100 秒锁步压力：持续 30 怪、弹丸与反馈池不增长",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 8495,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 289,
+          "title": "楼层入口继续与不中断推进得到相同升级候选",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1556,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 305,
+          "title": "瞬时反馈池：满池、部分到期、反复回收不重复占槽或新建对象",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 566,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 316,
+          "title": "装饰事件风暴：分类预算、重复回收、纹理复用和 sim 隔离",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 524,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 329,
+          "title": "存档物理往返：mixed，真实 Arcade 后续命中与快照一致",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 781,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 329,
+          "title": "存档物理往返：full，真实 Arcade 后续命中与快照一致",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1296,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 329,
+          "title": "存档物理往返：corpse，真实 Arcade 后续命中与快照一致",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 897,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 329,
+          "title": "存档物理往返：teleport，真实 Arcade 后续命中与快照一致",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 832,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 365,
+          "title": "恢复冻结：真实物理和子弹寿命停住；暂停中断重新计时并清掉已锁存边沿",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 5356,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 392,
+          "title": "满级天赋四个出口按钮均可选；换层保留 runId 和天赋并完整通关",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1155,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 66,
+          "title": "预热500、超限退回sim、寿命回收且不新建贴图",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 684,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 80,
+          "title": "实时物理坐标、墙边界、碰撞只报告sim、阶段与死亡回收",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 450,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 126,
+          "title": "场景关闭安全清理，已存活子弹退回sim",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 287,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 141,
+          "title": "一帧 0 个物理步：边沿恰好消费一次，复制输入向量",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 271,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 141,
+          "title": "一帧 1 个物理步：边沿恰好消费一次，复制输入向量",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 272,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 141,
+          "title": "一帧 2 个物理步：边沿恰好消费一次，复制输入向量",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 294,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 157,
+          "title": "真实 sim + Arcade：1/60 秒锁步击退距离与同时间对照组相符",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 709,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 157,
+          "title": "真实 sim + Arcade：1/120 秒锁步击退距离与同时间对照组相符",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 814,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 201,
+          "title": "真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中心一致",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 664,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 218,
+          "title": "真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1085,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 230,
+          "title": "真实命中反馈使用预热池，预警隐藏与死亡延迟回收",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 621,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 243,
+          "title": "出口升级界面可买补给，再选择升级进入下一层",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1026,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 260,
+          "title": "真实 Arcade 中追击怪绕过内墙接近玩家",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 728,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 269,
+          "title": "100 秒锁步压力：持续 30 怪、弹丸与反馈池不增长",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 8450,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 289,
+          "title": "楼层入口继续与不中断推进得到相同升级候选",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2225,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 305,
+          "title": "瞬时反馈池：满池、部分到期、反复回收不重复占槽或新建对象",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 932,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 316,
+          "title": "装饰事件风暴：分类预算、重复回收、纹理复用和 sim 隔离",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 737,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 329,
+          "title": "存档物理往返：mixed，真实 Arcade 后续命中与快照一致",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1191,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 329,
+          "title": "存档物理往返：full，真实 Arcade 后续命中与快照一致",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1525,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 329,
+          "title": "存档物理往返：corpse，真实 Arcade 后续命中与快照一致",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 941,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 329,
+          "title": "存档物理往返：teleport，真实 Arcade 后续命中与快照一致",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 951,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 365,
+          "title": "恢复冻结：真实物理和子弹寿命停住；暂停中断重新计时并清掉已锁存边沿",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 5472,
+          "retry": 0
+        },
+        {
+          "file": "entities.spec.ts",
+          "line": 392,
+          "title": "满级天赋四个出口按钮均可选；换层保留 runId 和天赋并完整通关",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1224,
+          "retry": 0
+        },
+        {
+          "file": "mapArt.spec.ts",
+          "line": 4,
+          "title": "unified hub uses the same wall, gate, floor and redrawn altar",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2949,
+          "retry": 0
+        },
+        {
+          "file": "mapArt.spec.ts",
+          "line": 15,
+          "title": "modular production art floor 1",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3829,
+          "retry": 0
+        },
+        {
+          "file": "mapArt.spec.ts",
+          "line": 15,
+          "title": "modular production art floor 2",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3931,
+          "retry": 0
+        },
+        {
+          "file": "mapArt.spec.ts",
+          "line": 15,
+          "title": "modular production art floor 3",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3893,
+          "retry": 0
+        },
+        {
+          "file": "mapArt.spec.ts",
+          "line": 15,
+          "title": "modular production art floor 4",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4026,
+          "retry": 0
+        },
+        {
+          "file": "mapArt.spec.ts",
+          "line": 4,
+          "title": "unified hub uses the same wall, gate, floor and redrawn altar",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3019,
+          "retry": 0
+        },
+        {
+          "file": "mapArt.spec.ts",
+          "line": 15,
+          "title": "modular production art floor 1",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 5303,
+          "retry": 0
+        },
+        {
+          "file": "mapArt.spec.ts",
+          "line": 15,
+          "title": "modular production art floor 2",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4278,
+          "retry": 0
+        },
+        {
+          "file": "mapArt.spec.ts",
+          "line": 15,
+          "title": "modular production art floor 3",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4388,
+          "retry": 0
+        },
+        {
+          "file": "mapArt.spec.ts",
+          "line": 15,
+          "title": "modular production art floor 4",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4034,
+          "retry": 0
+        },
+        {
+          "file": "mapArtMatrix.spec.ts",
+          "line": 44,
+          "title": "200 connected layouts per theme reuse the same art and fixed scene objects",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 111899,
+          "retry": 0
+        },
+        {
+          "file": "mapArtMatrix.spec.ts",
+          "line": 66,
+          "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4066,
+          "retry": 0
+        },
+        {
+          "file": "mapArtMatrix.spec.ts",
+          "line": 86,
+          "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2918,
+          "retry": 0
+        },
+        {
+          "file": "mapArtMatrix.spec.ts",
+          "line": 101,
+          "title": "unified gates have opaque integer-module joins and field rims meet the floor without gaps",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3763,
+          "retry": 0
+        },
+        {
+          "file": "mapArtMatrix.spec.ts",
+          "line": 44,
+          "title": "200 connected layouts per theme reuse the same art and fixed scene objects",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 118065,
+          "retry": 0
+        },
+        {
+          "file": "mapArtMatrix.spec.ts",
+          "line": 66,
+          "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3903,
+          "retry": 0
+        },
+        {
+          "file": "mapArtMatrix.spec.ts",
+          "line": 86,
+          "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3205,
+          "retry": 0
+        },
+        {
+          "file": "mapArtMatrix.spec.ts",
+          "line": 101,
+          "title": "unified gates have opaque integer-module joins and field rims meet the floor without gaps",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3429,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: pillar",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2298,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: boundary",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2656,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: near-wall",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3379,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: rain",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3758,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: brood",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2448,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: los",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2810,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: hop",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2533,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 72,
+          "title": "production geometry: fresh session restore sees the landed pool before the first step",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 13892,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 84,
+          "title": "map art dense showcase: floor 1",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3942,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 84,
+          "title": "map art dense showcase: floor 2",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4379,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 84,
+          "title": "map art dense showcase: floor 3",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4138,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 84,
+          "title": "map art dense showcase: floor 4",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4111,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 99,
+          "title": "map wall review: floor 1",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 14556,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 99,
+          "title": "map wall review: floor 2",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 13998,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 99,
+          "title": "map wall review: floor 3",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 16062,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 99,
+          "title": "map wall review: floor 4",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 13689,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 129,
+          "title": "map object atlas missing uses graybox without missing object frames",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2291,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 142,
+          "title": "unified trap states and inset borders: floor 1",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 8529,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 142,
+          "title": "unified trap states and inset borders: floor 2",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 8936,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 142,
+          "title": "unified trap states and inset borders: floor 3",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 8548,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 158,
+          "title": "unified chest, exit and supply pickups use actual game objects",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 5566,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: pillar",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2320,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: boundary",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2778,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: near-wall",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3494,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: rain",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3491,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: brood",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2462,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: los",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2594,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 56,
+          "title": "production geometry: hop",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2376,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 72,
+          "title": "production geometry: fresh session restore sees the landed pool before the first step",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11764,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 84,
+          "title": "map art dense showcase: floor 1",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3839,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 84,
+          "title": "map art dense showcase: floor 2",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3954,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 84,
+          "title": "map art dense showcase: floor 3",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3888,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 84,
+          "title": "map art dense showcase: floor 4",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3559,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 99,
+          "title": "map wall review: floor 1",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11761,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 99,
+          "title": "map wall review: floor 2",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 13645,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 99,
+          "title": "map wall review: floor 3",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 14164,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 99,
+          "title": "map wall review: floor 4",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11703,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 129,
+          "title": "map object atlas missing uses graybox without missing object frames",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2037,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 142,
+          "title": "unified trap states and inset borders: floor 1",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 5689,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 142,
+          "title": "unified trap states and inset borders: floor 2",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 6596,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 142,
+          "title": "unified trap states and inset borders: floor 3",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 6846,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 158,
+          "title": "unified chest, exit and supply pickups use actual game objects",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4716,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 62,
+          "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4414,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 91,
+          "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1237,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 91,
+          "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 952,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 91,
+          "title": "同步保存 both，BFCache 复用本局且监听不增长",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 866,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 117,
+          "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2608,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 138,
+          "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 5846,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 138,
+          "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 6252,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 138,
+          "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 724,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 171,
+          "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4805,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 192,
+          "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1580,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 206,
+          "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2308,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 232,
+          "title": "菜单兜底区分 updated，入口独立校验",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1252,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 232,
+          "title": "菜单兜底区分 invalid，入口独立校验",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1286,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 232,
+          "title": "菜单兜底区分 corrupt，入口独立校验",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1544,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 259,
+          "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1367,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 291,
+          "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 820,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 323,
+          "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1788,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 62,
+          "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4363,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 91,
+          "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1221,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 91,
+          "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 964,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 91,
+          "title": "同步保存 both，BFCache 复用本局且监听不增长",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1157,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 117,
+          "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2920,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 138,
+          "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 6348,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 138,
+          "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 6472,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 138,
+          "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 6434,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 171,
+          "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 5186,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 192,
+          "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1629,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 206,
+          "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2406,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 232,
+          "title": "菜单兜底区分 updated，入口独立校验",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1284,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 232,
+          "title": "菜单兜底区分 invalid，入口独立校验",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1263,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 232,
+          "title": "菜单兜底区分 corrupt，入口独立校验",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1121,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 259,
+          "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1428,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 291,
+          "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 671,
+          "retry": 0
+        },
+        {
+          "file": "save.spec.ts",
+          "line": 323,
+          "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1424,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 55,
+          "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3146,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 86,
+          "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
+          "project": "desktop",
+          "status": "failed",
+          "durationMs": 3224,
+          "retry": 0,
+          "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 5\n\n- Array []\n+ Array [\n+   \"rock-0.3: falling art probe is empty\",\n+   \"rock-0.9: falling art probe is empty\",\n+   \"rock-1: falling art probe is empty\",\n+ ]"
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 55,
+          "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3060,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 86,
+          "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2193,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d",
+      "source": "unified-v3-rest-results.json",
+      "stats": {
+        "startTime": "2026-10-28T21:44:49.933Z",
+        "duration": 1494282.514,
+        "expected": 145,
+        "skipped": 17,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "aim.spec.ts",
+          "line": 5,
+          "title": "arena：手动瞄准射线从身体中心穿过光标",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2805,
+          "retry": 0
+        },
+        {
+          "file": "aim.spec.ts",
+          "line": 5,
+          "title": "dungeon：手动瞄准射线从身体中心穿过光标",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4367,
+          "retry": 0
+        },
+        {
+          "file": "aim.spec.ts",
+          "line": 5,
+          "title": "arena：手动瞄准射线从身体中心穿过光标",
+          "project": "mobile-landscape",
+          "status": "skipped",
+          "durationMs": 51,
+          "retry": 0
+        },
+        {
+          "file": "aim.spec.ts",
+          "line": 5,
+          "title": "dungeon：手动瞄准射线从身体中心穿过光标",
+          "project": "mobile-landscape",
+          "status": "skipped",
+          "durationMs": 59,
+          "retry": 0
+        },
+        {
+          "file": "aimWheel.spec.ts",
+          "line": 5,
+          "title": "触屏轮盘：横屏死区、双指方向、拖出与回中",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 858,
+          "retry": 0
+        },
+        {
+          "file": "aimWheel.spec.ts",
+          "line": 5,
+          "title": "触屏轮盘：小屏死区、双指方向、拖出与回中",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 83,
+          "retry": 0
+        },
+        {
+          "file": "aimWheel.spec.ts",
+          "line": 55,
+          "title": "触屏轮盘：第三指动作、取消、暂停与后台恢复不遗留输入",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 38,
+          "retry": 0
+        },
+        {
+          "file": "aimWheel.spec.ts",
+          "line": 5,
+          "title": "触屏轮盘：横屏死区、双指方向、拖出与回中",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3076,
+          "retry": 0
+        },
+        {
+          "file": "aimWheel.spec.ts",
+          "line": 5,
+          "title": "触屏轮盘：小屏死区、双指方向、拖出与回中",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3700,
+          "retry": 0
+        },
+        {
+          "file": "aimWheel.spec.ts",
+          "line": 55,
+          "title": "触屏轮盘：第三指动作、取消、暂停与后台恢复不遗留输入",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 5015,
+          "retry": 0
+        },
+        {
+          "file": "art.spec.ts",
+          "line": 22,
+          "title": "待机与行走完整循环；停步重新待机、暂停冻结动作",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 6381,
+          "retry": 0
+        },
+        {
+          "file": "art.spec.ts",
+          "line": 60,
+          "title": "真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中心",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 11415,
+          "retry": 0
+        },
+        {
+          "file": "art.spec.ts",
+          "line": 116,
+          "title": "重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记录",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 10862,
+          "retry": 0
+        },
+        {
+          "file": "art.spec.ts",
+          "line": 155,
+          "title": "标题与 HUD 完整画面；触屏提示使用轮盘说明",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 7593,
+          "retry": 0
+        },
+        {
+          "file": "art.spec.ts",
+          "line": 183,
+          "title": "参考图角色：受击使用新图集，死亡完整落地且隐藏武器",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 21142,
+          "retry": 0
+        },
+        {
+          "file": "art.spec.ts",
+          "line": 22,
+          "title": "待机与行走完整循环；停步重新待机、暂停冻结动作",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 7449,
+          "retry": 0
+        },
+        {
+          "file": "art.spec.ts",
+          "line": 60,
+          "title": "真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中心",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 13341,
+          "retry": 0
+        },
+        {
+          "file": "art.spec.ts",
+          "line": 116,
+          "title": "重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记录",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11924,
+          "retry": 0
+        },
+        {
+          "file": "art.spec.ts",
+          "line": 155,
+          "title": "标题与 HUD 完整画面；触屏提示使用轮盘说明",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 8460,
+          "retry": 0
+        },
+        {
+          "file": "art.spec.ts",
+          "line": 183,
+          "title": "参考图角色：受击使用新图集，死亡完整落地且隐藏武器",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 21468,
+          "retry": 0
+        },
+        {
+          "file": "audio.spec.ts",
+          "line": 12,
+          "title": "真实 AudioContext：手柄暂停仅静音，后台和退出才 suspend，回到游戏可重新发声",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 8999,
+          "retry": 0
+        },
+        {
+          "file": "audio.spec.ts",
+          "line": 12,
+          "title": "真实 AudioContext：手柄暂停仅静音，后台和退出才 suspend，回到游戏可重新发声",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 10014,
+          "retry": 0
+        },
+        {
+          "file": "bestiary.spec.ts",
+          "line": 19,
+          "title": "图鉴全部条目、裁剪比例、键盘二维选择、尺寸变化与返回主城",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 15419,
+          "retry": 0
+        },
+        {
+          "file": "bestiary.spec.ts",
+          "line": 134,
+          "title": "鼠标在网格外松开、取消或关闭重开后，键盘和手柄焦点仍同步选择与详情",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 5287,
+          "retry": 0
+        },
+        {
+          "file": "bestiary.spec.ts",
+          "line": 200,
+          "title": "图鉴英文手柄：X 打开、四向移动、右摇杆读长文、B 关闭不穿透",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 5274,
+          "retry": 0
+        },
+        {
+          "file": "bestiary.spec.ts",
+          "line": 242,
+          "title": "触屏网格拖动只滚动不选中，点按更新详情；旧冒险与档案保持原文",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 767,
+          "retry": 0
+        },
+        {
+          "file": "bestiary.spec.ts",
+          "line": 19,
+          "title": "图鉴全部条目、裁剪比例、键盘二维选择、尺寸变化与返回主城",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 15510,
+          "retry": 0
+        },
+        {
+          "file": "bestiary.spec.ts",
+          "line": 134,
+          "title": "鼠标在网格外松开、取消或关闭重开后，键盘和手柄焦点仍同步选择与详情",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4980,
+          "retry": 0
+        },
+        {
+          "file": "bestiary.spec.ts",
+          "line": 200,
+          "title": "图鉴英文手柄：X 打开、四向移动、右摇杆读长文、B 关闭不穿透",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4818,
+          "retry": 0
+        },
+        {
+          "file": "bestiary.spec.ts",
+          "line": 242,
+          "title": "触屏网格拖动只滚动不选中，点按更新详情；旧冒险与档案保持原文",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4248,
+          "retry": 0
+        },
+        {
+          "file": "bestiaryLifecycle.spec.ts",
+          "line": 58,
+          "title": "真实主城输入冻结、恢复和开关/重进：DOM、纹理、监听与 alpha 扫描不增长",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 8127,
+          "retry": 0
+        },
+        {
+          "file": "bestiaryLifecycle.spec.ts",
+          "line": 58,
+          "title": "真实主城输入冻结、恢复和开关/重进：DOM、纹理、监听与 alpha 扫描不增长",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 8760,
+          "retry": 0
+        },
+        {
+          "file": "combat.spec.ts",
+          "line": 65,
+          "title": "开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来（固定种子不变）",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 14213,
+          "retry": 0
+        },
+        {
+          "file": "combat.spec.ts",
+          "line": 105,
+          "title": "移动中（含暂停恢复后）鼠标瞄准以玩家当前身体中心为原点",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3398,
+          "retry": 0
+        },
+        {
+          "file": "combat.spec.ts",
+          "line": 156,
+          "title": "未固定种子时重来换新种子；点暂停键不会重来",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 12439,
+          "retry": 0
+        },
+        {
+          "file": "combat.spec.ts",
+          "line": 65,
+          "title": "开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来（固定种子不变）",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 13680,
+          "retry": 0
+        },
+        {
+          "file": "combat.spec.ts",
+          "line": 105,
+          "title": "移动中（含暂停恢复后）鼠标瞄准以玩家当前身体中心为原点",
+          "project": "mobile-landscape",
+          "status": "skipped",
+          "durationMs": 638,
+          "retry": 0
+        },
+        {
+          "file": "combat.spec.ts",
+          "line": 156,
+          "title": "未固定种子时重来换新种子；点暂停键不会重来",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11414,
+          "retry": 0
+        },
+        {
+          "file": "debug.spec.ts",
+          "line": 30,
+          "title": "正式地牢调试面板：特效计数可见，跟随与横屏缩放后仍完整留在画布内",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 6934,
+          "retry": 0
+        },
+        {
+          "file": "debug.spec.ts",
+          "line": 68,
+          "title": "调试模式：F1 切换碰撞框，F2 清房",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4331,
+          "retry": 0
+        },
+        {
+          "file": "debug.spec.ts",
+          "line": 97,
+          "title": "非调试模式：F1 / F2 不生效，没有调试探针",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4009,
+          "retry": 0
+        },
+        {
+          "file": "debug.spec.ts",
+          "line": 114,
+          "title": "?god=1：被怪物围住也不掉血",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 14954,
+          "retry": 0
+        },
+        {
+          "file": "debug.spec.ts",
+          "line": 30,
+          "title": "正式地牢调试面板：特效计数可见，跟随与横屏缩放后仍完整留在画布内",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 7829,
+          "retry": 0
+        },
+        {
+          "file": "debug.spec.ts",
+          "line": 68,
+          "title": "调试模式：F1 切换碰撞框，F2 清房",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4943,
+          "retry": 0
+        },
+        {
+          "file": "debug.spec.ts",
+          "line": 97,
+          "title": "非调试模式：F1 / F2 不生效，没有调试探针",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3946,
+          "retry": 0
+        },
+        {
+          "file": "debug.spec.ts",
+          "line": 114,
+          "title": "?god=1：被怪物围住也不掉血",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 14267,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 6,
+          "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 12778,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 51,
+          "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 16359,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 109,
+          "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3646,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 124,
+          "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 6259,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 146,
+          "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 9172,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 166,
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 27273,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 166,
+          "title": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 14042,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 302,
+          "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2990,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 316,
+          "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2993,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 6,
+          "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 13494,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 51,
+          "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 17061,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 109,
+          "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4476,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 124,
+          "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 6520,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 146,
+          "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 9183,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 166,
+          "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 27623,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 166,
+          "title": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 14400,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 302,
+          "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3239,
+          "retry": 0
+        },
+        {
+          "file": "demo.spec.ts",
+          "line": 316,
+          "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2890,
+          "retry": 0
+        },
+        {
+          "file": "face.spec.ts",
+          "line": 5,
+          "title": "待机与行走的全部帧使用相同眼睛像素，左右移动时不改变形状",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 10975,
+          "retry": 0
+        },
+        {
+          "file": "face.spec.ts",
+          "line": 5,
+          "title": "待机与行走的全部帧使用相同眼睛像素，左右移动时不改变形状",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11998,
+          "retry": 0
+        },
+        {
+          "file": "fxRender.spec.ts",
+          "line": 37,
+          "title": "100 火花 ABAB 渲染：纹理复用减少几何提交，保持画布和批次",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 8465,
+          "retry": 0
+        },
+        {
+          "file": "fxRender.spec.ts",
+          "line": 37,
+          "title": "100 火花 ABAB 渲染：纹理复用减少几何提交，保持画布和批次",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 8324,
+          "retry": 0
+        },
+        {
+          "file": "hdPresentation.spec.ts",
+          "line": 4,
+          "title": "1080p 直接绘制像素贴图，菜单、战斗与重启保持同一坐标系",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 10857,
+          "retry": 0
+        },
+        {
+          "file": "hdPresentation.spec.ts",
+          "line": 4,
+          "title": "1080p 直接绘制像素贴图，菜单、战斗与重启保持同一坐标系",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 12216,
+          "retry": 0
+        },
+        {
+          "file": "hub.spec.ts",
+          "line": 6,
+          "title": "主城不改写旧局，门可取消；续玩原局，新冒险才替换",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 16964,
+          "retry": 0
+        },
+        {
+          "file": "hub.spec.ts",
+          "line": 69,
+          "title": "手柄走到门口后需松开再确认，不会一次按键穿过对话框",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 5951,
+          "retry": 0
+        },
+        {
+          "file": "hub.spec.ts",
+          "line": 91,
+          "title": "手机只用左摇杆与门按钮即可进入地牢，开屏控件不溢出",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 549,
+          "retry": 0
+        },
+        {
+          "file": "hub.spec.ts",
+          "line": 6,
+          "title": "主城不改写旧局，门可取消；续玩原局，新冒险才替换",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 18275,
+          "retry": 0
+        },
+        {
+          "file": "hub.spec.ts",
+          "line": 69,
+          "title": "手柄走到门口后需松开再确认，不会一次按键穿过对话框",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 6945,
+          "retry": 0
+        },
+        {
+          "file": "hub.spec.ts",
+          "line": 91,
+          "title": "手机只用左摇杆与门按钮即可进入地牢，开屏控件不溢出",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 7254,
+          "retry": 0
+        },
+        {
+          "file": "input.spec.ts",
+          "line": 4,
+          "title": "键鼠、暂停恢复、后台清空；更新提示在暂停键下方",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2690,
+          "retry": 0
+        },
+        {
+          "file": "input.spec.ts",
+          "line": 33,
+          "title": "触屏多指移动和射击互不串扰，取消释放；CSS 大小与缩放",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 601,
+          "retry": 0
+        },
+        {
+          "file": "input.spec.ts",
+          "line": 62,
+          "title": "Phaser 手柄插件：摇杆、RT、Start 与断连清零",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2302,
+          "retry": 0
+        },
+        {
+          "file": "input.spec.ts",
+          "line": 4,
+          "title": "键鼠、暂停恢复、后台清空；更新提示在暂停键下方",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3459,
+          "retry": 0
+        },
+        {
+          "file": "input.spec.ts",
+          "line": 33,
+          "title": "触屏多指移动和射击互不串扰，取消释放；CSS 大小与缩放",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3354,
+          "retry": 0
+        },
+        {
+          "file": "input.spec.ts",
+          "line": 62,
+          "title": "Phaser 手柄插件：摇杆、RT、Start 与断连清零",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2895,
+          "retry": 0
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "line": 46,
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 22456,
+          "retry": 0
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "line": 46,
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 21818,
+          "retry": 0
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "line": 46,
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 23917,
+          "retry": 0
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "line": 46,
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 22611,
+          "retry": 0
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "line": 121,
+          "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 970,
+          "retry": 0
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "line": 46,
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 23699,
+          "retry": 0
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "line": 46,
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 24237,
+          "retry": 0
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "line": 46,
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 23240,
+          "retry": 0
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "line": 46,
+          "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 22813,
+          "retry": 0
+        },
+        {
+          "file": "legacyCatalog.spec.ts",
+          "line": 121,
+          "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1034,
+          "retry": 0
+        },
+        {
+          "file": "lifecycle.spec.ts",
+          "line": 6,
+          "title": "竖屏：桌面留黑边继续运行，触屏显示遮罩并暂停；转横屏恢复",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2423,
+          "retry": 0
+        },
+        {
+          "file": "lifecycle.spec.ts",
+          "line": 48,
+          "title": "后台暂停与输入设备的竖屏策略独立",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2446,
+          "retry": 0
+        },
+        {
+          "file": "lifecycle.spec.ts",
+          "line": 75,
+          "title": "竖窗口切换触屏模式时实时显示或移除遮罩",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1791,
+          "retry": 0
+        },
+        {
+          "file": "lifecycle.spec.ts",
+          "line": 6,
+          "title": "竖屏：桌面留黑边继续运行，触屏显示遮罩并暂停；转横屏恢复",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3085,
+          "retry": 0
+        },
+        {
+          "file": "lifecycle.spec.ts",
+          "line": 48,
+          "title": "后台暂停与输入设备的竖屏策略独立",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2434,
+          "retry": 0
+        },
+        {
+          "file": "lifecycle.spec.ts",
+          "line": 75,
+          "title": "竖窗口切换触屏模式时实时显示或移除遮罩",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 1821,
+          "retry": 0
+        },
+        {
+          "file": "mobileFire.spec.ts",
+          "line": 6,
+          "title": "有符号触点 -1：右轮盘拖拽和中心长按都实际出弹",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 130,
+          "retry": 0
+        },
+        {
+          "file": "mobileFire.spec.ts",
+          "line": 6,
+          "title": "有符号触点 -42：右轮盘拖拽和中心长按都实际出弹",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 31,
+          "retry": 0
+        },
+        {
+          "file": "mobileFire.spec.ts",
+          "line": 6,
+          "title": "有符号触点 -2147483648：右轮盘拖拽和中心长按都实际出弹",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 33,
+          "retry": 0
+        },
+        {
+          "file": "mobileFire.spec.ts",
+          "line": 63,
+          "title": "正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 34,
+          "retry": 0
+        },
+        {
+          "file": "mobileFire.spec.ts",
+          "line": 108,
+          "title": "手机基础手枪按住可出弹；能量不足有提示并能切回手枪",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 34,
+          "retry": 0
+        },
+        {
+          "file": "mobileFire.spec.ts",
+          "line": 6,
+          "title": "有符号触点 -1：右轮盘拖拽和中心长按都实际出弹",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 8631,
+          "retry": 0
+        },
+        {
+          "file": "mobileFire.spec.ts",
+          "line": 6,
+          "title": "有符号触点 -42：右轮盘拖拽和中心长按都实际出弹",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 9959,
+          "retry": 0
+        },
+        {
+          "file": "mobileFire.spec.ts",
+          "line": 6,
+          "title": "有符号触点 -2147483648：右轮盘拖拽和中心长按都实际出弹",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 9827,
+          "retry": 0
+        },
+        {
+          "file": "mobileFire.spec.ts",
+          "line": 63,
+          "title": "正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 8767,
+          "retry": 0
+        },
+        {
+          "file": "mobileFire.spec.ts",
+          "line": 108,
+          "title": "手机基础手枪按住可出弹；能量不足有提示并能切回手枪",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11219,
+          "retry": 0
+        },
+        {
+          "file": "monsterArt.spec.ts",
+          "line": 54,
+          "title": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2315,
+          "retry": 0
+        },
+        {
+          "file": "monsterArt.spec.ts",
+          "line": 63,
+          "title": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 1987,
+          "retry": 0
+        },
+        {
+          "file": "monsterArt.spec.ts",
+          "line": 54,
+          "title": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2544,
+          "retry": 0
+        },
+        {
+          "file": "monsterArt.spec.ts",
+          "line": 63,
+          "title": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2016,
+          "retry": 0
+        },
+        {
+          "file": "pwa.spec.ts",
+          "line": 62,
+          "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 12825,
+          "retry": 0
+        },
+        {
+          "file": "pwa.spec.ts",
+          "line": 179,
+          "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 28855,
+          "retry": 0
+        },
+        {
+          "file": "pwa.spec.ts",
+          "line": 62,
+          "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 12833,
+          "retry": 0
+        },
+        {
+          "file": "pwa.spec.ts",
+          "line": 179,
+          "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 26537,
+          "retry": 0
+        },
+        {
+          "file": "resumeProduction.spec.ts",
+          "line": 5,
+          "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 14328,
+          "retry": 0
+        },
+        {
+          "file": "resumeProduction.spec.ts",
+          "line": 5,
+          "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 14367,
+          "retry": 0
+        },
+        {
+          "file": "roomCamera.spec.ts",
+          "line": 17,
+          "title": "不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 9798,
+          "retry": 0
+        },
+        {
+          "file": "roomCamera.spec.ts",
+          "line": 82,
+          "title": "真实移动到四个墙角时人物持续居中，房间外露出黑色背景",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 30816,
+          "retry": 0
+        },
+        {
+          "file": "roomCamera.spec.ts",
+          "line": 160,
+          "title": "跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 5869,
+          "retry": 0
+        },
+        {
+          "file": "roomCamera.spec.ts",
+          "line": 221,
+          "title": "移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 5243,
+          "retry": 0
+        },
+        {
+          "file": "roomCamera.spec.ts",
+          "line": 264,
+          "title": "主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 864,
+          "retry": 0
+        },
+        {
+          "file": "roomCamera.spec.ts",
+          "line": 17,
+          "title": "不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 9961,
+          "retry": 0
+        },
+        {
+          "file": "roomCamera.spec.ts",
+          "line": 82,
+          "title": "真实移动到四个墙角时人物持续居中，房间外露出黑色背景",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 34560,
+          "retry": 0
+        },
+        {
+          "file": "roomCamera.spec.ts",
+          "line": 160,
+          "title": "跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 6306,
+          "retry": 0
+        },
+        {
+          "file": "roomCamera.spec.ts",
+          "line": 221,
+          "title": "移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击",
+          "project": "mobile-landscape",
+          "status": "skipped",
+          "durationMs": 1093,
+          "retry": 0
+        },
+        {
+          "file": "roomCamera.spec.ts",
+          "line": 264,
+          "title": "主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 7132,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 55,
+          "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3008,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 86,
+          "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2016,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 55,
+          "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2988,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 86,
+          "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2076,
+          "retry": 0
+        },
+        {
+          "file": "smoke.spec.ts",
+          "line": 8,
+          "title": "启动 → 菜单 → 灰盒房间，无报错",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 5146,
+          "retry": 0
+        },
+        {
+          "file": "smoke.spec.ts",
+          "line": 28,
+          "title": "?scene=Game 可以跳过菜单",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2592,
+          "retry": 0
+        },
+        {
+          "file": "smoke.spec.ts",
+          "line": 8,
+          "title": "启动 → 菜单 → 灰盒房间，无报错",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 5812,
+          "retry": 0
+        },
+        {
+          "file": "smoke.spec.ts",
+          "line": 28,
+          "title": "?scene=Game 可以跳过菜单",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2932,
+          "retry": 0
+        },
+        {
+          "file": "stress.spec.ts",
+          "line": 8,
+          "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 29065,
+          "retry": 0
+        },
+        {
+          "file": "stress.spec.ts",
+          "line": 8,
+          "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 11862,
+          "retry": 0
+        },
+        {
+          "file": "stress.spec.ts",
+          "line": 8,
+          "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 27933,
+          "retry": 0
+        },
+        {
+          "file": "stress.spec.ts",
+          "line": 8,
+          "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11702,
+          "retry": 0
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 21,
+          "title": "祭台迁移、解锁失败与写盘失败、连续购买、重置确认；新局生效",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 10401,
+          "retry": 0
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 83,
+          "title": "满级天赋新局属性、完整续玩及入口兜底均冻结开局配置",
+          "project": "desktop",
+          "status": "timedOut",
+          "durationMs": 32036,
+          "retry": 0,
+          "error": "Test timeout of 30000ms exceeded."
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 120,
+          "title": "损坏档案备份原文；已结算的冒险不会出现在继续入口",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 10389,
+          "retry": 0
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 141,
+          "title": "手机祭台：左摇杆移动、点按加点和关闭后重新交互",
+          "project": "desktop",
+          "status": "skipped",
+          "durationMs": 97,
+          "retry": 0
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 168,
+          "title": "天赋面板英文与手柄：长按确认不穿透，释放后可关闭",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4811,
+          "retry": 0
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 21,
+          "title": "祭台迁移、解锁失败与写盘失败、连续购买、重置确认；新局生效",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11678,
+          "retry": 0
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 83,
+          "title": "满级天赋新局属性、完整续玩及入口兜底均冻结开局配置",
+          "project": "mobile-landscape",
+          "status": "timedOut",
+          "durationMs": 31486,
+          "retry": 0,
+          "error": "Test timeout of 30000ms exceeded."
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 120,
+          "title": "损坏档案备份原文；已结算的冒险不会出现在继续入口",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 11092,
+          "retry": 0
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 141,
+          "title": "手机祭台：左摇杆移动、点按加点和关闭后重新交互",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 5377,
+          "retry": 0
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 168,
+          "title": "天赋面板英文与手柄：长按确认不穿透，释放后可关闭",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 7447,
+          "retry": 0
+        },
+        {
+          "file": "uiLayout.spec.ts",
+          "line": 54,
+          "title": "暂停编辑：拖动、大小透明度、真实触控与刷新恢复均使用保存布局",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 10910,
+          "retry": 0
+        },
+        {
+          "file": "uiLayout.spec.ts",
+          "line": 114,
+          "title": "标题设置可编辑；取消不保存，默认值须保存，重叠与存储失败有反馈",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 7960,
+          "retry": 0
+        },
+        {
+          "file": "uiLayout.spec.ts",
+          "line": 54,
+          "title": "暂停编辑：拖动、大小透明度、真实触控与刷新恢复均使用保存布局",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 13451,
+          "retry": 0
+        },
+        {
+          "file": "uiLayout.spec.ts",
+          "line": 114,
+          "title": "标题设置可编辑；取消不保存，默认值须保存，重叠与存储失败有反馈",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 8198,
+          "retry": 0
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "line": 3,
+          "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4253,
+          "retry": 0
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "line": 44,
+          "title": "production graybox screenshot floor 1",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3071,
+          "retry": 0
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "line": 44,
+          "title": "production graybox screenshot floor 2",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3807,
+          "retry": 0
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "line": 44,
+          "title": "production graybox screenshot floor 3",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3915,
+          "retry": 0
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "line": 44,
+          "title": "production graybox screenshot floor 4",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 4068,
+          "retry": 0
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "line": 3,
+          "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4202,
+          "retry": 0
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "line": 44,
+          "title": "production graybox screenshot floor 1",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3234,
+          "retry": 0
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "line": 44,
+          "title": "production graybox screenshot floor 2",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4042,
+          "retry": 0
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "line": 44,
+          "title": "production graybox screenshot floor 3",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4078,
+          "retry": 0
+        },
+        {
+          "file": "updateBoundary.spec.ts",
+          "line": 44,
+          "title": "production graybox screenshot floor 4",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 4000,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "runtimeCommit": "04b5d408903d8790747976234fd92a1d9b61d90d",
+      "source": "unified-v3-policy-results.json",
+      "stats": {
+        "startTime": "2026-10-28T22:11:21.551Z",
+        "duration": 50386.352,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 169,
+          "title": "unified environment zones stay visible on each floor and recycle their existing display slots",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 8760,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 169,
+          "title": "unified environment zones stay visible on each floor and recycle their existing display slots",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 7080,
+          "retry": 0
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 83,
+          "title": "满级天赋同版本续玩冻结开局配置；更新结束旧局并保留档案",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 13057,
+          "retry": 0
+        },
+        {
+          "file": "talents.spec.ts",
+          "line": 83,
+          "title": "满级天赋同版本续玩冻结开局配置；更新结束旧局并保留档案",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 13651,
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "runtimeCommit": "23cf5978af6a81ec6942a05774a5e9b3cca87bd6",
+      "source": "unified-v3-hazards-results.json",
+      "stats": {
+        "startTime": "2026-10-28T22:13:22.495Z",
+        "duration": 35961.872,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "tests": [
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 169,
+          "title": "unified environment zones stay visible on each floor and recycle their existing display slots",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 8396,
+          "retry": 0
+        },
+        {
+          "file": "productionGeometry.spec.ts",
+          "line": 169,
+          "title": "unified environment zones stay visible on each floor and recycle their existing display slots",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 7283,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 55,
+          "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 3145,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 86,
+          "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
+          "project": "desktop",
+          "status": "passed",
+          "durationMs": 2263,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 55,
+          "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 3050,
+          "retry": 0
+        },
+        {
+          "file": "skillAnimation.spec.ts",
+          "line": 86,
+          "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
+          "project": "mobile-landscape",
+          "status": "passed",
+          "durationMs": 2034,
+          "retry": 0
+        }
+      ]
+    }
+  ],
+  "latestByUniqueCase": {
+    "count": 306,
+    "expectedCount": 306,
+    "missing": [],
+    "extra": [],
+    "counts": {
+      "passed": 288,
+      "skipped": 18,
+      "failed": 0,
+      "timedOut": 0,
+      "interrupted": 0
+    },
+    "tests": [
+      {
+        "file": "entities.spec.ts",
+        "line": 66,
+        "title": "预热500、超限退回sim、寿命回收且不新建贴图",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 767,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 80,
+        "title": "实时物理坐标、墙边界、碰撞只报告sim、阶段与死亡回收",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 471,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 126,
+        "title": "场景关闭安全清理，已存活子弹退回sim",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 329,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 141,
+        "title": "一帧 0 个物理步：边沿恰好消费一次，复制输入向量",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 310,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 141,
+        "title": "一帧 1 个物理步：边沿恰好消费一次，复制输入向量",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 377,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 141,
+        "title": "一帧 2 个物理步：边沿恰好消费一次，复制输入向量",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 399,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 157,
+        "title": "真实 sim + Arcade：1/60 秒锁步击退距离与同时间对照组相符",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 831,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 157,
+        "title": "真实 sim + Arcade：1/120 秒锁步击退距离与同时间对照组相符",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 777,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 201,
+        "title": "真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中心一致",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 832,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 218,
+        "title": "真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1207,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 230,
+        "title": "真实命中反馈使用预热池，预警隐藏与死亡延迟回收",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 561,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 243,
+        "title": "出口升级界面可买补给，再选择升级进入下一层",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1088,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 260,
+        "title": "真实 Arcade 中追击怪绕过内墙接近玩家",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 514,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 269,
+        "title": "100 秒锁步压力：持续 30 怪、弹丸与反馈池不增长",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 8495,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 289,
+        "title": "楼层入口继续与不中断推进得到相同升级候选",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1556,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 305,
+        "title": "瞬时反馈池：满池、部分到期、反复回收不重复占槽或新建对象",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 566,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 316,
+        "title": "装饰事件风暴：分类预算、重复回收、纹理复用和 sim 隔离",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 524,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 329,
+        "title": "存档物理往返：mixed，真实 Arcade 后续命中与快照一致",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 781,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 329,
+        "title": "存档物理往返：full，真实 Arcade 后续命中与快照一致",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1296,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 329,
+        "title": "存档物理往返：corpse，真实 Arcade 后续命中与快照一致",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 897,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 329,
+        "title": "存档物理往返：teleport，真实 Arcade 后续命中与快照一致",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 832,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 365,
+        "title": "恢复冻结：真实物理和子弹寿命停住；暂停中断重新计时并清掉已锁存边沿",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 5356,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 392,
+        "title": "满级天赋四个出口按钮均可选；换层保留 runId 和天赋并完整通关",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1155,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 66,
+        "title": "预热500、超限退回sim、寿命回收且不新建贴图",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 684,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 80,
+        "title": "实时物理坐标、墙边界、碰撞只报告sim、阶段与死亡回收",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 450,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 126,
+        "title": "场景关闭安全清理，已存活子弹退回sim",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 287,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 141,
+        "title": "一帧 0 个物理步：边沿恰好消费一次，复制输入向量",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 271,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 141,
+        "title": "一帧 1 个物理步：边沿恰好消费一次，复制输入向量",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 272,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 141,
+        "title": "一帧 2 个物理步：边沿恰好消费一次，复制输入向量",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 294,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 157,
+        "title": "真实 sim + Arcade：1/60 秒锁步击退距离与同时间对照组相符",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 709,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 157,
+        "title": "真实 sim + Arcade：1/120 秒锁步击退距离与同时间对照组相符",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 814,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 201,
+        "title": "真实 Arcade 内墙挡人挡弹、视线遮挡、切房复用与脚底中心一致",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 664,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 218,
+        "title": "真实 sim + Arcade 完整三层探索、升级、Boss 胜利及池复用",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1085,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 230,
+        "title": "真实命中反馈使用预热池，预警隐藏与死亡延迟回收",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 621,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 243,
+        "title": "出口升级界面可买补给，再选择升级进入下一层",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1026,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 260,
+        "title": "真实 Arcade 中追击怪绕过内墙接近玩家",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 728,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 269,
+        "title": "100 秒锁步压力：持续 30 怪、弹丸与反馈池不增长",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 8450,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 289,
+        "title": "楼层入口继续与不中断推进得到相同升级候选",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2225,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 305,
+        "title": "瞬时反馈池：满池、部分到期、反复回收不重复占槽或新建对象",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 932,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 316,
+        "title": "装饰事件风暴：分类预算、重复回收、纹理复用和 sim 隔离",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 737,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 329,
+        "title": "存档物理往返：mixed，真实 Arcade 后续命中与快照一致",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1191,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 329,
+        "title": "存档物理往返：full，真实 Arcade 后续命中与快照一致",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1525,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 329,
+        "title": "存档物理往返：corpse，真实 Arcade 后续命中与快照一致",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 941,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 329,
+        "title": "存档物理往返：teleport，真实 Arcade 后续命中与快照一致",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 951,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 365,
+        "title": "恢复冻结：真实物理和子弹寿命停住；暂停中断重新计时并清掉已锁存边沿",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 5472,
+        "retry": 0
+      },
+      {
+        "file": "entities.spec.ts",
+        "line": 392,
+        "title": "满级天赋四个出口按钮均可选；换层保留 runId 和天赋并完整通关",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1224,
+        "retry": 0
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "line": 4,
+        "title": "unified hub uses the same wall, gate, floor and redrawn altar",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2949,
+        "retry": 0
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "line": 15,
+        "title": "modular production art floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3829,
+        "retry": 0
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "line": 15,
+        "title": "modular production art floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3931,
+        "retry": 0
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "line": 15,
+        "title": "modular production art floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3893,
+        "retry": 0
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "line": 15,
+        "title": "modular production art floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4026,
+        "retry": 0
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "line": 4,
+        "title": "unified hub uses the same wall, gate, floor and redrawn altar",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3019,
+        "retry": 0
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "line": 15,
+        "title": "modular production art floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 5303,
+        "retry": 0
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "line": 15,
+        "title": "modular production art floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4278,
+        "retry": 0
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "line": 15,
+        "title": "modular production art floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4388,
+        "retry": 0
+      },
+      {
+        "file": "mapArt.spec.ts",
+        "line": 15,
+        "title": "modular production art floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4034,
+        "retry": 0
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "line": 44,
+        "title": "200 connected layouts per theme reuse the same art and fixed scene objects",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 111899,
+        "retry": 0
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "line": 66,
+        "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4066,
+        "retry": 0
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "line": 86,
+        "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2918,
+        "retry": 0
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "line": 101,
+        "title": "unified gates have opaque integer-module joins and field rims meet the floor without gaps",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3763,
+        "retry": 0
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "line": 44,
+        "title": "200 connected layouts per theme reuse the same art and fixed scene objects",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 118065,
+        "retry": 0
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "line": 66,
+        "title": "cuboid tops stay upright; vertical rows hide bases, corners stay opaque and ports open",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3903,
+        "retry": 0
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "line": 86,
+        "title": "irregular obstacles preserve the textured floor beneath their transparent edges",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3205,
+        "retry": 0
+      },
+      {
+        "file": "mapArtMatrix.spec.ts",
+        "line": 101,
+        "title": "unified gates have opaque integer-module joins and field rims meet the floor without gaps",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3429,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: pillar",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2298,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: boundary",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2656,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: near-wall",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3379,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: rain",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3758,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: brood",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2448,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: los",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2810,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: hop",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2533,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 72,
+        "title": "production geometry: fresh session restore sees the landed pool before the first step",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 13892,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 84,
+        "title": "map art dense showcase: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3942,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 84,
+        "title": "map art dense showcase: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4379,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 84,
+        "title": "map art dense showcase: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4138,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 84,
+        "title": "map art dense showcase: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4111,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 99,
+        "title": "map wall review: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 14556,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 99,
+        "title": "map wall review: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 13998,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 99,
+        "title": "map wall review: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 16062,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 99,
+        "title": "map wall review: floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 13689,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 129,
+        "title": "map object atlas missing uses graybox without missing object frames",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2291,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 142,
+        "title": "unified trap states and inset borders: floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 8529,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 142,
+        "title": "unified trap states and inset borders: floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 8936,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 142,
+        "title": "unified trap states and inset borders: floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 8548,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 158,
+        "title": "unified chest, exit and supply pickups use actual game objects",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 5566,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: pillar",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2320,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: boundary",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2778,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: near-wall",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3494,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: rain",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3491,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: brood",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2462,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: los",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2594,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 56,
+        "title": "production geometry: hop",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2376,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 72,
+        "title": "production geometry: fresh session restore sees the landed pool before the first step",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 11764,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 84,
+        "title": "map art dense showcase: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3839,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 84,
+        "title": "map art dense showcase: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3954,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 84,
+        "title": "map art dense showcase: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3888,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 84,
+        "title": "map art dense showcase: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3559,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 99,
+        "title": "map wall review: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 11761,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 99,
+        "title": "map wall review: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 13645,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 99,
+        "title": "map wall review: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 14164,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 99,
+        "title": "map wall review: floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 11703,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 129,
+        "title": "map object atlas missing uses graybox without missing object frames",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2037,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 142,
+        "title": "unified trap states and inset borders: floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 5689,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 142,
+        "title": "unified trap states and inset borders: floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 6596,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 142,
+        "title": "unified trap states and inset borders: floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 6846,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 158,
+        "title": "unified chest, exit and supply pickups use actual game objects",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4716,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 62,
+        "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4414,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 91,
+        "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1237,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 91,
+        "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 952,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 91,
+        "title": "同步保存 both，BFCache 复用本局且监听不增长",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 866,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 117,
+        "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2608,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 138,
+        "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 5846,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 138,
+        "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 6252,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 138,
+        "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 724,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 171,
+        "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4805,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 192,
+        "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1580,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 206,
+        "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2308,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 232,
+        "title": "菜单兜底区分 updated，入口独立校验",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1252,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 232,
+        "title": "菜单兜底区分 invalid，入口独立校验",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1286,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 232,
+        "title": "菜单兜底区分 corrupt，入口独立校验",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1544,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 259,
+        "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1367,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 291,
+        "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 820,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 323,
+        "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1788,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 62,
+        "title": "完整场景 JSON 往返：槽位/寿命/随机流/入口保持，恢复不重放事件，后续物理步完全一致",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4363,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 91,
+        "title": "同步保存 hidden，BFCache 复用本局且监听不增长",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1221,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 91,
+        "title": "同步保存 pagehide，BFCache 复用本局且监听不增长",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 964,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 91,
+        "title": "同步保存 both，BFCache 复用本局且监听不增长",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1157,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 117,
+        "title": "手动暂停提前保存；退出先保存再释放，连续进出没有重复 UI / 监听",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2920,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 138,
+        "title": "倒计时中断 manual：重新计满三秒，玩法边沿全部丢弃",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 6348,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 138,
+        "title": "倒计时中断 hidden：重新计满三秒，玩法边沿全部丢弃",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 6472,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 138,
+        "title": "倒计时中断 portrait：重新计满三秒，玩法边沿全部丢弃",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 6434,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 171,
+        "title": "恢复后手柄长按须先中立，随后新按键才能射击",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 5186,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 192,
+        "title": "零物理步已锁存的冲刺、换枪、出口交互在暂停前后全部清空",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1629,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 206,
+        "title": "非战斗直接继续；升级界面保存候选并持有独立暂停，新楼层更新 entry",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2406,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 232,
+        "title": "菜单兜底区分 updated，入口独立校验",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1284,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 232,
+        "title": "菜单兜底区分 invalid，入口独立校验",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1263,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 232,
+        "title": "菜单兜底区分 corrupt，入口独立校验",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1121,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 259,
+        "title": "写入失败保留旧档且可继续玩；终局后 hidden/pagehide 不复活，成绩只记一次",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1428,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 291,
+        "title": "结算失败显示奖励构成，返回主城仅重试一次，重复保存不重复发奖",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 671,
+        "retry": 0
+      },
+      {
+        "file": "save.spec.ts",
+        "line": 323,
+        "title": "指定武器的新局不结算天赋点，续玩保留原冒险 ID",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1424,
+        "retry": 0
+      },
+      {
+        "file": "skillAnimation.spec.ts",
+        "line": 55,
+        "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3145,
+        "retry": 0
+      },
+      {
+        "file": "skillAnimation.spec.ts",
+        "line": 86,
+        "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2263,
+        "retry": 0
+      },
+      {
+        "file": "skillAnimation.spec.ts",
+        "line": 55,
+        "title": "技能进度/冷启动读档/冻结/零装饰预算与碰撞体隔离",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3050,
+        "retry": 0
+      },
+      {
+        "file": "skillAnimation.spec.ts",
+        "line": 86,
+        "title": "落石/奶怪方形边界与蓄跳蛙无落点提示：零预算、冻结、读档一致",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2034,
+        "retry": 0
+      },
+      {
+        "file": "aim.spec.ts",
+        "line": 5,
+        "title": "arena：手动瞄准射线从身体中心穿过光标",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2805,
+        "retry": 0
+      },
+      {
+        "file": "aim.spec.ts",
+        "line": 5,
+        "title": "dungeon：手动瞄准射线从身体中心穿过光标",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4367,
+        "retry": 0
+      },
+      {
+        "file": "aim.spec.ts",
+        "line": 5,
+        "title": "arena：手动瞄准射线从身体中心穿过光标",
+        "project": "mobile-landscape",
+        "status": "skipped",
+        "durationMs": 51,
+        "retry": 0
+      },
+      {
+        "file": "aim.spec.ts",
+        "line": 5,
+        "title": "dungeon：手动瞄准射线从身体中心穿过光标",
+        "project": "mobile-landscape",
+        "status": "skipped",
+        "durationMs": 59,
+        "retry": 0
+      },
+      {
+        "file": "aimWheel.spec.ts",
+        "line": 5,
+        "title": "触屏轮盘：横屏死区、双指方向、拖出与回中",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 858,
+        "retry": 0
+      },
+      {
+        "file": "aimWheel.spec.ts",
+        "line": 5,
+        "title": "触屏轮盘：小屏死区、双指方向、拖出与回中",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 83,
+        "retry": 0
+      },
+      {
+        "file": "aimWheel.spec.ts",
+        "line": 55,
+        "title": "触屏轮盘：第三指动作、取消、暂停与后台恢复不遗留输入",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 38,
+        "retry": 0
+      },
+      {
+        "file": "aimWheel.spec.ts",
+        "line": 5,
+        "title": "触屏轮盘：横屏死区、双指方向、拖出与回中",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3076,
+        "retry": 0
+      },
+      {
+        "file": "aimWheel.spec.ts",
+        "line": 5,
+        "title": "触屏轮盘：小屏死区、双指方向、拖出与回中",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3700,
+        "retry": 0
+      },
+      {
+        "file": "aimWheel.spec.ts",
+        "line": 55,
+        "title": "触屏轮盘：第三指动作、取消、暂停与后台恢复不遗留输入",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 5015,
+        "retry": 0
+      },
+      {
+        "file": "art.spec.ts",
+        "line": 22,
+        "title": "待机与行走完整循环；停步重新待机、暂停冻结动作",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 6381,
+        "retry": 0
+      },
+      {
+        "file": "art.spec.ts",
+        "line": 60,
+        "title": "真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中心",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 11415,
+        "retry": 0
+      },
+      {
+        "file": "art.spec.ts",
+        "line": 116,
+        "title": "重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记录",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 10862,
+        "retry": 0
+      },
+      {
+        "file": "art.spec.ts",
+        "line": 155,
+        "title": "标题与 HUD 完整画面；触屏提示使用轮盘说明",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 7593,
+        "retry": 0
+      },
+      {
+        "file": "art.spec.ts",
+        "line": 183,
+        "title": "参考图角色：受击使用新图集，死亡完整落地且隐藏武器",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 21142,
+        "retry": 0
+      },
+      {
+        "file": "art.spec.ts",
+        "line": 22,
+        "title": "待机与行走完整循环；停步重新待机、暂停冻结动作",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 7449,
+        "retry": 0
+      },
+      {
+        "file": "art.spec.ts",
+        "line": 60,
+        "title": "真实图集：四向翻面/握持/遮挡，跑步换帧不改变身体中心",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 13341,
+        "retry": 0
+      },
+      {
+        "file": "art.spec.ts",
+        "line": 116,
+        "title": "重锤挥动可暂停保存，正式刷新续玩保留挥动和命中记录",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 11924,
+        "retry": 0
+      },
+      {
+        "file": "art.spec.ts",
+        "line": 155,
+        "title": "标题与 HUD 完整画面；触屏提示使用轮盘说明",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 8460,
+        "retry": 0
+      },
+      {
+        "file": "art.spec.ts",
+        "line": 183,
+        "title": "参考图角色：受击使用新图集，死亡完整落地且隐藏武器",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 21468,
+        "retry": 0
+      },
+      {
+        "file": "audio.spec.ts",
+        "line": 12,
+        "title": "真实 AudioContext：手柄暂停仅静音，后台和退出才 suspend，回到游戏可重新发声",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 8999,
+        "retry": 0
+      },
+      {
+        "file": "audio.spec.ts",
+        "line": 12,
+        "title": "真实 AudioContext：手柄暂停仅静音，后台和退出才 suspend，回到游戏可重新发声",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 10014,
+        "retry": 0
+      },
+      {
+        "file": "bestiary.spec.ts",
+        "line": 19,
+        "title": "图鉴全部条目、裁剪比例、键盘二维选择、尺寸变化与返回主城",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 15419,
+        "retry": 0
+      },
+      {
+        "file": "bestiary.spec.ts",
+        "line": 134,
+        "title": "鼠标在网格外松开、取消或关闭重开后，键盘和手柄焦点仍同步选择与详情",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 5287,
+        "retry": 0
+      },
+      {
+        "file": "bestiary.spec.ts",
+        "line": 200,
+        "title": "图鉴英文手柄：X 打开、四向移动、右摇杆读长文、B 关闭不穿透",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 5274,
+        "retry": 0
+      },
+      {
+        "file": "bestiary.spec.ts",
+        "line": 242,
+        "title": "触屏网格拖动只滚动不选中，点按更新详情；旧冒险与档案保持原文",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 767,
+        "retry": 0
+      },
+      {
+        "file": "bestiary.spec.ts",
+        "line": 19,
+        "title": "图鉴全部条目、裁剪比例、键盘二维选择、尺寸变化与返回主城",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 15510,
+        "retry": 0
+      },
+      {
+        "file": "bestiary.spec.ts",
+        "line": 134,
+        "title": "鼠标在网格外松开、取消或关闭重开后，键盘和手柄焦点仍同步选择与详情",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4980,
+        "retry": 0
+      },
+      {
+        "file": "bestiary.spec.ts",
+        "line": 200,
+        "title": "图鉴英文手柄：X 打开、四向移动、右摇杆读长文、B 关闭不穿透",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4818,
+        "retry": 0
+      },
+      {
+        "file": "bestiary.spec.ts",
+        "line": 242,
+        "title": "触屏网格拖动只滚动不选中，点按更新详情；旧冒险与档案保持原文",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4248,
+        "retry": 0
+      },
+      {
+        "file": "bestiaryLifecycle.spec.ts",
+        "line": 58,
+        "title": "真实主城输入冻结、恢复和开关/重进：DOM、纹理、监听与 alpha 扫描不增长",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 8127,
+        "retry": 0
+      },
+      {
+        "file": "bestiaryLifecycle.spec.ts",
+        "line": 58,
+        "title": "真实主城输入冻结、恢复和开关/重进：DOM、纹理、监听与 alpha 扫描不增长",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 8760,
+        "retry": 0
+      },
+      {
+        "file": "combat.spec.ts",
+        "line": 65,
+        "title": "开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来（固定种子不变）",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 14213,
+        "retry": 0
+      },
+      {
+        "file": "combat.spec.ts",
+        "line": 105,
+        "title": "移动中（含暂停恢复后）鼠标瞄准以玩家当前身体中心为原点",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3398,
+        "retry": 0
+      },
+      {
+        "file": "combat.spec.ts",
+        "line": 156,
+        "title": "未固定种子时重来换新种子；点暂停键不会重来",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 12439,
+        "retry": 0
+      },
+      {
+        "file": "combat.spec.ts",
+        "line": 65,
+        "title": "开局 → 射击 → 击杀 → 受伤 → 死亡 → 重来（固定种子不变）",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 13680,
+        "retry": 0
+      },
+      {
+        "file": "combat.spec.ts",
+        "line": 105,
+        "title": "移动中（含暂停恢复后）鼠标瞄准以玩家当前身体中心为原点",
+        "project": "mobile-landscape",
+        "status": "skipped",
+        "durationMs": 638,
+        "retry": 0
+      },
+      {
+        "file": "combat.spec.ts",
+        "line": 156,
+        "title": "未固定种子时重来换新种子；点暂停键不会重来",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 11414,
+        "retry": 0
+      },
+      {
+        "file": "debug.spec.ts",
+        "line": 30,
+        "title": "正式地牢调试面板：特效计数可见，跟随与横屏缩放后仍完整留在画布内",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 6934,
+        "retry": 0
+      },
+      {
+        "file": "debug.spec.ts",
+        "line": 68,
+        "title": "调试模式：F1 切换碰撞框，F2 清房",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4331,
+        "retry": 0
+      },
+      {
+        "file": "debug.spec.ts",
+        "line": 97,
+        "title": "非调试模式：F1 / F2 不生效，没有调试探针",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4009,
+        "retry": 0
+      },
+      {
+        "file": "debug.spec.ts",
+        "line": 114,
+        "title": "?god=1：被怪物围住也不掉血",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 14954,
+        "retry": 0
+      },
+      {
+        "file": "debug.spec.ts",
+        "line": 30,
+        "title": "正式地牢调试面板：特效计数可见，跟随与横屏缩放后仍完整留在画布内",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 7829,
+        "retry": 0
+      },
+      {
+        "file": "debug.spec.ts",
+        "line": 68,
+        "title": "调试模式：F1 切换碰撞框，F2 清房",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4943,
+        "retry": 0
+      },
+      {
+        "file": "debug.spec.ts",
+        "line": 97,
+        "title": "非调试模式：F1 / F2 不生效，没有调试探针",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3946,
+        "retry": 0
+      },
+      {
+        "file": "debug.spec.ts",
+        "line": 114,
+        "title": "?god=1：被怪物围住也不掉血",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 14267,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 6,
+        "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 12778,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 51,
+        "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 16359,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 109,
+        "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3646,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 124,
+        "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 6259,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 146,
+        "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 9172,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 166,
+        "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 27273,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 166,
+        "title": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 14042,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 302,
+        "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2990,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 316,
+        "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2993,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 6,
+        "title": "demo：默认地牢入口、行动按钮、真实走门、清房与暂停",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 13494,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 51,
+        "title": "demo：有存档按 Enter 继续且保留检查点，死亡结算与重来完整释放",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 17061,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 109,
+        "title": "demo：暂停退出保留入口检查点，继续不重复输入界面",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4476,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 124,
+        "title": "demo：手柄菜单松开再确认，暂停继续后能切回键盘",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 6520,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 146,
+        "title": "demo：语言与反馈设置持久保存，英文游戏与暂停菜单可用",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 9183,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 166,
+        "title": "demo：右摇杆瞄准与 Arcade 命中击败 Boss，保持 RT 不跳过结算",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 27623,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 166,
+        "title": "demo：步枪耗尽停火，保持 RT 换回手枪后零能量继续射击",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 14400,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 302,
+        "title": "demo：存储被禁用仍可开局，明确显示未保存状态",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3239,
+        "retry": 0
+      },
+      {
+        "file": "demo.spec.ts",
+        "line": 316,
+        "title": "demo：按住摇杆时，第二指按下技能立即生效，无需松手",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2890,
+        "retry": 0
+      },
+      {
+        "file": "face.spec.ts",
+        "line": 5,
+        "title": "待机与行走的全部帧使用相同眼睛像素，左右移动时不改变形状",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 10975,
+        "retry": 0
+      },
+      {
+        "file": "face.spec.ts",
+        "line": 5,
+        "title": "待机与行走的全部帧使用相同眼睛像素，左右移动时不改变形状",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 11998,
+        "retry": 0
+      },
+      {
+        "file": "fxRender.spec.ts",
+        "line": 37,
+        "title": "100 火花 ABAB 渲染：纹理复用减少几何提交，保持画布和批次",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 8465,
+        "retry": 0
+      },
+      {
+        "file": "fxRender.spec.ts",
+        "line": 37,
+        "title": "100 火花 ABAB 渲染：纹理复用减少几何提交，保持画布和批次",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 8324,
+        "retry": 0
+      },
+      {
+        "file": "hdPresentation.spec.ts",
+        "line": 4,
+        "title": "1080p 直接绘制像素贴图，菜单、战斗与重启保持同一坐标系",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 10857,
+        "retry": 0
+      },
+      {
+        "file": "hdPresentation.spec.ts",
+        "line": 4,
+        "title": "1080p 直接绘制像素贴图，菜单、战斗与重启保持同一坐标系",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 12216,
+        "retry": 0
+      },
+      {
+        "file": "hub.spec.ts",
+        "line": 6,
+        "title": "主城不改写旧局，门可取消；续玩原局，新冒险才替换",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 16964,
+        "retry": 0
+      },
+      {
+        "file": "hub.spec.ts",
+        "line": 69,
+        "title": "手柄走到门口后需松开再确认，不会一次按键穿过对话框",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 5951,
+        "retry": 0
+      },
+      {
+        "file": "hub.spec.ts",
+        "line": 91,
+        "title": "手机只用左摇杆与门按钮即可进入地牢，开屏控件不溢出",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 549,
+        "retry": 0
+      },
+      {
+        "file": "hub.spec.ts",
+        "line": 6,
+        "title": "主城不改写旧局，门可取消；续玩原局，新冒险才替换",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 18275,
+        "retry": 0
+      },
+      {
+        "file": "hub.spec.ts",
+        "line": 69,
+        "title": "手柄走到门口后需松开再确认，不会一次按键穿过对话框",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 6945,
+        "retry": 0
+      },
+      {
+        "file": "hub.spec.ts",
+        "line": 91,
+        "title": "手机只用左摇杆与门按钮即可进入地牢，开屏控件不溢出",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 7254,
+        "retry": 0
+      },
+      {
+        "file": "input.spec.ts",
+        "line": 4,
+        "title": "键鼠、暂停恢复、后台清空；更新提示在暂停键下方",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2690,
+        "retry": 0
+      },
+      {
+        "file": "input.spec.ts",
+        "line": 33,
+        "title": "触屏多指移动和射击互不串扰，取消释放；CSS 大小与缩放",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 601,
+        "retry": 0
+      },
+      {
+        "file": "input.spec.ts",
+        "line": 62,
+        "title": "Phaser 手柄插件：摇杆、RT、Start 与断连清零",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2302,
+        "retry": 0
+      },
+      {
+        "file": "input.spec.ts",
+        "line": 4,
+        "title": "键鼠、暂停恢复、后台清空；更新提示在暂停键下方",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3459,
+        "retry": 0
+      },
+      {
+        "file": "input.spec.ts",
+        "line": 33,
+        "title": "触屏多指移动和射击互不串扰，取消释放；CSS 大小与缩放",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3354,
+        "retry": 0
+      },
+      {
+        "file": "input.spec.ts",
+        "line": 62,
+        "title": "Phaser 手柄插件：摇杆、RT、Start 与断连清零",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2895,
+        "retry": 0
+      },
+      {
+        "file": "legacyCatalog.spec.ts",
+        "line": 46,
+        "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 22456,
+        "retry": 0
+      },
+      {
+        "file": "legacyCatalog.spec.ts",
+        "line": 46,
+        "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 21818,
+        "retry": 0
+      },
+      {
+        "file": "legacyCatalog.spec.ts",
+        "line": 46,
+        "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 23917,
+        "retry": 0
+      },
+      {
+        "file": "legacyCatalog.spec.ts",
+        "line": 46,
+        "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 22611,
+        "retry": 0
+      },
+      {
+        "file": "legacyCatalog.spec.ts",
+        "line": 121,
+        "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 970,
+        "retry": 0
+      },
+      {
+        "file": "legacyCatalog.spec.ts",
+        "line": 46,
+        "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=0",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 23699,
+        "retry": 0
+      },
+      {
+        "file": "legacyCatalog.spec.ts",
+        "line": 46,
+        "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=42",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 24237,
+        "retry": 0
+      },
+      {
+        "file": "legacyCatalog.spec.ts",
+        "line": 46,
+        "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=12345",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 23240,
+        "retry": 0
+      },
+      {
+        "file": "legacyCatalog.spec.ts",
+        "line": 46,
+        "title": "selectRoomLayouts matches real DemoSession selection and root invariants: seed=4294967295",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 22813,
+        "retry": 0
+      },
+      {
+        "file": "legacyCatalog.spec.ts",
+        "line": 121,
+        "title": "graybox contours block real Arcade movement and use template ports for every linked door",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1034,
+        "retry": 0
+      },
+      {
+        "file": "lifecycle.spec.ts",
+        "line": 6,
+        "title": "竖屏：桌面留黑边继续运行，触屏显示遮罩并暂停；转横屏恢复",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2423,
+        "retry": 0
+      },
+      {
+        "file": "lifecycle.spec.ts",
+        "line": 48,
+        "title": "后台暂停与输入设备的竖屏策略独立",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2446,
+        "retry": 0
+      },
+      {
+        "file": "lifecycle.spec.ts",
+        "line": 75,
+        "title": "竖窗口切换触屏模式时实时显示或移除遮罩",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1791,
+        "retry": 0
+      },
+      {
+        "file": "lifecycle.spec.ts",
+        "line": 6,
+        "title": "竖屏：桌面留黑边继续运行，触屏显示遮罩并暂停；转横屏恢复",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3085,
+        "retry": 0
+      },
+      {
+        "file": "lifecycle.spec.ts",
+        "line": 48,
+        "title": "后台暂停与输入设备的竖屏策略独立",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2434,
+        "retry": 0
+      },
+      {
+        "file": "lifecycle.spec.ts",
+        "line": 75,
+        "title": "竖窗口切换触屏模式时实时显示或移除遮罩",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 1821,
+        "retry": 0
+      },
+      {
+        "file": "mobileFire.spec.ts",
+        "line": 6,
+        "title": "有符号触点 -1：右轮盘拖拽和中心长按都实际出弹",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 130,
+        "retry": 0
+      },
+      {
+        "file": "mobileFire.spec.ts",
+        "line": 6,
+        "title": "有符号触点 -42：右轮盘拖拽和中心长按都实际出弹",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 31,
+        "retry": 0
+      },
+      {
+        "file": "mobileFire.spec.ts",
+        "line": 6,
+        "title": "有符号触点 -2147483648：右轮盘拖拽和中心长按都实际出弹",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 33,
+        "retry": 0
+      },
+      {
+        "file": "mobileFire.spec.ts",
+        "line": 63,
+        "title": "正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 34,
+        "retry": 0
+      },
+      {
+        "file": "mobileFire.spec.ts",
+        "line": 108,
+        "title": "手机基础手枪按住可出弹；能量不足有提示并能切回手枪",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 34,
+        "retry": 0
+      },
+      {
+        "file": "mobileFire.spec.ts",
+        "line": 6,
+        "title": "有符号触点 -1：右轮盘拖拽和中心长按都实际出弹",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 8631,
+        "retry": 0
+      },
+      {
+        "file": "mobileFire.spec.ts",
+        "line": 6,
+        "title": "有符号触点 -42：右轮盘拖拽和中心长按都实际出弹",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 9959,
+        "retry": 0
+      },
+      {
+        "file": "mobileFire.spec.ts",
+        "line": 6,
+        "title": "有符号触点 -2147483648：右轮盘拖拽和中心长按都实际出弹",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 9827,
+        "retry": 0
+      },
+      {
+        "file": "mobileFire.spec.ts",
+        "line": 63,
+        "title": "正式 demo：双指移动开火及兼容鼠标事件后仍产生子弹",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 8767,
+        "retry": 0
+      },
+      {
+        "file": "mobileFire.spec.ts",
+        "line": 108,
+        "title": "手机基础手枪按住可出弹；能量不足有提示并能切回手枪",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 11219,
+        "retry": 0
+      },
+      {
+        "file": "monsterArt.spec.ts",
+        "line": 54,
+        "title": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2315,
+        "retry": 0
+      },
+      {
+        "file": "monsterArt.spec.ts",
+        "line": 63,
+        "title": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 1987,
+        "retry": 0
+      },
+      {
+        "file": "monsterArt.spec.ts",
+        "line": 54,
+        "title": "全部怪物实际 PNG 帧有透明留白、硬像素 alpha 与完整内容",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2544,
+        "retry": 0
+      },
+      {
+        "file": "monsterArt.spec.ts",
+        "line": 63,
+        "title": "全部动作/翻面/腾空不动 Arcade 身体，墙角/圆桶/恢复及大→小槽位复用",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2016,
+        "retry": 0
+      },
+      {
+        "file": "pwa.spec.ts",
+        "line": 62,
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 12825,
+        "retry": 0
+      },
+      {
+        "file": "pwa.spec.ts",
+        "line": 179,
+        "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 28855,
+        "retry": 0
+      },
+      {
+        "file": "pwa.spec.ts",
+        "line": 62,
+        "title": "子路径 manifest、安装条件、断网刷新及关闭后重开",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 12833,
+        "retry": 0
+      },
+      {
+        "file": "pwa.spec.ts",
+        "line": 179,
+        "title": "连续发布只提示更新，稍后及另一标签页均不强制刷新",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 26537,
+        "retry": 0
+      },
+      {
+        "file": "resumeProduction.spec.ts",
+        "line": 5,
+        "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 14328,
+        "retry": 0
+      },
+      {
+        "file": "resumeProduction.spec.ts",
+        "line": 5,
+        "title": "生产入口：战斗暂停保存后刷新，正式校验器继续原局与飞行子弹，倒计时完全冻结",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 14367,
+        "retry": 0
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "line": 17,
+        "title": "不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 9798,
+        "retry": 0
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "line": 82,
+        "title": "真实移动到四个墙角时人物持续居中，房间外露出黑色背景",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 30816,
+        "retry": 0
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "line": 160,
+        "title": "跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 5869,
+        "retry": 0
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "line": 221,
+        "title": "移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 5243,
+        "retry": 0
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "line": 264,
+        "title": "主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 864,
+        "retry": 0
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "line": 17,
+        "title": "不同横屏尺寸下世界视口铺满画布，状态条与触控覆盖在画面内",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 9961,
+        "retry": 0
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "line": 82,
+        "title": "真实移动到四个墙角时人物持续居中，房间外露出黑色背景",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 34560,
+        "retry": 0
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "line": 160,
+        "title": "跟随真实移动，接近门时完整显示门口，切房后玩家仍在可见范围",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 6306,
+        "retry": 0
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "line": 221,
+        "title": "移动镜头后的鼠标瞄准仍指向实际目标，地图按钮点击不射击",
+        "project": "mobile-landscape",
+        "status": "skipped",
+        "durationMs": 1093,
+        "retry": 0
+      },
+      {
+        "file": "roomCamera.spec.ts",
+        "line": 264,
+        "title": "主城切换地牢后，新触控器仍使用固定摇杆，远拖保持移动",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 7132,
+        "retry": 0
+      },
+      {
+        "file": "smoke.spec.ts",
+        "line": 8,
+        "title": "启动 → 菜单 → 灰盒房间，无报错",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 5146,
+        "retry": 0
+      },
+      {
+        "file": "smoke.spec.ts",
+        "line": 28,
+        "title": "?scene=Game 可以跳过菜单",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 2592,
+        "retry": 0
+      },
+      {
+        "file": "smoke.spec.ts",
+        "line": 8,
+        "title": "启动 → 菜单 → 灰盒房间，无报错",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 5812,
+        "retry": 0
+      },
+      {
+        "file": "smoke.spec.ts",
+        "line": 28,
+        "title": "?scene=Game 可以跳过菜单",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 2932,
+        "retry": 0
+      },
+      {
+        "file": "stress.spec.ts",
+        "line": 8,
+        "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 29065,
+        "retry": 0
+      },
+      {
+        "file": "stress.spec.ts",
+        "line": 8,
+        "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 11862,
+        "retry": 0
+      },
+      {
+        "file": "stress.spec.ts",
+        "line": 8,
+        "title": "stress=1：混合怪、柱子、测量导出与退出清理",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 27933,
+        "retry": 0
+      },
+      {
+        "file": "stress.spec.ts",
+        "line": 8,
+        "title": "stress=combat：混合怪、柱子、测量导出与退出清理",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 11702,
+        "retry": 0
+      },
+      {
+        "file": "talents.spec.ts",
+        "line": 21,
+        "title": "祭台迁移、解锁失败与写盘失败、连续购买、重置确认；新局生效",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 10401,
+        "retry": 0
+      },
+      {
+        "file": "talents.spec.ts",
+        "line": 83,
+        "title": "满级天赋同版本续玩冻结开局配置；更新结束旧局并保留档案",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 13057,
+        "retry": 0
+      },
+      {
+        "file": "talents.spec.ts",
+        "line": 120,
+        "title": "损坏档案备份原文；已结算的冒险不会出现在继续入口",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 10389,
+        "retry": 0
+      },
+      {
+        "file": "talents.spec.ts",
+        "line": 141,
+        "title": "手机祭台：左摇杆移动、点按加点和关闭后重新交互",
+        "project": "desktop",
+        "status": "skipped",
+        "durationMs": 97,
+        "retry": 0
+      },
+      {
+        "file": "talents.spec.ts",
+        "line": 168,
+        "title": "天赋面板英文与手柄：长按确认不穿透，释放后可关闭",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4811,
+        "retry": 0
+      },
+      {
+        "file": "talents.spec.ts",
+        "line": 21,
+        "title": "祭台迁移、解锁失败与写盘失败、连续购买、重置确认；新局生效",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 11678,
+        "retry": 0
+      },
+      {
+        "file": "talents.spec.ts",
+        "line": 83,
+        "title": "满级天赋同版本续玩冻结开局配置；更新结束旧局并保留档案",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 13651,
+        "retry": 0
+      },
+      {
+        "file": "talents.spec.ts",
+        "line": 120,
+        "title": "损坏档案备份原文；已结算的冒险不会出现在继续入口",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 11092,
+        "retry": 0
+      },
+      {
+        "file": "talents.spec.ts",
+        "line": 141,
+        "title": "手机祭台：左摇杆移动、点按加点和关闭后重新交互",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 5377,
+        "retry": 0
+      },
+      {
+        "file": "talents.spec.ts",
+        "line": 168,
+        "title": "天赋面板英文与手柄：长按确认不穿透，释放后可关闭",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 7447,
+        "retry": 0
+      },
+      {
+        "file": "uiLayout.spec.ts",
+        "line": 54,
+        "title": "暂停编辑：拖动、大小透明度、真实触控与刷新恢复均使用保存布局",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 10910,
+        "retry": 0
+      },
+      {
+        "file": "uiLayout.spec.ts",
+        "line": 114,
+        "title": "标题设置可编辑；取消不保存，默认值须保存，重叠与存储失败有反馈",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 7960,
+        "retry": 0
+      },
+      {
+        "file": "uiLayout.spec.ts",
+        "line": 54,
+        "title": "暂停编辑：拖动、大小透明度、真实触控与刷新恢复均使用保存布局",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 13451,
+        "retry": 0
+      },
+      {
+        "file": "uiLayout.spec.ts",
+        "line": 114,
+        "title": "标题设置可编辑；取消不保存，默认值须保存，重叠与存储失败有反馈",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 8198,
+        "retry": 0
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "line": 3,
+        "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4253,
+        "retry": 0
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "line": 44,
+        "title": "production graybox screenshot floor 1",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3071,
+        "retry": 0
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "line": 44,
+        "title": "production graybox screenshot floor 2",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3807,
+        "retry": 0
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "line": 44,
+        "title": "production graybox screenshot floor 3",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 3915,
+        "retry": 0
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "line": 44,
+        "title": "production graybox screenshot floor 4",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 4068,
+        "retry": 0
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "line": 3,
+        "title": "a new release returns to menu even with direct game URL, preserving profile and future resources",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4202,
+        "retry": 0
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "line": 44,
+        "title": "production graybox screenshot floor 1",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 3234,
+        "retry": 0
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "line": 44,
+        "title": "production graybox screenshot floor 2",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4042,
+        "retry": 0
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "line": 44,
+        "title": "production graybox screenshot floor 3",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4078,
+        "retry": 0
+      },
+      {
+        "file": "updateBoundary.spec.ts",
+        "line": 44,
+        "title": "production graybox screenshot floor 4",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 4000,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 169,
+        "title": "unified environment zones stay visible on each floor and recycle their existing display slots",
+        "project": "desktop",
+        "status": "passed",
+        "durationMs": 8396,
+        "retry": 0
+      },
+      {
+        "file": "productionGeometry.spec.ts",
+        "line": 169,
+        "title": "unified environment zones stay visible on each floor and recycle their existing display slots",
+        "project": "mobile-landscape",
+        "status": "passed",
+        "durationMs": 7283,
+        "retry": 0
+      }
+    ]
+  },
+  "history": [
+    "Initial all-directory 304-case process ended after case 44 without final JSON; not counted as completed.",
+    "The old complete-journey fixture failure at (240,71) reproduced on unchanged e653d0a; only route helper now reads actual template port entrance.",
+    "Initial added falling-rock count assumed one rock, while fixture contains seven staggered rocks. Expected count now covers all active airborne rocks and late samples must be nonempty. Initial desktop failure preserved; corrected cases rerun in remainder batch.",
+    "The obsolete cross-build talent test was corrected to the already accepted update policy; first two failures and corrected desktop/mobile results are retained. No save production code changed.",
+    "Visual inspection found new poison texture too faint at the legacy flat-fill alpha. Final delta only raises texture opacity and preserves legacy boundary/bubbles; full check and six affected desktop/mobile hazard/skill cases rerun, not the whole inventory.",
+    "Temporary single-process fallback caused context reuse errors; final launch configuration supports separate browser processes."
+  ],
+  "sources": "Only safe test metadata and assertion results are copied here; raw Playwright config/env and binary attachments are not included."
+}

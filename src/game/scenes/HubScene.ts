@@ -6,7 +6,11 @@ import { createCombatWorld, type CombatWorld } from '../../sim/combat/api';
 import { EventBus } from '../../sim/core/EventBus';
 import type { GameEvents } from '../../sim/core/events';
 import { createInputFrame } from '../../sim/core/types';
-import { ART } from '../assets/demoArt';
+import { MAP_ART, mapDoorRect } from '../../data/mapArt';
+import { LEGACY_V1 } from '../../data/roomTemplates/legacyV1';
+import { compileRoom } from '../../sim/dungeon/compileRoom';
+import { roomTemplate } from '../../sim/dungeon/roomCatalog';
+import { RoomGeometry } from '../../sim/geometry/RoomGeometry';
 import { configureCamera } from '../configureCamera';
 import { RoomCamera } from '../RoomCamera';
 import { setTestHooks } from '../testHooks';
@@ -33,18 +37,32 @@ export class HubScene extends Scene {
   create(): void {
     retryPendingRewards();
     configureCamera(this);
-    createRoomArt(this);
+    // The hub uses the same solid rectangular wall projection as the fourth-floor rooms.
+    const room = compileRoom(roomTemplate('modular_v2/milk/empty')!);
+    const port = room.ports.find((p) => p.id === LEGACY_V1.ports[0]!.id)!;
+    createRoomArt(this)?.show('temple', [], room, [], [port]);
+    const door = mapDoorRect(port);
     this.add
-      .image(HUB.door.x, HUB.door.y, ART.doors, 'open')
-      .setDisplaySize(52, 39)
+      .image(door.x, door.y, MAP_ART.doorTextures.horizontal, 'temple_north_open')
+      .setOrigin(0)
+      .setDisplaySize(door.width, door.height)
       .setDepth(DEPTH.floorDecals);
     this.add
-      .image(HUB.altar.x, HUB.altar.y - 10, ART.altar)
+      .image(HUB.altar.x, HUB.altar.y - 10, MAP_ART.textures.hub, 'altar')
       .setDisplaySize(62, 62)
       .setDepth(DEPTH.floorDecals);
-    this.sim = createCombatWorld({ seed: 0, bus: this.bus, maxActors: 1, maxBullets: 1 });
+    const bounds = { ...room.bounds },
+      geometry = new RoomGeometry(room.boundary, [], 0);
+    this.sim = createCombatWorld({
+      seed: 0,
+      bus: this.bus,
+      maxActors: 1,
+      maxBullets: 1,
+      bounds,
+      geometry: () => geometry,
+    });
     this.sim.spawnPlayer('ai_proto', HUB.spawn.x, HUB.spawn.y);
-    this.bridge = new CombatBridge(this, this.sim);
+    this.bridge = new CombatBridge(this, this.sim, bounds);
     this.bridge.actors.enableArt(this);
     if (this.bridge.actors.art) this.bridge.actors.art.showWeapon = false;
     this.scene.launch(InputScene.KEY, { hub: true });

@@ -1,0 +1,49 @@
+{
+  "method": "Current pixel probes with only ModularRoomArt replaced by unmodified f386549 source through a Vite pre-load plugin; no working source edits.",
+  "results": {
+    "temple": {
+      "topDifferences": 9216,
+      "baseDifferences": 4926,
+      "verticalDifferences": 3072,
+      "seams": 160,
+      "samples": 9216,
+      "holes": 0,
+      "coverage": 12656,
+      "doorWallPixels": 15,
+      "openPorts": 5
+    },
+    "wreck": {
+      "topDifferences": 9216,
+      "baseDifferences": 4925,
+      "verticalDifferences": 3072,
+      "seams": 158,
+      "samples": 9216,
+      "holes": 0,
+      "coverage": 12656,
+      "doorWallPixels": 15,
+      "openPorts": 5
+    },
+    "abyss": {
+      "topDifferences": 9216,
+      "baseDifferences": 4927,
+      "verticalDifferences": 3072,
+      "seams": 160,
+      "samples": 9216,
+      "holes": 0,
+      "coverage": 12516,
+      "doorWallPixels": 15,
+      "openPorts": 5
+    },
+    "milk": {
+      "topDifferences": 9216,
+      "baseDifferences": 4928,
+      "verticalDifferences": 3072,
+      "seams": 160,
+      "samples": 9216,
+      "holes": 0,
+      "coverage": 12208,
+      "doorWallPixels": 15,
+      "openPorts": 5
+    }
+  }
+}

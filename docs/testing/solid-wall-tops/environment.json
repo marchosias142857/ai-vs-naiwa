@@ -1,0 +1,10 @@
+{
+  "baseHead": "9d09080893c89f5c4e322a7a264020fea30fae5b",
+  "codeSource": "current working tree; final src tree recorded in PR",
+  "externalPlaywrightConfig": "import base from './foundations-followup/playwright.config.ts';\nimport chromium from './verification-tools/node_modules/@sparticuz/chromium/build/index.js';\nconst root = '/workspace/scratch/b82bcc13d770';\nexport default { ...base, testDir: root + '/foundations-followup/tests/e2e',\n  outputDir: root + '/solid-wall-tops-results', workers: 1, retries: 0,\n  reporter: [['list'], ['json', { outputFile: root + '/foundations-followup/docs/testing/solid-wall-tops/browser.json' }]],\n  projects: base.projects.filter(p => p.name !== 'webkit-mobile').map(p => ({ ...p, use: { ...p.use,\n    launchOptions: { executablePath: root + '/verification-browser/chromium',\n      env: { ...process.env, FONTCONFIG_FILE: root + '/verification-browser/fonts.conf' },\n      args: chromium.args.filter(a => !['--single-process', '--no-zygote'].includes(a)) } } })),\n  webServer: undefined\n};\n",
+  "srcTree": "3b7f5806b750df1970f7121095fdeb2cc525d7e8",
+  "publicTree": "3518a7dbbef0a1b6c907f97d88656af8af6feff6",
+  "testsTree": "2559becef702c2e5702e4c7e6666a8e991c9c4ab",
+  "targetedTestDriverNode": "v24.22.1",
+  "fullCheckNode": "v22.23.4"
+}

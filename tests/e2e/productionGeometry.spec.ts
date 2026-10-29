@@ -52,6 +52,31 @@ test.afterAll(async () => {
     });
   if (directory) await rm(directory, { recursive: true, force: true });
 });
+test('solid wall tops stop real Arcade movement, projectiles and sight in all four themes', async ({
+  page,
+}, info) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto(url);
+  await page.waitForFunction(() => window.productionGeometry);
+  for (const floor of [1, 2, 3, 4]) {
+    const results = await page.evaluate((f) => window.productionGeometry.wallCollision(f), floor);
+    expect(results).toHaveLength(floor === 2 ? 2 : 1);
+    for (const result of results) {
+      expect(result.actualY).toBeCloseTo(result.expectedY, 3);
+      expect(result.projectileY).toBeCloseTo(result.topY, 3);
+      expect(result.projectileBlocked).toBe(true);
+      expect(result.losBlocked).toBe(true);
+      expect(result.spawnBlocked).toBe(true);
+    }
+    await info.attach(`solid-walls-floor-${floor}`, {
+      body: JSON.stringify(results),
+      contentType: 'application/json',
+    });
+  }
+  expect(errors).toEqual([]);
+});
+
 for (const scenario of ['pillar', 'boundary', 'near-wall', 'rain', 'brood', 'los', 'hop'] as const)
   test(`production geometry: ${scenario}`, async ({ page }, info) => {
     const errors: string[] = [];
@@ -78,4 +103,111 @@ test('production geometry: fresh session restore sees the landed pool before the
   await page.evaluate((s) => window.productionGeometry.restore(s), state);
   await page.waitForFunction(() => window.productionGeometry.restored);
   expect(await page.evaluate(() => window.productionGeometry.rockPresent())).toBe(true);
+});
+
+for (const floor of [1, 2, 3, 4])
+  test(`map art dense showcase: floor ${floor}`, async ({ page }, info) => {
+    const errors: string[] = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    await page.goto(url);
+    await page.waitForFunction(() => window.productionGeometry);
+    const report = await page.evaluate((f) => window.productionGeometry.showcase(f), floor);
+    expect(report.actors).toBeGreaterThan(20);
+    expect(report.rocks).toBe(7);
+    expect(report.bullets).toBeGreaterThan(0);
+    expect(errors).toEqual([]);
+    await page.screenshot({ path: info.outputPath(`map-dense-${floor}.png`), scale: 'css' });
+    await info.attach('dense-scene', { body: JSON.stringify(report), contentType: 'application/json' });
+  });
+
+for (const floor of [1, 2, 3, 4])
+  test(`map wall review: floor ${floor}`, async ({ page }, info) => {
+    const errors: string[] = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    await page.goto(url + '/?missing=legacy-doors');
+    await page.waitForFunction(() => window.productionGeometry);
+    for (const focus of [
+      'room',
+      'door',
+      'corner',
+      'side-open',
+      'side-locked',
+      'obstacle',
+      'north',
+      'south',
+      'east',
+      'west',
+    ] as const) {
+      const report = await page.evaluate(
+        ({ floor, focus }) => window.productionGeometry.walls(floor, focus),
+        { floor, focus },
+      );
+      expect(report.doors).toBe(report.expectedDoors);
+      expect(report.lockedDoors).toBe(focus === 'side-locked' ? report.expectedDoors : 0);
+      if (focus.startsWith('side')) expect(report.sideDoors).toBeGreaterThan(0);
+      if (focus === 'south') expect(report.southAlignment).toBeCloseTo(0, 8);
+      await page.screenshot({ path: info.outputPath(`wall-${floor}-${focus}.png`), scale: 'css' });
+    }
+    expect(errors).toEqual([]);
+  });
+
+test('map object atlas missing uses graybox without missing object frames', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  page.on('console', (message) => {
+    if (/missing|not found/i.test(message.text()) && /texture|frame/i.test(message.text()))
+      errors.push(message.text());
+  });
+  await page.goto(url + '/?missing=objects');
+  await page.waitForFunction(() => window.productionGeometry);
+  expect(errors).toEqual([]);
+});
+
+for (const floor of [1, 2, 3])
+  test(`unified trap states and inset borders: floor ${floor}`, async ({ page }, info) => {
+    await page.goto(url);
+    await page.waitForFunction(() => window.productionGeometry);
+    await page.evaluate((f) => window.productionGeometry.walls(f, 'room'), floor);
+    for (const state of ['idle', 'warn', 'on', 'broken'] as const) {
+      const frames = await page.evaluate((s) => window.productionGeometry.trapState(s), state);
+      expect(frames.length).toBeGreaterThan(0);
+      if (floor < 3 && state !== 'broken') expect(frames).toContain(`spikes_${state}`);
+      if (floor === 2)
+        expect(frames).toContain(
+          state === 'broken' ? 'barrel_broken' : state === 'idle' ? 'barrel' : 'barrel_hit',
+        );
+      await page.screenshot({ path: info.outputPath(`unified-traps-${floor}-${state}.png`), scale: 'css' });
+    }
+  });
+
+test('unified chest, exit and supply pickups use actual game objects', async ({ page }, info) => {
+  await page.goto(url);
+  await page.waitForFunction(() => window.productionGeometry);
+  for (const kind of ['chest', 'exit'] as const) {
+    const frames = await page.evaluate((k) => window.productionGeometry.objects(k), kind);
+    expect(frames).toContain(kind === 'chest' ? 'chest_open' : 'crystal');
+    for (const name of ['pickup_coin', 'pickup_energy', 'pickup_health']) expect(frames).toContain(name);
+    await page.screenshot({ path: info.outputPath(`unified-${kind}.png`), scale: 'css' });
+  }
+});
+
+test('unified environment zones stay visible on each floor and recycle their existing display slots', async ({
+  page,
+}, info) => {
+  await page.goto(url);
+  await page.waitForFunction(() => window.productionGeometry);
+  for (const floor of [1, 2, 3, 4]) {
+    await page.evaluate((f) => window.productionGeometry.walls(f, 'room'), floor);
+    const before = await page.evaluate(() => window.productionGeometry.zones(false));
+    for (let i = 0; i < 3; i++) {
+      const active = await page.evaluate(() => window.productionGeometry.zones(true));
+      expect(active.frames).toEqual(['hazard_milk', 'hazard_poison']);
+      expect(active.opaqueEnough).toBe(true);
+      expect([active.children, active.textures]).toEqual([before.children, before.textures]);
+      if (!i) await page.screenshot({ path: info.outputPath(`unified-zones-${floor}.png`), scale: 'css' });
+      const cleared = await page.evaluate(() => window.productionGeometry.zones(false));
+      expect(cleared.frames).toEqual([]);
+      expect([cleared.children, cleared.textures]).toEqual([before.children, before.textures]);
+    }
+  }
 });

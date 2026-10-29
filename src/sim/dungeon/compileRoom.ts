@@ -17,13 +17,17 @@ export interface BoundaryBox {
   readonly height: number;
 }
 export interface CompiledRoom {
+  readonly bounds: Readonly<{ x: number; y: number; width: number; height: number }>;
   readonly boundary: readonly Point[];
+  /** Grid-aligned wall bases; the physical boundary excludes their complete raised silhouette. */
+  readonly artBoundary: readonly Point[];
   readonly cuts: readonly BoundaryBox[];
   readonly obstacles: readonly GeometryObstacle[];
   readonly ports: readonly {
     readonly id: string;
     readonly direction: Point;
     readonly center: Point;
+    readonly artCenter?: Point;
     readonly entrance: Point;
   }[];
   readonly spawns: readonly Anchor[];
@@ -31,14 +35,43 @@ export interface CompiledRoom {
 }
 /** Compiles once when entering a room; the polygon and Arcade infill share one contour table. */
 export function compileRoom(t: RoomTemplate): CompiledRoom {
-  const b = LEGACY_V1.bounds,
-    cx = b.x + b.width / 2,
-    cy = b.y + b.height / 2;
-  const shape = t.id.startsWith('modular_v2/') ? MODULAR_V2.shapes[t.theme] : MODULAR_V2.shapes.milk;
-  const boundary = shape.points.map(([x, y]) => ({ x: b.x + x, y: b.y + y }));
+  const origin = LEGACY_V1.bounds,
+    cx = origin.x + origin.width / 2,
+    cy = origin.y + origin.height / 2;
+  const modular = t.id.startsWith('modular_v2/');
+  const shape = modular ? MODULAR_V2.shapes[t.theme] : MODULAR_V2.shapes.milk;
+  const apron = modular ? MODULAR_V2.southApron : 0,
+    projection = modular ? MODULAR_V2.wall.faceHeight : 0;
+  const artBoundary = shape.points.map(([x, y]) => ({
+    x: origin.x + x,
+    y: origin.y + y + (y > origin.height / 2 ? apron : 0),
+  }));
+  // Clockwise contours: a horizontal edge travelling west faces the room from below.
+  // Its raised square and wall body are both solid, not just the unprojected base edge.
+  const boundary = artBoundary.map((p, i, points) => {
+    const prev = points[(i + points.length - 1) % points.length]!,
+      next = points[(i + 1) % points.length]!;
+    const south = (prev.y === p.y && prev.x > p.x) || (next.y === p.y && p.x > next.x);
+    return { x: p.x, y: p.y - (south ? projection : 0) };
+  });
+  const x = Math.min(...boundary.map((p) => p.x)),
+    y = Math.min(...boundary.map((p) => p.y));
+  const b = {
+    x,
+    y,
+    width: Math.max(...boundary.map((p) => p.x)) - x,
+    height: Math.max(...boundary.map((p) => p.y)) - y,
+  };
+  const artBottom = Math.max(...artBoundary.map((p) => p.y));
+  const shapeBottom = Math.max(...shape.points.map((p) => p[1]));
   const cuts = shape.cuts.map(([x, y, width, height]) => ({
-    x: b.x + x + width / 2,
-    y: b.y + y + height / 2,
+    x: origin.x + x + width / 2,
+    y:
+      origin.y +
+      y +
+      (y > origin.height / 2 ? apron : 0) +
+      height / 2 -
+      (y + height === shapeBottom ? projection : 0),
     width,
     height,
   }));
@@ -105,15 +138,23 @@ export function compileRoom(t: RoomTemplate): CompiledRoom {
       if (geometry.canOccupy({ x, y }, maxSpawnRadius, 'spawn'))
         spawns.push({ id: `spawn:${String(spawns.length).padStart(3, '0')}`, x, y });
   if (!spawns.length) throw new RangeError('no safe spawn anchors');
-  const ports = LEGACY_V1.ports.map((p) =>
-    p.id === 'north'
-      ? {
-          ...p,
-          center: { x: b.x + shape.northX, y: b.y },
-          entrance: { x: b.x + shape.northX, y: b.y + LEGACY_V1.doorRules.entranceInset },
-        }
-      : p,
-  );
+  const ports = LEGACY_V1.ports.map((p) => {
+    const dx = p.direction.x,
+      dy = p.direction.y;
+    const center = {
+      x: dx < 0 ? b.x : dx > 0 ? b.x + b.width : p.id === 'north' ? origin.x + shape.northX : cx,
+      y: dy < 0 ? b.y : dy > 0 ? b.y + b.height : cy,
+    };
+    return {
+      ...p,
+      center,
+      artCenter: { x: center.x, y: dy > 0 ? artBottom : center.y },
+      entrance: {
+        x: center.x - dx * LEGACY_V1.doorRules.entranceInset,
+        y: center.y - dy * LEGACY_V1.doorRules.entranceInset,
+      },
+    };
+  });
   for (const p of ports)
     if (!geometry.canOccupy(p.entrance, maxSpawnRadius, 'spawn')) throw new RangeError('blocked port');
   const safe = (point: Point, reward = false): Point => {
@@ -133,7 +174,9 @@ export function compileRoom(t: RoomTemplate): CompiledRoom {
     return fallback;
   };
   return {
+    bounds: b,
     boundary,
+    artBoundary,
     cuts,
     obstacles,
     ports,

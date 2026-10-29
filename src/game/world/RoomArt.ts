@@ -5,6 +5,10 @@ import { ENVIRONMENT_ART } from '../../data/art';
 import { ROOM_ART, ROOM_ART_SCALE } from '../../data/roomArt';
 import type { RoomTheme } from '../../data/schema/traps';
 import { GRAYBOX_BOUNDS as B } from './graybox';
+import { MAP_ART } from '../../data/mapArt';
+import { ModularRoomArt } from './ModularRoomArt';
+import type { CompiledRoom } from '../../sim/dungeon/compileRoom';
+import type { TrapPlacement } from '../../data/schema/traps';
 
 type ThemeArt = RoomTheme['art'];
 type RoomFrame = keyof typeof ROOM_ART;
@@ -36,7 +40,17 @@ const DECOR_SPOTS: readonly (readonly [number, number])[] = [
  * 房间美术（ADR 0032 起按楼层换主题）。地面、边墙、嵌花、摆设和内墙贴图都在初始化时预热，
  * 换房只换贴图与位置，不增删对象。`temple` 是原有的海底石殿画面。
  */
-export class RoomArt {
+export interface RoomArt {
+  readonly drawsBlocks: boolean;
+  show(
+    theme: ThemeArt,
+    boxes: readonly Box[],
+    room?: CompiledRoom,
+    traps?: readonly TrapPlacement[],
+    ports?: CompiledRoom['ports'],
+  ): void;
+}
+export class LegacyRoomArt implements RoomArt {
   private readonly floor: GameObjects.TileSprite;
   private readonly inlays: GameObjects.Image[] = [];
   private readonly walls: GameObjects.Image[] = [];
@@ -162,7 +176,10 @@ export class RoomArt {
 }
 
 /** 房间共用一套地面与边墙；没有正式图集时返回 null，调用方退回灰盒画法。 */
-export function createRoomArt(scene: Scene): RoomArt | null {
+export function createRoomArt(scene: Scene, modularOnly = false): RoomArt | null {
+  if (Object.values(MAP_ART.textures).every((key) => scene.textures.exists(key)))
+    return new ModularRoomArt(scene);
+  if (modularOnly) return null;
   if (!scene.textures.exists(ART.environment)) return null;
-  return new RoomArt(scene);
+  return new LegacyRoomArt(scene);
 }

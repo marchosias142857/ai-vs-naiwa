@@ -19,9 +19,13 @@ test('生产入口：战斗暂停保存后刷新，正式校验器继续原局�
   await page.waitForFunction(() => window.__AVN__!.demo!.alive > 0);
   await expect(page.locator('.demo-hint')).toContainText(isMobile ? '点击「冲刺」' : 'Space');
   if (isMobile) await expect(page.locator('.demo-hint')).not.toContainText('Space');
-  // 鼠标按住连发；先等实际子弹存在，再暂停同步落盘。
+  // 从入场门朝房间内部开火，避免瞄准角色中心沿用旧方向、子弹立刻撞近墙。
+  // 保留真实输入与飞行弹体断言，再暂停同步落盘。
   const canvas = (await page.locator('#game canvas').boundingBox())!;
-  await page.mouse.move(canvas.x + canvas.width / 2, canvas.y + canvas.height / 2);
+  await page.mouse.move(
+    canvas.x + canvas.width / 2 + (link.dx * canvas.width) / 4,
+    canvas.y + canvas.height / 2 + (link.dy * canvas.height) / 4,
+  );
   await page.mouse.down();
   await page.waitForFunction(() => window.__AVN__!.demo!.bullets > 0);
   await page.keyboard.press('Escape');

@@ -29,8 +29,9 @@ export class CombatBridge {
   constructor(
     private readonly scene: Scene,
     readonly sim: CombatWorld,
+    readonly bounds = { ...GRAYBOX_BOUNDS },
   ) {
-    const b = GRAYBOX_BOUNDS;
+    const b = this.bounds;
     scene.physics.world.setBounds(b.x, b.y, b.width, b.height);
     this.actors = new CombatActors(scene, sim);
     this.bullets = new BulletPool(scene, sim);
@@ -42,6 +43,11 @@ export class CombatBridge {
     scene.physics.world.on('worldstep', this.tick);
     this.actors.apply();
     scene.events.once('shutdown', this.destroy);
+  }
+  /** Share the same mutable envelope with sim and RoomDirector before any physics step. */
+  setRoomBounds(bounds: Readonly<typeof GRAYBOX_BOUNDS>): void {
+    Object.assign(this.bounds, bounds);
+    this.scene.physics.world.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
   }
   /** PRE_UPDATE 每渲染帧调用一次；复制快照，边沿留到第一个物理步。 */
   setInput(frame: Readonly<InputFrame>): void {

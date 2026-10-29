@@ -1,0 +1,119 @@
+[
+  {
+    "name": "ground",
+    "sourceFile": "ground-v5.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "sourceBytes": 1681698,
+    "runtimeBytes": 1281192,
+    "sourceSha256": "56a708d9eae4a04b87197985473802a5afddcbdbef95921c26c7d3333c4fe036",
+    "runtimeSha256": "33826608341f8f5e5aeac4fd2c386518938c6116e2f182dbb8ba6d04215a5652",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "blocks",
+    "sourceFile": "blocks-v3.png",
+    "size": [
+      1289,
+      1220
+    ],
+    "sourceBytes": 880454,
+    "runtimeBytes": 604656,
+    "sourceSha256": "411949d3f5a4943cc77352005f1f9c98a8aa888fa698b6f019742fb41a91c78d",
+    "runtimeSha256": "b1a1fd4e226a2d1b41bef5b88ee819f5279b5d78500e329fc912fafd3c95a5d5",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "doors",
+    "sourceFile": "horizontal-v3.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sourceBytes": 1982145,
+    "runtimeBytes": 1458902,
+    "sourceSha256": "cc82f7d9aa134e05e6abf128b2f0adcd39139f9f96a4dbe450cba680c51d3387",
+    "runtimeSha256": "76c5d8c2e7919323f81e9bbe5644d644828f67ef8fa016530161d960c4c9fc95",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "sideDoors",
+    "sourceFile": "vertical-v3.png",
+    "size": [
+      1266,
+      1242
+    ],
+    "sourceBytes": 904532,
+    "runtimeBytes": 677810,
+    "sourceSha256": "98445ba2070b1dcd8fe23885164262cfd8533eb31357e4e25741a00bd8c7a2a5",
+    "runtimeSha256": "ca431c31cf8cd9c74d029f120e533867c7138ddc07c0fad4141005106872e950",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "objects",
+    "sourceFile": "mechanisms-v3.png",
+    "size": [
+      1268,
+      1240
+    ],
+    "sourceBytes": 1527712,
+    "runtimeBytes": 1225842,
+    "sourceSha256": "cc9dba45329f5791e033836ee268a9996a17646136a479ec16dcf586437842c2",
+    "runtimeSha256": "e2a1e5c67627585afd476b70b369f561930e10a9a418d0f7c18a05b4d7f8ecdf",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "rims",
+    "sourceFile": "rims-v3.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sourceBytes": 1500494,
+    "runtimeBytes": 1017120,
+    "sourceSha256": "88019430945c544b5e2793066ffe1ed914fe7fea176c5e968b5558ab99099f03",
+    "runtimeSha256": "14dd7748001cd0ecb6054eb68da28460b426097e3b25930f5d7ee0637f595681",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "hub",
+    "sourceFile": "hub-v3.png",
+    "size": [
+      1268,
+      1241
+    ],
+    "sourceBytes": 821552,
+    "runtimeBytes": 597106,
+    "sourceSha256": "76d7de394f73fb77b9c06d2e7f757f54c6f1355196a98a31cfd02f04d924ffe1",
+    "runtimeSha256": "266a7471c1260615ec35344476b6c8e0343d446496179e8293b43429b0e18710",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "effects",
+    "sourceFile": "effects-v3.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "sourceBytes": 1378524,
+    "runtimeBytes": 933582,
+    "sourceSha256": "44cecddd2bbf7342ec0cb9b7b995106259acc0db0926176e8af95a187dd0c3b2",
+    "runtimeSha256": "295b294663d68cc8aab6f33e13c8c2edd094dcbaae34e8c9e588b46db3f890ef",
+    "decodedRGBAIdentical": true
+  },
+  {
+    "name": "walls",
+    "sourceFile": "wall-model-v17.png",
+    "size": [
+      1774,
+      887
+    ],
+    "sourceBytes": 1224132,
+    "runtimeBytes": 833946,
+    "sourceSha256": "0226d0fc518bc892dd284311e51c44b8c05f721038f83846a10786019e514ddf",
+    "runtimeSha256": "871687aeb3471ee39504a4c1ed26962f59a65b6e357a5ff3df3c0367573cbd5b",
+    "decodedRGBAIdentical": true
+  }
+]

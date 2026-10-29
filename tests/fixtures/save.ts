@@ -93,7 +93,7 @@ function next(id: number): void {
   const s = session(),
     from = s.dungeon.room,
     to = s.dungeon.map.rooms[id]!,
-    stage = doorStage(to.x - from.x, to.y - from.y);
+    stage = doorStage(s, to.x - from.x, to.y - from.y);
   walk(stage.x, stage.y);
   const input = createInputFrame();
   input.move.x = to.x - from.x;

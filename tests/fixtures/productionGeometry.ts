@@ -1,4 +1,5 @@
-import { AUTO, Game, Scene, Scale, type Physics } from 'phaser';
+import { DungeonRun } from '../../src/sim/run/DungeonRun';
+import { AUTO, Game, Scene, Scale, type Physics, type GameObjects } from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT, RENDER_SCALE } from '../../src/config';
 import { BOSS_ROOM_LAYOUT } from '../../src/data/layouts';
 import { ENEMIES } from '../../src/data/enemies';
@@ -14,6 +15,11 @@ import { EventBus } from '../../src/sim/core/EventBus';
 import type { GameEvents } from '../../src/sim/core/events';
 import { createInputFrame } from '../../src/sim/core/types';
 import { createGeometryHit, GeometryMask } from '../../src/sim/geometry/RoomGeometry';
+import { ART } from '../../src/game/assets/demoArt';
+import { MAP_ART } from '../../src/data/mapArt';
+import { DemoObjects } from '../../src/game/world/DemoObjects';
+import { compileRoom } from '../../src/sim/dungeon/compileRoom';
+import { roomTemplate } from '../../src/sim/dungeon/roomCatalog';
 
 /** Real DemoSession, physics, art and pooled hazards. Only starting arrangements are fixtures.
  * No injected geometry provider, fake AI stages, velocities, actions or collision callbacks.
@@ -28,6 +34,9 @@ class GeometryScene extends Scene {
   create(data?: { restored?: SessionSnapshot }): void {
     createPlaceholderTextures(this);
     installDemoArt(this);
+    const missing = new URLSearchParams(location.search).get('missing');
+    if (missing === 'legacy-doors') this.textures.remove(ART.doors);
+    if (missing === 'objects') this.textures.remove(MAP_ART.textures.objects);
     this.physics.disableUpdate();
     this.scene.launch(InputScene.KEY, { demo: true });
     const ui = this.scene.get(InputScene.KEY) as InputScene;
@@ -36,6 +45,8 @@ class GeometryScene extends Scene {
       runId: 'production-geometry-fixture',
     });
     const { sim, bridge, arena } = session;
+    const objects = new DemoObjects(this, session);
+    objects.update();
     const input = createInputFrame();
     const actions: GameEvents['enemy:acted'][] = [];
     const shots: number[] = [];
@@ -72,6 +83,267 @@ class GeometryScene extends Scene {
     const player = sim.playerId!;
     this.cameras.main.setZoom(RENDER_SCALE * 1.5).centerOn(B.x + B.width / 2, B.y + B.height / 2);
     window.productionGeometry = {
+      wallCollision: (floor) => {
+        const run = new DungeonRun(42, new EventBus(), floor);
+        const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
+        const id = `modular_v2/${theme}/empty`;
+        arena.show(run, id);
+        const room = compileRoom(roomTemplate(id)!);
+        const edges = room.artBoundary.flatMap((a, i, points) => {
+          const b = points[(i + 1) % points.length]!;
+          return a.y === b.y && a.x > b.x
+            ? [{ x: b.x + (a.x - b.x) * 0.7, y: a.y - MAP_ART.wallHeight }]
+            : [];
+        });
+        return edges.map((edge) => {
+          pin(player, edge.x, edge.y - 25);
+          input.move.x = 0;
+          input.move.y = 1;
+          for (let i = 0; i < 90; i++) step();
+          input.move.y = 0;
+          const actor = sim.getActor(player)!;
+          const q = arena.prepareGeometry(),
+            hit = createGeometryHit();
+          q.traceSegment(
+            { x: edge.x, y: edge.y - 20 },
+            { x: edge.x, y: edge.y + 4 },
+            GeometryMask.projectile,
+            hit,
+          );
+          return {
+            expectedY: edge.y - actor.radius,
+            actualY: actor.y,
+            projectileY: hit.y,
+            topY: edge.y,
+            projectileBlocked: hit.hit && hit.kind === 'boundary',
+            losBlocked: !arena.lineOfSight(edge.x, edge.y - 20, edge.x, edge.y + 4),
+            spawnBlocked: !arena.isFree(edge.x, edge.y + 4, 0),
+          };
+        });
+      },
+      trapState: (state) => {
+        const traps = sim.traps.filter((t) => t.active);
+        for (const t of traps)
+          Object.assign(
+            t,
+            t.kind === 'spikes'
+              ? { state: state === 'broken' ? 'idle' : state }
+              : t.kind === 'barrel'
+                ? { hp: state === 'idle' ? 8 : 2, state: state === 'broken' ? 'broken' : 'idle' }
+                : t.kind === 'mine'
+                  ? { state: state === 'idle' ? 'idle' : 'fuse', time: 5 }
+                  : {},
+          );
+        session.update();
+        const target = traps.find((t) => t.kind === 'spikes') ?? traps[0]!;
+        this.cameras.main.setZoom(10).centerOn(target.x, target.y);
+        return this.children.list
+          .filter(
+            (o) =>
+              (o.type === 'Image' || o.type === 'TileSprite') &&
+              (o as GameObjects.Image).visible &&
+              (o as GameObjects.Image).texture.key === MAP_ART.textures.objects,
+          )
+          .map((o) => (o as GameObjects.Image).frame.name);
+      },
+      objects: (kind) => {
+        const run = session.dungeon;
+        run.roomId = run.map.rooms.find((r) => r.kind === kind)!.id;
+        arena.show(run, 'modular_v2/temple/empty');
+        session.loot.clear();
+        session.loot.reward(240, 150);
+        session.update();
+        objects.update();
+        this.cameras.main.setZoom(10).centerOn(240, 135);
+        return this.children.list
+          .filter(
+            (o) =>
+              o.type === 'Image' &&
+              (o as GameObjects.Image).visible &&
+              [MAP_ART.textures.objects, MAP_ART.textures.hub].some(
+                (key) => key === (o as GameObjects.Image).texture.key,
+              ),
+          )
+          .map((o) => (o as GameObjects.Image).frame.name);
+      },
+      walls: (floor, focus) => {
+        const direction =
+          focus === 'north'
+            ? { x: 0, y: -1 }
+            : focus === 'south'
+              ? { x: 0, y: 1 }
+              : focus === 'east'
+                ? { x: 1, y: 0 }
+                : focus === 'west'
+                  ? { x: -1, y: 0 }
+                  : undefined;
+        let run = new DungeonRun(42, new EventBus(), floor);
+        const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
+        for (let seed = 42; seed < 170; seed++) {
+          run = new DungeonRun(seed, new EventBus(), floor);
+          const room = run.map.rooms
+            .filter(
+              (r) =>
+                r.kind === (floor === 4 ? 'boss' : 'combat') &&
+                (!direction ||
+                  r.links.some(
+                    (id) =>
+                      run.map.rooms[id]!.x - r.x === direction.x &&
+                      run.map.rooms[id]!.y - r.y === direction.y,
+                  )),
+            )
+            .sort((a, b) => b.links.length - a.links.length)[0];
+          if (room) {
+            run.roomId = room.id;
+            break;
+          }
+          if (seed === 169) throw Error('No generated room with requested gate direction');
+        }
+        run.phase = focus === 'side-locked' ? 'fighting' : 'exploring';
+        arena.show(
+          run,
+          `modular_v2/${theme}/${floor === 4 ? 'boss' : floor === 3 || focus === 'obstacle' ? 'combat_1' : 'combat_0'}`,
+        );
+        bridge.actors.apply();
+        session.update();
+        const adjacent =
+          run.map.rooms[
+            run.room.links.find((id) =>
+              direction
+                ? run.map.rooms[id]!.x - run.room.x === direction.x &&
+                  run.map.rooms[id]!.y - run.room.y === direction.y
+                : focus.startsWith('side')
+                  ? run.map.rooms[id]!.x !== run.room.x
+                  : run.map.rooms[id]!.y < run.room.y,
+            ) ?? run.room.links[0]!
+          ]!;
+        const port = arena.port(adjacent.x - run.room.x, adjacent.y - run.room.y);
+        const corner =
+          floor === 3
+            ? { x: 208, y: 71 }
+            : floor === 4
+              ? { x: 376, y: 47 }
+              : { x: floor === 1 ? 336 : 352, y: 71 };
+        const obstacle = this.children.list.find(
+          (o) =>
+            o.type === 'TileSprite' &&
+            (o as unknown as { texture: { key: string }; visible: boolean }).texture.key ===
+              MAP_ART.textures.blocks &&
+            (o as unknown as { visible: boolean }).visible,
+        ) as unknown as { x: number; y: number };
+        this.cameras.main
+          .setZoom(focus === 'room' ? 4.25 : 12)
+          .centerOn(
+            focus === 'room'
+              ? 240
+              : focus === 'obstacle'
+                ? obstacle.x
+                : focus !== 'corner'
+                  ? port.center.x
+                  : corner.x,
+            focus === 'room'
+              ? 135
+              : focus === 'obstacle'
+                ? obstacle.y
+                : focus !== 'corner'
+                  ? port.center.y
+                  : corner.y,
+          );
+        const visibleDoors = this.children.list.filter(
+          (o) =>
+            o.type === 'Image' &&
+            [MAP_ART.doorTextures.horizontal, MAP_ART.doorTextures.vertical].some(
+              (key) => key === (o as unknown as { texture: { key: string } }).texture.key,
+            ) &&
+            (o as unknown as { visible: boolean }).visible,
+        ) as unknown as Array<{
+          texture: { key: string };
+          frame: { name: string };
+          y: number;
+          originY: number;
+          displayHeight: number;
+        }>;
+        const south = visibleDoors.find((o) => o.frame.name === `${theme}_south_open`);
+        return {
+          theme,
+          doors: visibleDoors.length,
+          sideDoors: visibleDoors.filter((o) => o.texture.key === MAP_ART.doorTextures.vertical).length,
+          lockedDoors: visibleDoors.filter((o) => o.frame.name.endsWith('_locked')).length,
+          expectedDoors: run.room.links.length,
+          southAlignment:
+            focus === 'south' && south ? south.y - south.originY * south.displayHeight - port.center.y : null,
+        };
+      },
+      showcase: (floor) => {
+        const run = new DungeonRun(42, new EventBus(), floor);
+        const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
+        run.roomId = run.map.rooms.find((r) => r.kind === (floor === 4 ? 'boss' : 'combat'))!.id;
+        arena.show(
+          run,
+          `modular_v2/${theme}/${floor === 4 ? 'boss' : floor === 3 ? 'combat_1' : 'combat_0'}`,
+        );
+        const candidates = arena.spawnAnchors();
+        const kinds = ['naiwa_scout', 'naiwa_turret', 'naiwa_burrower', 'naiwa_tank'] as const;
+        for (let i = 0; i < 30; i++) {
+          const p = candidates[i % candidates.length]!;
+          sim.spawnEnemy(kinds[i % kinds.length]!, p.x, p.y);
+        }
+        for (let i = 0; i < 7; i++) {
+          const p = candidates[candidates.length - 1 - i]!;
+          Object.assign(sim.rocks[i]!, {
+            active: true,
+            slot: i,
+            landed: true,
+            x: p.x,
+            y: p.y,
+            radius: 9,
+            time: 10,
+            fall: 1,
+            life: 60,
+            damage: 1,
+          });
+        }
+        bridge.actors.apply();
+        input.aim = { x: 340, y: 135 };
+        input.fire = true;
+        for (let i = 0; i < 180; i++) step();
+        session.update();
+        return {
+          theme,
+          rocks: sim.rocks.filter((r) => r.active).length,
+          actors: sim.actors.filter((a) => a.team === 'enemy' && a.phase !== 'dead').length,
+          traps: sim.traps.filter((t) => t.active).map((t) => ({ kind: t.kind, state: t.state })),
+          bullets: bridge.bullets.activeCount,
+        };
+      },
+      zones: (active) => {
+        for (let i = 0; i < 2; i++)
+          Object.assign(sim.zones[i]!, {
+            active,
+            kind: i ? 'poison' : 'milk',
+            x: i ? 274 : 206,
+            y: 148,
+            radius: 20,
+            duration: 10,
+            remaining: 6,
+          });
+        session.update();
+        this.cameras.main.setZoom(8).centerOn(240, 148);
+        const visible = this.children.list.filter(
+          (o): o is GameObjects.Image =>
+            'texture' in o &&
+            (o as GameObjects.Image).texture.key === MAP_ART.textures.effects &&
+            'visible' in o &&
+            o.visible === true &&
+            ['hazard_milk', 'hazard_poison'].includes(String((o as GameObjects.Image).frame.name)),
+        );
+        return {
+          frames: visible.map((o) => String(o.frame.name)).sort(),
+          opaqueEnough: visible.every((o) => o.alpha > 0.6),
+          children: this.children.length,
+          textures: this.textures.getTextureKeys().length,
+        };
+      },
       restored: !!data?.restored,
       restore: (state) => this.scene.restart({ restored: state }),
       rockSave: () => {
@@ -207,6 +479,51 @@ class GeometryScene extends Scene {
 declare global {
   interface Window {
     productionGeometry: {
+      wallCollision: (floor: number) => {
+        expectedY: number;
+        actualY: number;
+        projectileY: number;
+        topY: number;
+        projectileBlocked: boolean;
+        losBlocked: boolean;
+        spawnBlocked: boolean;
+      }[];
+      trapState: (state: 'idle' | 'warn' | 'on' | 'broken') => string[];
+      objects: (kind: 'chest' | 'exit') => string[];
+      walls: (
+        floor: number,
+        focus:
+          | 'room'
+          | 'door'
+          | 'corner'
+          | 'side-open'
+          | 'side-locked'
+          | 'obstacle'
+          | 'north'
+          | 'south'
+          | 'east'
+          | 'west',
+      ) => {
+        theme: string;
+        doors: number;
+        sideDoors: number;
+        lockedDoors: number;
+        expectedDoors: number;
+        southAlignment: number | null;
+      };
+      showcase: (floor: number) => {
+        theme: string;
+        rocks: number;
+        actors: number;
+        traps: { kind: string; state: string }[];
+        bullets: number;
+      };
+      zones: (active: boolean) => {
+        frames: string[];
+        opaqueEnough: boolean;
+        children: number;
+        textures: number;
+      };
       restored: boolean;
       restore: (state: SessionSnapshot) => void;
       rockSave: () => SessionSnapshot;

@@ -1,4 +1,5 @@
 import { bestiaryCards } from '../../src/sim/meta/bestiary';
+import { MAP_ART } from '../../src/data/mapArt';
 import { expect, test } from '@playwright/test';
 import { cp, mkdtemp, readFile, rm } from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -139,6 +140,26 @@ test('子路径 manifest、安装条件、断网刷新及关闭后重开', async
       expect(file.dimensions).toEqual([528, 528]);
       expect(file.size).toBeLessThan(300 * 1024);
     }
+  }
+  const modules = await reopened.evaluate(
+    async (sources) =>
+      Promise.all(
+        sources.map(async (source) => {
+          const response = await fetch(`assets/demo/${source}`);
+          const blob = await response.blob();
+          const bitmap = await createImageBitmap(blob);
+          const report = { ok: response.ok, type: blob.type, size: blob.size, width: bitmap.width };
+          bitmap.close();
+          return report;
+        }),
+      ),
+    Object.values(MAP_ART.sources),
+  );
+  for (const file of modules) {
+    expect(file.ok).toBe(true);
+    expect(file.type).toBe('image/webp');
+    expect(file.size).toBeLessThan(2 * 1024 * 1024);
+    expect(file.width).toBeGreaterThan(1000);
   }
   expect(await reopened.evaluate(() => window.__AVN__?.seed)).toBe(7);
   await expect(reopened.locator('#game canvas')).toBeVisible();
