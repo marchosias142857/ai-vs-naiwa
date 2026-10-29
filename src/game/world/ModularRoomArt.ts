@@ -49,7 +49,7 @@ export class ModularRoomArt implements RoomArt {
       this.blocks.push(
         scene.add
           .tileSprite(0, 0, 1, 1, MAP_ART.textures.blocks, 'temple_obstacle')
-          .setDepth(DEPTH.wallTops)
+          .setDepth(DEPTH.obstacles)
           .setVisible(false),
       );
     this.show('temple', [], undefined, [], [LEGACY_V1.ports[0]!]);
@@ -217,7 +217,7 @@ export class ModularRoomArt implements RoomArt {
     context.imageSmoothingEnabled = false;
     const source = this.scene.textures.get(MAP_ART.textures.ground).getSourceImage() as HTMLImageElement;
     context.drawImage(source, frame[0], frame[1], frame[2], frame[3], 0, 0, cellWidth, cellHeight);
-    // Repeat the complete brickwork unchanged so its joint layout and lighting stay consistent.
+    // Repeat the complete material unchanged, without rotation, mirroring or added seams.
     const pattern = this.texture.context.createPattern(canvas, 'repeat')!;
     pattern.setTransform(new DOMMatrix().scale(1 / MAP_ART.density));
     this.patterns.set(name, pattern);

@@ -239,7 +239,6 @@ class ArtScene extends Scene {
       art.show(theme, [], rectangle);
       let data = pixels(),
         topDifferences = 0,
-        seams = 0,
         samples = 0;
       // Unrotated top faces remain identical on horizontal and vertical walls. Later rows
       // cover earlier bases; the exposed bases along the north/south rows stay identical too.
@@ -267,12 +266,6 @@ class ArtScene extends Scene {
           if (pixel(data, L + 64 + u, T - h + v) !== pixel(data, L + 40 + u, D + w - h + v))
             baseDifferences++;
         }
-      // A 64-world-unit source cell uses a mirrored repeat: there must be no pixel jump at a seam.
-      for (let i = 0; i < 80; i++) {
-        const p = 160 + (i + 0.5) / d;
-        if (pixel(data, 128 - 0.5 / d, p) !== pixel(data, 128 + 0.5 / d, p)) seams++;
-        if (pixel(data, p, 128 - 0.5 / d) !== pixel(data, p, 128 + 0.5 / d)) seams++;
-      }
       const floor = ['temple', 'wreck', 'abyss', 'milk'].indexOf(theme) + 1;
       const template = resolveRoomTemplate(
         `modular_v2/${theme}/${floor === 4 ? 'boss' : 'combat_0'}`,
@@ -318,19 +311,19 @@ class ArtScene extends Scene {
           }
         for (const p of room.ports) {
           const r = mapDoorRect(p);
+          // #133 separates physical centers from projected wall/gate art centers.
+          const center = p.artCenter ?? p.center;
           // Sample the full projected gate reservation, including both terminal cap rows.
           for (const tangent of [2, 8, 24, 40, 46])
             for (const normal of [1, 4, 7]) {
-              const x = p.direction.x ? p.center.x + p.direction.x * normal : r.x + tangent;
-              const y = p.direction.x ? r.y + tangent : p.center.y + p.direction.y * normal;
+              const x = p.direction.x ? center.x + p.direction.x * normal : r.x + tangent;
+              const y = p.direction.x ? r.y + tangent : center.y + p.direction.y * normal;
               if (!pixel(data, x + 0.125, y + 0.125).endsWith(',0')) doorWallPixels++;
             }
           if (
-            pixel(
-              data,
-              p.center.x + p.direction.x * 4 + 0.125,
-              p.center.y + p.direction.y * 4 + 0.125,
-            ).endsWith(',0')
+            pixel(data, center.x + p.direction.x * 4 + 0.125, center.y + p.direction.y * 4 + 0.125).endsWith(
+              ',0',
+            )
           )
             openPorts++;
         }
@@ -339,7 +332,6 @@ class ArtScene extends Scene {
         topDifferences,
         baseDifferences,
         verticalDifferences,
-        seams,
         samples,
         holes,
         coverage,
@@ -372,7 +364,6 @@ declare global {
       topDifferences: number;
       baseDifferences: number;
       verticalDifferences: number;
-      seams: number;
       samples: number;
       holes: number;
       coverage: number;

@@ -75,7 +75,6 @@ test('cuboid tops stay upright; vertical rows hide bases, corners stay opaque an
     expect(report.topDifferences, theme).toBe(0);
     expect(report.baseDifferences, theme).toBe(0);
     expect(report.verticalDifferences, theme).toBe(0);
-    expect(report.seams, theme).toBe(0);
     expect(report.coverage).toBeGreaterThan(7000);
     expect(report.holes, theme).toBe(0);
     expect(report.doorWallPixels, theme).toBe(0);

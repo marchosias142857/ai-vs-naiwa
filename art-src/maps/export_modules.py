@@ -10,7 +10,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = Path(__file__).resolve().parent / 'sources'
 THEMES = ['temple', 'wreck', 'abyss', 'milk']
-ASSETS = {'ground': 'ground-v5', 'blocks': 'blocks-v3', 'doors': 'horizontal-v3',
+ASSETS = {'ground': 'ground-v6', 'blocks': 'blocks-v3', 'doors': 'horizontal-v3',
           'sideDoors': 'vertical-v3', 'objects': 'mechanisms-v3', 'rims': 'rims-v3',
           'hub': 'hub-v3', 'effects': 'effects-v3', 'walls': 'wall-model-v17'}
 frames, reports = {}, []
