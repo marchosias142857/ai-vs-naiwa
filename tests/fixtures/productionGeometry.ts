@@ -83,6 +83,33 @@ class GeometryScene extends Scene {
     const player = sim.playerId!;
     this.cameras.main.setZoom(RENDER_SCALE * 1.5).centerOn(B.x + B.width / 2, B.y + B.height / 2);
     window.productionGeometry = {
+      themedAssets: (floor, state) => {
+        const theme = roomTheme(floor).art;
+        const run = new DungeonRun(42, new EventBus(), floor);
+        arena.show(run, `modular_v2/${theme}/empty`);
+        // Exercise all themes even when the current room catalogue has no spike room.
+        sim.setTraps(9000 + floor, [
+          { kind: 'spikes', x: 220, y: 130, width: 32, height: 32, radius: 0, angle: 0, delay: 0 },
+        ]);
+        Object.assign(sim.traps[0]!, { state });
+        session.dungeon.roomId = session.dungeon.map.rooms.find((r) => r.kind === 'exit')!.id;
+        session.update();
+        objects.update();
+        this.cameras.main.setZoom(10).centerOn(240, 135);
+        return this.children.list
+          .filter(
+            (o) =>
+              (o.type === 'Image' || o.type === 'TileSprite') &&
+              (o as GameObjects.Image).visible &&
+              [MAP_ART.textures.spikes, MAP_ART.textures.crystals].some(
+                (key) => key === (o as GameObjects.Image).texture.key,
+              ),
+          )
+          .map((o) => {
+            const image = o as GameObjects.Image;
+            return { frame: String(image.frame.name), scaleX: image.scaleX, scaleY: image.scaleY };
+          });
+      },
       wallCollision: (floor) => {
         const run = new DungeonRun(42, new EventBus(), floor);
         const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
@@ -142,7 +169,9 @@ class GeometryScene extends Scene {
             (o) =>
               (o.type === 'Image' || o.type === 'TileSprite') &&
               (o as GameObjects.Image).visible &&
-              (o as GameObjects.Image).texture.key === MAP_ART.textures.objects,
+              [MAP_ART.textures.objects, MAP_ART.textures.spikes].some(
+                (key) => key === (o as GameObjects.Image).texture.key,
+              ),
           )
           .map((o) => (o as GameObjects.Image).frame.name);
       },
@@ -160,7 +189,7 @@ class GeometryScene extends Scene {
             (o) =>
               o.type === 'Image' &&
               (o as GameObjects.Image).visible &&
-              [MAP_ART.textures.objects, MAP_ART.textures.hub].some(
+              [MAP_ART.textures.objects, MAP_ART.textures.hub, MAP_ART.textures.crystals].some(
                 (key) => key === (o as GameObjects.Image).texture.key,
               ),
           )
@@ -479,6 +508,10 @@ class GeometryScene extends Scene {
 declare global {
   interface Window {
     productionGeometry: {
+      themedAssets: (
+        floor: number,
+        state: 'idle' | 'warn' | 'on',
+      ) => { frame: string; scaleX: number; scaleY: number }[];
       wallCollision: (floor: number) => {
         expectedY: number;
         actualY: number;

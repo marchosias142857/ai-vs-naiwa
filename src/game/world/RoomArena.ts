@@ -99,6 +99,10 @@ export class RoomArena {
         : scene.physics.add.overlap(bridge.bullets.group, this.walls, this.hitWall),
     ];
   }
+  /** The compiled room is the sole theme authority for props and traps. */
+  get artTheme(): RoomTheme['art'] {
+    return this.theme;
+  }
   private readonly hitWall = (object: unknown): void => {
     const slot = this.bridge.bullets.byImage.get(object as Physics.Arcade.Image);
     if (!slot?.id) return;

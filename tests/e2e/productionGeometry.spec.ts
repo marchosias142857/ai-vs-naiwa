@@ -171,7 +171,8 @@ for (const floor of [1, 2, 3])
     for (const state of ['idle', 'warn', 'on', 'broken'] as const) {
       const frames = await page.evaluate((s) => window.productionGeometry.trapState(s), state);
       expect(frames.length).toBeGreaterThan(0);
-      if (floor < 3 && state !== 'broken') expect(frames).toContain(`spikes_${state}`);
+      if (floor < 3 && state !== 'broken')
+        expect(frames).toContain(`${floor === 1 ? 'temple' : 'wreck'}_spikes_${state}`);
       if (floor === 2)
         expect(frames).toContain(
           state === 'broken' ? 'barrel_broken' : state === 'idle' ? 'barrel' : 'barrel_hit',
@@ -185,7 +186,7 @@ test('unified chest, exit and supply pickups use actual game objects', async ({ 
   await page.waitForFunction(() => window.productionGeometry);
   for (const kind of ['chest', 'exit'] as const) {
     const frames = await page.evaluate((k) => window.productionGeometry.objects(k), kind);
-    expect(frames).toContain(kind === 'chest' ? 'chest_open' : 'crystal');
+    expect(frames).toContain(kind === 'chest' ? 'chest_open' : 'temple_crystal');
     for (const name of ['pickup_coin', 'pickup_energy', 'pickup_health']) expect(frames).toContain(name);
     await page.screenshot({ path: info.outputPath(`unified-${kind}.png`), scale: 'css' });
   }
@@ -210,4 +211,28 @@ test('unified environment zones stay visible on each floor and recycle their exi
       expect([cleared.children, cleared.textures]).toEqual([before.children, before.textures]);
     }
   }
+});
+
+test('theme changes select matching crystals and all spike states without image stretching', async ({
+  page,
+}, info) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto(url);
+  await page.waitForFunction(() => window.productionGeometry);
+  for (const floor of [1, 2, 3, 4, 1]) {
+    const theme = ['temple', 'wreck', 'abyss', 'milk'][floor - 1]!;
+    for (const state of ['idle', 'warn', 'on'] as const) {
+      const result = await page.evaluate(
+        ({ floor, state }) => window.productionGeometry.themedAssets(floor, state),
+        { floor, state },
+      );
+      expect(result.map((o) => o.frame)).toEqual(
+        expect.arrayContaining([`${theme}_crystal`, `${theme}_spikes_${state}`]),
+      );
+      for (const o of result) expect(o.scaleX).toBeCloseTo(o.scaleY, 10);
+      await page.screenshot({ path: info.outputPath(`themed-${theme}-${state}.png`), scale: 'css' });
+    }
+  }
+  expect(errors).toEqual([]);
 });

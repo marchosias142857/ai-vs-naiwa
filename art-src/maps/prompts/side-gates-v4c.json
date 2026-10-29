@@ -1,0 +1,61 @@
+{
+  "version": "side-gates-v4c-candidate",
+  "status": "awaiting user visual review; not integrated",
+  "revision": "Keep black shadows; greatly darken theme-colored open-passage base fill",
+  "targetFrame": [
+    80,
+    480
+  ],
+  "sourceCanvas": [
+    1216,
+    1293
+  ],
+  "layout": {
+    "groups": [
+      [
+        "temple",
+        "wreck"
+      ],
+      [
+        "abyss",
+        "milk"
+      ]
+    ],
+    "withinGroup": [
+      "east_open",
+      "east_locked",
+      "west_open",
+      "west_locked"
+    ]
+  },
+  "generation": {
+    "tool": "built-in image_gen",
+    "prompt": "Precise local color correction only. Image1 is the current16-sprite side-gate sheet to EDIT. Image2 is the earlier dark version and is the reference for the ORIGINAL BLACK SHADOWS.\n\nUser correction: KEEP THE BLACK SHADOWS. Greatly darken the colored base fill in all eight OPEN recesses. They should look deeply shaded, with only a faint hint of their theme's color, not illuminated or brightly colored.\n\nEdit ONLY open passage interiors (columns1,3,5,7 of each row). Reduce the current interior base fill brightness by about60percent. Temple very dark blue-gray, wood very dark brown, abyss very dark muted indigo, sandstone very dark earthy brown. Approximate MIDDLE base colors: temple #202832, wreck #302218, abyss #20212e, milk #342b1d. Keep deepest contact/cast shadow regions near BLACK as in image2, including under the upper endcaps and along the inner beam edges. Do not recolor black shadows into brown/blue/gray; they remain black. Preserve their original shape and depth. The bottom recess floor surfaces should also be greatly dimmed; their theme hue can still be faintly visible. Keep subtle texture readable only upon close inspection. No glow, bright gradient or warm illumination.\n\nPreserve every other pixel and structure as closely as possible: all16sprite silhouettes,1:6proportions, square endcaps, upper-left highlights, material frames, bars and locks, positions,1216x1293canvas, true transparent exterior. All eight LOCKED gates remain as they are. Do not darken the outer frames or the complete sheet. Do not change any object geometry. This is ONLY greatly darkening the open-passage base color while retaining original BLACK shadows. No text, labels, extra decoration or background."
+  },
+  "validation": {
+    "openInteriorMedianRGB": {
+      "temple": [
+        31,
+        39,
+        47
+      ],
+      "wreck": [
+        48,
+        30,
+        19
+      ],
+      "abyss": [
+        36,
+        34,
+        46
+      ],
+      "milk": [
+        55,
+        41,
+        25
+      ]
+    },
+    "productionFrames": "Exact crop/cap bounds, alpha edges and uniform-scale integration still pending"
+  },
+  "approved": false
+}

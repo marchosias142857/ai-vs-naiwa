@@ -1,8 +1,11 @@
-"""Lossless encoding and measured frame metadata; never paints, resizes or alters alpha.
-Unified originals use wall-model-v18 and four ground-v7 atlases. Normalization is runtime-only.
+"""Lossless WebP encoding + measured, aspect-preserving source rectangles.
+
+Never repaints/resizes originals or changes alpha. Padding is a source rectangle,
+not a stretched silhouette. Wall/door fitting is uniform in the renderer.
 """
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from math import ceil
 import hashlib
 import json
 from PIL import Image
@@ -11,18 +14,27 @@ ROOT = Path(__file__).resolve().parents[2]
 SOURCE = Path(__file__).resolve().parent / 'sources'
 THEMES = ['temple', 'wreck', 'abyss', 'milk']
 ASSETS = {**{f'{theme}Ground': f'ground-{theme}-v7' for theme in THEMES},
-          'blocks': 'blocks-v3', 'doors': 'horizontal-v3',
-          'sideDoors': 'vertical-v3', 'objects': 'mechanisms-v3', 'rims': 'rims-v3',
-          'hub': 'hub-v3', 'effects': 'effects-v3', 'walls': 'wall-model-v18'}
-frames, reports = {}, []
+          'blocks': 'blocks-v4', 'doors': 'north-gates-v4b', 'southDoors': 'south-gates-v4b',
+          'sideDoors': 'side-gates-v4d-approved', 'objects': 'mechanisms-v4', 'rims': 'rims-v4',
+          'hub': 'hub-v4', 'effects': 'effects-v4c', 'walls': 'wall-variants-v19-approved',
+          'spikes': 'spikes-themes-v4', 'crystals': 'crystals-themes-v4'}
+frames, reports, measurements = {}, [], {}
 
-def frame(im, name, region, threshold=16, inset=0):
-    x, y, right, bottom = region
-    cell = im.crop(region)
-    box = cell.getchannel('A').point(lambda a: 255 if a > threshold else 0).getbbox()
+def frame(im, name, region, ratio=None, fixed=None, bottom=None):
+    x, y, right, end = region
+    box = im.crop(region).getchannel('A').point(lambda a: 255 if a > 200 else 0).getbbox()
     assert box, name
     l, t, r, b = box
-    frames[name] = [x+l+inset, y+t+inset, r-l-inset*2, b-t-inset*2]
+    x, y, w, h = x+l, y+t, r-l, b-t
+    measurements[name] = [x, y, w, h]
+    if ratio:
+        k = ceil(max(w/ratio[0], h/ratio[1]))
+        width, height = fixed or (ratio[0]*k, ratio[1]*k)
+        assert width >= w and height >= h, (name, box, fixed)
+        x, y = x-(width-w)//2, bottom-height if bottom is not None else y-(height-h)//2
+        w, h = width, height
+    assert x >= 0 and y >= 0 and x+w <= im.width and y+h <= im.height, name
+    frames[name] = [x, y, w, h]
 
 for name, asset in ASSETS.items():
     source = SOURCE / f'{asset}.png'
@@ -39,44 +51,65 @@ for name, asset in ASSETS.items():
                     'sourceSha256': hashlib.sha256(source.read_bytes()).hexdigest(),
                     'runtimeSha256': hashlib.sha256(output.read_bytes()).hexdigest(),
                     'decodedRGBAIdentical': True})
-    if name == 'walls':
-        for i, theme in enumerate(THEMES):
-            for part, y, bottom in [('top', 0, 456), ('face', 456, im.height)]:
-                frame(im, f'{theme}_wall_{part}', (i*im.width//4, y, (i+1)*im.width//4, bottom))
-    elif name.endswith('Ground'):
-        theme = name.removesuffix('Ground')
+    if name.endswith('Ground'):
         for i in range(10):
             x, y = (i%5)*im.width//5, (i//5)*im.height//2
             right, bottom = (i%5+1)*im.width//5, (i//5+1)*im.height//2
-            frames[f'{theme}_ground_{i}'] = [x, y, right-x, bottom-y]
-    elif name in ['blocks', 'rims']:
-        for i, theme in enumerate(THEMES):
-            frame(im, f'{theme}_{"obstacle" if name == "blocks" else "rim"}',
-                  ((i%2)*im.width//2, (i//2)*im.height//2, (i%2+1)*im.width//2, (i//2+1)*im.height//2), 200)
-    elif name in ['doors', 'sideDoors']:
-        xs = [0,400,770,1140,im.width] if name == 'doors' else [0,400,640,880,im.width]
-        ys = [0,285,495,710,im.height] if name == 'doors' else [0,312,623,937,im.height]
-        directions = ['north', 'south'] if name == 'doors' else ['east', 'west']
+            frames[f'{name.removesuffix("Ground")}_ground_{i}'] = [x,y,right-x,bottom-y]
+    elif name == 'walls':
+        xs, ys = [0,305,545,785,im.width], [0,510,940,im.height]
+        for row in range(3):
+            for col, theme in enumerate(THEMES):
+                frame(im, f'{theme}_wall_{row}', (xs[col],ys[row],xs[col+1],ys[row+1]))
+    elif name in ['doors', 'southDoors']:
+        ys = [0,330,610,900,im.height]
         for row, theme in enumerate(THEMES):
-            for col in range(4):
-                frame(im, f'{theme}_{directions[col//2]}_{"locked" if col%2 else "open"}',
-                      (xs[col],ys[row],xs[col+1],ys[row+1]), 200, 1)
+            for col, state in enumerate(['open','locked']):
+                frame(im, f'{theme}_{"north" if name == "doors" else "south"}_{state}',
+                      (col*im.width//2,ys[row],(col+1)*im.width//2,ys[row+1]))
+    elif name == 'sideDoors':
+        for i, theme in enumerate(THEMES):
+            for j in range(4):
+                col, row = (i%2)*4+j, i//2
+                frame(im, f'{theme}_{"east" if j<2 else "west"}_{"locked" if j%2 else "open"}',
+                      (col*im.width//8,row*im.height//2,(col+1)*im.width//8,(row+1)*im.height//2))
+    elif name in ['blocks','rims','crystals','effects']:
+        names = ([f'{t}_{ {"blocks":"obstacle","rims":"rim","crystals":"crystal"}[name]}' for t in THEMES]
+                 if name != 'effects' else ['hazard_rock','hazard_milk','hazard_poison','hazard_debris'])
+        for i, n in enumerate(names):
+            ratio = (14,15) if name == 'crystals' else ((1,1),(22,15),(1,1),(3,2))[i] if name == 'effects' else (1,1)
+            frame(im,n,((i%2)*im.width//2,(i//2)*im.height//2,(i%2+1)*im.width//2,(i//2+1)*im.height//2),ratio,
+                  (462,495) if name == 'crystals' else None)
+    elif name == 'spikes':
+        ys = [0,360,720,1080,im.height]
+        for row, theme in enumerate(THEMES):
+            for col, state in enumerate(['idle','warn','on']):
+                frame(im,f'{theme}_spikes_{state}',(col*im.width//3,ys[row],(col+1)*im.width//3,ys[row+1]),(1,1),(280,280),
+                      [342,685,1031,1373][row])
     elif name == 'objects':
-        names = ['spikes_idle','spikes_warn','spikes_on','current','weed','barrel','barrel_hit',
-                 'barrel_broken','mine','mine_lit','chest','chest_open','crystal','lantern','moss','coral']
-        ys = [0,326,630,910,im.height]
-        for i,n in enumerate(names):
-            frame(im,n,((i%4)*im.width//4,ys[i//4],(i%4+1)*im.width//4,ys[i//4+1]),200,
-                  8 if n in ['weed','current'] else 0)
+        specs = {
+          'weed': ((20,335,375,650),(1,1),None,None),
+          'barrel': ((380,335,625,650),(18,23),(216,276),626),
+          'barrel_hit': ((630,335,900,650),(18,23),(216,276),626),
+          'barrel_broken': ((900,335,1254,650),(21,13),None,None),
+          'mine': ((40,650,315,920),(1,1),(212,212),902),
+          'mine_lit': ((335,650,620,920),(1,1),(212,212),902),
+          'chest': ((625,650,925,920),(24,25),(264,275),915),
+          'chest_open': ((925,640,1240,920),(24,25),(264,275),915),
+          'lantern': ((400,925,570,1225),(10,17),None,None),
+          'moss': ((600,925,925,1225),(3,2),None,None),
+          'coral': ((925,925,1254,1240),(1,1),None,None)}
+        for n,(region,ratio,fixed,bottom) in specs.items(): frame(im,n,region,ratio,fixed,bottom)
+        # Interior of the square water tile, no transparent border in a repeated field.
+        frames['current'] = [940,54,264,264]
     elif name == 'hub':
-        xs,ys = [0,768,im.width],[0,740,im.height]
-        for i,n in enumerate(['altar','pickup_coin','pickup_health','pickup_energy']):
-            frame(im,n,(xs[i%2],ys[i//2],xs[i%2+1],ys[i//2+1]),200)
-    else:
-        for i,n in enumerate(['hazard_rock','hazard_milk','hazard_poison','hazard_debris']):
-            frame(im,n,((i%2)*im.width//2,(i//2)*im.height//2,(i%2+1)*im.width//2,(i//2+1)*im.height//2),16)
+        frame(im,'altar',(50,200,920,1050),(1,1))
+        for n, region in [('pickup_coin',(950,250,1240,550)),('pickup_health',(950,550,1240,900)),('pickup_energy',(950,920,1240,1225))]:
+            frame(im,n,region,(1,1))
 
-(ROOT/'src/data/mapArtFrames.ts').write_text('// Generated by art-src/maps/export_modules.py; measured source frames.\n'
+assert len(frames) == 128, len(frames)
+(ROOT/'src/data/mapArtFrames.ts').write_text('// Generated by art-src/maps/export_modules.py; measured source rectangles with logical frame padding.\n'
     'export const MAP_ART_FRAMES = '+json.dumps(frames,indent=2)+' as const satisfies Record<string, readonly [number, number, number, number]>;\n')
 (SOURCE.parent/'export-report.json').write_text(json.dumps(reports,indent=2)+'\n')
-print(json.dumps(reports,indent=2))
+(SOURCE.parent/'frame-measurements-v4.json').write_text(json.dumps({'note':'Opaque content bounds before source-frame padding. Original alpha unchanged.','bounds':measurements},indent=2)+'\n')
+print(json.dumps({'atlases':len(reports),'frames':len(frames),'bytes':sum(r['runtimeBytes'] for r in reports),'allLossless':True}))

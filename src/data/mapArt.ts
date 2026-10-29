@@ -4,42 +4,49 @@ import { MODULAR_V2 } from './roomTemplates/modularV2';
 /** World sizes are presentation only; collision footprints remain in room templates. */
 export const MAP_ART = {
   textures: {
-    rims: 'map_rims_v3',
-    doors: 'map_horizontal_v3',
-    objects: 'map_mechanisms_v3',
+    rims: 'map_rims_v4',
+    doors: 'map_north_gates_v4b',
+    southDoors: 'map_south_gates_v4b',
+    spikes: 'map_spikes_themes_v4',
+    crystals: 'map_crystals_themes_v4',
+    objects: 'map_mechanisms_v4',
     templeGround: 'map_ground_temple_v7',
     wreckGround: 'map_ground_wreck_v7',
     abyssGround: 'map_ground_abyss_v7',
     milkGround: 'map_ground_milk_v7',
-    blocks: 'map_blocks_v3',
-    walls: 'map_wall_model_v18',
-    sideDoors: 'map_vertical_v3',
-    hub: 'map_hub_v3',
-    effects: 'map_effects_v3',
+    blocks: 'map_blocks_v4',
+    walls: 'map_wall_variants_v19',
+    sideDoors: 'map_side_gates_v4d',
+    hub: 'map_hub_v4',
+    effects: 'map_effects_v4c',
   },
   sources: {
-    rims: 'map-rims-v3.webp',
-    doors: 'map-horizontal-v3.webp',
-    objects: 'map-mechanisms-v3.webp',
+    rims: 'map-rims-v4.webp',
+    doors: 'map-north-gates-v4b.webp',
+    southDoors: 'map-south-gates-v4b.webp',
+    spikes: 'map-spikes-themes-v4.webp',
+    crystals: 'map-crystals-themes-v4.webp',
+    objects: 'map-mechanisms-v4.webp',
     templeGround: 'map-ground-temple-v7.webp',
     wreckGround: 'map-ground-wreck-v7.webp',
     abyssGround: 'map-ground-abyss-v7.webp',
     milkGround: 'map-ground-milk-v7.webp',
-    blocks: 'map-blocks-v3.webp',
-    walls: 'map-wall-model-v18.webp',
-    sideDoors: 'map-vertical-v3.webp',
-    hub: 'map-hub-v3.webp',
-    effects: 'map-effects-v3.webp',
+    blocks: 'map-blocks-v4.webp',
+    walls: 'map-wall-variants-v19-approved.webp',
+    sideDoors: 'map-side-gates-v4d-approved.webp',
+    hub: 'map-hub-v4.webp',
+    effects: 'map-effects-v4c.webp',
   },
   density: 8,
   wallWidth: MODULAR_V2.wall.width,
   wallPixels: 80,
   wallFacePixels: 96,
+  wallVariants: [0, 1, 2],
   wallHeight: MODULAR_V2.wall.faceHeight,
   canvasPadding: 20,
   // Six complete 8-unit modules. Projection shifts the entire side opening with the wall caps.
   doorModules: 6,
-  doorTextures: { horizontal: 'map_horizontal_modules_v3', vertical: 'map_vertical_modules_v3' },
+  doorTextures: { horizontal: 'map_horizontal_modules_v4', vertical: 'map_vertical_modules_v4' },
   doorSize: { horizontal: [48, 17.6], vertical: [8, 48] },
   rimWidth: 3,
   rimSlice: 0.18,
@@ -61,7 +68,10 @@ export function mapFrameTexture(frame: string): string {
   if (frame === 'altar' || frame.startsWith('pickup_')) return MAP_ART.textures.hub;
   if (frame.startsWith('hazard_')) return MAP_ART.textures.effects;
   if (/_(east|west)_(open|locked)$/.test(frame)) return MAP_ART.textures.sideDoors;
-  if (/_wall_(top|face)$/.test(frame)) return MAP_ART.textures.walls;
+  if (/_wall_[0-2]$/.test(frame)) return MAP_ART.textures.walls;
+  if (frame.includes('_spikes_')) return MAP_ART.textures.spikes;
+  if (frame.endsWith('_crystal')) return MAP_ART.textures.crystals;
+  if (/_(south)_(open|locked)$/.test(frame)) return MAP_ART.textures.southDoors;
   for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const)
     if (frame.startsWith(`${theme}_ground_`)) return MAP_ART.textures[`${theme}Ground`];
   if (frame.endsWith('_obstacle')) return MAP_ART.textures.blocks;

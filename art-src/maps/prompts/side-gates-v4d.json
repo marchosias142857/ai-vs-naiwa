@@ -1,0 +1,76 @@
+{
+  "version": "side-gates-v4d-candidate",
+  "status": "user-approved appearance; not integrated",
+  "revision": "Open-recess lighting follows horizontal doorway depth: brighter at opening, black at back",
+  "targetFrame": [
+    80,
+    480
+  ],
+  "sourceCanvas": [
+    1216,
+    1294
+  ],
+  "layout": {
+    "groups": [
+      [
+        "temple",
+        "wreck"
+      ],
+      [
+        "abyss",
+        "milk"
+      ]
+    ],
+    "withinGroup": [
+      "east_open",
+      "east_locked",
+      "west_open",
+      "west_locked"
+    ]
+  },
+  "generation": {
+    "tool": "built-in image_gen",
+    "prompt": "Edit ONLY the shading inside the eight OPEN passages in this16-sprite pixel-art side-gate sheet.\n\nThe current light direction is WRONG: the open recess is dark at the TOP and brighter at the BOTTOM. Remove that top-to-bottom lighting completely. These are SIDE doors. Recess depth runs HORIZONTALLY across the narrow passage, NOT vertically along its long dimension.\n\nCorrect lighting:\n- EAST OPEN gates (column1 and column5 of BOTH rows): the exposed OPENING is on the LEFT. The left entrance edge is the brighter part, then darken progressively toward the RIGHT, reaching near-black at the deep back edge beside the right material beam.\n- WEST OPEN gates (column3 and column7 of BOTH rows): the exposed OPENING is on the RIGHT. The right entrance edge is brighter, then darken progressively toward the LEFT, reaching near-black at the back edge beside the left material beam.\nTherefore east and west interior shading is opposite horizontally. This shading orientation is essential.\n\nMaintain the previously approved darkness: interiors very dark with only weak theme color. Brighter entrance is just a subdued material-colored dark midtone, NOT glowing or bright. Temple dark blue-gray, wreck dark brown, abyss dark muted indigo, milk dark earthy sandstone. Deep back/contact shadows stay BLACK. Avoid a bright stripe or luminous rim at the opening. Along the VERTICAL length of an open passage, brightness at any given depth should be basically constant. No dark top-to-bright bottom gradient, no central spotlight, no illuminated bottom floor. Fade the existing bottom floor/tile marks into the same dark shading so they do not create a bright bottom patch or suggest a vertical tunnel.\n\nPreserve all other art and geometry exactly:16sprites in the same two rows/eight columns, same material frames, square raised endcaps, bars/locks, frame lighting from upper left, same1:6proportions and positions,1216x1293canvas, full transparent exterior. All8LOCKED gates in columns2/4/6/8 remain unchanged. No mirror or rotation of the frames. Do not move, stretch, crop or resize any sprite. No new details, text or background. Only correct OPEN passage lighting to bright-near-opening and black-at-back along the horizontal depth axis."
+  },
+  "validation": {
+    "leftRightLuminance": {
+      "temple_east": [
+        45.1,
+        15.7
+      ],
+      "temple_west": [
+        14.7,
+        42.4
+      ],
+      "wreck_east": [
+        45,
+        14.6
+      ],
+      "wreck_west": [
+        13.3,
+        40.5
+      ],
+      "abyss_east": [
+        43.5,
+        17.6
+      ],
+      "abyss_west": [
+        15.6,
+        43.2
+      ],
+      "milk_east": [
+        53.9,
+        22.8
+      ],
+      "milk_west": [
+        19.8,
+        49.8
+      ]
+    },
+    "directionChecks": "8/8 sampled open interiors have the intended left/right brightness direction; this is source-image sampling, not in-game verification",
+    "productionFrames": "Exact crop/cap bounds, alpha edges and uniform-scale integration still pending"
+  },
+  "approved": true,
+  "approval": "负责人：没问题，继续其他素材的绘制，一次性绘制完成。",
+  "source": "art-src/maps/sources/side-gates-v4d-approved.png"
+}

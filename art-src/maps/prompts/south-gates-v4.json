@@ -1,0 +1,18 @@
+{
+  "version": "south-gates-v4-candidate",
+  "status": "user-approved appearance; not integrated",
+  "scope": "south-facing horizontal gates, four themes, open/locked",
+  "targetFrame": [
+    480,
+    176
+  ],
+  "targetCapHeight": 80,
+  "targetFaceHeight": 96,
+  "generation": {
+    "tool": "built-in image_gen",
+    "prompt": "Use case: style-transfer. Pixel-art SOUTH horizontal dungeon gate sheet,4themes x OPEN/LOCKED,8sprites.\n\nImage1 is the exact EDIT TARGET for layout and south-facing geometry. Preserve its1024x1024canvas and rectangular sprite masks. Image2 is the approved NORTH gate design, use ONLY as matching style/material/lighting reference, not as south gate geometry. Image3 is the final approved wall set, same material family.\n\nExactly four rows: cool gray-blue temple, muted brown timber wreck, gray-indigo abyss, subdued beige sandstone milk. Left column open, right locked. Both states share an identical frame and material marks. Shape is SOUTH-facing, independently drawn, not a vertically flipped north gate.\n\nEXACT DIMENSIONS: each sprite480x176. Positions x16 or528, y64/304/544/784. End jambs80wide, central span320wide. The upper80pixel zone has an80x80square endcap at EACH END, each with a small36square raised pad. The320x80 MIDDLE is an OPEN RECESSED NOTCH, with NO stone lintel covering it. A narrow same-material front threshold lip sits along the bottom of this notch. Below y+80, the visible south-facing front/plinth is96pixels tall across the480width, with restrained stone blocks or wood panels, matching the wall fronts. Preserve the template's upper/lower division exactly. No protrusion, stairs, perspective tunnel, arch, rounded shape or overhang. Side cap tops square, full frame straight-sided, aspect30:11.\n\nOPEN: upper center notch is unobstructed deep dark passage with a subtle interior sill. LOCKED: thin dark iron portcullis bars across this SAME upper central notch, 2 narrow horizontal ties and one small readable bronze lock. Place bars and lock within upper80high opening. Do not put the locked bars in the lower front face. No glow.\n\nMatch the approved north gate and walls: crisp sparse pixel clusters, quiet matte muted colors, top-left lighting, top cap brighter than front, tiny shallow bevel, thin material-colored edging. Keep structural seams fine. Brown simple short straight grain. A few subtle wear marks and short cracks are allowed as on approved walls. Avoid black outer frames, gold ornate trim, noisy mottling, photorealism or blur. Frame construction and same-theme colors must match between open and locked.\n\nBackground outside the8rectangles completely transparent, no halo, vignette, shadow or haze. No text or extra objects. Geometry and internal section ratios must work with uniform scaling only."
+  },
+  "approved": true,
+  "approval": "负责人回复：确认，可以继续。",
+  "source": "art-src/maps/sources/south-gates-v4-approved.png"
+}

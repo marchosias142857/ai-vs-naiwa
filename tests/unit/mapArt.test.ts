@@ -40,21 +40,14 @@ it('provides distinct four-direction door states and all trap states without rot
     ).toBe(8);
     for (const name of frames)
       expect(mapFrameTexture(name)).toBe(
-        /_(east|west)_/.test(name) ? MAP_ART.textures.sideDoors : MAP_ART.textures.doors,
+        /_(east|west)_/.test(name)
+          ? MAP_ART.textures.sideDoors
+          : name.includes('_south_')
+            ? MAP_ART.textures.southDoors
+            : MAP_ART.textures.doors,
       );
   }
-  for (const frame of [
-    'spikes_idle',
-    'spikes_warn',
-    'spikes_on',
-    'current',
-    'weed',
-    'barrel',
-    'barrel_hit',
-    'barrel_broken',
-    'mine',
-    'mine_lit',
-  ])
+  for (const frame of ['current', 'weed', 'barrel', 'barrel_hit', 'barrel_broken', 'mine', 'mine_lit'])
     expect(MAP_ART.frames).toHaveProperty(frame);
 });
 
@@ -77,8 +70,8 @@ it('keeps wall cap/body ratios and reserves six whole modules for both gate orie
     height: 48,
   });
   for (const theme of ['temple', 'wreck', 'abyss', 'milk'] as const) {
-    expect(mapFrameTexture(`${theme}_wall_top`)).toBe(MAP_ART.textures.walls);
-    expect(mapFrameTexture(`${theme}_wall_face`)).toBe(MAP_ART.textures.walls);
+    for (const variant of MAP_ART.wallVariants)
+      expect(mapFrameTexture(`${theme}_wall_${variant}`)).toBe(MAP_ART.textures.walls);
     expect(MAP_ART.textures.walls).not.toBe(mapFrameTexture(`${theme}_obstacle`));
   }
 });

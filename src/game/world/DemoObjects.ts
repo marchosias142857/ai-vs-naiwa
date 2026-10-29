@@ -50,7 +50,12 @@ export class DemoObjects {
         .setDisplaySize(24, 25)
         .setDepth(DEPTH.floorDecals);
       this.exitArt = scene.add
-        .image(B.x + B.width / 2, B.y + B.height / 2, MAP_ART.textures.objects, 'crystal')
+        .image(
+          B.x + B.width / 2,
+          B.y + B.height / 2,
+          MAP_ART.textures.crystals,
+          `${session.arena.artTheme}_crystal`,
+        )
         .setDisplaySize(28, 30)
         .setDepth(DEPTH.floorDecals);
     }
@@ -65,7 +70,7 @@ export class DemoObjects {
     const exit = s.arena.anchor('exit'),
       chest = s.arena.anchor('chest');
     this.portal.setPosition(exit.x, exit.y + 22);
-    this.exitArt?.setPosition(exit.x, exit.y);
+    this.exitArt?.setPosition(exit.x, exit.y).setFrame(`${s.arena.artTheme}_crystal`);
     this.chest?.setPosition(chest.x, chest.y - 15);
     this.chest?.setVisible(s.dungeon.room.kind === 'chest');
     this.exitArt?.setVisible(s.dungeon.room.kind === 'exit');
