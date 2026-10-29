@@ -7,6 +7,13 @@ import { extname, join, resolve } from 'node:path';
 import type {} from '../fixtures/playerAutoAim';
 import { WEAPONS } from '../../src/data/weapons';
 
+function expectTargetRay(shot: { x: number; y: number; angle: number }, target: { x: number; y: number }) {
+  const dx = target.x - shot.x,
+    dy = target.y - shot.y;
+  expect(dx * Math.cos(shot.angle) + dy * Math.sin(shot.angle)).toBeGreaterThan(0);
+  expect(Math.abs(dx * Math.sin(shot.angle) - dy * Math.cos(shot.angle))).toBeLessThan(1e-9);
+}
+
 let directory: string, url: string, server: ReturnType<typeof createServer>;
 test.beforeAll(async () => {
   directory = await mkdtemp(join(tmpdir(), 'naiwa-player-aim-'));
@@ -100,14 +107,15 @@ for (const weapon of ['pistol_basic', 'fin_boomerang', 'lantern_beam', 'cutlass'
       if (weapon === 'cutlass') expect(result.melee).toEqual({ active: true, angle: result.facing });
       else {
         expect(result.shots).toHaveLength(1);
-        expect(result.shots[0]!.angle).toBeCloseTo(result.facing, 12);
+        if (automatic) expectTargetRay(result.shots[0]!, result.shotTargets[0]!);
+        else expect(result.shots[0]!.angle).toBeCloseTo(result.facing, 12);
       }
       if (weapon === 'lantern_beam') expect(result.beam).toEqual({ active: true, angle: result.facing });
       if (weapon === 'pistol_basic') {
         expect(result.bullets).toHaveLength(1);
         expect(result.bullets[0]!.y).toBeGreaterThan(0);
         const angle = Math.atan2(result.bullets[0]!.y, result.bullets[0]!.x);
-        expect(Math.abs(angle - result.facing)).toBeLessThanOrEqual(
+        expect(Math.abs(angle - result.shots[0]!.angle)).toBeLessThanOrEqual(
           (WEAPONS.pistol_basic.spread * Math.PI) / 360,
         );
       }
@@ -165,6 +173,38 @@ test('charge release keeps its original trigger and faces the auto target on the
   await expect.poll(() => page.evaluate(() => window.playerAutoAim.read().input.fire)).toBe(false);
   const released = await page.evaluate(() => window.playerAutoAim.tick());
   expect(released.shots).toHaveLength(1);
-  expect(released.shots[0]!.angle).toBeCloseTo(Math.PI / 2);
-  expect(released.bodyFacing).toBeCloseTo(released.shots[0]!.angle);
+  expectTargetRay(released.shots[0]!, released.shotTargets[0]!);
+  expect(released.bodyFacing).toBeCloseTo(released.facing);
 });
+
+for (const weapon of ['pistol_basic', 'sniper_pierce'] as const) {
+  test(`${weapon}: actual Arcade shot hits a stationary radius-3 target directly below`, async ({
+    page,
+    context,
+    isMobile,
+  }, info) => {
+    await page.goto(url);
+    await page.waitForFunction(() => window.playerAutoAim);
+    const point = await page.evaluate((id) => window.playerAutoAim.prepare(id, false, true), weapon);
+    if (isMobile) {
+      const cdp = await context.newCDPSession(page);
+      await cdp.send('Input.dispatchTouchEvent', {
+        type: 'touchStart',
+        touchPoints: [{ id: 1, ...point.fire }],
+      });
+    } else {
+      await page.mouse.move(point.mouse.x, point.mouse.y);
+      await page.mouse.down();
+    }
+    await expect.poll(() => page.evaluate(() => window.playerAutoAim.read().input.fire)).toBe(true);
+    const fired = await page.evaluate(() => window.playerAutoAim.tick());
+    expect(fired.shots).toHaveLength(1);
+    expectTargetRay(fired.shots[0]!, fired.shotTargets[0]!);
+    const result = await page.evaluate(() => window.playerAutoAim.tick(8));
+    expect(result.targetDamage).toBeGreaterThan(0);
+    await info.attach('actual-small-target-hit', {
+      body: JSON.stringify({ fired, result }),
+      contentType: 'application/json',
+    });
+  });
+}

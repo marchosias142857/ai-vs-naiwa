@@ -33,11 +33,27 @@ class AimScene extends Scene {
     });
     const { sim, bridge, arena } = session;
     const shots: GameEvents['weapon:fired'][] = [];
+    const shotTargets: { x: number; y: number }[] = [];
+    let targetId = 0;
+    let stationary = false;
+    let targetDamage = 0;
+    bus.on('entity:damaged', (e) => {
+      if (e.id === targetId) targetDamage++;
+    });
     bus.on('weapon:fired', (e) => {
-      if (e.ownerId === sim.playerId) shots.push({ ...e });
+      if (e.ownerId === sim.playerId) {
+        shots.push({ ...e });
+        const target = sim.getActor(targetId)!;
+        shotTargets.push({ x: target.x, y: target.y });
+      }
     });
     const step = (n: number) => {
       for (let i = 0; i < n; i++) {
+        if (stationary) {
+          const body = bridge.actors.slots.find((s) => s.id === targetId)?.image.body as
+            Physics.Arcade.Body | undefined;
+          body?.setVelocity(0, 0);
+        }
         session.setInput(ui.controls.sample(ui.playerX, ui.playerY));
         this.physics.world.update(0, 1000 / 60);
         this.physics.world.postUpdate();
@@ -58,6 +74,8 @@ class AimScene extends Scene {
     const read = () => ({
       input: structuredClone(ui.controls.frame),
       shots: [...shots],
+      shotTargets: [...shotTargets],
+      targetDamage,
       facing: session.player!.facing,
       bodyFacing: sim.playerBodyFacing,
       melee: { active: sim.melee.active, angle: sim.melee.angle },
@@ -71,13 +89,19 @@ class AimScene extends Scene {
       specialShots: sim.save().shots.map((s) => ({ vx: s.vx, vy: s.vy })),
     });
     window.playerAutoAim = {
-      prepare: (weapon: WeaponId, blocked = false) => {
+      prepare: (weapon: WeaponId, blocked = false, stationaryTadpole = false) => {
+        stationary = stationaryTadpole;
         boxes([]);
         sim.setTraps(-1, []);
         const p = session.player!,
           x = p.x,
           y = p.y;
-        const enemy = sim.spawnEnemy(weapon === 'coral_bow' ? 'naiwa_turret' : 'naiwa_chaser', x, y + 36);
+        const enemy = sim.spawnEnemy(
+          stationary ? 'naiwa_tadpole' : weapon === 'coral_bow' ? 'naiwa_turret' : 'naiwa_chaser',
+          x,
+          y + 36,
+        );
+        targetId = enemy;
         step(40); // Real spawn telegraph and fixed steps, no fabricated active phase.
         pin(p.id, x, y);
         pin(enemy, x, y + 36);
@@ -110,6 +134,7 @@ declare global {
       prepare: (
         weapon: WeaponId,
         blocked?: boolean,
+        stationaryTadpole?: boolean,
       ) => { fire: { x: number; y: number }; mouse: { x: number; y: number } };
       read: () => AimSnapshot;
       tick: (n?: number) => AimSnapshot;
@@ -119,6 +144,8 @@ declare global {
 interface AimSnapshot {
   input: InputFrame;
   shots: GameEvents['weapon:fired'][];
+  shotTargets: { x: number; y: number }[];
+  targetDamage: number;
   facing: number;
   bodyFacing: number;
   melee: { active: boolean; angle: number };

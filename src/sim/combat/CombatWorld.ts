@@ -1280,8 +1280,8 @@ class CombatWorldImpl implements CombatWorld {
     } else if (moving || input.source === 'touch') actor.facing = moveAngle;
     // 选敌与设备无关；蓄力松手、未发完的 burst 也使用本步目标。无锁定状态，读档不漂移。
     const attacking = input.fire || p.burstLeft > 0 || p.charge > 0;
+    let target: Actor | undefined;
     if ((p.weapon.attack === 'projectile' || p.weapon.attack === 'shot') && attacking) {
-      let target: Actor | undefined;
       let nearest = p.weapon.range ** 2;
       for (const enemy of this.actors) {
         if (enemy.team === actor.team || enemy.phase !== 'active' || EnemyAi.hidden(enemy.brain)) continue;
@@ -1296,12 +1296,18 @@ class CombatWorldImpl implements CombatWorld {
     }
     this.playerBodyFacing = attacking || this.melee.active ? actor.facing : moveAngle;
 
-    this.pullTrigger(actor, p, input.fire, dt);
+    this.pullTrigger(actor, p, input.fire, dt, target);
     this.applyLunge(actor);
   }
 
   /** 开火输入：普通连发、光束、蓄力与射速预热（ADR 0031）。 */
-  private pullTrigger(actor: Actor, p: PlayerState, firing: boolean, dt: number): void {
+  private pullTrigger(
+    actor: Actor,
+    p: PlayerState,
+    firing: boolean,
+    dt: number,
+    target?: Readonly<Actor>,
+  ): void {
     const r = this.resources,
       w = p.weapon;
     // 冷却：按住时连发并保留余量，保证射速准确；松开后冷却只减到 0，不会攒出连发。
@@ -1309,7 +1315,7 @@ class CombatWorldImpl implements CombatWorld {
     if (p.burstLeft > 0) {
       p.burstWait -= dt;
       while (p.burstLeft > 0 && p.burstWait <= 0) {
-        this.fire(actor, p);
+        this.fire(actor, p, target);
         p.burstLeft--;
         p.burstWait += w.burstInterval ?? 1 / w.fireRate;
       }
@@ -1328,7 +1334,7 @@ class CombatWorldImpl implements CombatWorld {
         this.chargeDamage = c.minScale + (c.maxScale - c.minScale) * k;
         this.chargeSpeed = 1 + (c.speed - 1) * k;
         this.chargePierce = k >= 1 ? c.fullPierce : 0;
-        this.fire(actor, p);
+        this.fire(actor, p, target);
         this.chargeDamage = this.chargeSpeed = 1;
         this.chargePierce = 0;
         p.charge = 0;
@@ -1345,7 +1351,7 @@ class CombatWorldImpl implements CombatWorld {
     }
     const rate = spin ? spin.startRate + (w.fireRate - spin.startRate) * (p.spin / spin.time) : w.fireRate;
     while (p.cooldown <= 0) {
-      this.fire(actor, p);
+      this.fire(actor, p, target);
       if (w.pattern === 'burst') {
         p.burstLeft = w.pellets - 1;
         p.burstWait = w.burstInterval ?? 1 / w.fireRate;
@@ -1403,6 +1409,7 @@ class CombatWorldImpl implements CombatWorld {
   private fire(
     owner: Actor,
     p: { weapon: Readonly<WeaponDef>; weaponId: string; pattern: FirePattern },
+    target?: Readonly<Actor>,
   ): void {
     if (owner.team === 'player' && !this.resources.canFire(p.weapon.energyCost)) return;
     if (p.weapon.attack === 'melee') {
@@ -1415,7 +1422,15 @@ class CombatWorldImpl implements CombatWorld {
       muzzleY = this.muzzle.y;
     this.fireCtx.x = muzzleX;
     this.fireCtx.y = muzzleY;
-    this.fireCtx.aim = owner.facing;
+    // 持握侧由身体朝向决定；迭代 facing 会在朝下的左右镜像接缝来回跳。
+    // 固定最终枪口（含近墙回退）后直接解算弹道，不再旋转枪口，避免平行偏移。
+    // 目标比枪口更近时保留中心方向，不能为了补偿把枪向身后开。
+    const beyondMuzzle =
+      target &&
+      (target.x - owner.x) ** 2 + (target.y - owner.y) ** 2 >
+        (muzzleX - owner.x) ** 2 + (muzzleY - owner.y) ** 2;
+    const aim = beyondMuzzle ? Math.atan2(target.y - muzzleY, target.x - muzzleX) : owner.facing;
+    this.fireCtx.aim = aim;
     this.fireCtx.weapon = p.weapon;
     this.fireCtx.pelletCount = p.weapon.pattern === 'burst' ? 1 : p.weapon.pellets;
     this.firingOwner = owner;
@@ -1426,17 +1441,23 @@ class CombatWorldImpl implements CombatWorld {
     this.firingOwner = null;
     if (!this.fired) return;
     if (owner.team === 'player') this.resources.spend(p.weapon.energyCost);
-    this.emitFired(owner, p.weaponId, muzzleX, muzzleY);
+    this.emitFired(owner, p.weaponId, muzzleX, muzzleY, aim);
   }
 
-  private emitFired(owner: Readonly<Actor>, weaponId: string, x: number, y: number): void {
+  private emitFired(
+    owner: Readonly<Actor>,
+    weaponId: string,
+    x: number,
+    y: number,
+    angle = owner.facing,
+  ): void {
     const e = this.payloads.fired.acquire();
     try {
       e.ownerId = owner.id;
       e.weaponId = weaponId;
       e.x = x;
       e.y = y;
-      e.angle = owner.facing;
+      e.angle = angle;
       this.bus.emit('weapon:fired', e);
     } finally {
       this.payloads.fired.release();
