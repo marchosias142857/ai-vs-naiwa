@@ -35,6 +35,8 @@ export const DEPTH = {
   floor: 0,
   floorDecals: 10,
   shadows: 20,
+  // 实体模型始终盖住室内障碍；障碍内部可继续按 y 排序。
+  obstacles: 25,
   actors: 30,
   playerBullets: 40,
   enemyBullets: 41,

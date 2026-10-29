@@ -191,7 +191,7 @@ export class RoomArena {
       image
         .setDisplaySize(box.width, box.height)
         .refreshBody()
-        .setDepth(DEPTH.wallTops)
+        .setDepth(DEPTH.obstacles)
         .setAlpha(hidden ? 0 : 1);
     }
     this.geometry.setRoom(

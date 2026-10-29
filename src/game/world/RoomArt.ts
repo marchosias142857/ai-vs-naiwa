@@ -102,7 +102,7 @@ export class LegacyRoomArt implements RoomArt {
       this.blocks.push(
         scene.add
           .tileSprite(0, 0, 1, 1, ART.environment, 'pillar')
-          .setDepth(DEPTH.wallTops)
+          .setDepth(DEPTH.obstacles)
           .setVisible(false),
       );
     this.apply();

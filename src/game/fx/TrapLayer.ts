@@ -179,12 +179,12 @@ export class TrapLayer {
       return;
     }
     const cracked = t.hp <= TRAP_RULES.barrel.hp / 2;
-    // 鱼雷桶和角色一样按脚底 y 排序，绕到桶后面会被挡住。
+    // 桶之间按脚底排序，但完整/受击桶始终低于人物与怪物。
     prop
       .setFrame(cracked ? 'barrel_hit' : 'barrel')
       .setDisplaySize(18, 23)
       .setOrigin(0.5, 0.65)
-      .setDepth(DEPTH.actors + (t.y + t.radius) * DEPTH_Y_SORT);
+      .setDepth(DEPTH.obstacles + (t.y + t.radius) * DEPTH_Y_SORT);
   }
 
   private readonly destroy = (): void => {
